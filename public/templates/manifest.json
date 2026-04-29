@@ -71,6 +71,42 @@
       "file": "timeline_horizontal.svg",
       "slots": ["title", "date_1", "event_1", "date_2", "event_2", "date_3", "event_3", "date_4", "event_4"],
       "best_for": "Présenter une succession d'événements datés sur une période"
+    },
+    {
+      "id": "swot_matrix",
+      "name": "Matrice SWOT",
+      "category": "Business Frameworks",
+      "description": "Matrice 2x2 forces, faiblesses, opportunités et menaces, chaque case avec 3 puces",
+      "file": "swot_matrix.svg",
+      "slots": ["title", "strengths_label", "strength_1", "strength_2", "strength_3", "weaknesses_label", "weakness_1", "weakness_2", "weakness_3", "opportunities_label", "opp_1", "opp_2", "opp_3", "threats_label", "threat_1", "threat_2", "threat_3"],
+      "best_for": "Réaliser un diagnostic stratégique interne et externe d'une organisation ou d'un projet"
+    },
+    {
+      "id": "bcg_matrix",
+      "name": "Matrice BCG",
+      "category": "Business Frameworks",
+      "description": "Matrice 2x2 part de marché relative et taux de croissance avec quatre quadrants Vedettes, Vaches à lait, Dilemmes et Poids morts",
+      "file": "bcg_matrix.svg",
+      "slots": ["title", "stars_items", "cash_cows_items", "question_marks_items", "dogs_items"],
+      "best_for": "Analyser un portefeuille de produits selon leur part de marché et leur croissance"
+    },
+    {
+      "id": "five_forces",
+      "name": "5 forces de Porter",
+      "category": "Business Frameworks",
+      "description": "Pentagone central de la rivalité concurrentielle entouré des quatre forces concurrentielles avec flèches",
+      "file": "five_forces.svg",
+      "slots": ["title", "central_force", "suppliers", "buyers", "new_entrants", "substitutes"],
+      "best_for": "Analyser l'intensité concurrentielle et l'attractivité d'un secteur d'activité"
+    },
+    {
+      "id": "business_model_canvas",
+      "name": "Business Model Canvas",
+      "category": "Business Frameworks",
+      "description": "Canvas Osterwalder simplifié avec 9 blocs : partenaires, activités, ressources, proposition de valeur, relation, canaux, segments, coûts et revenus",
+      "file": "business_model_canvas.svg",
+      "slots": ["title", "partners", "activities", "value_proposition", "relationships", "segments", "resources", "channels", "cost_structure", "revenue_streams"],
+      "best_for": "Modéliser le fonctionnement global d'un business sur une seule page"
     }
   ]
 }
