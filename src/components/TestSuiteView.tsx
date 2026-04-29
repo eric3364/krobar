@@ -94,11 +94,10 @@ function saveNotes(notes: Record<number, string>) {
 
 interface Props {
   manifest: Manifest;
-  apiKey: string;
   onBack: () => void;
 }
 
-export default function TestSuiteView({ manifest, apiKey, onBack }: Props) {
+export default function TestSuiteView({ manifest, onBack }: Props) {
   const [results, setResults] = useState<TestResult[]>(() => {
     try {
       const cached = localStorage.getItem(RESULTS_STORAGE);
@@ -132,7 +131,7 @@ export default function TestSuiteView({ manifest, apiKey, onBack }: Props) {
   const runOne = async (test: TestCase, currentPalette: Palette): Promise<void> => {
     updateResult(test.id, { ...emptyResult(test.id), status: "running" });
     try {
-      const { suggestions, latencyMs } = await callClaude(apiKey, manifest, test.text);
+      const { suggestions, latencyMs } = await callBackend(test.text);
       const top = suggestions[0];
       const ids = suggestions.map((s) => s.template_id);
       let matchKind: TestResult["matchKind"] = "miss";
@@ -145,12 +144,12 @@ export default function TestSuiteView({ manifest, apiKey, onBack }: Props) {
         status = "warning";
       }
 
-      // Render the SVG of the actually chosen template.
+      // Render the SVG of the actually chosen template via the backend.
       const tpl = manifest.templates.find((t) => t.id === top.template_id);
       let svgString: string | null = null;
       let paletteOk = false;
       if (tpl) {
-        const svg = await loadSvg(tpl.file);
+        const svg = await loadSvgFromBackend(top.template_id, top.slots, currentPalette);
         applyPaletteVars(svg, currentPalette);
         fillSlots(svg, top.slots);
         svg.setAttribute("width", "100%");
@@ -183,10 +182,6 @@ export default function TestSuiteView({ manifest, apiKey, onBack }: Props) {
   };
 
   const runAll = async () => {
-    if (!apiKey) {
-      toast.error("Configurez votre clé Claude dans Paramètres avant de lancer les tests");
-      return;
-    }
     setRunning(true);
     pauseRef.current = false;
     setPaused(false);
@@ -199,8 +194,6 @@ export default function TestSuiteView({ manifest, apiKey, onBack }: Props) {
       }
       await runOne(test, palette);
       await new Promise((r) => setTimeout(r, 1000)); // rate limiting
-      // fastMode ne change pas la sélection ; il influence l'UI (déjà 1er affiché en grand).
-      // L'option est conservée pour compat — pas de comportement supplémentaire ici.
       if (!fastMode) {
         // (placeholder pour différencier — pour l'instant identique)
       }
@@ -230,10 +223,6 @@ export default function TestSuiteView({ manifest, apiKey, onBack }: Props) {
   };
 
   const replayOne = async (test: TestCase) => {
-    if (!apiKey) {
-      toast.error("Configurez votre clé Claude dans Paramètres");
-      return;
-    }
     await runOne(test, palette);
   };
 
