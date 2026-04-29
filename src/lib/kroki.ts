@@ -21,6 +21,18 @@ export type Suggestion = {
 
 export const API_KEY_STORAGE = "kroki_claude_api_key";
 
+/**
+ * Formate un score en pourcentage entier 0-100.
+ * Le score brut attendu est entre 0 et 1 → multiplié par 100 une seule fois.
+ * Si Claude renvoie déjà 0-100 (>1), on ne re-multiplie pas.
+ * Si > 100 (rare hallucination), on clamp.
+ */
+export function formatScorePct(score: number | null | undefined): number {
+  if (score === null || score === undefined || !Number.isFinite(score)) return 0;
+  const pct = score <= 1 ? score * 100 : score;
+  return Math.max(0, Math.min(100, Math.round(pct)));
+}
+
 export function applyPaletteVars(el: SVGElement, palette: Palette) {
   el.style.setProperty("--primary", palette.primary);
   el.style.setProperty("--accent", palette.accent);
