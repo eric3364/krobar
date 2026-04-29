@@ -246,99 +246,20 @@ const Index = () => {
     })();
   }, [selectedSuggestion, selectedTemplate, palette]);
 
-  const saveApiKey = (v: string) => {
-    setApiKey(v);
-    localStorage.setItem(API_KEY_STORAGE, v);
-  };
-
   const analyze = async () => {
     if (!text.trim()) {
       toast.error("Collez d'abord un texte à analyser.");
       return;
     }
     if (!manifest) return;
-    if (!apiKey) {
-      toast.error("Ajoutez votre clé API Claude dans les paramètres.");
-      setSettingsOpen(true);
-      return;
-    }
 
     setLoading(true);
     setSuggestions([]);
     setSelectedIdx(null);
 
-    // Index compact : on n'envoie pas le manifest entier (lourd avec 20 templates),
-    // juste l'essentiel pour la sélection. Le manifest complet sert au remplissage.
-    const compactIndex = manifest.templates.map((t) => ({
-      id: t.id,
-      category: t.category,
-      best_for: t.best_for,
-      slot_count: t.slots.length,
-      slots: t.slots,
-    }));
-
-    const systemPrompt = `Tu es un assistant qui sélectionne des templates SVG pour visualiser du texte.
-
-BIBLIOTHÈQUE (index compact) :
-${JSON.stringify(compactIndex)}
-
-TEXTE DE L'UTILISATEUR :
-${text}
-
-MÉTHODE — suis ces étapes mentalement AVANT de répondre (ne les écris pas) :
-1. Identifie la STRUCTURE dominante du texte parmi : séquentielle (process, étapes), comparative (options, alternatives), hiérarchique (niveaux, organigramme), causale (causes/effet, problème/solution), temporelle (dates, jalons, roadmap), partitive (répartition, parts d'un tout), analytique (cadre business : SWOT, BCG, Porter, BMC), métaphorique (iceberg, pont), mentale (idée centrale + ramifications).
-2. Choisis les 3 templates dont la "category" et le "best_for" correspondent LE MIEUX à cette structure.
-3. Classe-les par score décroissant (le plus pertinent en premier).
-
-CONTRAINTE STRICTE sur chaque valeur de slot — sans exception :
-- MAXIMUM 5 mots ET 35 caractères.
-- Privilégie les formulations NOMINALES courtes (groupes nominaux, pas de phrases, pas de verbes conjugués si évitable).
-- Exemple BON : "Analyse des besoins".
-- Exemple MAUVAIS : "On analyse d'abord les besoins pédagogiques".
-
-FORMAT DE RÉPONSE — renvoie UNIQUEMENT un JSON strict (sans markdown, sans préambule, sans commentaire) :
-{
-  "suggestions": [
-    {
-      "template_id": "...",
-      "score": 0.0,
-      "reasoning": "1 phrase expliquant la pertinence",
-      "slots": { "title": "...", "...": "..." }
-    }
-  ]
-}
-
-CONTRAINTE STRICTE sur le score :
-- Le score doit être un nombre décimal entre 0.0 et 1.0 (exemple : 0.95 pour 95% de pertinence).
-- N'utilise JAMAIS un nombre supérieur à 1.
-
-Renvoie EXACTEMENT 3 suggestions, classées par score décroissant. Remplis tous les slots listés pour chaque template choisi avec du contenu synthétique tiré du texte fourni.`;
-
     try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": apiKey,
-          "anthropic-version": "2023-06-01",
-          "anthropic-dangerous-direct-browser-access": "true",
-        },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 2000,
-          messages: [{ role: "user", content: systemPrompt }],
-        }),
-      });
-
-      if (!res.ok) {
-        const err = await res.text();
-        throw new Error(`API ${res.status}: ${err}`);
-      }
-      const data = await res.json();
-      const raw: string = data.content?.[0]?.text ?? "";
-      const cleaned = raw.replace(/```json\s*|\s*```/g, "").trim();
-      const parsed = JSON.parse(cleaned);
-      const rawSug: Suggestion[] = parsed.suggestions ?? [];
+      const data = await analyzeText(text);
+      const rawSug: Suggestion[] = data.suggestions ?? [];
       if (rawSug.length === 0) throw new Error("Aucune suggestion");
       // Normalisation à réception : score décimal 0-1 garanti dans l'état.
       const sug = rawSug.map((s) => ({ ...s, score: normalizeScore(s.score) }));
@@ -347,7 +268,8 @@ Renvoie EXACTEMENT 3 suggestions, classées par score décroissant. Remplis tous
       toast.success(`${sug.length} suggestions générées`);
     } catch (e) {
       console.error(e);
-      toast.error("Échec de l'analyse. Vérifiez la clé API et réessayez.");
+      const msg = e instanceof Error ? e.message : "Échec de l'analyse.";
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
