@@ -16,12 +16,12 @@ import { palettes, paletteLabels, type Palette } from "@/palettes";
 import { testSuite, type TestCase } from "@/data/test-suite";
 import {
   applyPaletteVars,
-  callClaude,
+  callBackend,
   checkPaletteApplied,
   checkSlotsLength,
   fillSlots,
   formatScorePct,
-  loadSvg,
+  loadSvgFromBackend,
   svgToString,
   type Manifest,
   type Suggestion,
