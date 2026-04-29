@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <filter id="soft-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="0" dy="2"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.18"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="800" height="600" fill="var(--bg)"/>
+
+  <foreignObject x="20" y="15" width="760" height="55">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="title" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:clamp(18px,3.2cqw,28px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Analyse SWOT</div>
+  </foreignObject>
+
+  <!-- 4 quadrants: 2x2, x=40/410, y=85/335, w=350, h=240 -->
+  <!-- Strengths (top-left) — primary opaque -->
+  <g filter="url(#soft-shadow)">
+    <rect x="40"  y="85"  width="350" height="240" rx="12" fill="var(--primary)" opacity="0.85"/>
+  </g>
+  <foreignObject x="50" y="95" width="330" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="strengths_label" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:flex-start;text-align:left;font-family:Inter,system-ui,sans-serif;font-weight:800;font-size:clamp(14px,2.6cqw,20px);color:var(--bg);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Forces</div>
+  </foreignObject>
+  <foreignObject x="50" y="150" width="330" height="55">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="strength_1" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.8cqw,14px);color:var(--bg);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">• Force 1</div>
+  </foreignObject>
+  <foreignObject x="50" y="205" width="330" height="55">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="strength_2" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.8cqw,14px);color:var(--bg);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">• Force 2</div>
+  </foreignObject>
+  <foreignObject x="50" y="260" width="330" height="55">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="strength_3" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.8cqw,14px);color:var(--bg);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">• Force 3</div>
+  </foreignObject>
+
+  <!-- Weaknesses (top-right) — accent opaque -->
+  <g filter="url(#soft-shadow)">
+    <rect x="410" y="85" width="350" height="240" rx="12" fill="var(--accent)" opacity="0.85"/>
+  </g>
+  <foreignObject x="420" y="95" width="330" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="weaknesses_label" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:flex-start;text-align:left;font-family:Inter,system-ui,sans-serif;font-weight:800;font-size:clamp(14px,2.6cqw,20px);color:var(--bg);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Faiblesses</div>
+  </foreignObject>
+  <foreignObject x="420" y="150" width="330" height="55">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="weakness_1" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.8cqw,14px);color:var(--bg);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">• Faiblesse 1</div>
+  </foreignObject>
+  <foreignObject x="420" y="205" width="330" height="55">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="weakness_2" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.8cqw,14px);color:var(--bg);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">• Faiblesse 2</div>
+  </foreignObject>
+  <foreignObject x="420" y="260" width="330" height="55">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="weakness_3" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.8cqw,14px);color:var(--bg);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">• Faiblesse 3</div>
+  </foreignObject>
+
+  <!-- Opportunities (bottom-left) — primary tinted bg + primary border -->
+  <g filter="url(#soft-shadow)">
+    <rect x="40"  y="335" width="350" height="240" rx="12" fill="var(--primary)" opacity="0.18" stroke="var(--primary)" stroke-width="3"/>
+  </g>
+  <foreignObject x="50" y="345" width="330" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="opportunities_label" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:flex-start;text-align:left;font-family:Inter,system-ui,sans-serif;font-weight:800;font-size:clamp(14px,2.6cqw,20px);color:var(--primary);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Opportunités</div>
+  </foreignObject>
+  <foreignObject x="50" y="400" width="330" height="55">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="opp_1" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.8cqw,14px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">• Opportunité 1</div>
+  </foreignObject>
+  <foreignObject x="50" y="455" width="330" height="55">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="opp_2" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.8cqw,14px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">• Opportunité 2</div>
+  </foreignObject>
+  <foreignObject x="50" y="510" width="330" height="55">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="opp_3" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.8cqw,14px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">• Opportunité 3</div>
+  </foreignObject>
+
+  <!-- Threats (bottom-right) — accent tinted bg + accent border -->
+  <g filter="url(#soft-shadow)">
+    <rect x="410" y="335" width="350" height="240" rx="12" fill="var(--accent)" opacity="0.18" stroke="var(--accent)" stroke-width="3"/>
+  </g>
+  <foreignObject x="420" y="345" width="330" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="threats_label" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:flex-start;text-align:left;font-family:Inter,system-ui,sans-serif;font-weight:800;font-size:clamp(14px,2.6cqw,20px);color:var(--accent);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Menaces</div>
+  </foreignObject>
+  <foreignObject x="420" y="400" width="330" height="55">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="threat_1" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.8cqw,14px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">• Menace 1</div>
+  </foreignObject>
+  <foreignObject x="420" y="455" width="330" height="55">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="threat_2" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.8cqw,14px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">• Menace 2</div>
+  </foreignObject>
+  <foreignObject x="420" y="510" width="330" height="55">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="threat_3" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.8cqw,14px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">• Menace 3</div>
+  </foreignObject>
+</svg>

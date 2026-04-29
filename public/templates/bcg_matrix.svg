@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <filter id="soft-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="0" dy="2"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.18"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="bcg-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--text)"/>
+    </marker>
+  </defs>
+
+  <rect width="800" height="600" fill="var(--bg)"/>
+
+  <foreignObject x="20" y="10" width="760" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="title" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:clamp(18px,3cqw,26px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Matrice BCG</div>
+  </foreignObject>
+
+  <!-- Y axis label (Croissance) -->
+  <foreignObject x="10" y="80" width="100" height="420">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:13px;color:var(--text);padding:8px;box-sizing:border-box;writing-mode:vertical-rl;transform:rotate(180deg);">Taux de croissance</div>
+  </foreignObject>
+  <!-- Y axis ticks -->
+  <text x="115" y="100" font-size="11" fill="var(--text)" opacity="0.7">Fort</text>
+  <text x="115" y="495" font-size="11" fill="var(--text)" opacity="0.7">Faible</text>
+
+  <!-- 4 quadrants: x=130/450, y=80/290, w=320, h=210 -->
+  <!-- Question Marks (top-left, low share / high growth) -->
+  <g filter="url(#soft-shadow)">
+    <rect x="130" y="80" width="320" height="210" rx="12" fill="var(--accent)" opacity="0.18" stroke="var(--accent)" stroke-width="2"/>
+  </g>
+  <foreignObject x="140" y="88" width="300" height="38">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-weight:800;font-size:clamp(13px,2.4cqw,18px);color:var(--accent);padding:8px;box-sizing:border-box;">? Dilemmes</div>
+  </foreignObject>
+  <foreignObject x="140" y="128" width="300" height="155">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="question_marks_items" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.8cqw,14px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Produits émergents</div>
+  </foreignObject>
+
+  <!-- Stars (top-right, high share / high growth) -->
+  <g filter="url(#soft-shadow)">
+    <rect x="450" y="80" width="320" height="210" rx="12" fill="var(--primary)" opacity="0.85"/>
+  </g>
+  <foreignObject x="460" y="88" width="300" height="38">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-weight:800;font-size:clamp(13px,2.4cqw,18px);color:var(--bg);padding:8px;box-sizing:border-box;">★ Vedettes</div>
+  </foreignObject>
+  <foreignObject x="460" y="128" width="300" height="155">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="stars_items" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.8cqw,14px);color:var(--bg);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Produits leaders</div>
+  </foreignObject>
+
+  <!-- Dogs (bottom-left, low share / low growth) -->
+  <g filter="url(#soft-shadow)">
+    <rect x="130" y="290" width="320" height="210" rx="12" fill="var(--text)" opacity="0.10" stroke="var(--text)" stroke-width="2"/>
+  </g>
+  <foreignObject x="140" y="298" width="300" height="38">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-weight:800;font-size:clamp(13px,2.4cqw,18px);color:var(--text);padding:8px;box-sizing:border-box;">✕ Poids morts</div>
+  </foreignObject>
+  <foreignObject x="140" y="338" width="300" height="155">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="dogs_items" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.8cqw,14px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Produits en déclin</div>
+  </foreignObject>
+
+  <!-- Cash Cows (bottom-right, high share / low growth) -->
+  <g filter="url(#soft-shadow)">
+    <rect x="450" y="290" width="320" height="210" rx="12" fill="var(--accent)" opacity="0.85"/>
+  </g>
+  <foreignObject x="460" y="298" width="300" height="38">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-weight:800;font-size:clamp(13px,2.4cqw,18px);color:var(--bg);padding:8px;box-sizing:border-box;">$ Vaches à lait</div>
+  </foreignObject>
+  <foreignObject x="460" y="338" width="300" height="155">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="cash_cows_items" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.8cqw,14px);color:var(--bg);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Produits matures</div>
+  </foreignObject>
+
+  <!-- X axis ticks + label -->
+  <text x="140" y="525" font-size="11" fill="var(--text)" opacity="0.7">Faible</text>
+  <text x="730" y="525" font-size="11" fill="var(--text)" opacity="0.7" text-anchor="end">Forte</text>
+  <foreignObject x="130" y="540" width="640" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:13px;color:var(--text);padding:8px;box-sizing:border-box;">Part de marché relative</div>
+  </foreignObject>
+</svg>
