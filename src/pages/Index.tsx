@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Loader2, Download, Sparkles, Settings, RefreshCw } from "lucide-react";
+import { Loader2, Download, Sparkles, Settings, RefreshCw, FlaskConical } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -15,6 +15,7 @@ import {
   DialogTrigger,
   DialogDescription,
 } from "@/components/ui/dialog";
+import TestSuiteView from "@/components/TestSuiteView";
 
 type ManifestTemplate = {
   id: string;
@@ -188,6 +189,7 @@ const Index = () => {
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
   const [apiKey, setApiKey] = useState<string>("");
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [testSuiteOpen, setTestSuiteOpen] = useState(false);
 
   const previewRef = useRef<HTMLDivElement>(null);
   const thumbRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -395,6 +397,16 @@ Renvoie EXACTEMENT 3 suggestions, classées par score décroissant. Remplis tous
     setPaletteKey(keys[(idx + 1) % keys.length] as keyof typeof palettes);
   };
 
+  if (testSuiteOpen && manifest) {
+    return (
+      <TestSuiteView
+        manifest={manifest}
+        apiKey={apiKey}
+        onBack={() => setTestSuiteOpen(false)}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="border-b bg-card">
@@ -405,12 +417,16 @@ Renvoie EXACTEMENT 3 suggestions, classées par score décroissant. Remplis tous
               Texte → Visuel SVG
             </span>
           </div>
-          <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
-            <DialogTrigger asChild>
-              <Button variant="outline" size="sm">
-                <Settings className="w-4 h-4 mr-2" /> Paramètres
-              </Button>
-            </DialogTrigger>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" onClick={() => setTestSuiteOpen(true)}>
+              <FlaskConical className="w-4 h-4 mr-2" /> Lancer la suite de tests
+            </Button>
+            <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
+              <DialogTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <Settings className="w-4 h-4 mr-2" /> Paramètres
+                </Button>
+              </DialogTrigger>
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Clé API Claude</DialogTitle>
@@ -430,6 +446,7 @@ Renvoie EXACTEMENT 3 suggestions, classées par score décroissant. Remplis tous
               </div>
             </DialogContent>
           </Dialog>
+          </div>
         </div>
       </header>
 
