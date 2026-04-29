@@ -331,7 +331,6 @@ const Index = () => {
     return (
       <TestSuiteView
         manifest={manifest}
-        apiKey={apiKey}
         onBack={() => setTestSuiteOpen(false)}
       />
     );
@@ -351,31 +350,6 @@ const Index = () => {
             <Button variant="outline" size="sm" onClick={() => setTestSuiteOpen(true)}>
               <FlaskConical className="w-4 h-4 mr-2" /> Lancer la suite de tests
             </Button>
-            <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
-              <DialogTrigger asChild>
-                <Button variant="outline" size="sm">
-                  <Settings className="w-4 h-4 mr-2" /> Paramètres
-                </Button>
-              </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Clé API Claude</DialogTitle>
-                <DialogDescription>
-                  Stockée localement (localStorage). Phase prototype uniquement.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="space-y-2">
-                <Label htmlFor="key">Clé API</Label>
-                <Input
-                  id="key"
-                  type="password"
-                  placeholder="sk-ant-..."
-                  value={apiKey}
-                  onChange={(e) => saveApiKey(e.target.value)}
-                />
-              </div>
-            </DialogContent>
-          </Dialog>
           </div>
         </div>
       </header>
