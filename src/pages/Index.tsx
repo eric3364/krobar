@@ -2,21 +2,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { palettes, paletteLabels, type Palette } from "@/palettes";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Loader2, Download, Sparkles, Settings, RefreshCw, FlaskConical } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogDescription,
-} from "@/components/ui/dialog";
+import { Loader2, Download, Sparkles, RefreshCw, FlaskConical } from "lucide-react";
 import TestSuiteView from "@/components/TestSuiteView";
 import { formatScorePct, normalizeScore } from "@/lib/kroki";
+import { analyzeText, renderTemplate } from "@/lib/api";
 
 type ManifestTemplate = {
   id: string;
@@ -37,7 +29,7 @@ type Suggestion = {
   slots: Record<string, string>;
 };
 
-const API_KEY_STORAGE = "kroki_claude_api_key";
+// Plus de clé API côté client : la communication avec Claude passe par le backend.
 
 function applyPaletteVars(el: SVGElement, palette: Palette) {
   el.style.setProperty("--primary", palette.primary);
@@ -161,10 +153,23 @@ function applyDonutPercentages(svg: SVGElement, slots: Record<string, string>) {
   });
 }
 
-async function loadSvg(file: string): Promise<SVGElement> {
-  const res = await fetch(`/templates/${file}`);
-  const txt = await res.text();
-  const doc = new DOMParser().parseFromString(txt, "image/svg+xml");
+async function loadSvg(
+  templateId: string,
+  slots: Record<string, string>,
+  palette: Palette,
+): Promise<SVGElement> {
+  const paletteRecord = {
+    primary: palette.primary,
+    accent: palette.accent,
+    bg: palette.bg,
+    text: palette.text,
+  };
+  const data = await renderTemplate(templateId, slots, paletteRecord);
+  const txt: string = data.svg ?? data.content ?? data;
+  const doc = new DOMParser().parseFromString(
+    typeof txt === "string" ? txt : String(txt),
+    "image/svg+xml",
+  );
   return doc.documentElement as unknown as SVGElement;
 }
 
