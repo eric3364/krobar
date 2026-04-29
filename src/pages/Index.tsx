@@ -446,6 +446,7 @@ Renvoie EXACTEMENT 3 suggestions, classées par score décroissant. Remplis tous
               </div>
             </DialogContent>
           </Dialog>
+          </div>
         </div>
       </header>
 
