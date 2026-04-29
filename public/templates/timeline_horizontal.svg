@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <filter id="soft-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="0" dy="2" result="off"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.18"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="800" height="600" fill="var(--bg)"/>
+
+  <foreignObject x="20" y="40" width="760" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="title" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:clamp(18px,3.2cqw,28px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Frise chronologique</div>
+  </foreignObject>
+
+  <!-- Horizontal axis -->
+  <line x1="80" y1="320" x2="720" y2="320" stroke="var(--muted, #cbd5e1)" stroke-width="3"/>
+
+  <!-- Milestones: centers at 140, 340, 540, 660? evenly: 4 points → 140, 333, 527, 720 ... use 140, 333, 527, 720 -->
+  <!-- Let's use evenly spaced: 120, 320, 520, 720 -->
+  <g filter="url(#soft-shadow)">
+    <circle cx="120" cy="320" r="20" fill="var(--accent)"/>
+    <circle cx="320" cy="320" r="20" fill="var(--accent)"/>
+    <circle cx="520" cy="320" r="20" fill="var(--accent)"/>
+    <circle cx="720" cy="320" r="20" fill="var(--accent)"/>
+  </g>
+
+  <!-- Date pills above each milestone -->
+  <g filter="url(#soft-shadow)">
+    <rect x="40"  y="200" width="160" height="50" rx="12" fill="var(--primary)"/>
+    <rect x="240" y="200" width="160" height="50" rx="12" fill="var(--primary)"/>
+    <rect x="440" y="200" width="160" height="50" rx="12" fill="var(--primary)"/>
+    <rect x="640" y="200" width="160" height="50" rx="12" fill="var(--primary)"/>
+  </g>
+  <foreignObject x="40"  y="200" width="160" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="date_1" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:clamp(11px,2cqw,15px);color:var(--bg);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Date 1</div>
+  </foreignObject>
+  <foreignObject x="240" y="200" width="160" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="date_2" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:clamp(11px,2cqw,15px);color:var(--bg);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Date 2</div>
+  </foreignObject>
+  <foreignObject x="440" y="200" width="160" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="date_3" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:clamp(11px,2cqw,15px);color:var(--bg);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Date 3</div>
+  </foreignObject>
+  <foreignObject x="640" y="200" width="160" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="date_4" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:clamp(11px,2cqw,15px);color:var(--bg);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Date 4</div>
+  </foreignObject>
+
+  <!-- Connector lines from date pill to milestone -->
+  <line x1="120" y1="250" x2="120" y2="300" stroke="var(--muted, #cbd5e1)" stroke-width="2"/>
+  <line x1="320" y1="250" x2="320" y2="300" stroke="var(--muted, #cbd5e1)" stroke-width="2"/>
+  <line x1="520" y1="250" x2="520" y2="300" stroke="var(--muted, #cbd5e1)" stroke-width="2"/>
+  <line x1="720" y1="250" x2="720" y2="300" stroke="var(--muted, #cbd5e1)" stroke-width="2"/>
+
+  <!-- Event cards below each milestone -->
+  <g filter="url(#soft-shadow)">
+    <rect x="20"  y="380" width="200" height="160" rx="12" fill="var(--bg)" stroke="var(--primary)" stroke-width="2"/>
+    <rect x="220" y="380" width="200" height="160" rx="12" fill="var(--bg)" stroke="var(--primary)" stroke-width="2"/>
+    <rect x="420" y="380" width="200" height="160" rx="12" fill="var(--bg)" stroke="var(--primary)" stroke-width="2"/>
+    <rect x="620" y="380" width="200" height="160" rx="12" fill="var(--bg)" stroke="var(--primary)" stroke-width="2"/>
+  </g>
+  <line x1="120" y1="340" x2="120" y2="380" stroke="var(--muted, #cbd5e1)" stroke-width="2"/>
+  <line x1="320" y1="340" x2="320" y2="380" stroke="var(--muted, #cbd5e1)" stroke-width="2"/>
+  <line x1="520" y1="340" x2="520" y2="380" stroke="var(--muted, #cbd5e1)" stroke-width="2"/>
+  <line x1="720" y1="340" x2="720" y2="380" stroke="var(--muted, #cbd5e1)" stroke-width="2"/>
+
+  <foreignObject x="20"  y="380" width="200" height="160">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="event_1" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.7cqw,15px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Événement 1</div>
+  </foreignObject>
+  <foreignObject x="220" y="380" width="200" height="160">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="event_2" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.7cqw,15px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Événement 2</div>
+  </foreignObject>
+  <foreignObject x="420" y="380" width="200" height="160">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="event_3" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.7cqw,15px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Événement 3</div>
+  </foreignObject>
+  <foreignObject x="620" y="380" width="200" height="160">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="event_4" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.7cqw,15px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Événement 4</div>
+  </foreignObject>
+</svg>
