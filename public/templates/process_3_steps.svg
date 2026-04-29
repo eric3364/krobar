@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="600" fill="var(--bg)"/>
+  <text data-slot="title" x="400" y="80" text-anchor="middle" font-size="32" font-weight="700" fill="var(--text)">Titre du processus</text>
+
+  <g>
+    <rect x="50" y="240" width="200" height="120" rx="16" fill="var(--primary)"/>
+    <text data-slot="step_1_label" x="150" y="305" text-anchor="middle" font-size="20" font-weight="600" fill="var(--bg)">Étape 1</text>
+  </g>
+
+  <path d="M 260 300 L 290 300" stroke="var(--accent)" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+
+  <g>
+    <rect x="300" y="240" width="200" height="120" rx="16" fill="var(--accent)"/>
+    <text data-slot="step_2_label" x="400" y="305" text-anchor="middle" font-size="20" font-weight="600" fill="var(--bg)">Étape 2</text>
+  </g>
+
+  <path d="M 510 300 L 540 300" stroke="var(--accent)" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+
+  <g>
+    <rect x="550" y="240" width="200" height="120" rx="16" fill="var(--primary)"/>
+    <text data-slot="step_3_label" x="650" y="305" text-anchor="middle" font-size="20" font-weight="600" fill="var(--bg)">Étape 3</text>
+  </g>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)"/>
+    </marker>
+  </defs>
+</svg>

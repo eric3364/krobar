@@ -1,0 +1,40 @@
+{
+  "templates": [
+    {
+      "id": "process_3_steps",
+      "name": "Process en 3 étapes",
+      "category": "Process",
+      "description": "Séquence linéaire de 3 étapes connectées",
+      "file": "process_3_steps.svg",
+      "slots": ["title", "step_1_label", "step_2_label", "step_3_label"],
+      "best_for": "Décrire un processus court avec un début, un milieu et une fin"
+    },
+    {
+      "id": "comparison_2_columns",
+      "name": "Comparaison 2 colonnes",
+      "category": "Comparaison",
+      "description": "Deux colonnes côte à côte avec un titre commun",
+      "file": "comparison_2_columns.svg",
+      "slots": ["title", "left_label", "left_item_1", "left_item_2", "left_item_3", "right_label", "right_item_1", "right_item_2", "right_item_3"],
+      "best_for": "Comparer deux concepts, options ou approches"
+    },
+    {
+      "id": "hierarchy_pyramid",
+      "name": "Pyramide hiérarchique",
+      "category": "Hiérarchie",
+      "description": "Pyramide à 3 niveaux",
+      "file": "hierarchy_pyramid.svg",
+      "slots": ["title", "top_label", "middle_label", "bottom_label"],
+      "best_for": "Montrer une hiérarchie, des priorités ou une structure pyramidale"
+    },
+    {
+      "id": "cycle_4_steps",
+      "name": "Cycle en 4 étapes",
+      "category": "Cycle",
+      "description": "4 cercles disposés en cycle, connectés par des flèches courbes",
+      "file": "cycle_4_steps.svg",
+      "slots": ["title", "step_1", "step_2", "step_3", "step_4"],
+      "best_for": "Représenter un cycle, une boucle ou un processus itératif"
+    }
+  ]
+}
