@@ -263,7 +263,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `kroki-test-report-${Date.now()}.json`;
+    a.download = `krobar-test-report-${Date.now()}.json`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -280,7 +280,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
         <div className="px-6 py-4 flex flex-col gap-3">
           <div className="flex items-center justify-between gap-3 flex-wrap">
             <div className="flex items-baseline gap-3">
-              <h1 className="text-2xl font-black tracking-tight">Suite de tests KROKI</h1>
+              <h1 className="text-2xl font-black tracking-tight">Suite de tests Krobar</h1>
               <span className="text-sm text-muted-foreground font-mono">
                 {completedCount} / {testSuite.length} tests exécutés
               </span>
