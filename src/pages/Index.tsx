@@ -16,6 +16,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import TestSuiteView from "@/components/TestSuiteView";
+import { formatScorePct } from "@/lib/kroki";
 
 type ManifestTemplate = {
   id: string;
