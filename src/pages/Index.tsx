@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Loader2, Download, Sparkles, Settings, RefreshCw } from "lucide-react";
+import { Loader2, Download, Sparkles, Settings, RefreshCw, FlaskConical } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -15,6 +15,7 @@ import {
   DialogTrigger,
   DialogDescription,
 } from "@/components/ui/dialog";
+import TestSuiteView from "@/components/TestSuiteView";
 
 type ManifestTemplate = {
   id: string;
