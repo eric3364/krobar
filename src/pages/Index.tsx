@@ -271,7 +271,7 @@ const Index = () => {
     // Inline palette for portability
     applyPaletteVars(clone, palette);
     const str = svgToString(clone);
-    downloadBlob(new Blob([str], { type: "image/svg+xml" }), "kroki.svg");
+    downloadBlob(new Blob([str], { type: "image/svg+xml" }), "krobar.svg");
   };
 
   const downloadPNG = async () => {
@@ -298,7 +298,7 @@ const Index = () => {
       ctx.scale(scale, scale);
       ctx.drawImage(img, 0, 0);
       canvas.toBlob((b) => {
-        if (b) downloadBlob(b, "kroki.png");
+        if (b) downloadBlob(b, "krobar.png");
         URL.revokeObjectURL(url);
       }, "image/png");
     };
@@ -329,7 +329,7 @@ const Index = () => {
       <header className="border-b bg-card">
         <div className="px-6 py-4 flex items-center justify-between">
           <div className="flex items-baseline gap-3">
-            <h1 className="text-2xl font-black tracking-tight">KROKI</h1>
+            <h1 className="text-2xl font-black tracking-tight">Krobar</h1>
             <span className="text-sm text-muted-foreground">
               Texte → Visuel SVG
             </span>
