@@ -107,6 +107,42 @@
       "file": "business_model_canvas.svg",
       "slots": ["title", "partners", "activities", "value_proposition", "relationships", "segments", "resources", "channels", "cost_structure", "revenue_streams"],
       "best_for": "Modéliser le fonctionnement global d'un business sur une seule page"
+    },
+    {
+      "id": "fishbone",
+      "name": "Diagramme d'Ishikawa",
+      "category": "Cause and Effect",
+      "description": "Arête centrale avec 4 catégories de causes et 2 sous-causes chacune, pointant vers un effet",
+      "file": "fishbone.svg",
+      "slots": ["title", "effect", "category_1", "cause_1_1", "cause_1_2", "category_2", "cause_2_1", "cause_2_2", "category_3", "cause_3_1", "cause_3_2", "category_4", "cause_4_1", "cause_4_2"],
+      "best_for": "Analyser les causes profondes d'un problème selon plusieurs catégories"
+    },
+    {
+      "id": "cause_effect_arrows",
+      "name": "Causes vers effet",
+      "category": "Cause and Effect",
+      "description": "Trois causes à gauche convergeant par flèches vers un effet à droite",
+      "file": "cause_effect_arrows.svg",
+      "slots": ["title", "cause_1", "cause_2", "cause_3", "effect"],
+      "best_for": "Montrer comment plusieurs facteurs convergent vers un même résultat"
+    },
+    {
+      "id": "donut_4_parts",
+      "name": "Donut en 4 parts",
+      "category": "Parts of a Whole",
+      "description": "Donut chart à 4 segments avec pourcentages paramétrables et légende latérale",
+      "file": "donut_4_parts.svg",
+      "slots": ["title", "label_1", "percent_1", "label_2", "percent_2", "label_3", "percent_3", "label_4", "percent_4"],
+      "best_for": "Visualiser la répartition d'un tout en quatre proportions"
+    },
+    {
+      "id": "roadmap_quarters",
+      "name": "Roadmap trimestrielle",
+      "category": "Timelines",
+      "description": "Quatre colonnes Q1 à Q4 avec deux initiatives par trimestre et une barre de progression",
+      "file": "roadmap_quarters.svg",
+      "slots": ["title", "q1_item_1", "q1_item_2", "q2_item_1", "q2_item_2", "q3_item_1", "q3_item_2", "q4_item_1", "q4_item_2"],
+      "best_for": "Planifier les initiatives d'une année réparties sur quatre trimestres"
     }
   ]
 }

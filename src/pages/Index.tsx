@@ -54,6 +54,59 @@ function fillSlots(svg: SVGElement, slots: Record<string, string>) {
       el.style.fontSize = "11px";
     }
   });
+
+  // Post-processing spécifique au donut : recalcul des arcs + repositionnement des labels %.
+  if (svg.getAttribute("data-template") === "donut_4_parts") {
+    applyDonutPercentages(svg, slots);
+  }
+}
+
+// Calcule les stroke-dasharray/offset des 4 arcs du donut à partir
+// des slots percent_1..percent_4, et place chaque label de % au centre
+// angulaire de son segment. Les valeurs non numériques retombent à 25.
+function applyDonutPercentages(svg: SVGElement, slots: Record<string, string>) {
+  const parsePct = (raw: string | undefined): number => {
+    if (!raw) return 25;
+    const n = parseFloat(String(raw).replace("%", "").replace(",", "."));
+    return Number.isFinite(n) && n >= 0 ? n : 25;
+  };
+
+  const pcts = [1, 2, 3, 4].map((i) => parsePct(slots[`percent_${i}`]));
+  const sum = pcts.reduce((a, b) => a + b, 0) || 1;
+  const norm = pcts.map((p) => (p / sum) * 100);
+
+  // r=130 dans le SVG → C ≈ 816.81
+  const C = 2 * Math.PI * 130;
+  let cumulative = 0;
+
+  norm.forEach((pct, idx) => {
+    const arc = svg.querySelector(`[data-slot="arc_${idx + 1}"]`) as SVGCircleElement | null;
+    const len = (pct / 100) * C;
+    if (arc) {
+      arc.setAttribute("stroke-dasharray", `${len.toFixed(2)} ${(C - len).toFixed(2)}`);
+      arc.setAttribute("stroke-dashoffset", `${(-(cumulative / 100) * C).toFixed(2)}`);
+    }
+
+    // Centre angulaire du segment (12h = -PI/2, sens horaire).
+    const midPct = cumulative + pct / 2;
+    const angle = (midPct / 100) * 2 * Math.PI - Math.PI / 2;
+    const labelR = 130;
+    const cx = 260 + labelR * Math.cos(angle);
+    const cy = 340 + labelR * Math.sin(angle);
+
+    const labelFO = svg.querySelector(
+      `foreignObject[data-slot-pos="percent_${idx + 1}"]`
+    ) as SVGForeignObjectElement | null;
+    if (labelFO) {
+      const w = parseFloat(labelFO.getAttribute("width") || "80");
+      const h = parseFloat(labelFO.getAttribute("height") || "34");
+      labelFO.setAttribute("x", String(cx - w / 2));
+      labelFO.setAttribute("y", String(cy - h / 2));
+      labelFO.setAttribute("opacity", pct < 4 ? "0" : "1");
+    }
+
+    cumulative += pct;
+  });
 }
 
 async function loadSvg(file: string): Promise<SVGElement> {
