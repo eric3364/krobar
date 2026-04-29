@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="600" fill="var(--bg)"/>
+  <text data-slot="title" x="400" y="60" text-anchor="middle" font-size="30" font-weight="700" fill="var(--text)">Titre de la pyramide</text>
+
+  <polygon points="400,110 480,230 320,230" fill="var(--primary)"/>
+  <text data-slot="top_label" x="400" y="200" text-anchor="middle" font-size="16" font-weight="600" fill="var(--bg)">Sommet</text>
+
+  <polygon points="320,240 480,240 560,380 240,380" fill="var(--accent)"/>
+  <text data-slot="middle_label" x="400" y="320" text-anchor="middle" font-size="18" font-weight="600" fill="var(--bg)">Milieu</text>
+
+  <polygon points="240,390 560,390 660,540 140,540" fill="var(--primary)" opacity="0.7"/>
+  <text data-slot="bottom_label" x="400" y="475" text-anchor="middle" font-size="20" font-weight="600" fill="var(--bg)">Base</text>
+</svg>
