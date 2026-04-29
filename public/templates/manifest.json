@@ -143,6 +143,42 @@
       "file": "roadmap_quarters.svg",
       "slots": ["title", "q1_item_1", "q1_item_2", "q2_item_1", "q2_item_2", "q3_item_1", "q3_item_2", "q4_item_1", "q4_item_2"],
       "best_for": "Planifier les initiatives d'une année réparties sur quatre trimestres"
+    },
+    {
+      "id": "mindmap_central",
+      "name": "Carte mentale centrale",
+      "category": "Mindmap",
+      "description": "Nœud central avec quatre branches diagonales, chacune comportant deux sous-branches",
+      "file": "mindmap_central.svg",
+      "slots": ["title", "central", "branch_1", "branch_1_sub_1", "branch_1_sub_2", "branch_2", "branch_2_sub_1", "branch_2_sub_2", "branch_3", "branch_3_sub_1", "branch_3_sub_2", "branch_4", "branch_4_sub_1", "branch_4_sub_2"],
+      "best_for": "Brainstormer ou structurer un sujet autour d'une idée centrale et de quatre axes"
+    },
+    {
+      "id": "iceberg",
+      "name": "Modèle de l'iceberg",
+      "category": "Visual Metaphors",
+      "description": "Iceberg avec partie visible au-dessus de la ligne d'eau et trois niveaux immergés de profondeur croissante",
+      "file": "iceberg.svg",
+      "slots": ["title", "visible_label", "visible_item", "level_1", "level_2", "level_3"],
+      "best_for": "Distinguer ce qui est apparent des couches sous-jacentes plus profondes d'un phénomène"
+    },
+    {
+      "id": "bridge_problem_solution",
+      "name": "Pont problème vers solution",
+      "category": "Visual Metaphors",
+      "description": "Deux falaises problème et solution reliées par un pont avec leviers de transition en dessous",
+      "file": "bridge_problem_solution.svg",
+      "slots": ["title", "problem_label", "problem_item_1", "problem_item_2", "bridge_step_1", "bridge_step_2", "solution_label", "solution_item_1", "solution_item_2"],
+      "best_for": "Illustrer le passage d'une situation problématique à une situation cible via des leviers d'action"
+    },
+    {
+      "id": "stacked_bar",
+      "name": "Barre empilée",
+      "category": "Parts of a Whole",
+      "description": "Barre horizontale empilée à 4 segments paramétrables avec pourcentages et légende verticale",
+      "file": "stacked_bar.svg",
+      "slots": ["title", "segment_1_label", "segment_1_percent", "segment_2_label", "segment_2_percent", "segment_3_label", "segment_3_percent", "segment_4_label", "segment_4_percent"],
+      "best_for": "Comparer la part relative de quatre catégories formant un tout"
     }
   ]
 }

@@ -59,6 +59,56 @@ function fillSlots(svg: SVGElement, slots: Record<string, string>) {
   if (svg.getAttribute("data-template") === "donut_4_parts") {
     applyDonutPercentages(svg, slots);
   }
+  // Post-processing spécifique au stacked bar : recalcul des largeurs/positions des segments + labels.
+  if (svg.getAttribute("data-template") === "stacked_bar") {
+    applyStackedBarPercentages(svg, slots);
+  }
+}
+
+// Helper commun : parse "42", "42%", "42,5" → number ; valeur invalide → fallback.
+function parsePctValue(raw: string | undefined, fallback = 25): number {
+  if (!raw) return fallback;
+  const n = parseFloat(String(raw).replace("%", "").replace(",", "."));
+  return Number.isFinite(n) && n >= 0 ? n : fallback;
+}
+
+// Stacked bar (largeur 510 à x=40, h=120 à y=240).
+// Segments paramétrés via segment_N_percent ; labels repositionnés au centre.
+function applyStackedBarPercentages(svg: SVGElement, slots: Record<string, string>) {
+  const X0 = 40;
+  const TOTAL_W = 510;
+  const Y = 240;
+  const H = 120;
+
+  const pcts = [1, 2, 3, 4].map((i) => parsePctValue(slots[`segment_${i}_percent`]));
+  const sum = pcts.reduce((a, b) => a + b, 0) || 1;
+  const norm = pcts.map((p) => (p / sum) * 100);
+
+  let cursor = X0;
+  norm.forEach((pct, idx) => {
+    const w = (pct / 100) * TOTAL_W;
+    const seg = svg.querySelector(`[data-slot="seg_${idx + 1}"]`) as SVGRectElement | null;
+    if (seg) {
+      seg.setAttribute("x", String(cursor));
+      seg.setAttribute("y", String(Y));
+      seg.setAttribute("width", String(w));
+      seg.setAttribute("height", String(H));
+    }
+
+    const labelFO = svg.querySelector(
+      `foreignObject[data-slot-pos="segment_${idx + 1}_percent"]`
+    ) as SVGForeignObjectElement | null;
+    if (labelFO) {
+      const lw = parseFloat(labelFO.getAttribute("width") || "82");
+      const lh = parseFloat(labelFO.getAttribute("height") || "32");
+      labelFO.setAttribute("x", String(cursor + w / 2 - lw / 2));
+      labelFO.setAttribute("y", String(Y + H / 2 - lh / 2));
+      // Cache si segment trop étroit pour le label.
+      labelFO.setAttribute("opacity", w < lw * 0.55 ? "0" : "1");
+    }
+
+    cursor += w;
+  });
 }
 
 // Calcule les stroke-dasharray/offset des 4 arcs du donut à partir
