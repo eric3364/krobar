@@ -417,12 +417,16 @@ Renvoie EXACTEMENT 3 suggestions, classées par score décroissant. Remplis tous
               Texte → Visuel SVG
             </span>
           </div>
-          <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
-            <DialogTrigger asChild>
-              <Button variant="outline" size="sm">
-                <Settings className="w-4 h-4 mr-2" /> Paramètres
-              </Button>
-            </DialogTrigger>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" onClick={() => setTestSuiteOpen(true)}>
+              <FlaskConical className="w-4 h-4 mr-2" /> Lancer la suite de tests
+            </Button>
+            <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
+              <DialogTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <Settings className="w-4 h-4 mr-2" /> Paramètres
+                </Button>
+              </DialogTrigger>
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Clé API Claude</DialogTitle>
