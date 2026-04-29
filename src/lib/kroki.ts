@@ -1,4 +1,5 @@
 import { palettes, type Palette } from "@/palettes";
+import { analyzeText, renderTemplate } from "@/lib/api";
 
 export type ManifestTemplate = {
   id: string;
@@ -18,8 +19,6 @@ export type Suggestion = {
   reasoning: string;
   slots: Record<string, string>;
 };
-
-export const API_KEY_STORAGE = "kroki_claude_api_key";
 
 // Re-export pour compatibilité — la source unique est /src/lib/format.ts
 export { formatScore, formatScorePct, normalizeScore } from "./format";
@@ -119,10 +118,32 @@ export function fillSlots(svg: SVGElement, slots: Record<string, string>) {
   }
 }
 
-export async function loadSvg(file: string): Promise<SVGElement> {
-  const res = await fetch(`/templates/${file}`);
-  const txt = await res.text();
-  const doc = new DOMParser().parseFromString(txt, "image/svg+xml");
+/**
+ * Charge le SVG d'un template via le backend (POST /api/render).
+ * Le backend renvoie le SVG brut, dans lequel on appliquera ensuite
+ * la palette (CSS variables) et le post-processing donut/stacked_bar.
+ *
+ * `slots` et `palette` sont transmis pour respecter le contrat backend ;
+ * le rendu effectif (substitution texte, palette, post-processing) reste
+ * fait côté client pour préserver le cycle de palette et l'export.
+ */
+export async function loadSvgFromBackend(
+  templateId: string,
+  slots: Record<string, string>,
+  palette: Palette,
+): Promise<SVGElement> {
+  const paletteRecord = {
+    primary: palette.primary,
+    accent: palette.accent,
+    bg: palette.bg,
+    text: palette.text,
+  };
+  const data = await renderTemplate(templateId, slots, paletteRecord);
+  const txt: string = data.svg ?? data.content ?? data;
+  const doc = new DOMParser().parseFromString(
+    typeof txt === "string" ? txt : String(txt),
+    "image/svg+xml",
+  );
   return doc.documentElement as unknown as SVGElement;
 }
 
@@ -130,79 +151,21 @@ export function svgToString(svg: SVGElement): string {
   return new XMLSerializer().serializeToString(svg);
 }
 
-export function buildSystemPrompt(manifest: Manifest, text: string) {
-  const compactIndex = manifest.templates.map((t) => ({
-    id: t.id,
-    category: t.category,
-    best_for: t.best_for,
-    slot_count: t.slots.length,
-    slots: t.slots,
-  }));
-  return `Tu es un assistant qui sélectionne des templates SVG pour visualiser du texte.
-
-BIBLIOTHÈQUE (index compact) :
-${JSON.stringify(compactIndex)}
-
-TEXTE DE L'UTILISATEUR :
-${text}
-
-MÉTHODE — suis ces étapes mentalement AVANT de répondre (ne les écris pas) :
-1. Identifie la STRUCTURE dominante du texte parmi : séquentielle, comparative, hiérarchique, causale, temporelle, partitive, analytique (cadre business), métaphorique, mentale.
-2. Choisis les 3 templates dont la "category" et le "best_for" correspondent LE MIEUX.
-3. Classe-les par score décroissant.
-
-CONTRAINTE STRICTE sur chaque valeur de slot :
-- MAXIMUM 5 mots ET 35 caractères.
-- Privilégie les formulations NOMINALES courtes.
-
-FORMAT DE RÉPONSE — UNIQUEMENT un JSON strict :
-{
-  "suggestions": [
-    { "template_id": "...", "score": 0.0, "reasoning": "...", "slots": { "title": "...", "...": "..." } }
-  ]
-}
-
-CONTRAINTE STRICTE sur le score :
-- Le score doit être un nombre décimal entre 0.0 et 1.0 (exemple : 0.95 pour 95% de pertinence).
-- N'utilise JAMAIS un nombre supérieur à 1.
-
-Renvoie EXACTEMENT 3 suggestions, classées par score décroissant. Remplis tous les slots listés.`;
-}
-
-export async function callClaude(
-  apiKey: string,
-  manifest: Manifest,
-  text: string
+/**
+ * Appelle le backend FastAPI pour analyser le texte.
+ * Le backend gère le prompt système et la communication avec Claude.
+ */
+export async function callBackend(
+  text: string,
 ): Promise<{ suggestions: Suggestion[]; latencyMs: number }> {
-  const prompt = buildSystemPrompt(manifest, text);
   const t0 = performance.now();
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": apiKey,
-      "anthropic-version": "2023-06-01",
-      "anthropic-dangerous-direct-browser-access": "true",
-    },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 2000,
-      messages: [{ role: "user", content: prompt }],
-    }),
-  });
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(`API ${res.status}: ${err}`);
-  }
-  const data = await res.json();
-  const raw: string = data.content?.[0]?.text ?? "";
-  const cleaned = raw.replace(/```json\s*|\s*```/g, "").trim();
-  const parsed = JSON.parse(cleaned);
-  const rawSuggestions: Suggestion[] = parsed.suggestions ?? [];
+  const data = await analyzeText(text);
+  const rawSuggestions: Suggestion[] = data.suggestions ?? [];
   if (rawSuggestions.length === 0) throw new Error("Aucune suggestion");
-  // Normalisation à réception : score forcé en décimal 0-1.
   const suggestions = rawSuggestions.map((s) => ({ ...s, score: normalizeScore(s.score) }));
-  return { suggestions, latencyMs: Math.round(performance.now() - t0) };
+  const latencyMs =
+    typeof data.latency_ms === "number" ? data.latency_ms : Math.round(performance.now() - t0);
+  return { suggestions, latencyMs };
 }
 
 // Quality checks for the test suite.
@@ -217,7 +180,6 @@ export function checkSlotsLength(slots: Record<string, string>): {
 }
 
 export function checkPaletteApplied(svg: SVGElement, palette: Palette): boolean {
-  // Vérifie que les CSS variables sont définies sur la racine du SVG.
   const p = svg.style.getPropertyValue("--primary").trim();
   const a = svg.style.getPropertyValue("--accent").trim();
   return p === palette.primary && a === palette.accent;
