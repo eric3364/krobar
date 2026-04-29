@@ -2,21 +2,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { palettes, paletteLabels, type Palette } from "@/palettes";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Loader2, Download, Sparkles, Settings, RefreshCw, FlaskConical } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogDescription,
-} from "@/components/ui/dialog";
+import { Loader2, Download, Sparkles, RefreshCw, FlaskConical } from "lucide-react";
 import TestSuiteView from "@/components/TestSuiteView";
 import { formatScorePct, normalizeScore } from "@/lib/kroki";
+import { analyzeText, renderTemplate } from "@/lib/api";
 
 type ManifestTemplate = {
   id: string;
@@ -37,7 +29,7 @@ type Suggestion = {
   slots: Record<string, string>;
 };
 
-const API_KEY_STORAGE = "kroki_claude_api_key";
+// Plus de clé API côté client : la communication avec Claude passe par le backend.
 
 function applyPaletteVars(el: SVGElement, palette: Palette) {
   el.style.setProperty("--primary", palette.primary);
@@ -161,10 +153,23 @@ function applyDonutPercentages(svg: SVGElement, slots: Record<string, string>) {
   });
 }
 
-async function loadSvg(file: string): Promise<SVGElement> {
-  const res = await fetch(`/templates/${file}`);
-  const txt = await res.text();
-  const doc = new DOMParser().parseFromString(txt, "image/svg+xml");
+async function loadSvg(
+  templateId: string,
+  slots: Record<string, string>,
+  palette: Palette,
+): Promise<SVGElement> {
+  const paletteRecord = {
+    primary: palette.primary,
+    accent: palette.accent,
+    bg: palette.bg,
+    text: palette.text,
+  };
+  const data = await renderTemplate(templateId, slots, paletteRecord);
+  const txt: string = data.svg ?? data.content ?? data;
+  const doc = new DOMParser().parseFromString(
+    typeof txt === "string" ? txt : String(txt),
+    "image/svg+xml",
+  );
   return doc.documentElement as unknown as SVGElement;
 }
 
@@ -188,8 +193,6 @@ const Index = () => {
   const [loading, setLoading] = useState(false);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
-  const [apiKey, setApiKey] = useState<string>("");
-  const [settingsOpen, setSettingsOpen] = useState(false);
   const [testSuiteOpen, setTestSuiteOpen] = useState(false);
 
   const previewRef = useRef<HTMLDivElement>(null);
@@ -199,8 +202,6 @@ const Index = () => {
     fetch("/templates/manifest.json")
       .then((r) => r.json())
       .then(setManifest);
-    const k = localStorage.getItem(API_KEY_STORAGE);
-    if (k) setApiKey(k);
   }, []);
 
   const palette = palettes[paletteKey];
@@ -221,7 +222,7 @@ const Index = () => {
       const tpl = manifest.templates.find((t) => t.id === sug.template_id);
       const node = thumbRefs.current[i];
       if (!tpl || !node) return;
-      const svg = await loadSvg(tpl.file);
+      const svg = await loadSvg(tpl.id, sug.slots, palette);
       applyPaletteVars(svg, palette);
       fillSlots(svg, sug.slots);
       svg.setAttribute("width", "100%");
@@ -235,7 +236,7 @@ const Index = () => {
   useEffect(() => {
     if (!selectedSuggestion || !selectedTemplate || !previewRef.current) return;
     (async () => {
-      const svg = await loadSvg(selectedTemplate.file);
+      const svg = await loadSvg(selectedTemplate.id, selectedSuggestion.slots, palette);
       applyPaletteVars(svg, palette);
       fillSlots(svg, selectedSuggestion.slots);
       svg.setAttribute("width", "100%");
@@ -245,99 +246,20 @@ const Index = () => {
     })();
   }, [selectedSuggestion, selectedTemplate, palette]);
 
-  const saveApiKey = (v: string) => {
-    setApiKey(v);
-    localStorage.setItem(API_KEY_STORAGE, v);
-  };
-
   const analyze = async () => {
     if (!text.trim()) {
       toast.error("Collez d'abord un texte à analyser.");
       return;
     }
     if (!manifest) return;
-    if (!apiKey) {
-      toast.error("Ajoutez votre clé API Claude dans les paramètres.");
-      setSettingsOpen(true);
-      return;
-    }
 
     setLoading(true);
     setSuggestions([]);
     setSelectedIdx(null);
 
-    // Index compact : on n'envoie pas le manifest entier (lourd avec 20 templates),
-    // juste l'essentiel pour la sélection. Le manifest complet sert au remplissage.
-    const compactIndex = manifest.templates.map((t) => ({
-      id: t.id,
-      category: t.category,
-      best_for: t.best_for,
-      slot_count: t.slots.length,
-      slots: t.slots,
-    }));
-
-    const systemPrompt = `Tu es un assistant qui sélectionne des templates SVG pour visualiser du texte.
-
-BIBLIOTHÈQUE (index compact) :
-${JSON.stringify(compactIndex)}
-
-TEXTE DE L'UTILISATEUR :
-${text}
-
-MÉTHODE — suis ces étapes mentalement AVANT de répondre (ne les écris pas) :
-1. Identifie la STRUCTURE dominante du texte parmi : séquentielle (process, étapes), comparative (options, alternatives), hiérarchique (niveaux, organigramme), causale (causes/effet, problème/solution), temporelle (dates, jalons, roadmap), partitive (répartition, parts d'un tout), analytique (cadre business : SWOT, BCG, Porter, BMC), métaphorique (iceberg, pont), mentale (idée centrale + ramifications).
-2. Choisis les 3 templates dont la "category" et le "best_for" correspondent LE MIEUX à cette structure.
-3. Classe-les par score décroissant (le plus pertinent en premier).
-
-CONTRAINTE STRICTE sur chaque valeur de slot — sans exception :
-- MAXIMUM 5 mots ET 35 caractères.
-- Privilégie les formulations NOMINALES courtes (groupes nominaux, pas de phrases, pas de verbes conjugués si évitable).
-- Exemple BON : "Analyse des besoins".
-- Exemple MAUVAIS : "On analyse d'abord les besoins pédagogiques".
-
-FORMAT DE RÉPONSE — renvoie UNIQUEMENT un JSON strict (sans markdown, sans préambule, sans commentaire) :
-{
-  "suggestions": [
-    {
-      "template_id": "...",
-      "score": 0.0,
-      "reasoning": "1 phrase expliquant la pertinence",
-      "slots": { "title": "...", "...": "..." }
-    }
-  ]
-}
-
-CONTRAINTE STRICTE sur le score :
-- Le score doit être un nombre décimal entre 0.0 et 1.0 (exemple : 0.95 pour 95% de pertinence).
-- N'utilise JAMAIS un nombre supérieur à 1.
-
-Renvoie EXACTEMENT 3 suggestions, classées par score décroissant. Remplis tous les slots listés pour chaque template choisi avec du contenu synthétique tiré du texte fourni.`;
-
     try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": apiKey,
-          "anthropic-version": "2023-06-01",
-          "anthropic-dangerous-direct-browser-access": "true",
-        },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 2000,
-          messages: [{ role: "user", content: systemPrompt }],
-        }),
-      });
-
-      if (!res.ok) {
-        const err = await res.text();
-        throw new Error(`API ${res.status}: ${err}`);
-      }
-      const data = await res.json();
-      const raw: string = data.content?.[0]?.text ?? "";
-      const cleaned = raw.replace(/```json\s*|\s*```/g, "").trim();
-      const parsed = JSON.parse(cleaned);
-      const rawSug: Suggestion[] = parsed.suggestions ?? [];
+      const data = await analyzeText(text);
+      const rawSug: Suggestion[] = data.suggestions ?? [];
       if (rawSug.length === 0) throw new Error("Aucune suggestion");
       // Normalisation à réception : score décimal 0-1 garanti dans l'état.
       const sug = rawSug.map((s) => ({ ...s, score: normalizeScore(s.score) }));
@@ -346,7 +268,8 @@ Renvoie EXACTEMENT 3 suggestions, classées par score décroissant. Remplis tous
       toast.success(`${sug.length} suggestions générées`);
     } catch (e) {
       console.error(e);
-      toast.error("Échec de l'analyse. Vérifiez la clé API et réessayez.");
+      const msg = e instanceof Error ? e.message : "Échec de l'analyse.";
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -408,7 +331,6 @@ Renvoie EXACTEMENT 3 suggestions, classées par score décroissant. Remplis tous
     return (
       <TestSuiteView
         manifest={manifest}
-        apiKey={apiKey}
         onBack={() => setTestSuiteOpen(false)}
       />
     );
@@ -428,31 +350,6 @@ Renvoie EXACTEMENT 3 suggestions, classées par score décroissant. Remplis tous
             <Button variant="outline" size="sm" onClick={() => setTestSuiteOpen(true)}>
               <FlaskConical className="w-4 h-4 mr-2" /> Lancer la suite de tests
             </Button>
-            <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
-              <DialogTrigger asChild>
-                <Button variant="outline" size="sm">
-                  <Settings className="w-4 h-4 mr-2" /> Paramètres
-                </Button>
-              </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Clé API Claude</DialogTitle>
-                <DialogDescription>
-                  Stockée localement (localStorage). Phase prototype uniquement.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="space-y-2">
-                <Label htmlFor="key">Clé API</Label>
-                <Input
-                  id="key"
-                  type="password"
-                  placeholder="sk-ant-..."
-                  value={apiKey}
-                  onChange={(e) => saveApiKey(e.target.value)}
-                />
-              </div>
-            </DialogContent>
-          </Dialog>
           </div>
         </div>
       </header>
