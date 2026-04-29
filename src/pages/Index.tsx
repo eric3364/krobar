@@ -533,7 +533,7 @@ Renvoie EXACTEMENT 3 suggestions, classées par score décroissant. Remplis tous
                         {tpl?.name ?? sug.template_id}
                       </span>
                       <span className="text-xs font-mono px-2 py-0.5 rounded bg-foreground text-background">
-                        {Math.round(sug.score * 100)}%
+                        {formatScorePct(sug.score)}%
                       </span>
                     </div>
                     <div
