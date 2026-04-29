@@ -189,6 +189,7 @@ const Index = () => {
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
   const [apiKey, setApiKey] = useState<string>("");
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [testSuiteOpen, setTestSuiteOpen] = useState(false);
 
   const previewRef = useRef<HTMLDivElement>(null);
   const thumbRefs = useRef<(HTMLDivElement | null)[]>([]);
