@@ -397,6 +397,16 @@ Renvoie EXACTEMENT 3 suggestions, classées par score décroissant. Remplis tous
     setPaletteKey(keys[(idx + 1) % keys.length] as keyof typeof palettes);
   };
 
+  if (testSuiteOpen && manifest) {
+    return (
+      <TestSuiteView
+        manifest={manifest}
+        apiKey={apiKey}
+        onBack={() => setTestSuiteOpen(false)}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="border-b bg-card">
