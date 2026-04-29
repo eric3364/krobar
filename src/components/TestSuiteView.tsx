@@ -511,7 +511,7 @@ function TestCard({ test, result, note, onReplay, onZoom, onShowFullText, onAnno
             <span className="font-mono">{result.actualTemplate}</span>
             {result.suggestions[0] && (
               <span className="font-mono text-muted-foreground">
-                {Math.round(result.suggestions[0].score * 100)}%
+                {formatScorePct(result.suggestions[0].score)}%
               </span>
             )}
           </div>
@@ -519,7 +519,7 @@ function TestCard({ test, result, note, onReplay, onZoom, onShowFullText, onAnno
           <div className="text-[10px] text-muted-foreground">
             Top 3 :{" "}
             {result.suggestions
-              .map((s) => `${s.template_id} (${Math.round(s.score * 100)}%)`)
+              .map((s) => `${s.template_id} (${formatScorePct(s.score)}%)`)
               .join(" · ")}
           </div>
         </div>
