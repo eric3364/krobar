@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <filter id="soft-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="0" dy="2" result="off"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.18"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="800" height="600" fill="var(--bg)"/>
+
+  <foreignObject x="20" y="20" width="760" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="title" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:clamp(18px,3.2cqw,28px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Titre de comparaison</div>
+  </foreignObject>
+
+  <!-- Columns: x = 30, 280, 530; width 240; height 470 -->
+  <!-- Col 1 -->
+  <g filter="url(#soft-shadow)">
+    <rect x="30" y="100" width="240" height="470" rx="12" fill="var(--primary)" opacity="0.08" stroke="var(--primary)" stroke-width="2"/>
+  </g>
+  <rect x="30" y="100" width="240" height="60" rx="12" fill="var(--primary)"/>
+  <foreignObject x="30" y="100" width="240" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="col_1_label" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:clamp(13px,2.2cqw,18px);color:var(--bg);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Option A</div>
+  </foreignObject>
+  <foreignObject x="40" y="180" width="220" height="120">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="col_1_item_1" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.6cqw,15px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Élément 1</div>
+  </foreignObject>
+  <foreignObject x="40" y="310" width="220" height="120">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="col_1_item_2" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.6cqw,15px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Élément 2</div>
+  </foreignObject>
+  <foreignObject x="40" y="440" width="220" height="120">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="col_1_item_3" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.6cqw,15px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Élément 3</div>
+  </foreignObject>
+
+  <!-- Col 2 (middle, highlighted with accent border) -->
+  <g filter="url(#soft-shadow)">
+    <rect x="280" y="100" width="240" height="470" rx="12" fill="var(--accent)" opacity="0.10" stroke="var(--accent)" stroke-width="4"/>
+  </g>
+  <rect x="280" y="100" width="240" height="60" rx="12" fill="var(--accent)"/>
+  <foreignObject x="280" y="100" width="240" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="col_2_label" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:clamp(13px,2.2cqw,18px);color:var(--bg);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Option B</div>
+  </foreignObject>
+  <foreignObject x="290" y="180" width="220" height="120">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="col_2_item_1" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.6cqw,15px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Élément 1</div>
+  </foreignObject>
+  <foreignObject x="290" y="310" width="220" height="120">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="col_2_item_2" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.6cqw,15px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Élément 2</div>
+  </foreignObject>
+  <foreignObject x="290" y="440" width="220" height="120">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="col_2_item_3" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.6cqw,15px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Élément 3</div>
+  </foreignObject>
+
+  <!-- Col 3 -->
+  <g filter="url(#soft-shadow)">
+    <rect x="530" y="100" width="240" height="470" rx="12" fill="var(--primary)" opacity="0.08" stroke="var(--primary)" stroke-width="2"/>
+  </g>
+  <rect x="530" y="100" width="240" height="60" rx="12" fill="var(--primary)"/>
+  <foreignObject x="530" y="100" width="240" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="col_3_label" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:clamp(13px,2.2cqw,18px);color:var(--bg);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Option C</div>
+  </foreignObject>
+  <foreignObject x="540" y="180" width="220" height="120">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="col_3_item_1" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.6cqw,15px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Élément 1</div>
+  </foreignObject>
+  <foreignObject x="540" y="310" width="220" height="120">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="col_3_item_2" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.6cqw,15px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Élément 2</div>
+  </foreignObject>
+  <foreignObject x="540" y="440" width="220" height="120">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="col_3_item_3" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.6cqw,15px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Élément 3</div>
+  </foreignObject>
+</svg>
