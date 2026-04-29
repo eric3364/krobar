@@ -193,8 +193,6 @@ const Index = () => {
   const [loading, setLoading] = useState(false);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
-  const [apiKey, setApiKey] = useState<string>("");
-  const [settingsOpen, setSettingsOpen] = useState(false);
   const [testSuiteOpen, setTestSuiteOpen] = useState(false);
 
   const previewRef = useRef<HTMLDivElement>(null);
@@ -204,8 +202,6 @@ const Index = () => {
     fetch("/templates/manifest.json")
       .then((r) => r.json())
       .then(setManifest);
-    const k = localStorage.getItem(API_KEY_STORAGE);
-    if (k) setApiKey(k);
   }, []);
 
   const palette = palettes[paletteKey];
@@ -226,7 +222,7 @@ const Index = () => {
       const tpl = manifest.templates.find((t) => t.id === sug.template_id);
       const node = thumbRefs.current[i];
       if (!tpl || !node) return;
-      const svg = await loadSvg(tpl.file);
+      const svg = await loadSvg(tpl.id, sug.slots, palette);
       applyPaletteVars(svg, palette);
       fillSlots(svg, sug.slots);
       svg.setAttribute("width", "100%");
@@ -240,7 +236,7 @@ const Index = () => {
   useEffect(() => {
     if (!selectedSuggestion || !selectedTemplate || !previewRef.current) return;
     (async () => {
-      const svg = await loadSvg(selectedTemplate.file);
+      const svg = await loadSvg(selectedTemplate.id, selectedSuggestion.slots, palette);
       applyPaletteVars(svg, palette);
       fillSlots(svg, selectedSuggestion.slots);
       svg.setAttribute("width", "100%");
