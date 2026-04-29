@@ -22,7 +22,8 @@ export type Suggestion = {
 export const API_KEY_STORAGE = "kroki_claude_api_key";
 
 // Re-export pour compatibilité — la source unique est /src/lib/format.ts
-export { formatScore, formatScorePct } from "./format";
+export { formatScore, formatScorePct, normalizeScore } from "./format";
+import { normalizeScore } from "./format";
 
 export function applyPaletteVars(el: SVGElement, palette: Palette) {
   el.style.setProperty("--primary", palette.primary);
@@ -161,6 +162,10 @@ FORMAT DE RÉPONSE — UNIQUEMENT un JSON strict :
   ]
 }
 
+CONTRAINTE STRICTE sur le score :
+- Le score doit être un nombre décimal entre 0.0 et 1.0 (exemple : 0.95 pour 95% de pertinence).
+- N'utilise JAMAIS un nombre supérieur à 1.
+
 Renvoie EXACTEMENT 3 suggestions, classées par score décroissant. Remplis tous les slots listés.`;
 }
 
@@ -193,8 +198,10 @@ export async function callClaude(
   const raw: string = data.content?.[0]?.text ?? "";
   const cleaned = raw.replace(/```json\s*|\s*```/g, "").trim();
   const parsed = JSON.parse(cleaned);
-  const suggestions: Suggestion[] = parsed.suggestions ?? [];
-  if (suggestions.length === 0) throw new Error("Aucune suggestion");
+  const rawSuggestions: Suggestion[] = parsed.suggestions ?? [];
+  if (rawSuggestions.length === 0) throw new Error("Aucune suggestion");
+  // Normalisation à réception : score forcé en décimal 0-1.
+  const suggestions = rawSuggestions.map((s) => ({ ...s, score: normalizeScore(s.score) }));
   return { suggestions, latencyMs: Math.round(performance.now() - t0) };
 }
 
