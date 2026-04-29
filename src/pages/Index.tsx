@@ -46,8 +46,13 @@ function applyPaletteVars(el: SVGElement, palette: Palette) {
 
 function fillSlots(svg: SVGElement, slots: Record<string, string>) {
   Object.entries(slots).forEach(([k, v]) => {
-    const el = svg.querySelector(`[data-slot="${k}"]`);
-    if (el) el.textContent = v;
+    const el = svg.querySelector(`[data-slot="${k}"]`) as HTMLElement | SVGElement | null;
+    if (!el) return;
+    el.textContent = v;
+    // Fallback : si malgré la contrainte le slot dépasse 35 caractères, réduire la police.
+    if (v && v.length > 35 && el instanceof HTMLElement) {
+      el.style.fontSize = "11px";
+    }
   });
 }
 
@@ -168,7 +173,14 @@ const Index = () => {
     }
   ]
 }
-Propose 2 à 3 templates classés par pertinence. Remplis les slots avec du texte synthétique tiré du texte fourni (max 8 mots par slot).`;
+Propose 2 à 3 templates classés par pertinence. Remplis les slots avec du texte synthétique tiré du texte fourni.
+
+CONTRAINTE STRICTE sur chaque valeur de slot :
+- Maximum 5 mots ET 35 caractères.
+- Utilise des formulations courtes et nominales (pas de phrases complètes, pas de verbes conjugués si évitable).
+- Exemple BON : "Analyse des besoins".
+- Exemple MAUVAIS : "On analyse d'abord les besoins pédagogiques".
+Respecte cette contrainte pour TOUS les slots, sans exception.`;
 
     try {
       const res = await fetch("https://api.anthropic.com/v1/messages", {
