@@ -263,27 +263,48 @@ const Index = () => {
     setSuggestions([]);
     setSelectedIdx(null);
 
-    const systemPrompt = `Tu es un assistant qui sélectionne des templates SVG pour visualiser du texte. Voici la bibliothèque disponible : ${JSON.stringify(
-      manifest
-    )}. L'utilisateur a fourni ce texte : ${text}. Renvoie un JSON strict (sans markdown, sans préambule) avec cette structure :
+    // Index compact : on n'envoie pas le manifest entier (lourd avec 20 templates),
+    // juste l'essentiel pour la sélection. Le manifest complet sert au remplissage.
+    const compactIndex = manifest.templates.map((t) => ({
+      id: t.id,
+      category: t.category,
+      best_for: t.best_for,
+      slot_count: t.slots.length,
+      slots: t.slots,
+    }));
+
+    const systemPrompt = `Tu es un assistant qui sélectionne des templates SVG pour visualiser du texte.
+
+BIBLIOTHÈQUE (index compact) :
+${JSON.stringify(compactIndex)}
+
+TEXTE DE L'UTILISATEUR :
+${text}
+
+MÉTHODE — suis ces étapes mentalement AVANT de répondre (ne les écris pas) :
+1. Identifie la STRUCTURE dominante du texte parmi : séquentielle (process, étapes), comparative (options, alternatives), hiérarchique (niveaux, organigramme), causale (causes/effet, problème/solution), temporelle (dates, jalons, roadmap), partitive (répartition, parts d'un tout), analytique (cadre business : SWOT, BCG, Porter, BMC), métaphorique (iceberg, pont), mentale (idée centrale + ramifications).
+2. Choisis les 3 templates dont la "category" et le "best_for" correspondent LE MIEUX à cette structure.
+3. Classe-les par score décroissant (le plus pertinent en premier).
+
+CONTRAINTE STRICTE sur chaque valeur de slot — sans exception :
+- MAXIMUM 5 mots ET 35 caractères.
+- Privilégie les formulations NOMINALES courtes (groupes nominaux, pas de phrases, pas de verbes conjugués si évitable).
+- Exemple BON : "Analyse des besoins".
+- Exemple MAUVAIS : "On analyse d'abord les besoins pédagogiques".
+
+FORMAT DE RÉPONSE — renvoie UNIQUEMENT un JSON strict (sans markdown, sans préambule, sans commentaire) :
 {
   "suggestions": [
     {
       "template_id": "...",
-      "score": 0.0 à 1.0,
-      "reasoning": "explication courte",
-      "slots": { "title": "...", "step_1_label": "...", ... }
+      "score": 0.0,
+      "reasoning": "1 phrase expliquant la pertinence",
+      "slots": { "title": "...", "...": "..." }
     }
   ]
 }
-Propose 2 à 3 templates classés par pertinence. Remplis les slots avec du texte synthétique tiré du texte fourni.
 
-CONTRAINTE STRICTE sur chaque valeur de slot :
-- Maximum 5 mots ET 35 caractères.
-- Utilise des formulations courtes et nominales (pas de phrases complètes, pas de verbes conjugués si évitable).
-- Exemple BON : "Analyse des besoins".
-- Exemple MAUVAIS : "On analyse d'abord les besoins pédagogiques".
-Respecte cette contrainte pour TOUS les slots, sans exception.`;
+Renvoie EXACTEMENT 3 suggestions, classées par score décroissant. Remplis tous les slots listés pour chaque template choisi avec du contenu synthétique tiré du texte fourni.`;
 
     try {
       const res = await fetch("https://api.anthropic.com/v1/messages", {
