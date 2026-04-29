@@ -22,3 +22,18 @@ export function formatScore(score: number | null | undefined): number {
 export function formatScorePct(score: number | null | undefined): string {
   return `${formatScore(score)}%`;
 }
+
+/**
+ * Normalise un score à RÉCEPTION (depuis l'API Claude) en décimal 0-1.
+ * À utiliser AVANT de stocker dans l'état React.
+ * - Si Claude renvoie déjà un décimal (≤ 1), on le garde tel quel.
+ * - Si Claude renvoie un pourcentage (> 1, ex: 95), on divise par 100.
+ * - Clamp final à [0, 1].
+ */
+export function normalizeScore(score: unknown): number {
+  const n = typeof score === "number" ? score : parseFloat(String(score));
+  if (!Number.isFinite(n) || n < 0) return 0;
+  const dec = n <= 1 ? n : n / 100;
+  return Math.max(0, Math.min(1, dec));
+}
+

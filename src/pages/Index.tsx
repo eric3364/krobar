@@ -16,7 +16,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import TestSuiteView from "@/components/TestSuiteView";
-import { formatScorePct } from "@/lib/kroki";
+import { formatScorePct, normalizeScore } from "@/lib/kroki";
 
 type ManifestTemplate = {
   id: string;
@@ -307,6 +307,10 @@ FORMAT DE RÉPONSE — renvoie UNIQUEMENT un JSON strict (sans markdown, sans pr
   ]
 }
 
+CONTRAINTE STRICTE sur le score :
+- Le score doit être un nombre décimal entre 0.0 et 1.0 (exemple : 0.95 pour 95% de pertinence).
+- N'utilise JAMAIS un nombre supérieur à 1.
+
 Renvoie EXACTEMENT 3 suggestions, classées par score décroissant. Remplis tous les slots listés pour chaque template choisi avec du contenu synthétique tiré du texte fourni.`;
 
     try {
@@ -333,8 +337,10 @@ Renvoie EXACTEMENT 3 suggestions, classées par score décroissant. Remplis tous
       const raw: string = data.content?.[0]?.text ?? "";
       const cleaned = raw.replace(/```json\s*|\s*```/g, "").trim();
       const parsed = JSON.parse(cleaned);
-      const sug: Suggestion[] = parsed.suggestions ?? [];
-      if (sug.length === 0) throw new Error("Aucune suggestion");
+      const rawSug: Suggestion[] = parsed.suggestions ?? [];
+      if (rawSug.length === 0) throw new Error("Aucune suggestion");
+      // Normalisation à réception : score décimal 0-1 garanti dans l'état.
+      const sug = rawSug.map((s) => ({ ...s, score: normalizeScore(s.score) }));
       setSuggestions(sug);
       setSelectedIdx(0);
       toast.success(`${sug.length} suggestions générées`);
