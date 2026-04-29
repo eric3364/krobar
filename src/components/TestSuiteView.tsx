@@ -20,6 +20,7 @@ import {
   checkPaletteApplied,
   checkSlotsLength,
   fillSlots,
+  formatScorePct,
   loadSvg,
   svgToString,
   type Manifest,
