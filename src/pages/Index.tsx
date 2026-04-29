@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { Loader2, Download, Sparkles, RefreshCw, FlaskConical } from "lucide-react";
 import TestSuiteView from "@/components/TestSuiteView";
 import { formatScorePct, normalizeScore } from "@/lib/kroki";
-import { analyzeText, renderTemplate } from "@/lib/api";
+import { analyzeText } from "@/lib/api";
 
 type ManifestTemplate = {
   id: string;
@@ -153,23 +153,11 @@ function applyDonutPercentages(svg: SVGElement, slots: Record<string, string>) {
   });
 }
 
-async function loadSvg(
-  templateId: string,
-  slots: Record<string, string>,
-  palette: Palette,
-): Promise<SVGElement> {
-  const paletteRecord = {
-    primary: palette.primary,
-    accent: palette.accent,
-    bg: palette.bg,
-    text: palette.text,
-  };
-  const data = await renderTemplate(templateId, slots, paletteRecord);
-  const txt: string = data.svg ?? data.content ?? data;
-  const doc = new DOMParser().parseFromString(
-    typeof txt === "string" ? txt : String(txt),
-    "image/svg+xml",
-  );
+// SVG chargé en statique depuis /templates/ (servi par nginx).
+async function loadSvg(file: string): Promise<SVGElement> {
+  const res = await fetch(`/templates/${file}`);
+  const txt = await res.text();
+  const doc = new DOMParser().parseFromString(txt, "image/svg+xml");
   return doc.documentElement as unknown as SVGElement;
 }
 
@@ -222,7 +210,7 @@ const Index = () => {
       const tpl = manifest.templates.find((t) => t.id === sug.template_id);
       const node = thumbRefs.current[i];
       if (!tpl || !node) return;
-      const svg = await loadSvg(tpl.id, sug.slots, palette);
+      const svg = await loadSvg(tpl.file);
       applyPaletteVars(svg, palette);
       fillSlots(svg, sug.slots);
       svg.setAttribute("width", "100%");
@@ -236,7 +224,7 @@ const Index = () => {
   useEffect(() => {
     if (!selectedSuggestion || !selectedTemplate || !previewRef.current) return;
     (async () => {
-      const svg = await loadSvg(selectedTemplate.id, selectedSuggestion.slots, palette);
+      const svg = await loadSvg(selectedTemplate.file);
       applyPaletteVars(svg, palette);
       fillSlots(svg, selectedSuggestion.slots);
       svg.setAttribute("width", "100%");

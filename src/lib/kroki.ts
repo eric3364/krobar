@@ -1,5 +1,5 @@
 import { palettes, type Palette } from "@/palettes";
-import { analyzeText, renderTemplate } from "@/lib/api";
+import { analyzeText } from "@/lib/api";
 
 export type ManifestTemplate = {
   id: string;
@@ -119,31 +119,13 @@ export function fillSlots(svg: SVGElement, slots: Record<string, string>) {
 }
 
 /**
- * Charge le SVG d'un template via le backend (POST /api/render).
- * Le backend renvoie le SVG brut, dans lequel on appliquera ensuite
- * la palette (CSS variables) et le post-processing donut/stacked_bar.
- *
- * `slots` et `palette` sont transmis pour respecter le contrat backend ;
- * le rendu effectif (substitution texte, palette, post-processing) reste
- * fait côté client pour préserver le cycle de palette et l'export.
+ * Charge le SVG d'un template depuis /templates/ (servi en statique par nginx).
+ * Le backend FastAPI ne sert PAS le SVG : il ne fait que la sélection IA.
  */
-export async function loadSvgFromBackend(
-  templateId: string,
-  slots: Record<string, string>,
-  palette: Palette,
-): Promise<SVGElement> {
-  const paletteRecord = {
-    primary: palette.primary,
-    accent: palette.accent,
-    bg: palette.bg,
-    text: palette.text,
-  };
-  const data = await renderTemplate(templateId, slots, paletteRecord);
-  const txt: string = data.svg ?? data.content ?? data;
-  const doc = new DOMParser().parseFromString(
-    typeof txt === "string" ? txt : String(txt),
-    "image/svg+xml",
-  );
+export async function loadSvg(file: string): Promise<SVGElement> {
+  const res = await fetch(`/templates/${file}`);
+  const txt = await res.text();
+  const doc = new DOMParser().parseFromString(txt, "image/svg+xml");
   return doc.documentElement as unknown as SVGElement;
 }
 

@@ -21,7 +21,7 @@ import {
   checkSlotsLength,
   fillSlots,
   formatScorePct,
-  loadSvgFromBackend,
+  loadSvg,
   svgToString,
   type Manifest,
   type Suggestion,
@@ -149,7 +149,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
       let svgString: string | null = null;
       let paletteOk = false;
       if (tpl) {
-        const svg = await loadSvgFromBackend(top.template_id, top.slots, currentPalette);
+        const svg = await loadSvg(tpl.file);
         applyPaletteVars(svg, currentPalette);
         fillSlots(svg, top.slots);
         svg.setAttribute("width", "100%");
