@@ -4,9 +4,9 @@
       "id": "process_3_steps",
       "name": "Process en 3 étapes",
       "category": "Process",
-      "description": "Séquence linéaire de 3 étapes connectées",
+      "description": "Trois cartes éditoriales numérotées avec titre, label et description courte",
       "file": "process_3_steps.svg",
-      "slots": ["title", "step_1_label", "step_2_label", "step_3_label"],
+      "slots": ["title", "category_label", "step_1", "step_1_description", "step_2", "step_2_description", "step_3", "step_3_description"],
       "best_for": "Décrire un processus court avec un début, un milieu et une fin"
     },
     {
