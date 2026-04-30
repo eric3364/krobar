@@ -25,10 +25,14 @@ export { formatScore, formatScorePct, normalizeScore } from "./format";
 import { normalizeScore } from "./format";
 
 export function applyPaletteVars(el: SVGElement, palette: Palette) {
-  el.style.setProperty("--primary", palette.primary);
-  el.style.setProperty("--accent", palette.accent);
-  el.style.setProperty("--bg", palette.bg);
-  el.style.setProperty("--text", palette.text);
+  const c = palette.colors;
+  el.style.setProperty("--primary", c.primary);
+  el.style.setProperty("--accent", c.accent);
+  el.style.setProperty("--bg", c.bg);
+  el.style.setProperty("--text", c.text);
+  el.style.setProperty("--muted", c.muted);
+  el.style.setProperty("--surface", c.surface);
+  el.style.setProperty("--border", c.border);
 }
 
 function parsePctValue(raw: string | undefined, fallback = 25): number {
@@ -164,7 +168,7 @@ export function checkSlotsLength(slots: Record<string, string>): {
 export function checkPaletteApplied(svg: SVGElement, palette: Palette): boolean {
   const p = svg.style.getPropertyValue("--primary").trim();
   const a = svg.style.getPropertyValue("--accent").trim();
-  return p === palette.primary && a === palette.accent;
+  return p === palette.colors.primary && a === palette.colors.accent;
 }
 
 export { palettes };
