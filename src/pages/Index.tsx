@@ -564,7 +564,13 @@ const Index = () => {
     const delta = viewportDeltaToSvgUnits(slotEl, dx, dy);
     const ndx = base.dx + delta.dx;
     const ndy = base.dy + delta.dy;
-    if (sx === 1 && sy === 1) {
+    const isFO = movableEl.tagName.toLowerCase() === "foreignobject";
+    if (isFO) {
+      movableEl.setAttribute("transform", `translate(${ndx} ${ndy})`);
+      if (sx !== 1 || sy !== 1) {
+        applyForeignObjectScale(movableEl as unknown as SVGForeignObjectElement, sx, sy);
+      }
+    } else if (sx === 1 && sy === 1) {
       movableEl.setAttribute("transform", `translate(${ndx} ${ndy})`);
     } else {
       const bb = getLocalBBox(movableEl);
