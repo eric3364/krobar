@@ -175,8 +175,16 @@ export default function MovableSlotOverlay({
           onCancel();
         }}
         aria-label="Désélectionner"
-        className="absolute -top-3 -right-3 w-6 h-6 rounded-full bg-foreground text-background text-xs leading-none flex items-center justify-center shadow"
-        style={{ zIndex: 2 }}
+        className="absolute w-6 h-6 rounded-full bg-foreground text-background text-xs leading-none flex items-center justify-center shadow cursor-pointer"
+        style={{
+          // Place the close button ABOVE the frame, centered horizontally,
+          // so it never overlaps the NE/NW resize handles.
+          top: -32,
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 3,
+          cursor: "pointer",
+        }}
       >
         ×
       </button>
