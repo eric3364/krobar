@@ -984,6 +984,8 @@ const Index = () => {
           rect={selectedRect}
           onDrag={handleDrag}
           onCommit={handleDragCommit}
+          onResize={handleResize}
+          onResizeCommit={handleResizeCommit}
           onEdit={() => openEditorForSlot(selectedSlotKey)}
           onCancel={() => {
             setSelectedSlotKey(null);
