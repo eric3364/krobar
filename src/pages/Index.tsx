@@ -545,6 +545,45 @@ const Index = () => {
         }
       } else if (sx === 1 && sy === 1) {
         el.setAttribute("transform", `translate(${t.dx} ${t.dy})`);
+      } else if (
+        el.tagName.toLowerCase() === "text" &&
+        (el as Element).hasAttribute("data-wrap-max")
+      ) {
+        // Texte SVG avec wrap : on N'utilise PAS scale() (qui déforme les
+        // glyphes). À la place, on ajuste la largeur de wrap (en caractères)
+        // et le nombre de lignes max proportionnellement à sx/sy, puis on
+        // re-wrappe le contenu avec la même police d'origine.
+        const textEl = el as unknown as SVGTextElement;
+        if (!textEl.hasAttribute("data-orig-wrap-max")) {
+          textEl.setAttribute(
+            "data-orig-wrap-max",
+            textEl.getAttribute("data-wrap-max") || "22"
+          );
+          textEl.setAttribute(
+            "data-orig-wrap-lines",
+            textEl.getAttribute("data-wrap-lines") || "3"
+          );
+        }
+        const origMax = parseInt(
+          textEl.getAttribute("data-orig-wrap-max") || "22",
+          10
+        );
+        const origLines = parseInt(
+          textEl.getAttribute("data-orig-wrap-lines") || "3",
+          10
+        );
+        const newMax = Math.max(4, Math.round(origMax * sx));
+        const newLines = Math.max(1, Math.round(origLines * sy));
+        textEl.setAttribute("data-wrap-max", String(newMax));
+        textEl.setAttribute("data-wrap-lines", String(newLines));
+        const wrapX = parseFloat(textEl.getAttribute("data-wrap-x") || "0");
+        const wrapDy = parseFloat(textEl.getAttribute("data-wrap-dy") || "18");
+        const fullText =
+          (effectiveSlots as Record<string, string>)[key] ??
+          textEl.textContent ??
+          "";
+        wrapTextIntoTspans(textEl, fullText, wrapX, newMax, newLines, wrapDy);
+        el.setAttribute("transform", `translate(${t.dx} ${t.dy})`);
       } else {
         const bb = getLocalBBox(el);
         el.setAttribute("transform", buildTransform(t.dx, t.dy, sx, sy, bb.x, bb.y));
