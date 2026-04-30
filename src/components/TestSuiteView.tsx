@@ -231,6 +231,8 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
     }
     setRunning(false);
   };
+
+  const pause = () => {
     if (!running) return;
     pauseRef.current = true;
     setPaused(true);
