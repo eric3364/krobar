@@ -194,6 +194,29 @@ const Index = () => {
   const previewRef = useRef<HTMLDivElement>(null);
   const thumbRefs = useRef<(HTMLDivElement | null)[]>([]);
 
+  // In-place editing state
+  type TextEdit = {
+    kind: "text";
+    slotKey: string;
+    value: string;
+    rect: { left: number; top: number; width: number; height: number };
+    fontStyle: {
+      fontFamily?: string;
+      fontSize?: string;
+      fontWeight?: string;
+      color?: string;
+      textAlign?: string;
+    };
+  };
+  type IconEdit = {
+    kind: "icon";
+    slotKey: string;
+    value: string;
+    anchor: { left: number; top: number };
+  };
+  const [edit, setEdit] = useState<TextEdit | IconEdit | null>(null);
+  const [slotOverrides, setSlotOverrides] = useState<Record<string, string>>({});
+
   useEffect(() => {
     fetch("/templates/manifest.json")
       .then((r) => r.json())
