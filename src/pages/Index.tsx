@@ -346,6 +346,12 @@ const Index = () => {
     return (fo ?? (slotEl as unknown as SVGGraphicsElement)) || null;
   };
 
+  const getMovableViewportRect = (slotEl: Element) => {
+    const movable = getMovable(slotEl);
+    const rect = (movable ?? slotEl).getBoundingClientRect();
+    return { left: rect.left, top: rect.top, width: rect.width, height: rect.height };
+  };
+
   // Local-space bbox of the movable element (without our transform applied).
   const getLocalBBox = (el: SVGGraphicsElement): { x: number; y: number; w: number; h: number } => {
     if (el.tagName.toLowerCase() === "foreignobject") {
@@ -483,8 +489,7 @@ const Index = () => {
       if (selectedSlotKey) {
         const el = svg.querySelector(`[data-slot="${selectedSlotKey}"]`) as Element | null;
         if (el) {
-          const r = el.getBoundingClientRect();
-          setSelectedRect({ left: r.left, top: r.top, width: r.width, height: r.height });
+          setSelectedRect(getMovableViewportRect(el));
         }
       }
     })();
@@ -513,7 +518,7 @@ const Index = () => {
     setSelectedSlotKey(null);
     setSelectedRect(null);
 
-    const rect = slotEl.getBoundingClientRect();
+    const rect = getMovableViewportRect(slotEl);
     const tag = slotEl.tagName.toLowerCase();
     const isIcon =
       tag === "image" ||
@@ -571,9 +576,8 @@ const Index = () => {
       if (!slotKey) return;
       e.preventDefault();
       e.stopPropagation();
-      const r = slotEl.getBoundingClientRect();
       setSelectedSlotKey(slotKey);
-      setSelectedRect({ left: r.left, top: r.top, width: r.width, height: r.height });
+      setSelectedRect(getMovableViewportRect(slotEl));
     };
 
     const onDblClick = (e: MouseEvent) => {
