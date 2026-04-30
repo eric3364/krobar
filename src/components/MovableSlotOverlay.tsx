@@ -9,6 +9,8 @@ export type MovableSlotOverlayProps = {
   onCommit: (deltaX: number, deltaY: number) => void;
   /** Called when user presses Escape or clicks the close button */
   onCancel: () => void;
+  /** Called on double-click to switch from move mode to edit mode */
+  onEdit: () => void;
 };
 
 /**
@@ -20,6 +22,7 @@ export default function MovableSlotOverlay({
   onDrag,
   onCommit,
   onCancel,
+  onEdit,
 }: MovableSlotOverlayProps) {
   const startRef = useRef<{ x: number; y: number } | null>(null);
   const lastDeltaRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
@@ -76,6 +79,11 @@ export default function MovableSlotOverlay({
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerUp}
+      onDoubleClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onEdit();
+      }}
       title="Glissez pour déplacer • Échap pour désélectionner"
     >
       <button
