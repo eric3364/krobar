@@ -8,6 +8,8 @@ import { toast } from "sonner";
 import { Loader2, Download, Sparkles, RefreshCw, FlaskConical } from "lucide-react";
 import TestSuiteView from "@/components/TestSuiteView";
 import CustomizePanel, { loadStoredDetailLevel, type DetailLevel } from "@/components/CustomizePanel";
+import EditableSlot from "@/components/EditableSlot";
+import IconPicker from "@/components/IconPicker";
 import { formatScorePct, normalizeScore } from "@/lib/kroki";
 import { analyzeText } from "@/lib/api";
 
