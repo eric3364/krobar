@@ -262,6 +262,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
   const warningCount = results.filter((r) => r.status === "warning").length;
   const failCount = results.filter((r) => r.status === "fail").length;
   const allDone = completedCount === testSuite.length;
+  const hasAnyCompleted = completedCount > 0;
 
   const exportReport = () => {
     const report = {
