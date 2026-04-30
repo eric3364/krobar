@@ -298,7 +298,9 @@ const Index = () => {
       el.removeAttribute("data-krobar-moved");
     });
     Object.entries(transforms).forEach(([key, t]) => {
-      const el = svg.querySelector(`[data-slot="${key}"]`) as SVGGraphicsElement | null;
+      const slotEl = svg.querySelector(`[data-slot="${key}"]`) as Element | null;
+      const el =
+        (slotEl?.closest("foreignObject") as SVGForeignObjectElement | null) ?? slotEl;
       if (!el) return;
       el.setAttribute("transform", `translate(${t.dx} ${t.dy})`);
       el.setAttribute("data-krobar-moved", "1");
@@ -328,14 +330,66 @@ const Index = () => {
     })();
   }, [selectedSuggestion, selectedTemplate, palette, effectiveSlots, slotTransforms]);
 
-  // Convert a viewport-pixel delta into SVG user-unit delta, using the slot's CTM.
+  // Convertit un delta viewport (px CSS) en unités SVG en se basant sur le viewBox
+  // et la taille affichée réelle du SVG. Compatible avec les slots dans foreignObject.
   const viewportDeltaToSvgUnits = (slotEl: Element, dx: number, dy: number) => {
-    const svgEl = (slotEl as SVGElement).ownerSVGElement || (slotEl as unknown as SVGSVGElement);
-    const ctm = (slotEl as SVGGraphicsElement).getCTM?.() ?? svgEl.getScreenCTM();
-    if (!ctm) return { dx, dy };
-    // Screen → SVG: invert the CTM and apply to the delta vector (no translation component for a vector)
-    const inv = ctm.inverse();
-    return { dx: dx * inv.a + dy * inv.c, dy: dx * inv.b + dy * inv.d };
+    const svgEl = slotEl.closest("svg") as SVGSVGElement | null;
+    if (!svgEl) return { dx, dy };
+    const viewBox = svgEl.viewBox.baseVal;
+    const renderedRect = svgEl.getBoundingClientRect();
+    if (!renderedRect.width || !renderedRect.height) return { dx, dy };
+
+    const scaleX = viewBox && viewBox.width ? viewBox.width / renderedRect.width : 1;
+    const scaleY = viewBox && viewBox.height ? viewBox.height / renderedRect.height : 1;
+
+    return { dx: dx * scaleX, dy: dy * scaleY };
+  };
+
+  const openEditorForSlot = (slotKey: string) => {
+    if (!previewRef.current) return;
+    const slotEl = previewRef.current.querySelector(`[data-slot="${slotKey}"]`) as Element | null;
+    if (!slotEl) return;
+
+    setSelectedSlotKey(null);
+    setSelectedRect(null);
+
+    const rect = slotEl.getBoundingClientRect();
+    const tag = slotEl.tagName.toLowerCase();
+    const isIcon =
+      tag === "image" ||
+      tag === "use" ||
+      slotEl.getAttribute("data-slot-kind") === "icon";
+
+    if (isIcon) {
+      setEdit({
+        kind: "icon",
+        slotKey,
+        value: effectiveSlots[slotKey] ?? "",
+        anchor: { left: rect.left, top: rect.bottom + 4 },
+      });
+      return;
+    }
+
+    const computed = window.getComputedStyle(slotEl as Element);
+    let styleSource: CSSStyleDeclaration = computed;
+    if (tag === "foreignobject") {
+      const inner = slotEl.querySelector("[data-slot]") || slotEl.firstElementChild;
+      if (inner) styleSource = window.getComputedStyle(inner as Element);
+    }
+
+    setEdit({
+      kind: "text",
+      slotKey,
+      value: effectiveSlots[slotKey] ?? slotEl.textContent ?? "",
+      rect: { left: rect.left, top: rect.top, width: rect.width, height: rect.height },
+      fontStyle: {
+        fontFamily: styleSource.fontFamily,
+        fontSize: styleSource.fontSize,
+        fontWeight: styleSource.fontWeight,
+        color: styleSource.color,
+        textAlign: styleSource.textAlign,
+      },
+    });
   };
 
   // Click + double-click delegation on the preview SVG.
@@ -372,47 +426,7 @@ const Index = () => {
 
       e.preventDefault();
       e.stopPropagation();
-      // Editing a slot deselects it from move-mode
-      setSelectedSlotKey(null);
-      setSelectedRect(null);
-
-      const rect = slotEl.getBoundingClientRect();
-      const tag = slotEl.tagName.toLowerCase();
-
-      const isIcon =
-        tag === "image" ||
-        tag === "use" ||
-        slotEl.getAttribute("data-slot-kind") === "icon";
-
-      if (isIcon) {
-        setEdit({
-          kind: "icon",
-          slotKey,
-          value: effectiveSlots[slotKey] ?? "",
-          anchor: { left: rect.left, top: rect.bottom + 4 },
-        });
-        return;
-      }
-
-      const computed = window.getComputedStyle(slotEl as Element);
-      let styleSource: CSSStyleDeclaration = computed;
-      if (tag === "foreignobject") {
-        const inner = slotEl.querySelector("[data-slot]") || slotEl.firstElementChild;
-        if (inner) styleSource = window.getComputedStyle(inner as Element);
-      }
-      setEdit({
-        kind: "text",
-        slotKey,
-        value: effectiveSlots[slotKey] ?? slotEl.textContent ?? "",
-        rect: { left: rect.left, top: rect.top, width: rect.width, height: rect.height },
-        fontStyle: {
-          fontFamily: styleSource.fontFamily,
-          fontSize: styleSource.fontSize,
-          fontWeight: styleSource.fontWeight,
-          color: styleSource.color,
-          textAlign: styleSource.textAlign,
-        },
-      });
+      openEditorForSlot(slotKey);
     };
 
     container.addEventListener("click", onClick);
@@ -429,8 +443,10 @@ const Index = () => {
     if (!selectedSlotKey || !previewRef.current) return;
     const slotEl = previewRef.current.querySelector(
       `[data-slot="${selectedSlotKey}"]`
-    ) as SVGGraphicsElement | null;
+    ) as Element | null;
     if (!slotEl) return;
+    const movableEl =
+      (slotEl.closest("foreignObject") as SVGForeignObjectElement | null) ?? slotEl;
     // Snapshot rect on first move of this drag
     if (!dragStartRectRef.current && selectedRect) {
       dragStartRectRef.current = { ...selectedRect };
@@ -438,11 +454,11 @@ const Index = () => {
     const startRect = dragStartRectRef.current;
     const base = slotTransforms[selectedSlotKey] ?? { dx: 0, dy: 0 };
     const delta = viewportDeltaToSvgUnits(slotEl, dx, dy);
-    slotEl.setAttribute(
+    movableEl.setAttribute(
       "transform",
       `translate(${base.dx + delta.dx} ${base.dy + delta.dy})`
     );
-    slotEl.setAttribute("data-krobar-moved", "1");
+    movableEl.setAttribute("data-krobar-moved", "1");
     // Move the overlay frame in lockstep, anchored to the drag-start rect.
     if (startRect) {
       setSelectedRect({
@@ -459,7 +475,7 @@ const Index = () => {
     if (!selectedSlotKey || !previewRef.current) return;
     const slotEl = previewRef.current.querySelector(
       `[data-slot="${selectedSlotKey}"]`
-    ) as SVGGraphicsElement | null;
+    ) as Element | null;
     if (!slotEl) return;
     const base = slotTransforms[selectedSlotKey] ?? { dx: 0, dy: 0 };
     const delta = viewportDeltaToSvgUnits(slotEl, dx, dy);
@@ -779,6 +795,7 @@ const Index = () => {
           rect={selectedRect}
           onDrag={handleDrag}
           onCommit={handleDragCommit}
+          onEdit={() => openEditorForSlot(selectedSlotKey)}
           onCancel={() => {
             setSelectedSlotKey(null);
             setSelectedRect(null);
