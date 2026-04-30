@@ -4,11 +4,11 @@
 
 const API_BASE = "/api";
 
-export async function analyzeText(text: string) {
+export async function analyzeText(text: string, detail_level: string = "auto") {
   const r = await fetch(`${API_BASE}/analyze`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ text }),
+    body: JSON.stringify({ text, detail_level }),
   });
   if (!r.ok) {
     if (r.status === 429) {
