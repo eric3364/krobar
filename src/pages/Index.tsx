@@ -349,7 +349,14 @@ const Index = () => {
   const getMovableViewportRect = (slotEl: Element) => {
     const movable = getMovable(slotEl);
     const rect = (movable ?? slotEl).getBoundingClientRect();
-    return { left: rect.left, top: rect.top, width: rect.width, height: rect.height };
+    return {
+      left: rect.left,
+      top: rect.top,
+      width: rect.width,
+      height: rect.height,
+      right: rect.right,
+      bottom: rect.bottom,
+    };
   };
 
   // Local-space bbox of the movable element (without our transform applied).
