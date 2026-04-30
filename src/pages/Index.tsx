@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Loader2, Download, Sparkles, RefreshCw, FlaskConical } from "lucide-react";
 import TestSuiteView from "@/components/TestSuiteView";
+import CustomizePanel, { loadStoredDetailLevel, type DetailLevel } from "@/components/CustomizePanel";
 import { formatScorePct, normalizeScore } from "@/lib/kroki";
 import { analyzeText } from "@/lib/api";
 
@@ -186,6 +187,7 @@ const Index = () => {
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
   const [testSuiteOpen, setTestSuiteOpen] = useState(false);
+  const [detailLevel, setDetailLevel] = useState<DetailLevel>(() => loadStoredDetailLevel());
 
   const previewRef = useRef<HTMLDivElement>(null);
   const thumbRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -250,7 +252,7 @@ const Index = () => {
     setSelectedIdx(null);
 
     try {
-      const data = await analyzeText(text);
+      const data = await analyzeText(text, detailLevel);
       const rawSug: Suggestion[] = data.suggestions ?? [];
       if (rawSug.length === 0) throw new Error("Aucune suggestion");
       // Normalisation à réception : score décimal 0-1 garanti dans l'état.
@@ -339,6 +341,7 @@ const Index = () => {
             </span>
           </div>
           <div className="flex items-center gap-2">
+            <CustomizePanel detailLevel={detailLevel} onApply={setDetailLevel} />
             <Button variant="outline" size="sm" onClick={() => setTestSuiteOpen(true)}>
               <FlaskConical className="w-4 h-4 mr-2" /> Lancer la suite de tests
             </Button>
