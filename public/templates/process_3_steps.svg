@@ -1,37 +1,62 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 600" font-family="Inter, system-ui, sans-serif">
-  <rect width="1040" height="600" fill="var(--bg)"/>
-  <foreignObject x="20" y="40" width="1000" height="80">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:clamp(20px,2.4vw,32px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Titre du processus</div>
-  </foreignObject>
-
-  <g>
-    <rect x="40" y="220" width="260" height="160" rx="16" fill="var(--primary)"/>
-    <foreignObject x="40" y="220" width="260" height="160">
-      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="step_1_label" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:clamp(12px,1.4vw,18px);color:var(--bg);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Étape 1</div>
-    </foreignObject>
-  </g>
-
-  <path d="M 310 300 L 360 300" stroke="var(--accent)" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
-
-  <g>
-    <rect x="370" y="220" width="260" height="160" rx="16" fill="var(--accent)"/>
-    <foreignObject x="370" y="220" width="260" height="160">
-      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="step_2_label" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:clamp(12px,1.4vw,18px);color:var(--bg);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Étape 2</div>
-    </foreignObject>
-  </g>
-
-  <path d="M 640 300 L 690 300" stroke="var(--accent)" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
-
-  <g>
-    <rect x="700" y="220" width="260" height="160" rx="16" fill="var(--primary)"/>
-    <foreignObject x="700" y="220" width="260" height="160">
-      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="step_3_label" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:clamp(12px,1.4vw,18px);color:var(--bg);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Étape 3</div>
-    </foreignObject>
-  </g>
-
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 480" width="100%">
   <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)"/>
-    </marker>
+    <style>
+      .t-display { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.01em; }
+      .t-num     { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 700; font-size: 40px; letter-spacing: -0.02em; }
+      .t-label   { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 700; font-size: 17px; }
+      .t-body    { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 500; font-size: 12px; }
+      .t-caption { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+    </style>
+    <filter id="editorialShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="var(--primary)" flood-opacity="0.05"/>
+    </filter>
   </defs>
+
+  <rect x="0" y="0" width="800" height="480" fill="var(--bg)"/>
+
+  <!-- HEADER -->
+  <g transform="translate(48, 48)" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="14" cy="14" r="13"/>
+    <path d="M9 14h10"/>
+    <path d="M14 9l5 5-5 5"/>
+  </g>
+  <text x="92" y="60" class="t-caption" fill="var(--muted)" data-slot="category_label">Processus en 3 étapes</text>
+  <text x="92" y="92" class="t-display" fill="var(--text)" data-slot="title">Titre du processus</text>
+  <line x1="92" y1="108" x2="156" y2="108" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- CARD 1 -->
+  <g filter="url(#editorialShadow)">
+    <rect x="48" y="180" width="220" height="240" rx="12" fill="#FFFFFF" stroke="var(--border)" stroke-width="1"/>
+  </g>
+  <path d="M 48,192 A 12,12 0 0,1 60,180 L 256,180 A 12,12 0 0,1 268,192 L 268,192 L 48,192 Z" fill="var(--accent)"/>
+  <text x="70" y="248" class="t-num" fill="var(--accent)">01</text>
+  <line x1="70" y1="266" x2="100" y2="266" stroke="var(--primary)" stroke-width="2" stroke-linecap="round"/>
+  <text x="70" y="298" class="t-label" fill="var(--text)" data-slot="step_1">Étape 1</text>
+  <text x="70" y="324" class="t-body" fill="var(--muted)" data-slot="step_1_description" data-wrap-x="70" data-wrap-max="22" data-wrap-lines="3" data-wrap-dy="18">Description étape 1</text>
+  <circle cx="70" cy="398" r="3" fill="var(--accent)"/>
+
+  <!-- CARD 2 -->
+  <g filter="url(#editorialShadow)">
+    <rect x="290" y="180" width="220" height="240" rx="12" fill="#FFFFFF" stroke="var(--border)" stroke-width="1"/>
+  </g>
+  <path d="M 290,192 A 12,12 0 0,1 302,180 L 498,180 A 12,12 0 0,1 510,192 L 510,192 L 290,192 Z" fill="var(--accent)"/>
+  <text x="312" y="248" class="t-num" fill="var(--accent)">02</text>
+  <line x1="312" y1="266" x2="342" y2="266" stroke="var(--primary)" stroke-width="2" stroke-linecap="round"/>
+  <text x="312" y="298" class="t-label" fill="var(--text)" data-slot="step_2">Étape 2</text>
+  <text x="312" y="324" class="t-body" fill="var(--muted)" data-slot="step_2_description" data-wrap-x="312" data-wrap-max="22" data-wrap-lines="3" data-wrap-dy="18">Description étape 2</text>
+  <circle cx="312" cy="398" r="3" fill="var(--accent)"/>
+
+  <!-- CARD 3 -->
+  <g filter="url(#editorialShadow)">
+    <rect x="532" y="180" width="220" height="240" rx="12" fill="#FFFFFF" stroke="var(--border)" stroke-width="1"/>
+  </g>
+  <path d="M 532,192 A 12,12 0 0,1 544,180 L 740,180 A 12,12 0 0,1 752,192 L 752,192 L 532,192 Z" fill="var(--accent)"/>
+  <text x="554" y="248" class="t-num" fill="var(--accent)">03</text>
+  <line x1="554" y1="266" x2="584" y2="266" stroke="var(--primary)" stroke-width="2" stroke-linecap="round"/>
+  <text x="554" y="298" class="t-label" fill="var(--text)" data-slot="step_3">Étape 3</text>
+  <text x="554" y="324" class="t-body" fill="var(--muted)" data-slot="step_3_description" data-wrap-x="554" data-wrap-max="22" data-wrap-lines="3" data-wrap-dy="18">Description étape 3</text>
+  <circle cx="554" cy="398" r="3" fill="var(--accent)"/>
+
+  <!-- FOOTER -->
+  <text x="48" y="456" class="t-caption" fill="var(--muted)">Krobar · Process</text>
 </svg>
