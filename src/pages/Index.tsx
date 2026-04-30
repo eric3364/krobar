@@ -232,6 +232,11 @@ const Index = () => {
   const [selectedRect, setSelectedRect] = useState<
     { left: number; top: number; width: number; height: number } | null
   >(null);
+  // Snapshot of selectedRect at pointerdown — used to compute live overlay
+  // position from the cumulative pointer delta without drift.
+  const dragStartRectRef = useRef<
+    { left: number; top: number; width: number; height: number } | null
+  >(null);
 
   useEffect(() => {
     fetch("/templates/manifest.json")
@@ -421,11 +426,16 @@ const Index = () => {
   // Live drag: temporarily apply visual translation on the slot element directly,
   // without re-rendering the whole SVG (smoother and avoids React thrash).
   const handleDrag = (dx: number, dy: number) => {
-    if (!selectedSlotKey || !previewRef.current || !selectedRect) return;
+    if (!selectedSlotKey || !previewRef.current) return;
     const slotEl = previewRef.current.querySelector(
       `[data-slot="${selectedSlotKey}"]`
     ) as SVGGraphicsElement | null;
     if (!slotEl) return;
+    // Snapshot rect on first move of this drag
+    if (!dragStartRectRef.current && selectedRect) {
+      dragStartRectRef.current = { ...selectedRect };
+    }
+    const startRect = dragStartRectRef.current;
     const base = slotTransforms[selectedSlotKey] ?? { dx: 0, dy: 0 };
     const delta = viewportDeltaToSvgUnits(slotEl, dx, dy);
     slotEl.setAttribute(
@@ -433,11 +443,19 @@ const Index = () => {
       `translate(${base.dx + delta.dx} ${base.dy + delta.dy})`
     );
     slotEl.setAttribute("data-krobar-moved", "1");
-    // Move the overlay frame in lockstep
-    setSelectedRect({ ...selectedRect, left: selectedRect.left + dx, top: selectedRect.top + dy });
+    // Move the overlay frame in lockstep, anchored to the drag-start rect.
+    if (startRect) {
+      setSelectedRect({
+        left: startRect.left + dx,
+        top: startRect.top + dy,
+        width: startRect.width,
+        height: startRect.height,
+      });
+    }
   };
 
   const handleDragCommit = (dx: number, dy: number) => {
+    dragStartRectRef.current = null;
     if (!selectedSlotKey || !previewRef.current) return;
     const slotEl = previewRef.current.querySelector(
       `[data-slot="${selectedSlotKey}"]`
