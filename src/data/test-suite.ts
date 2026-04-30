@@ -126,4 +126,16 @@ export const testSuite: TestCase[] = [
     category: "Visual Metaphors",
     text: "Beaucoup d'apprenants peinent à passer de la formation théorique à l'employabilité réelle. Côté problème, on observe un manque d'expérience concrète et une difficulté à valoriser ses acquis face aux recruteurs. La transition s'opère via deux leviers complémentaires. Le premier levier est la mise en situation professionnelle par les stages et l'alternance. Le second est l'accompagnement à la valorisation, avec coaching CV et préparation aux entretiens. Côté solution, l'apprenant accède à un réseau professionnel actif et obtient un placement rapide en entreprise.",
   },
+  {
+    id: 21,
+    expected_template: "idea_cluster",
+    category: "Brainstorming",
+    text: "Brainstorming des idées de campagne marketing pour la rentrée 2026. L'équipe communication propose une série de webinaires métiers animés par des alumni. Un partenariat avec des influenceurs étudiants permettrait d'élargir l'audience sur les réseaux sociaux. Des journées portes ouvertes immersives, mêlant cours en direct et témoignages, créeraient un effet d'engagement fort. Un podcast hebdomadaire avec des étudiants ambassadeurs nourrirait la visibilité long terme. Un salon virtuel 360 degrés permettrait de toucher les candidats à distance. Enfin, un programme de parrainage alumni structuré pourrait activer le bouche-à-oreille.",
+  },
+  {
+    id: 22,
+    expected_template: "story_arc",
+    category: "Narrative",
+    text: "L'histoire d'une école supérieure se construit en cinq actes successifs. Tout commence en 2010 avec la fondation par trois enseignants passionnés autour d'un projet pédagogique innovant. L'élément déclencheur survient en 2015 lorsque la première promotion sort avec un taux d'insertion exceptionnel, attirant l'attention du marché. Le climax du récit se joue en 2020 avec une crise de croissance majeure, le doublement des effectifs imposant une refonte complète de l'organisation. La résolution intervient en 2023 avec la mise en place d'une nouvelle gouvernance et le lancement de la plateforme pédagogique propriétaire. Aujourd'hui, l'école s'établit comme leader régional avec quatre campus et plus de deux mille étudiants.",
+  },
 ];
