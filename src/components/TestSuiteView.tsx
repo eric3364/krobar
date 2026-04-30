@@ -131,6 +131,20 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
   const clearSelection = () => setSelectedIds(new Set());
   const allSelected = selectedIds.size === testSuite.length;
 
+  // Compute "new" tests: those whose id isn't present in the persisted results snapshot at mount.
+  const [newTestIds] = useState<Set<number>>(() => {
+    try {
+      const cached = localStorage.getItem(RESULTS_STORAGE);
+      if (!cached) return new Set(testSuite.map((t) => t.id));
+      const parsed = JSON.parse(cached) as Array<{ id: number }>;
+      const known = new Set(parsed.map((r) => r.id));
+      return new Set(testSuite.filter((t) => !known.has(t.id)).map((t) => t.id));
+    } catch {
+      return new Set(testSuite.map((t) => t.id));
+    }
+  });
+  const selectNew = () => setSelectedIds(new Set(newTestIds));
+
   const palette = palettes[paletteKey];
 
   // Persist results.
@@ -384,7 +398,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
             </div>
           )}
 
-          <div className="flex items-center gap-4 flex-wrap text-xs border rounded-lg px-3 py-2 bg-muted/30">
+          <div className="flex items-center gap-3 flex-wrap text-xs border rounded-lg px-3 py-2 bg-muted/30">
             <div className="flex items-center gap-2">
               <Checkbox
                 id="select-all"
@@ -395,28 +409,38 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
                 Tout sélectionner
               </Label>
             </div>
+            <Button
+              onClick={selectNew}
+              disabled={newTestIds.size === 0}
+              size="sm"
+              variant="outline"
+              className="h-7 text-xs"
+              title={newTestIds.size === 0 ? "Aucun nouveau test détecté" : undefined}
+            >
+              Sélectionner les nouveaux ({newTestIds.size})
+            </Button>
             <span className="text-muted-foreground">
               {selectedIds.size} test{selectedIds.size > 1 ? "s" : ""} sélectionné
               {selectedIds.size > 1 ? "s" : ""}
             </span>
-            <div className="flex items-center gap-2 ml-auto">
-              <Button
-                onClick={runSelection}
-                disabled={running || selectedIds.size === 0}
-                size="sm"
-                variant="secondary"
-              >
-                <Play className="w-4 h-4 mr-2" /> Lancer la sélection
-              </Button>
-              <Button
-                onClick={clearSelection}
-                disabled={selectedIds.size === 0}
-                size="sm"
-                variant="ghost"
-              >
-                Effacer la sélection
-              </Button>
-            </div>
+            <Button
+              onClick={runSelection}
+              disabled={running || selectedIds.size === 0}
+              size="sm"
+              variant="default"
+              className="h-7 text-xs"
+            >
+              <Play className="w-3 h-3 mr-1" /> Lancer la sélection
+            </Button>
+            <Button
+              onClick={clearSelection}
+              disabled={selectedIds.size === 0}
+              size="sm"
+              variant="ghost"
+              className="h-7 text-xs"
+            >
+              Effacer
+            </Button>
           </div>
         </div>
       </header>
