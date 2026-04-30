@@ -95,6 +95,7 @@ export default function MovableSlotOverlay({
   const onHandlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!startRef.current || !resizeCornerRef.current) return;
     e.preventDefault();
+    e.stopPropagation();
     const dx = e.clientX - startRef.current.x;
     const dy = e.clientY - startRef.current.y;
     lastDeltaRef.current = { x: dx, y: dy };
@@ -103,6 +104,7 @@ export default function MovableSlotOverlay({
 
   const onHandlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!startRef.current || !resizeCornerRef.current) return;
+    e.stopPropagation();
     e.currentTarget.releasePointerCapture?.(e.pointerId);
     const { x, y } = lastDeltaRef.current;
     const corner = resizeCornerRef.current;
