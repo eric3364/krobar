@@ -1165,6 +1165,9 @@ const Index = () => {
           initialValue={edit.value}
           fontStyle={edit.fontStyle}
           onCommit={(val) => {
+            if (val !== (slotOverrides[edit.slotKey] ?? edit.value)) {
+              pushHistory();
+            }
             setSlotOverrides((prev) => ({ ...prev, [edit.slotKey]: val }));
             setEdit(null);
           }}
