@@ -10,6 +10,7 @@ import TestSuiteView from "@/components/TestSuiteView";
 import CustomizePanel, { loadStoredDetailLevel, type DetailLevel } from "@/components/CustomizePanel";
 import EditableSlot from "@/components/EditableSlot";
 import IconPicker from "@/components/IconPicker";
+import MovableSlotOverlay from "@/components/MovableSlotOverlay";
 import {
   ResizablePanelGroup,
   ResizablePanel,
