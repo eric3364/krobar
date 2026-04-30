@@ -503,10 +503,23 @@ const Index = () => {
   const getLocalBBox = (el: SVGGraphicsElement): { x: number; y: number; w: number; h: number } => {
     if (el.tagName.toLowerCase() === "foreignobject") {
       const fo = el as unknown as SVGForeignObjectElement;
-      const x = parseFloat(fo.getAttribute("x") || "0");
-      const y = parseFloat(fo.getAttribute("y") || "0");
-      const w = parseFloat(fo.getAttribute("width") || "0");
-      const h = parseFloat(fo.getAttribute("height") || "0");
+      // IMPORTANT: use the ORIGINAL x/y/w/h captured before any drag/resize.
+      // Reading the live attributes here would make the bbox grow each frame
+      // (because we mutate width/height during resize), which makes anchoring
+      // math diverge and the SE handle feel "stuck".
+      captureOriginals(fo);
+      const x = parseFloat(
+        fo.getAttribute("data-krobar-orig-x") ?? fo.getAttribute("x") ?? "0"
+      );
+      const y = parseFloat(
+        fo.getAttribute("data-krobar-orig-y") ?? fo.getAttribute("y") ?? "0"
+      );
+      const w = parseFloat(
+        fo.getAttribute("data-krobar-orig-w") ?? fo.getAttribute("width") ?? "0"
+      );
+      const h = parseFloat(
+        fo.getAttribute("data-krobar-orig-h") ?? fo.getAttribute("height") ?? "0"
+      );
       return { x, y, w, h };
     }
     if (isWrapTextEl(el)) {
