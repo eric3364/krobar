@@ -816,8 +816,13 @@ const Index = () => {
         sx: newSx,
         sy: newSy,
       };
-      movable.setAttribute("transform", `translate(${next.dx} ${next.dy})`);
-      applyForeignObjectScale(movable as unknown as SVGForeignObjectElement, next.sx, next.sy);
+      const fo = movable as unknown as SVGForeignObjectElement;
+      captureOriginals(fo);
+      const ox = parseFloat(fo.getAttribute("data-krobar-orig-x") || "0");
+      const oy = parseFloat(fo.getAttribute("data-krobar-orig-y") || "0");
+      fo.setAttribute("x", String(ox + next.dx));
+      fo.setAttribute("y", String(oy + next.dy));
+      applyForeignObjectScale(fo, next.sx, next.sy);
     } else {
       // Anchor in local coords = opposite corner of the dragged one.
       const anchorLocalX = signX > 0 ? bb.x : bb.x + bb.w;
