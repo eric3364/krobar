@@ -8,6 +8,8 @@ import { toast } from "sonner";
 import { Loader2, Download, Sparkles, RefreshCw, FlaskConical } from "lucide-react";
 import TestSuiteView from "@/components/TestSuiteView";
 import CustomizePanel, { loadStoredDetailLevel, type DetailLevel } from "@/components/CustomizePanel";
+import EditableSlot from "@/components/EditableSlot";
+import IconPicker from "@/components/IconPicker";
 import { formatScorePct, normalizeScore } from "@/lib/kroki";
 import { analyzeText } from "@/lib/api";
 
@@ -192,6 +194,29 @@ const Index = () => {
   const previewRef = useRef<HTMLDivElement>(null);
   const thumbRefs = useRef<(HTMLDivElement | null)[]>([]);
 
+  // In-place editing state
+  type TextEdit = {
+    kind: "text";
+    slotKey: string;
+    value: string;
+    rect: { left: number; top: number; width: number; height: number };
+    fontStyle: {
+      fontFamily?: string;
+      fontSize?: string;
+      fontWeight?: string;
+      color?: string;
+      textAlign?: string;
+    };
+  };
+  type IconEdit = {
+    kind: "icon";
+    slotKey: string;
+    value: string;
+    anchor: { left: number; top: number };
+  };
+  const [edit, setEdit] = useState<TextEdit | IconEdit | null>(null);
+  const [slotOverrides, setSlotOverrides] = useState<Record<string, string>>({});
+
   useEffect(() => {
     fetch("/templates/manifest.json")
       .then((r) => r.json())
@@ -226,19 +251,91 @@ const Index = () => {
     });
   }, [suggestions, manifest, palette]);
 
+  // Reset per-edit overrides whenever the chosen suggestion changes
+  useEffect(() => {
+    setSlotOverrides({});
+    setEdit(null);
+  }, [selectedSuggestion]);
+
+  // Merge AI slots with user-edited overrides
+  const effectiveSlots = useMemo(
+    () => ({ ...(selectedSuggestion?.slots ?? {}), ...slotOverrides }),
+    [selectedSuggestion, slotOverrides]
+  );
+
   // Render big preview
   useEffect(() => {
     if (!selectedSuggestion || !selectedTemplate || !previewRef.current) return;
     (async () => {
       const svg = await loadSvg(selectedTemplate.file);
       applyPaletteVars(svg, palette);
-      fillSlots(svg, selectedSuggestion.slots);
+      fillSlots(svg, effectiveSlots);
       svg.setAttribute("width", "100%");
       svg.setAttribute("height", "100%");
       previewRef.current!.innerHTML = "";
       previewRef.current!.appendChild(svg);
     })();
-  }, [selectedSuggestion, selectedTemplate, palette]);
+  }, [selectedSuggestion, selectedTemplate, palette, effectiveSlots]);
+
+  // Double-click delegation for in-place edition
+  useEffect(() => {
+    const container = previewRef.current;
+    if (!container) return;
+    const onDblClick = (e: MouseEvent) => {
+      const target = e.target as Element | null;
+      if (!target) return;
+      const slotEl = target.closest("[data-slot]") as Element | null;
+      if (!slotEl || !container.contains(slotEl)) return;
+      const slotKey = slotEl.getAttribute("data-slot") || "";
+      if (!slotKey) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      const rect = slotEl.getBoundingClientRect();
+      const tag = slotEl.tagName.toLowerCase();
+
+      // Icon-like nodes: <image>, <use>, or elements explicitly tagged
+      const isIcon =
+        tag === "image" ||
+        tag === "use" ||
+        slotEl.getAttribute("data-slot-kind") === "icon";
+
+      if (isIcon) {
+        setEdit({
+          kind: "icon",
+          slotKey,
+          value: effectiveSlots[slotKey] ?? "",
+          anchor: { left: rect.left, top: rect.bottom + 4 },
+        });
+        return;
+      }
+
+      // Text element: read computed style for visual match
+      const computed = window.getComputedStyle(slotEl as Element);
+      // foreignObject inner div may carry the styling
+      let styleSource: CSSStyleDeclaration = computed;
+      if (tag === "foreignobject") {
+        const inner = slotEl.querySelector("[data-slot]") || slotEl.firstElementChild;
+        if (inner) styleSource = window.getComputedStyle(inner as Element);
+      }
+      setEdit({
+        kind: "text",
+        slotKey,
+        value: effectiveSlots[slotKey] ?? slotEl.textContent ?? "",
+        rect: { left: rect.left, top: rect.top, width: rect.width, height: rect.height },
+        fontStyle: {
+          fontFamily: styleSource.fontFamily,
+          fontSize: styleSource.fontSize,
+          fontWeight: styleSource.fontWeight,
+          color: styleSource.color,
+          textAlign: styleSource.textAlign,
+        },
+      });
+    };
+    container.addEventListener("dblclick", onDblClick);
+    return () => container.removeEventListener("dblclick", onDblClick);
+  }, [effectiveSlots]);
 
   const analyze = async () => {
     if (!text.trim()) {
@@ -481,6 +578,30 @@ const Index = () => {
           </Card>
         </section>
       </main>
+
+      {edit?.kind === "text" && (
+        <EditableSlot
+          rect={edit.rect}
+          initialValue={edit.value}
+          fontStyle={edit.fontStyle}
+          onCommit={(val) => {
+            setSlotOverrides((prev) => ({ ...prev, [edit.slotKey]: val }));
+            setEdit(null);
+          }}
+          onCancel={() => setEdit(null)}
+        />
+      )}
+      {edit?.kind === "icon" && (
+        <IconPicker
+          value={edit.value}
+          style={{ left: edit.anchor.left, top: edit.anchor.top }}
+          onSelect={(name) => {
+            setSlotOverrides((prev) => ({ ...prev, [edit.slotKey]: name }));
+            setEdit(null);
+          }}
+          onCancel={() => setEdit(null)}
+        />
+      )}
     </div>
   );
 };
