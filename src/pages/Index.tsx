@@ -504,11 +504,15 @@ const Index = () => {
     svg.querySelectorAll("[data-slot][data-krobar-moved='1']").forEach((el) => {
       el.removeAttribute("transform");
       el.removeAttribute("data-krobar-moved");
-      // Reset foreignObject size/font tweaks if any.
+      // Reset foreignObject size/pos/font tweaks if any.
       if (el.tagName.toLowerCase() === "foreignobject") {
         const fo = el as unknown as SVGForeignObjectElement;
+        const ox = fo.getAttribute("data-krobar-orig-x");
+        const oy = fo.getAttribute("data-krobar-orig-y");
         const ow = fo.getAttribute("data-krobar-orig-w");
         const oh = fo.getAttribute("data-krobar-orig-h");
+        if (ox) fo.setAttribute("x", ox);
+        if (oy) fo.setAttribute("y", oy);
         if (ow) fo.setAttribute("width", ow);
         if (oh) fo.setAttribute("height", oh);
         fo.querySelectorAll<HTMLElement>("*").forEach((n) => {
@@ -527,10 +531,17 @@ const Index = () => {
       const sy = t.sy ?? 1;
       const isFO = el.tagName.toLowerCase() === "foreignobject";
       if (isFO) {
-        // Translate via transform; resize via width/height + font-size.
-        el.setAttribute("transform", `translate(${t.dx} ${t.dy})`);
+        // Translate via x/y attribute (transform on <foreignObject> doesn't
+        // reliably move the embedded HTML in all browsers). Resize via
+        // width/height + font-size.
+        const fo = el as unknown as SVGForeignObjectElement;
+        captureOriginals(fo);
+        const ox = parseFloat(fo.getAttribute("data-krobar-orig-x") || "0");
+        const oy = parseFloat(fo.getAttribute("data-krobar-orig-y") || "0");
+        fo.setAttribute("x", String(ox + t.dx));
+        fo.setAttribute("y", String(oy + t.dy));
         if (sx !== 1 || sy !== 1) {
-          applyForeignObjectScale(el as unknown as SVGForeignObjectElement, sx, sy);
+          applyForeignObjectScale(fo, sx, sy);
         }
       } else if (sx === 1 && sy === 1) {
         el.setAttribute("transform", `translate(${t.dx} ${t.dy})`);
