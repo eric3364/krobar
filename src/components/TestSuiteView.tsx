@@ -490,13 +490,15 @@ interface CardProps {
   test: TestCase;
   result: TestResult;
   note: string;
+  selected: boolean;
+  onToggleSelect: () => void;
   onReplay: () => void;
   onZoom: (svg: string) => void;
   onShowFullText: () => void;
   onAnnotate: () => void;
 }
 
-function TestCard({ test, result, note, onReplay, onZoom, onShowFullText, onAnnotate }: CardProps) {
+function TestCard({ test, result, note, selected, onToggleSelect, onReplay, onZoom, onShowFullText, onAnnotate }: CardProps) {
   const truncated = test.text.length > 150 ? test.text.slice(0, 150) + "…" : test.text;
   const matchBadge = useMemo(() => {
     if (result.matchKind === "exact")
@@ -522,6 +524,11 @@ function TestCard({ test, result, note, onReplay, onZoom, onShowFullText, onAnno
     <Card className="p-3 flex flex-col gap-2">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
+          <Checkbox
+            checked={selected}
+            onCheckedChange={onToggleSelect}
+            aria-label={`Sélectionner le test ${test.id}`}
+          />
           <span className="text-base">{statusIcon[result.status]}</span>
           <div>
             <div className="text-xs font-bold">Test {test.id}</div>
