@@ -404,8 +404,90 @@ const Index = () => {
     return (fo ?? (slotEl as unknown as SVGGraphicsElement)) || null;
   };
 
+  const isWrapTextEl = (el: Element | null): el is SVGTextElement =>
+    !!el && el.tagName.toLowerCase() === "text" && el.hasAttribute("data-wrap-max");
+
+  const captureWrapTextOriginalBox = (textEl: SVGTextElement) => {
+    if (!textEl.hasAttribute("data-krobar-orig-box-w")) {
+      const prev = textEl.getAttribute("transform");
+      if (prev) textEl.removeAttribute("transform");
+      const b = textEl.getBBox();
+      if (prev) textEl.setAttribute("transform", prev);
+      textEl.setAttribute("data-krobar-orig-box-x", String(b.x));
+      textEl.setAttribute("data-krobar-orig-box-y", String(b.y));
+      textEl.setAttribute("data-krobar-orig-box-w", String(b.width));
+      textEl.setAttribute("data-krobar-orig-box-h", String(b.height));
+    }
+
+    return {
+      x: parseFloat(textEl.getAttribute("data-krobar-orig-box-x") || "0"),
+      y: parseFloat(textEl.getAttribute("data-krobar-orig-box-y") || "0"),
+      w: parseFloat(textEl.getAttribute("data-krobar-orig-box-w") || "0"),
+      h: parseFloat(textEl.getAttribute("data-krobar-orig-box-h") || "0"),
+    };
+  };
+
+  const localRectToViewportRect = (
+    slotEl: Element,
+    localRect: { x: number; y: number; w: number; h: number }
+  ) => {
+    const svgEl = slotEl.closest("svg") as SVGSVGElement | null;
+    if (!svgEl) {
+      const rect = (getMovable(slotEl) ?? slotEl).getBoundingClientRect();
+      return {
+        left: rect.left,
+        top: rect.top,
+        width: rect.width,
+        height: rect.height,
+        right: rect.right,
+        bottom: rect.bottom,
+      };
+    }
+
+    const viewBox = svgEl.viewBox.baseVal;
+    const renderedRect = svgEl.getBoundingClientRect();
+    if (!renderedRect.width || !renderedRect.height || !viewBox.width || !viewBox.height) {
+      const rect = (getMovable(slotEl) ?? slotEl).getBoundingClientRect();
+      return {
+        left: rect.left,
+        top: rect.top,
+        width: rect.width,
+        height: rect.height,
+        right: rect.right,
+        bottom: rect.bottom,
+      };
+    }
+
+    const scaleX = renderedRect.width / viewBox.width;
+    const scaleY = renderedRect.height / viewBox.height;
+    const left = renderedRect.left + (localRect.x - viewBox.x) * scaleX;
+    const top = renderedRect.top + (localRect.y - viewBox.y) * scaleY;
+    const width = localRect.w * scaleX;
+    const height = localRect.h * scaleY;
+
+    return {
+      left,
+      top,
+      width,
+      height,
+      right: left + width,
+      bottom: top + height,
+    };
+  };
+
   const getMovableViewportRect = (slotEl: Element) => {
     const movable = getMovable(slotEl);
+    if (movable && isWrapTextEl(movable)) {
+      const slotKey = slotEl.getAttribute("data-slot") || "";
+      const t = slotKey ? slotTransforms[slotKey] ?? { dx: 0, dy: 0, sx: 1, sy: 1 } : { dx: 0, dy: 0, sx: 1, sy: 1 };
+      const bb = captureWrapTextOriginalBox(movable);
+      return localRectToViewportRect(slotEl, {
+        x: bb.x + t.dx,
+        y: bb.y + t.dy,
+        w: bb.w * (t.sx ?? 1),
+        h: bb.h * (t.sy ?? 1),
+      });
+    }
     const rect = (movable ?? slotEl).getBoundingClientRect();
     return {
       left: rect.left,
@@ -426,6 +508,9 @@ const Index = () => {
       const w = parseFloat(fo.getAttribute("width") || "0");
       const h = parseFloat(fo.getAttribute("height") || "0");
       return { x, y, w, h };
+    }
+    if (isWrapTextEl(el)) {
+      return captureWrapTextOriginalBox(el);
     }
     // Temporarily clear our transform to get an unaffected bbox.
     const prev = el.getAttribute("transform");
@@ -556,15 +641,13 @@ const Index = () => {
         }
       } else if (sx === 1 && sy === 1) {
         el.setAttribute("transform", `translate(${t.dx} ${t.dy})`);
-      } else if (
-        el.tagName.toLowerCase() === "text" &&
-        (el as Element).hasAttribute("data-wrap-max")
-      ) {
+      } else if (isWrapTextEl(el)) {
         // Texte SVG avec wrap : on N'utilise PAS scale() (qui déforme les
         // glyphes). À la place, on ajuste la largeur de wrap (en caractères)
         // et le nombre de lignes max proportionnellement à sx/sy, puis on
         // re-wrappe le contenu avec la même police d'origine.
-        const textEl = el as unknown as SVGTextElement;
+        const textEl = el as SVGTextElement;
+        const box = captureWrapTextOriginalBox(textEl);
         if (!textEl.hasAttribute("data-orig-wrap-max")) {
           textEl.setAttribute(
             "data-orig-wrap-max",
@@ -575,20 +658,15 @@ const Index = () => {
             textEl.getAttribute("data-wrap-lines") || "3"
           );
         }
-        const origMax = parseInt(
-          textEl.getAttribute("data-orig-wrap-max") || "22",
-          10
-        );
-        const origLines = parseInt(
-          textEl.getAttribute("data-orig-wrap-lines") || "3",
-          10
-        );
+        const origMax = parseInt(textEl.getAttribute("data-orig-wrap-max") || "22", 10);
+        const origLines = parseInt(textEl.getAttribute("data-orig-wrap-lines") || "3", 10);
         const newMax = Math.max(4, Math.round(origMax * sx));
-        const newLines = Math.max(1, Math.round(origLines * sy));
+        const lineHeight = parseFloat(textEl.getAttribute("data-wrap-dy") || "18");
+        const newLines = Math.max(1, Math.round((box.h * sy) / Math.max(lineHeight, 1)));
         textEl.setAttribute("data-wrap-max", String(newMax));
         textEl.setAttribute("data-wrap-lines", String(newLines));
         const wrapX = parseFloat(textEl.getAttribute("data-wrap-x") || "0");
-        const wrapDy = parseFloat(textEl.getAttribute("data-wrap-dy") || "18");
+        const wrapDy = lineHeight;
         const fullText =
           (effectiveSlots as Record<string, string>)[key] ??
           textEl.textContent ??
@@ -843,7 +921,7 @@ const Index = () => {
 
     // Local bbox of the element WITHOUT current transform.
     const bb = getLocalBBox(movable);
-    const isFO = movable.tagName.toLowerCase() === "foreignobject";
+     const isFO = movable.tagName.toLowerCase() === "foreignobject";
 
     let next: { dx: number; dy: number; sx: number; sy: number };
 
@@ -873,13 +951,11 @@ const Index = () => {
       fo.setAttribute("x", String(ox + next.dx));
       fo.setAttribute("y", String(oy + next.dy));
       applyForeignObjectScale(fo, next.sx, next.sy);
-    } else if (
-      movable.tagName.toLowerCase() === "text" &&
-      (movable as Element).hasAttribute("data-wrap-max")
-    ) {
+    } else if (isWrapTextEl(movable)) {
       // Texte SVG avec wrap : pas de scale (déformerait les glyphes), on
       // re-wrappe avec une largeur de ligne / nb de lignes ajustés.
-      const textEl = movable as unknown as SVGTextElement;
+      const textEl = movable as SVGTextElement;
+      const box = captureWrapTextOriginalBox(textEl);
       if (!textEl.hasAttribute("data-orig-wrap-max")) {
         textEl.setAttribute(
           "data-orig-wrap-max",
@@ -890,27 +966,21 @@ const Index = () => {
           textEl.getAttribute("data-wrap-lines") || "3"
         );
       }
-      const origMax = parseInt(
-        textEl.getAttribute("data-orig-wrap-max") || "22",
-        10
-      );
-      const origLines = parseInt(
-        textEl.getAttribute("data-orig-wrap-lines") || "3",
-        10
-      );
+      const origMax = parseInt(textEl.getAttribute("data-orig-wrap-max") || "22", 10);
       const newMax = Math.max(4, Math.round(origMax * newSx));
-      const newLines = Math.max(1, Math.round(origLines * newSy));
+      const wrapDy = parseFloat(textEl.getAttribute("data-wrap-dy") || "18");
+      const newLines = Math.max(1, Math.round((box.h * newSy) / Math.max(wrapDy, 1)));
       textEl.setAttribute("data-wrap-max", String(newMax));
       textEl.setAttribute("data-wrap-lines", String(newLines));
       const wrapX = parseFloat(textEl.getAttribute("data-wrap-x") || "0");
-      const wrapDy = parseFloat(textEl.getAttribute("data-wrap-dy") || "18");
       const fullText =
         (effectiveSlots as Record<string, string>)[selectedSlotKey!] ??
         textEl.textContent ??
         "";
       wrapTextIntoTspans(textEl, fullText, wrapX, newMax, newLines, wrapDy);
-      // L'anchor n'a pas de sens ici, on translate seulement.
-      next = { dx: base.dx, dy: base.dy, sx: newSx, sy: newSy };
+      const compX = signX < 0 ? -box.w * (newSx - 1) : 0;
+      const compY = signY < 0 ? -box.h * (newSy - 1) : 0;
+      next = { dx: base.dx + compX, dy: base.dy + compY, sx: newSx, sy: newSy };
       textEl.setAttribute("transform", `translate(${next.dx} ${next.dy})`);
     } else {
       // Anchor in local coords = opposite corner of the dragged one.
@@ -960,9 +1030,17 @@ const Index = () => {
     // Skip no-op resize.
     if (dx !== 0 || dy !== 0) pushHistory();
     const isFO = r.movable.tagName.toLowerCase() === "foreignobject";
+    const isWrapText = isWrapTextEl(r.movable);
     if (isFO) {
       // For FO, computeResize already encodes the anchored translation in
       // next.dx/next.dy (no buildTransform anchor needed).
+      setSlotTransforms((prev) => ({
+        ...prev,
+        [selectedSlotKey]: { ...r.next },
+      }));
+      return;
+    }
+    if (isWrapText) {
       setSlotTransforms((prev) => ({
         ...prev,
         [selectedSlotKey]: { ...r.next },
