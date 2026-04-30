@@ -458,6 +458,10 @@ const Index = () => {
       fo.setAttribute("data-krobar-orig-w", fo.getAttribute("width") || "0");
       fo.setAttribute("data-krobar-orig-h", fo.getAttribute("height") || "0");
     }
+    if (!fo.hasAttribute("data-krobar-orig-x")) {
+      fo.setAttribute("data-krobar-orig-x", fo.getAttribute("x") || "0");
+      fo.setAttribute("data-krobar-orig-y", fo.getAttribute("y") || "0");
+    }
     // Capture font-size on every text-bearing descendant.
     const nodes = fo.querySelectorAll<HTMLElement>("*");
     const all: HTMLElement[] = [fo.firstElementChild as HTMLElement, ...Array.from(nodes)].filter(
