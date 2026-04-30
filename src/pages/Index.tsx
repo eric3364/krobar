@@ -270,6 +270,9 @@ const Index = () => {
   // Reset per-edit overrides whenever the chosen suggestion changes
   useEffect(() => {
     setSlotOverrides({});
+    setSlotTransforms({});
+    setSelectedSlotKey(null);
+    setSelectedRect(null);
     setEdit(null);
   }, [selectedSuggestion]);
 
