@@ -581,10 +581,10 @@ const Index = () => {
     if (ow > 0) fo.setAttribute("width", String(ow * sx));
     if (oh > 0) fo.setAttribute("height", String(oh * sy));
     // NOTE: on NE modifie PAS la taille de la police lors d'un redimensionnement.
-    // Le HTML embarqué utilise déjà word-wrap/overflow-wrap, donc le texte se
-    // réajuste naturellement (retour à la ligne si on rétrécit le bloc, plus
-    // d'espace disponible si on l'agrandit). Si une font-size avait été posée
-    // par un précédent appel, on la nettoie pour revenir à la taille d'origine.
+    // Le HTML embarqué doit utiliser word-wrap/overflow-wrap pour que le texte
+    // se réajuste naturellement. On force ces propriétés sur le 1er enfant et
+    // on s'assure qu'il occupe 100% du foreignObject (sinon le bloc grandit
+    // sans que le texte ne re-wrappe).
     const nodes = fo.querySelectorAll<HTMLElement>("*");
     const all: HTMLElement[] = [fo.firstElementChild as HTMLElement, ...Array.from(nodes)].filter(
       Boolean
@@ -592,6 +592,16 @@ const Index = () => {
     all.forEach((node) => {
       if (node.style && node.style.fontSize) node.style.fontSize = "";
     });
+    const root = fo.firstElementChild as HTMLElement | null;
+    if (root && root.style) {
+      root.style.width = "100%";
+      root.style.height = "100%";
+      root.style.boxSizing = "border-box";
+      root.style.wordWrap = "break-word";
+      root.style.overflowWrap = "break-word";
+      root.style.whiteSpace = "normal";
+      root.style.overflow = "hidden";
+    }
   };
 
   // Apply translation (+ optional scale) transforms to slot elements (idempotent).
