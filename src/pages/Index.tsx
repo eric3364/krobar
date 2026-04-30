@@ -648,37 +648,46 @@ const Index = () => {
 
     // Local bbox of the element WITHOUT current transform.
     const bb = getLocalBBox(movable);
+    const isFO = movable.tagName.toLowerCase() === "foreignobject";
 
-    // Anchor in local coords = opposite corner of the dragged one.
-    const anchorLocalX = signX > 0 ? bb.x : bb.x + bb.w;
-    const anchorLocalY = signY > 0 ? bb.y : bb.y + bb.h;
+    let next: { dx: number; dy: number; sx: number; sy: number };
 
-    // We want the anchor to remain visually fixed. The transform we use is:
-    //   T(dx,dy) * T(ax,ay) * S(sx,sy) * T(-ax,-ay)
-    // applied around (bb.x, bb.y). Easier: use a generic anchor (anchorLocal).
-    // To keep that anchor fixed across a scale change, the translation must
-    // satisfy: newDx = baseDx (anchor position is identity under that transform).
-    // So we keep dx,dy unchanged and change the anchor of the buildTransform.
-    // For simplicity, compute new translation so that anchor maps to its
-    // current viewport position (which is unchanged from startRect).
-    //
-    // Strategy: rebuild transform with anchor at (anchorLocalX, anchorLocalY)
-    // and the SAME (base.dx, base.dy). Mathematically:
-    //   pAfter = T(dx,dy) * (anchor + S*(p - anchor))
-    // For p = anchor: pAfter = anchor + (dx,dy). So anchor moves by (dx,dy)
-    // independent of scale — exactly what we want.
-    const next = {
-      dx: base.dx,
-      dy: base.dy,
-      sx: newSx,
-      sy: newSy,
-    };
-
-    // Apply transform now (live).
-    movable.setAttribute(
-      "transform",
-      buildTransform(next.dx, next.dy, next.sx, next.sy, anchorLocalX, anchorLocalY)
-    );
+    if (isFO) {
+      // For foreignObject we change width/height (no glyph distortion). The
+      // FO grows from its (x, y) top-left, so anchoring the opposite corner
+      // requires an extra translation when the dragged corner is on the left
+      // or top edge.
+      // The opposite-corner anchor in local coords:
+      //   - if signX < 0 (dragged left edge), anchor is right edge => after
+      //     width *= sx, the right edge shifts by bb.w*(sx-1); compensate by
+      //     translating x by -bb.w*(sx-1).
+      //   - signX > 0: no x compensation.
+      // Same for y.
+      const compX = signX < 0 ? -bb.w * (newSx - 1) : 0;
+      const compY = signY < 0 ? -bb.h * (newSy - 1) : 0;
+      next = {
+        dx: base.dx + compX,
+        dy: base.dy + compY,
+        sx: newSx,
+        sy: newSy,
+      };
+      movable.setAttribute("transform", `translate(${next.dx} ${next.dy})`);
+      applyForeignObjectScale(movable as unknown as SVGForeignObjectElement, next.sx, next.sy);
+    } else {
+      // Anchor in local coords = opposite corner of the dragged one.
+      const anchorLocalX = signX > 0 ? bb.x : bb.x + bb.w;
+      const anchorLocalY = signY > 0 ? bb.y : bb.y + bb.h;
+      next = {
+        dx: base.dx,
+        dy: base.dy,
+        sx: newSx,
+        sy: newSy,
+      };
+      movable.setAttribute(
+        "transform",
+        buildTransform(next.dx, next.dy, next.sx, next.sy, anchorLocalX, anchorLocalY)
+      );
+    }
     movable.setAttribute("data-krobar-moved", "1");
 
     // New overlay rect: anchor corner stays put, opposite corner moves by (dx,dy).
