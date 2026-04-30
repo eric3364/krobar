@@ -578,6 +578,30 @@ const Index = () => {
           </Card>
         </section>
       </main>
+
+      {edit?.kind === "text" && (
+        <EditableSlot
+          rect={edit.rect}
+          initialValue={edit.value}
+          fontStyle={edit.fontStyle}
+          onCommit={(val) => {
+            setSlotOverrides((prev) => ({ ...prev, [edit.slotKey]: val }));
+            setEdit(null);
+          }}
+          onCancel={() => setEdit(null)}
+        />
+      )}
+      {edit?.kind === "icon" && (
+        <IconPicker
+          value={edit.value}
+          style={{ left: edit.anchor.left, top: edit.anchor.top }}
+          onSelect={(name) => {
+            setSlotOverrides((prev) => ({ ...prev, [edit.slotKey]: name }));
+            setEdit(null);
+          }}
+          onCancel={() => setEdit(null)}
+        />
+      )}
     </div>
   );
 };
