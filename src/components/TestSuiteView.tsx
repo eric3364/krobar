@@ -117,6 +117,19 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
   const [fullText, setFullText] = useState<TestCase | null>(null);
   const [notes, setNotes] = useState<Record<number, string>>(() => loadNotes());
   const [annotateId, setAnnotateId] = useState<number | null>(null);
+  const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
+
+  const toggleSelected = (id: number) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+  const selectAll = () => setSelectedIds(new Set(testSuite.map((t) => t.id)));
+  const clearSelection = () => setSelectedIds(new Set());
+  const allSelected = selectedIds.size === testSuite.length;
 
   const palette = palettes[paletteKey];
 
