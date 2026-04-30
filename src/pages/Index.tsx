@@ -225,7 +225,7 @@ const Index = () => {
   // Per-slot translation in SVG user units, persisted on the rendered element
   // and serialized into the SVG export.
   const [slotTransforms, setSlotTransforms] = useState<
-    Record<string, { dx: number; dy: number }>
+    Record<string, { dx: number; dy: number; sx?: number; sy?: number }>
   >({});
   // Currently selected (single-clicked) slot key for moving.
   const [selectedSlotKey, setSelectedSlotKey] = useState<string | null>(null);
