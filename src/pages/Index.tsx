@@ -747,6 +747,7 @@ const Index = () => {
           }}
           onCancel={() => setEdit(null)}
         />
+      )}
       {selectedSlotKey && selectedRect && !edit && (
         <MovableSlotOverlay
           rect={selectedRect}
