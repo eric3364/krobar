@@ -717,21 +717,23 @@ const Index = () => {
   ) => {
     const r = computeResize(corner, dx, dy);
     dragStartRectRef.current = null;
-    if (!r || !selectedSlotKey) return;
-    // We need to bake the anchored transform into a stable (dx,dy,sx,sy) form
-    // that uses our canonical anchor (bb.x, bb.y). Convert by composing.
+    const isFO = r.movable.tagName.toLowerCase() === "foreignobject";
+    if (isFO) {
+      // For FO, computeResize already encodes the anchored translation in
+      // next.dx/next.dy (no buildTransform anchor needed).
+      setSlotTransforms((prev) => ({
+        ...prev,
+        [selectedSlotKey]: { ...r.next },
+      }));
+      return;
+    }
+    // For other SVG nodes: bake the anchored buildTransform into the canonical
+    // form using anchor (bb.x, bb.y).
     const bb = getLocalBBox(r.movable);
     const signX = corner === "ne" || corner === "se" ? 1 : -1;
     const signY = corner === "sw" || corner === "se" ? 1 : -1;
     const ax = signX > 0 ? bb.x : bb.x + bb.w;
     const ay = signY > 0 ? bb.y : bb.y + bb.h;
-    // Effective translate in canonical form (anchor at bb.x, bb.y):
-    // T_total = T(dx,dy) * T(ax,ay) * S * T(-ax,-ay)
-    //         = T(dx + ax - sx*ax_rel, dy + ay - sy*ay_rel) * T(bb.x,bb.y) * S * T(-bb.x,-bb.y)
-    // Simpler: store dx',dy' = base translate so that buildTransform with anchor (bb.x,bb.y) is equivalent.
-    // Equivalent translation offset from anchor (ax,ay) -> (bb.x,bb.y):
-    //   extraDx = (ax - bb.x) * (1 - sx)
-    //   extraDy = (ay - bb.y) * (1 - sy)
     const extraDx = (ax - bb.x) * (1 - r.next.sx);
     const extraDy = (ay - bb.y) * (1 - r.next.sy);
     setSlotTransforms((prev) => ({
