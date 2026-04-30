@@ -62,6 +62,8 @@ export default function MovableSlotOverlay({
   };
 
   const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    // If a resize is in progress, ignore frame-level move (resize handler owns it).
+    if (resizeCornerRef.current) return;
     if (!startRef.current) return;
     e.preventDefault();
     const dx = e.clientX - startRef.current.x;
@@ -71,6 +73,8 @@ export default function MovableSlotOverlay({
   };
 
   const onPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    // Same guard: don't commit a drag if we're finishing a resize.
+    if (resizeCornerRef.current) return;
     if (!startRef.current) return;
     e.currentTarget.releasePointerCapture?.(e.pointerId);
     const { x, y } = lastDeltaRef.current;
@@ -91,6 +95,7 @@ export default function MovableSlotOverlay({
   const onHandlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!startRef.current || !resizeCornerRef.current) return;
     e.preventDefault();
+    e.stopPropagation();
     const dx = e.clientX - startRef.current.x;
     const dy = e.clientY - startRef.current.y;
     lastDeltaRef.current = { x: dx, y: dy };
@@ -99,6 +104,7 @@ export default function MovableSlotOverlay({
 
   const onHandlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!startRef.current || !resizeCornerRef.current) return;
+    e.stopPropagation();
     e.currentTarget.releasePointerCapture?.(e.pointerId);
     const { x, y } = lastDeltaRef.current;
     const corner = resizeCornerRef.current;
