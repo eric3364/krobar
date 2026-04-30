@@ -104,5 +104,6 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: "Plus Jakarta Sans", system-ui, sans-serif;
   }
 }
