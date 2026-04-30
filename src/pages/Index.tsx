@@ -516,21 +516,31 @@ const Index = () => {
       });
     }
     // Pour un <foreignObject>, getBoundingClientRect() renvoie la taille du
-    // conteneur SVG, qui peut être beaucoup plus grande que le texte HTML
-    // visible à l'intérieur. Résultat : le cadre de sélection apparaît
-    // décalé par rapport au texte. On préfère donc le rect du contenu HTML
-    // réel (1er enfant) quand il est plus petit que le foreignObject.
+    // conteneur SVG, qui peut être beaucoup plus grande (ou décalée par
+    // rapport au texte) que le contenu HTML visible. On mesure donc le
+    // rect du contenu textuel rendu via un Range, qui est exact au pixel.
     const target = movable ?? slotEl;
-    let rect = target.getBoundingClientRect();
+    let rect: DOMRect | { left: number; top: number; width: number; height: number; right: number; bottom: number } =
+      target.getBoundingClientRect();
     if (target.tagName && target.tagName.toLowerCase() === "foreignobject") {
       const fo = target as unknown as SVGForeignObjectElement;
       const inner = fo.firstElementChild as HTMLElement | null;
       if (inner) {
-        const innerRect = inner.getBoundingClientRect();
-        // Garde-fou : on n'utilise le rect interne que s'il a une taille
-        // non nulle (sinon on retomberait sur un cadre vide).
-        if (innerRect.width > 1 && innerRect.height > 1) {
-          rect = innerRect;
+        try {
+          const range = document.createRange();
+          range.selectNodeContents(inner);
+          const r = range.getBoundingClientRect();
+          range.detach?.();
+          if (r && r.width > 1 && r.height > 1) {
+            rect = r;
+          } else {
+            // Fallback : rect du wrapper si le Range échoue (ex: contenu vide).
+            const wrapperRect = inner.getBoundingClientRect();
+            if (wrapperRect.width > 1 && wrapperRect.height > 1) rect = wrapperRect;
+          }
+        } catch {
+          const wrapperRect = inner.getBoundingClientRect();
+          if (wrapperRect.width > 1 && wrapperRect.height > 1) rect = wrapperRect;
         }
       }
     }
@@ -539,8 +549,8 @@ const Index = () => {
       top: rect.top,
       width: rect.width,
       height: rect.height,
-      right: rect.right,
-      bottom: rect.bottom,
+      right: (rect as DOMRect).right ?? rect.left + rect.width,
+      bottom: (rect as DOMRect).bottom ?? rect.top + rect.height,
     };
   };
 
