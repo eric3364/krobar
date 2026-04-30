@@ -62,9 +62,7 @@ export default function IconPicker({ value, onSelect, onCancel, style }: IconPic
       />
       <div className="grid grid-cols-8 gap-1 max-h-56 overflow-y-auto">
         {results.map((name) => {
-          const IconComp = (LucideIcons as Record<string, React.ComponentType<{ size?: number }>>)[
-            name
-          ];
+          const IconComp = (LucideIcons as unknown as Record<string, React.ComponentType<{ size?: number }>>)[name];
           if (!IconComp) return null;
           const active = name === value;
           return (
