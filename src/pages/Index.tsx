@@ -503,10 +503,23 @@ const Index = () => {
   const getLocalBBox = (el: SVGGraphicsElement): { x: number; y: number; w: number; h: number } => {
     if (el.tagName.toLowerCase() === "foreignobject") {
       const fo = el as unknown as SVGForeignObjectElement;
-      const x = parseFloat(fo.getAttribute("x") || "0");
-      const y = parseFloat(fo.getAttribute("y") || "0");
-      const w = parseFloat(fo.getAttribute("width") || "0");
-      const h = parseFloat(fo.getAttribute("height") || "0");
+      // IMPORTANT: use the ORIGINAL x/y/w/h captured before any drag/resize.
+      // Reading the live attributes here would make the bbox grow each frame
+      // (because we mutate width/height during resize), which makes anchoring
+      // math diverge and the SE handle feel "stuck".
+      captureOriginals(fo);
+      const x = parseFloat(
+        fo.getAttribute("data-krobar-orig-x") ?? fo.getAttribute("x") ?? "0"
+      );
+      const y = parseFloat(
+        fo.getAttribute("data-krobar-orig-y") ?? fo.getAttribute("y") ?? "0"
+      );
+      const w = parseFloat(
+        fo.getAttribute("data-krobar-orig-w") ?? fo.getAttribute("width") ?? "0"
+      );
+      const h = parseFloat(
+        fo.getAttribute("data-krobar-orig-h") ?? fo.getAttribute("height") ?? "0"
+      );
       return { x, y, w, h };
     }
     if (isWrapTextEl(el)) {
@@ -568,10 +581,10 @@ const Index = () => {
     if (ow > 0) fo.setAttribute("width", String(ow * sx));
     if (oh > 0) fo.setAttribute("height", String(oh * sy));
     // NOTE: on NE modifie PAS la taille de la police lors d'un redimensionnement.
-    // Le HTML embarqué utilise déjà word-wrap/overflow-wrap, donc le texte se
-    // réajuste naturellement (retour à la ligne si on rétrécit le bloc, plus
-    // d'espace disponible si on l'agrandit). Si une font-size avait été posée
-    // par un précédent appel, on la nettoie pour revenir à la taille d'origine.
+    // Le HTML embarqué doit utiliser word-wrap/overflow-wrap pour que le texte
+    // se réajuste naturellement. On force ces propriétés sur le 1er enfant et
+    // on s'assure qu'il occupe 100% du foreignObject (sinon le bloc grandit
+    // sans que le texte ne re-wrappe).
     const nodes = fo.querySelectorAll<HTMLElement>("*");
     const all: HTMLElement[] = [fo.firstElementChild as HTMLElement, ...Array.from(nodes)].filter(
       Boolean
@@ -579,6 +592,16 @@ const Index = () => {
     all.forEach((node) => {
       if (node.style && node.style.fontSize) node.style.fontSize = "";
     });
+    const root = fo.firstElementChild as HTMLElement | null;
+    if (root && root.style) {
+      root.style.width = "100%";
+      root.style.height = "100%";
+      root.style.boxSizing = "border-box";
+      root.style.wordWrap = "break-word";
+      root.style.overflowWrap = "break-word";
+      root.style.whiteSpace = "normal";
+      root.style.overflow = "hidden";
+    }
   };
 
   // Apply translation (+ optional scale) transforms to slot elements (idempotent).
