@@ -232,6 +232,11 @@ const Index = () => {
   const [selectedRect, setSelectedRect] = useState<
     { left: number; top: number; width: number; height: number } | null
   >(null);
+  // Snapshot of selectedRect at pointerdown — used to compute live overlay
+  // position from the cumulative pointer delta without drift.
+  const dragStartRectRef = useRef<
+    { left: number; top: number; width: number; height: number } | null
+  >(null);
 
   useEffect(() => {
     fetch("/templates/manifest.json")
