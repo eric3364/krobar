@@ -389,6 +389,7 @@ const Index = () => {
     setSelectedSlotKey(null);
     setSelectedRect(null);
     setEdit(null);
+    historyRef.current = [];
   }, [selectedSuggestion]);
 
   // Merge AI slots with user-edited overrides
