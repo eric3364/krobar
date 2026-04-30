@@ -325,7 +325,50 @@ const Index = () => {
     return `translate(${dx} ${dy}) translate(${ax} ${ay}) scale(${sx} ${sy}) translate(${-ax} ${-ay})`;
   };
 
-  // Apply translation+scale transforms to slot elements (idempotent).
+  // For foreignObject slots, scaling via SVG transform deforms glyphs. Instead,
+  // we resize the foreignObject's width/height and proportionally adjust the
+  // font-size of inner elements. We capture the originals once on the element
+  // via data-* attributes so repeated resizes stay accurate.
+  const captureOriginals = (fo: SVGForeignObjectElement) => {
+    if (!fo.hasAttribute("data-krobar-orig-w")) {
+      fo.setAttribute("data-krobar-orig-w", fo.getAttribute("width") || "0");
+      fo.setAttribute("data-krobar-orig-h", fo.getAttribute("height") || "0");
+    }
+    // Capture font-size on every text-bearing descendant.
+    const nodes = fo.querySelectorAll<HTMLElement>("*");
+    const all: HTMLElement[] = [fo.firstElementChild as HTMLElement, ...Array.from(nodes)].filter(
+      Boolean
+    ) as HTMLElement[];
+    all.forEach((node) => {
+      if (!node.dataset) return;
+      if (node.dataset.krobarOrigFs == null) {
+        const fs = window.getComputedStyle(node).fontSize;
+        if (fs) node.dataset.krobarOrigFs = fs;
+      }
+    });
+  };
+
+  const applyForeignObjectScale = (fo: SVGForeignObjectElement, sx: number, sy: number) => {
+    captureOriginals(fo);
+    const ow = parseFloat(fo.getAttribute("data-krobar-orig-w") || "0");
+    const oh = parseFloat(fo.getAttribute("data-krobar-orig-h") || "0");
+    if (ow > 0) fo.setAttribute("width", String(ow * sx));
+    if (oh > 0) fo.setAttribute("height", String(oh * sy));
+    // Use the smaller axis ratio for font scaling so text never overflows.
+    const fsRatio = Math.min(sx, sy);
+    const nodes = fo.querySelectorAll<HTMLElement>("*");
+    const all: HTMLElement[] = [fo.firstElementChild as HTMLElement, ...Array.from(nodes)].filter(
+      Boolean
+    ) as HTMLElement[];
+    all.forEach((node) => {
+      const orig = node.dataset?.krobarOrigFs;
+      if (!orig) return;
+      const px = parseFloat(orig);
+      if (Number.isFinite(px)) node.style.fontSize = `${px * fsRatio}px`;
+    });
+  };
+
+  // Apply translation (+ optional scale) transforms to slot elements (idempotent).
   const applyTransforms = (
     svg: SVGElement,
     transforms: Record<string, { dx: number; dy: number; sx?: number; sy?: number }>
@@ -333,6 +376,19 @@ const Index = () => {
     svg.querySelectorAll("[data-slot][data-krobar-moved='1']").forEach((el) => {
       el.removeAttribute("transform");
       el.removeAttribute("data-krobar-moved");
+      // Reset foreignObject size/font tweaks if any.
+      if (el.tagName.toLowerCase() === "foreignobject") {
+        const fo = el as unknown as SVGForeignObjectElement;
+        const ow = fo.getAttribute("data-krobar-orig-w");
+        const oh = fo.getAttribute("data-krobar-orig-h");
+        if (ow) fo.setAttribute("width", ow);
+        if (oh) fo.setAttribute("height", oh);
+        fo.querySelectorAll<HTMLElement>("*").forEach((n) => {
+          if (n.dataset?.krobarOrigFs) n.style.fontSize = "";
+        });
+        const first = fo.firstElementChild as HTMLElement | null;
+        if (first?.dataset?.krobarOrigFs) first.style.fontSize = "";
+      }
     });
     Object.entries(transforms).forEach(([key, t]) => {
       const slotEl = svg.querySelector(`[data-slot="${key}"]`) as Element | null;
@@ -341,16 +397,18 @@ const Index = () => {
       if (!el) return;
       const sx = t.sx ?? 1;
       const sy = t.sy ?? 1;
-      if (sx === 1 && sy === 1) {
+      const isFO = el.tagName.toLowerCase() === "foreignobject";
+      if (isFO) {
+        // Translate via transform; resize via width/height + font-size.
+        el.setAttribute("transform", `translate(${t.dx} ${t.dy})`);
+        if (sx !== 1 || sy !== 1) {
+          applyForeignObjectScale(el as unknown as SVGForeignObjectElement, sx, sy);
+        }
+      } else if (sx === 1 && sy === 1) {
         el.setAttribute("transform", `translate(${t.dx} ${t.dy})`);
       } else {
         const bb = getLocalBBox(el);
-        // Anchor at top-left of local bbox keeps math stable; the live resize
-        // already accounts for which corner moved.
-        el.setAttribute(
-          "transform",
-          buildTransform(t.dx, t.dy, sx, sy, bb.x, bb.y)
-        );
+        el.setAttribute("transform", buildTransform(t.dx, t.dy, sx, sy, bb.x, bb.y));
       }
       el.setAttribute("data-krobar-moved", "1");
     });
@@ -506,7 +564,13 @@ const Index = () => {
     const delta = viewportDeltaToSvgUnits(slotEl, dx, dy);
     const ndx = base.dx + delta.dx;
     const ndy = base.dy + delta.dy;
-    if (sx === 1 && sy === 1) {
+    const isFO = movableEl.tagName.toLowerCase() === "foreignobject";
+    if (isFO) {
+      movableEl.setAttribute("transform", `translate(${ndx} ${ndy})`);
+      if (sx !== 1 || sy !== 1) {
+        applyForeignObjectScale(movableEl as unknown as SVGForeignObjectElement, sx, sy);
+      }
+    } else if (sx === 1 && sy === 1) {
       movableEl.setAttribute("transform", `translate(${ndx} ${ndy})`);
     } else {
       const bb = getLocalBBox(movableEl);
@@ -584,37 +648,46 @@ const Index = () => {
 
     // Local bbox of the element WITHOUT current transform.
     const bb = getLocalBBox(movable);
+    const isFO = movable.tagName.toLowerCase() === "foreignobject";
 
-    // Anchor in local coords = opposite corner of the dragged one.
-    const anchorLocalX = signX > 0 ? bb.x : bb.x + bb.w;
-    const anchorLocalY = signY > 0 ? bb.y : bb.y + bb.h;
+    let next: { dx: number; dy: number; sx: number; sy: number };
 
-    // We want the anchor to remain visually fixed. The transform we use is:
-    //   T(dx,dy) * T(ax,ay) * S(sx,sy) * T(-ax,-ay)
-    // applied around (bb.x, bb.y). Easier: use a generic anchor (anchorLocal).
-    // To keep that anchor fixed across a scale change, the translation must
-    // satisfy: newDx = baseDx (anchor position is identity under that transform).
-    // So we keep dx,dy unchanged and change the anchor of the buildTransform.
-    // For simplicity, compute new translation so that anchor maps to its
-    // current viewport position (which is unchanged from startRect).
-    //
-    // Strategy: rebuild transform with anchor at (anchorLocalX, anchorLocalY)
-    // and the SAME (base.dx, base.dy). Mathematically:
-    //   pAfter = T(dx,dy) * (anchor + S*(p - anchor))
-    // For p = anchor: pAfter = anchor + (dx,dy). So anchor moves by (dx,dy)
-    // independent of scale — exactly what we want.
-    const next = {
-      dx: base.dx,
-      dy: base.dy,
-      sx: newSx,
-      sy: newSy,
-    };
-
-    // Apply transform now (live).
-    movable.setAttribute(
-      "transform",
-      buildTransform(next.dx, next.dy, next.sx, next.sy, anchorLocalX, anchorLocalY)
-    );
+    if (isFO) {
+      // For foreignObject we change width/height (no glyph distortion). The
+      // FO grows from its (x, y) top-left, so anchoring the opposite corner
+      // requires an extra translation when the dragged corner is on the left
+      // or top edge.
+      // The opposite-corner anchor in local coords:
+      //   - if signX < 0 (dragged left edge), anchor is right edge => after
+      //     width *= sx, the right edge shifts by bb.w*(sx-1); compensate by
+      //     translating x by -bb.w*(sx-1).
+      //   - signX > 0: no x compensation.
+      // Same for y.
+      const compX = signX < 0 ? -bb.w * (newSx - 1) : 0;
+      const compY = signY < 0 ? -bb.h * (newSy - 1) : 0;
+      next = {
+        dx: base.dx + compX,
+        dy: base.dy + compY,
+        sx: newSx,
+        sy: newSy,
+      };
+      movable.setAttribute("transform", `translate(${next.dx} ${next.dy})`);
+      applyForeignObjectScale(movable as unknown as SVGForeignObjectElement, next.sx, next.sy);
+    } else {
+      // Anchor in local coords = opposite corner of the dragged one.
+      const anchorLocalX = signX > 0 ? bb.x : bb.x + bb.w;
+      const anchorLocalY = signY > 0 ? bb.y : bb.y + bb.h;
+      next = {
+        dx: base.dx,
+        dy: base.dy,
+        sx: newSx,
+        sy: newSy,
+      };
+      movable.setAttribute(
+        "transform",
+        buildTransform(next.dx, next.dy, next.sx, next.sy, anchorLocalX, anchorLocalY)
+      );
+    }
     movable.setAttribute("data-krobar-moved", "1");
 
     // New overlay rect: anchor corner stays put, opposite corner moves by (dx,dy).
@@ -644,21 +717,23 @@ const Index = () => {
   ) => {
     const r = computeResize(corner, dx, dy);
     dragStartRectRef.current = null;
-    if (!r || !selectedSlotKey) return;
-    // We need to bake the anchored transform into a stable (dx,dy,sx,sy) form
-    // that uses our canonical anchor (bb.x, bb.y). Convert by composing.
+    const isFO = r.movable.tagName.toLowerCase() === "foreignobject";
+    if (isFO) {
+      // For FO, computeResize already encodes the anchored translation in
+      // next.dx/next.dy (no buildTransform anchor needed).
+      setSlotTransforms((prev) => ({
+        ...prev,
+        [selectedSlotKey]: { ...r.next },
+      }));
+      return;
+    }
+    // For other SVG nodes: bake the anchored buildTransform into the canonical
+    // form using anchor (bb.x, bb.y).
     const bb = getLocalBBox(r.movable);
     const signX = corner === "ne" || corner === "se" ? 1 : -1;
     const signY = corner === "sw" || corner === "se" ? 1 : -1;
     const ax = signX > 0 ? bb.x : bb.x + bb.w;
     const ay = signY > 0 ? bb.y : bb.y + bb.h;
-    // Effective translate in canonical form (anchor at bb.x, bb.y):
-    // T_total = T(dx,dy) * T(ax,ay) * S * T(-ax,-ay)
-    //         = T(dx + ax - sx*ax_rel, dy + ay - sy*ay_rel) * T(bb.x,bb.y) * S * T(-bb.x,-bb.y)
-    // Simpler: store dx',dy' = base translate so that buildTransform with anchor (bb.x,bb.y) is equivalent.
-    // Equivalent translation offset from anchor (ax,ay) -> (bb.x,bb.y):
-    //   extraDx = (ax - bb.x) * (1 - sx)
-    //   extraDy = (ay - bb.y) * (1 - sy)
     const extraDx = (ax - bb.x) * (1 - r.next.sx);
     const extraDy = (ay - bb.y) * (1 - r.next.sy);
     setSlotTransforms((prev) => ({
