@@ -1030,9 +1030,17 @@ const Index = () => {
     // Skip no-op resize.
     if (dx !== 0 || dy !== 0) pushHistory();
     const isFO = r.movable.tagName.toLowerCase() === "foreignobject";
+    const isWrapText = isWrapTextEl(r.movable);
     if (isFO) {
       // For FO, computeResize already encodes the anchored translation in
       // next.dx/next.dy (no buildTransform anchor needed).
+      setSlotTransforms((prev) => ({
+        ...prev,
+        [selectedSlotKey]: { ...r.next },
+      }));
+      return;
+    }
+    if (isWrapText) {
       setSlotTransforms((prev) => ({
         ...prev,
         [selectedSlotKey]: { ...r.next },
