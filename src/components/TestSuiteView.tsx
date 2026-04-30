@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -116,6 +117,19 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
   const [fullText, setFullText] = useState<TestCase | null>(null);
   const [notes, setNotes] = useState<Record<number, string>>(() => loadNotes());
   const [annotateId, setAnnotateId] = useState<number | null>(null);
+  const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
+
+  const toggleSelected = (id: number) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+  const selectAll = () => setSelectedIds(new Set(testSuite.map((t) => t.id)));
+  const clearSelection = () => setSelectedIds(new Set());
+  const allSelected = selectedIds.size === testSuite.length;
 
   const palette = palettes[paletteKey];
 
@@ -201,6 +215,23 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
     setRunning(false);
   };
 
+  const runSelection = async () => {
+    if (selectedIds.size === 0) return;
+    setRunning(true);
+    pauseRef.current = false;
+    setPaused(false);
+    const subset = testSuite.filter((t) => selectedIds.has(t.id));
+    for (const test of subset) {
+      if (pauseRef.current) {
+        toast.info("Pause — exécution arrêtée");
+        break;
+      }
+      await runOne(test, palette);
+      await new Promise((r) => setTimeout(r, 1000));
+    }
+    setRunning(false);
+  };
+
   const pause = () => {
     if (!running) return;
     pauseRef.current = true;
@@ -231,6 +262,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
   const warningCount = results.filter((r) => r.status === "warning").length;
   const failCount = results.filter((r) => r.status === "fail").length;
   const allDone = completedCount === testSuite.length;
+  const hasAnyCompleted = completedCount > 0;
 
   const exportReport = () => {
     const report = {
@@ -332,22 +364,60 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
             </div>
           </div>
 
-          {allDone && (
+          {hasAnyCompleted && (
             <div className="rounded-lg border bg-accent/30 px-4 py-3 flex items-center justify-between gap-3 flex-wrap">
               <div className="flex items-center gap-4 text-sm">
                 <span className="font-bold">
-                  Score global : {successCount}/{testSuite.length} (
-                  {Math.round((successCount / testSuite.length) * 100)}%)
+                  Score global : {successCount}/{completedCount} (
+                  {completedCount > 0 ? Math.round((successCount / completedCount) * 100) : 0}%)
                 </span>
                 <span>✅ {successCount} réussis</span>
                 <span>⚠️ {warningCount} avertissements</span>
                 <span>❌ {failCount} échecs</span>
+                <span className="text-muted-foreground">
+                  ({completedCount}/{testSuite.length} exécutés)
+                </span>
               </div>
-              <Button onClick={exportReport} size="sm" variant="outline">
+              <Button onClick={exportReport} size="sm" variant="outline" disabled={!allDone}>
                 <Download className="w-4 h-4 mr-2" /> Exporter le rapport
               </Button>
             </div>
           )}
+
+          <div className="flex items-center gap-4 flex-wrap text-xs border rounded-lg px-3 py-2 bg-muted/30">
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="select-all"
+                checked={allSelected}
+                onCheckedChange={(c) => (c ? selectAll() : clearSelection())}
+              />
+              <Label htmlFor="select-all" className="text-xs cursor-pointer">
+                Tout sélectionner
+              </Label>
+            </div>
+            <span className="text-muted-foreground">
+              {selectedIds.size} test{selectedIds.size > 1 ? "s" : ""} sélectionné
+              {selectedIds.size > 1 ? "s" : ""}
+            </span>
+            <div className="flex items-center gap-2 ml-auto">
+              <Button
+                onClick={runSelection}
+                disabled={running || selectedIds.size === 0}
+                size="sm"
+                variant="secondary"
+              >
+                <Play className="w-4 h-4 mr-2" /> Lancer la sélection
+              </Button>
+              <Button
+                onClick={clearSelection}
+                disabled={selectedIds.size === 0}
+                size="sm"
+                variant="ghost"
+              >
+                Effacer la sélection
+              </Button>
+            </div>
+          </div>
         </div>
       </header>
 
@@ -360,6 +430,8 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
               test={test}
               result={r}
               note={notes[test.id] || ""}
+              selected={selectedIds.has(test.id)}
+              onToggleSelect={() => toggleSelected(test.id)}
               onReplay={() => replayOne(test)}
               onZoom={(svg) => setZoom({ id: test.id, svg })}
               onShowFullText={() => setFullText(test)}
@@ -418,13 +490,15 @@ interface CardProps {
   test: TestCase;
   result: TestResult;
   note: string;
+  selected: boolean;
+  onToggleSelect: () => void;
   onReplay: () => void;
   onZoom: (svg: string) => void;
   onShowFullText: () => void;
   onAnnotate: () => void;
 }
 
-function TestCard({ test, result, note, onReplay, onZoom, onShowFullText, onAnnotate }: CardProps) {
+function TestCard({ test, result, note, selected, onToggleSelect, onReplay, onZoom, onShowFullText, onAnnotate }: CardProps) {
   const truncated = test.text.length > 150 ? test.text.slice(0, 150) + "…" : test.text;
   const matchBadge = useMemo(() => {
     if (result.matchKind === "exact")
@@ -450,6 +524,11 @@ function TestCard({ test, result, note, onReplay, onZoom, onShowFullText, onAnno
     <Card className="p-3 flex flex-col gap-2">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
+          <Checkbox
+            checked={selected}
+            onCheckedChange={onToggleSelect}
+            aria-label={`Sélectionner le test ${test.id}`}
+          />
           <span className="text-base">{statusIcon[result.status]}</span>
           <div>
             <div className="text-xs font-bold">Test {test.id}</div>
