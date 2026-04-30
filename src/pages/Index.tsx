@@ -1179,6 +1179,9 @@ const Index = () => {
           value={edit.value}
           style={{ left: edit.anchor.left, top: edit.anchor.top }}
           onSelect={(name) => {
+            if (name !== (slotOverrides[edit.slotKey] ?? edit.value)) {
+              pushHistory();
+            }
             setSlotOverrides((prev) => ({ ...prev, [edit.slotKey]: name }));
             setEdit(null);
           }}
