@@ -458,6 +458,10 @@ const Index = () => {
       fo.setAttribute("data-krobar-orig-w", fo.getAttribute("width") || "0");
       fo.setAttribute("data-krobar-orig-h", fo.getAttribute("height") || "0");
     }
+    if (!fo.hasAttribute("data-krobar-orig-x")) {
+      fo.setAttribute("data-krobar-orig-x", fo.getAttribute("x") || "0");
+      fo.setAttribute("data-krobar-orig-y", fo.getAttribute("y") || "0");
+    }
     // Capture font-size on every text-bearing descendant.
     const nodes = fo.querySelectorAll<HTMLElement>("*");
     const all: HTMLElement[] = [fo.firstElementChild as HTMLElement, ...Array.from(nodes)].filter(
@@ -500,11 +504,15 @@ const Index = () => {
     svg.querySelectorAll("[data-slot][data-krobar-moved='1']").forEach((el) => {
       el.removeAttribute("transform");
       el.removeAttribute("data-krobar-moved");
-      // Reset foreignObject size/font tweaks if any.
+      // Reset foreignObject size/pos/font tweaks if any.
       if (el.tagName.toLowerCase() === "foreignobject") {
         const fo = el as unknown as SVGForeignObjectElement;
+        const ox = fo.getAttribute("data-krobar-orig-x");
+        const oy = fo.getAttribute("data-krobar-orig-y");
         const ow = fo.getAttribute("data-krobar-orig-w");
         const oh = fo.getAttribute("data-krobar-orig-h");
+        if (ox) fo.setAttribute("x", ox);
+        if (oy) fo.setAttribute("y", oy);
         if (ow) fo.setAttribute("width", ow);
         if (oh) fo.setAttribute("height", oh);
         fo.querySelectorAll<HTMLElement>("*").forEach((n) => {
@@ -523,10 +531,17 @@ const Index = () => {
       const sy = t.sy ?? 1;
       const isFO = el.tagName.toLowerCase() === "foreignobject";
       if (isFO) {
-        // Translate via transform; resize via width/height + font-size.
-        el.setAttribute("transform", `translate(${t.dx} ${t.dy})`);
+        // Translate via x/y attribute (transform on <foreignObject> doesn't
+        // reliably move the embedded HTML in all browsers). Resize via
+        // width/height + font-size.
+        const fo = el as unknown as SVGForeignObjectElement;
+        captureOriginals(fo);
+        const ox = parseFloat(fo.getAttribute("data-krobar-orig-x") || "0");
+        const oy = parseFloat(fo.getAttribute("data-krobar-orig-y") || "0");
+        fo.setAttribute("x", String(ox + t.dx));
+        fo.setAttribute("y", String(oy + t.dy));
         if (sx !== 1 || sy !== 1) {
-          applyForeignObjectScale(el as unknown as SVGForeignObjectElement, sx, sy);
+          applyForeignObjectScale(fo, sx, sy);
         }
       } else if (sx === 1 && sy === 1) {
         el.setAttribute("transform", `translate(${t.dx} ${t.dy})`);
@@ -688,9 +703,14 @@ const Index = () => {
     const ndy = base.dy + delta.dy;
     const isFO = movableEl.tagName.toLowerCase() === "foreignobject";
     if (isFO) {
-      movableEl.setAttribute("transform", `translate(${ndx} ${ndy})`);
+      const fo = movableEl as unknown as SVGForeignObjectElement;
+      captureOriginals(fo);
+      const ox = parseFloat(fo.getAttribute("data-krobar-orig-x") || "0");
+      const oy = parseFloat(fo.getAttribute("data-krobar-orig-y") || "0");
+      fo.setAttribute("x", String(ox + ndx));
+      fo.setAttribute("y", String(oy + ndy));
       if (sx !== 1 || sy !== 1) {
-        applyForeignObjectScale(movableEl as unknown as SVGForeignObjectElement, sx, sy);
+        applyForeignObjectScale(fo, sx, sy);
       }
     } else if (sx === 1 && sy === 1) {
       movableEl.setAttribute("transform", `translate(${ndx} ${ndy})`);
@@ -796,8 +816,13 @@ const Index = () => {
         sx: newSx,
         sy: newSy,
       };
-      movable.setAttribute("transform", `translate(${next.dx} ${next.dy})`);
-      applyForeignObjectScale(movable as unknown as SVGForeignObjectElement, next.sx, next.sy);
+      const fo = movable as unknown as SVGForeignObjectElement;
+      captureOriginals(fo);
+      const ox = parseFloat(fo.getAttribute("data-krobar-orig-x") || "0");
+      const oy = parseFloat(fo.getAttribute("data-krobar-orig-y") || "0");
+      fo.setAttribute("x", String(ox + next.dx));
+      fo.setAttribute("y", String(oy + next.dy));
+      applyForeignObjectScale(fo, next.sx, next.sy);
     } else {
       // Anchor in local coords = opposite corner of the dragged one.
       const anchorLocalX = signX > 0 ? bb.x : bb.x + bb.w;
