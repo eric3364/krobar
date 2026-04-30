@@ -482,17 +482,17 @@ const Index = () => {
     const oh = parseFloat(fo.getAttribute("data-krobar-orig-h") || "0");
     if (ow > 0) fo.setAttribute("width", String(ow * sx));
     if (oh > 0) fo.setAttribute("height", String(oh * sy));
-    // Use the smaller axis ratio for font scaling so text never overflows.
-    const fsRatio = Math.min(sx, sy);
+    // NOTE: on NE modifie PAS la taille de la police lors d'un redimensionnement.
+    // Le HTML embarqué utilise déjà word-wrap/overflow-wrap, donc le texte se
+    // réajuste naturellement (retour à la ligne si on rétrécit le bloc, plus
+    // d'espace disponible si on l'agrandit). Si une font-size avait été posée
+    // par un précédent appel, on la nettoie pour revenir à la taille d'origine.
     const nodes = fo.querySelectorAll<HTMLElement>("*");
     const all: HTMLElement[] = [fo.firstElementChild as HTMLElement, ...Array.from(nodes)].filter(
       Boolean
     ) as HTMLElement[];
     all.forEach((node) => {
-      const orig = node.dataset?.krobarOrigFs;
-      if (!orig) return;
-      const px = parseFloat(orig);
-      if (Number.isFinite(px)) node.style.fontSize = `${px * fsRatio}px`;
+      if (node.style && node.style.fontSize) node.style.fontSize = "";
     });
   };
 
