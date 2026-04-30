@@ -291,6 +291,63 @@ const Index = () => {
     { left: number; top: number; width: number; height: number } | null
   >(null);
 
+  // Undo history: snapshots of (slotTransforms, slotOverrides) taken
+  // BEFORE each user mutation (drag commit, resize commit, text/icon edit).
+  // CMD/Ctrl+Z pops the latest snapshot and restores it.
+  type HistorySnapshot = {
+    slotTransforms: Record<string, { dx: number; dy: number; sx?: number; sy?: number }>;
+    slotOverrides: Record<string, string>;
+  };
+  const historyRef = useRef<HistorySnapshot[]>([]);
+  const slotTransformsRef = useRef(slotTransforms);
+  const slotOverridesRef = useRef(slotOverrides);
+  useEffect(() => {
+    slotTransformsRef.current = slotTransforms;
+  }, [slotTransforms]);
+  useEffect(() => {
+    slotOverridesRef.current = slotOverrides;
+  }, [slotOverrides]);
+
+  const pushHistory = () => {
+    historyRef.current.push({
+      slotTransforms: { ...slotTransformsRef.current },
+      slotOverrides: { ...slotOverridesRef.current },
+    });
+    // Cap history to avoid unbounded growth.
+    if (historyRef.current.length > 100) {
+      historyRef.current.shift();
+    }
+  };
+
+  const undo = () => {
+    const snap = historyRef.current.pop();
+    if (!snap) {
+      toast.info("Rien à annuler");
+      return;
+    }
+    setSlotTransforms(snap.slotTransforms);
+    setSlotOverrides(snap.slotOverrides);
+    setSelectedSlotKey(null);
+    setSelectedRect(null);
+    setEdit(null);
+  };
+
+  // Global keyboard shortcut: CMD/Ctrl+Z → undo last move/resize/edit.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const isUndo = (e.metaKey || e.ctrlKey) && !e.shiftKey && (e.key === "z" || e.key === "Z");
+      if (!isUndo) return;
+      // Don't hijack undo inside form fields (textarea, input, contenteditable).
+      const t = e.target as HTMLElement | null;
+      const tag = t?.tagName?.toLowerCase();
+      if (tag === "textarea" || tag === "input" || t?.isContentEditable) return;
+      e.preventDefault();
+      undo();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
   useEffect(() => {
     fetch("/templates/manifest.json")
       .then((r) => r.json())
