@@ -653,7 +653,7 @@ const Index = () => {
         </div>
         <div
           ref={previewRef}
-          className="flex-1 min-h-[300px] border rounded-lg bg-card overflow-hidden flex items-center justify-center"
+          className="flex-1 min-h-[300px] border rounded-lg bg-card overflow-hidden flex items-center justify-center [&_[data-slot]]:cursor-pointer"
         >
           {!selectedSuggestion && (
             <span className="text-sm text-muted-foreground">
