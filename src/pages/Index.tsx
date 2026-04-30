@@ -291,6 +291,63 @@ const Index = () => {
     { left: number; top: number; width: number; height: number } | null
   >(null);
 
+  // Undo history: snapshots of (slotTransforms, slotOverrides) taken
+  // BEFORE each user mutation (drag commit, resize commit, text/icon edit).
+  // CMD/Ctrl+Z pops the latest snapshot and restores it.
+  type HistorySnapshot = {
+    slotTransforms: Record<string, { dx: number; dy: number; sx?: number; sy?: number }>;
+    slotOverrides: Record<string, string>;
+  };
+  const historyRef = useRef<HistorySnapshot[]>([]);
+  const slotTransformsRef = useRef(slotTransforms);
+  const slotOverridesRef = useRef(slotOverrides);
+  useEffect(() => {
+    slotTransformsRef.current = slotTransforms;
+  }, [slotTransforms]);
+  useEffect(() => {
+    slotOverridesRef.current = slotOverrides;
+  }, [slotOverrides]);
+
+  const pushHistory = () => {
+    historyRef.current.push({
+      slotTransforms: { ...slotTransformsRef.current },
+      slotOverrides: { ...slotOverridesRef.current },
+    });
+    // Cap history to avoid unbounded growth.
+    if (historyRef.current.length > 100) {
+      historyRef.current.shift();
+    }
+  };
+
+  const undo = () => {
+    const snap = historyRef.current.pop();
+    if (!snap) {
+      toast.info("Rien à annuler");
+      return;
+    }
+    setSlotTransforms(snap.slotTransforms);
+    setSlotOverrides(snap.slotOverrides);
+    setSelectedSlotKey(null);
+    setSelectedRect(null);
+    setEdit(null);
+  };
+
+  // Global keyboard shortcut: CMD/Ctrl+Z → undo last move/resize/edit.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const isUndo = (e.metaKey || e.ctrlKey) && !e.shiftKey && (e.key === "z" || e.key === "Z");
+      if (!isUndo) return;
+      // Don't hijack undo inside form fields (textarea, input, contenteditable).
+      const t = e.target as HTMLElement | null;
+      const tag = t?.tagName?.toLowerCase();
+      if (tag === "textarea" || tag === "input" || t?.isContentEditable) return;
+      e.preventDefault();
+      undo();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
   useEffect(() => {
     fetch("/templates/manifest.json")
       .then((r) => r.json())
@@ -332,6 +389,7 @@ const Index = () => {
     setSelectedSlotKey(null);
     setSelectedRect(null);
     setEdit(null);
+    historyRef.current = [];
   }, [selectedSuggestion]);
 
   // Merge AI slots with user-edited overrides
@@ -660,6 +718,9 @@ const Index = () => {
     if (!slotEl) return;
     const base = slotTransforms[selectedSlotKey] ?? { dx: 0, dy: 0, sx: 1, sy: 1 };
     const delta = viewportDeltaToSvgUnits(slotEl, dx, dy);
+    // No-op drag (e.g. simple click) → don't pollute history.
+    if (delta.dx === 0 && delta.dy === 0) return;
+    pushHistory();
     setSlotTransforms((prev) => ({
       ...prev,
       [selectedSlotKey]: {
@@ -781,6 +842,9 @@ const Index = () => {
   ) => {
     const r = computeResize(corner, dx, dy);
     dragStartRectRef.current = null;
+    if (!r) return;
+    // Skip no-op resize.
+    if (dx !== 0 || dy !== 0) pushHistory();
     const isFO = r.movable.tagName.toLowerCase() === "foreignobject";
     if (isFO) {
       // For FO, computeResize already encodes the anchored translation in
@@ -1101,6 +1165,9 @@ const Index = () => {
           initialValue={edit.value}
           fontStyle={edit.fontStyle}
           onCommit={(val) => {
+            if (val !== (slotOverrides[edit.slotKey] ?? edit.value)) {
+              pushHistory();
+            }
             setSlotOverrides((prev) => ({ ...prev, [edit.slotKey]: val }));
             setEdit(null);
           }}
@@ -1112,6 +1179,9 @@ const Index = () => {
           value={edit.value}
           style={{ left: edit.anchor.left, top: edit.anchor.top }}
           onSelect={(name) => {
+            if (name !== (slotOverrides[edit.slotKey] ?? edit.value)) {
+              pushHistory();
+            }
             setSlotOverrides((prev) => ({ ...prev, [edit.slotKey]: name }));
             setEdit(null);
           }}
