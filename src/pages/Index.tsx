@@ -703,9 +703,14 @@ const Index = () => {
     const ndy = base.dy + delta.dy;
     const isFO = movableEl.tagName.toLowerCase() === "foreignobject";
     if (isFO) {
-      movableEl.setAttribute("transform", `translate(${ndx} ${ndy})`);
+      const fo = movableEl as unknown as SVGForeignObjectElement;
+      captureOriginals(fo);
+      const ox = parseFloat(fo.getAttribute("data-krobar-orig-x") || "0");
+      const oy = parseFloat(fo.getAttribute("data-krobar-orig-y") || "0");
+      fo.setAttribute("x", String(ox + ndx));
+      fo.setAttribute("y", String(oy + ndy));
       if (sx !== 1 || sy !== 1) {
-        applyForeignObjectScale(movableEl as unknown as SVGForeignObjectElement, sx, sy);
+        applyForeignObjectScale(fo, sx, sy);
       }
     } else if (sx === 1 && sy === 1) {
       movableEl.setAttribute("transform", `translate(${ndx} ${ndy})`);
