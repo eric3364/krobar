@@ -32,10 +32,14 @@ type Suggestion = {
 // Plus de clé API côté client : la communication avec Claude passe par le backend.
 
 function applyPaletteVars(el: SVGElement, palette: Palette) {
-  el.style.setProperty("--primary", palette.primary);
-  el.style.setProperty("--accent", palette.accent);
-  el.style.setProperty("--bg", palette.bg);
-  el.style.setProperty("--text", palette.text);
+  const c = palette.colors;
+  el.style.setProperty("--primary", c.primary);
+  el.style.setProperty("--accent", c.accent);
+  el.style.setProperty("--bg", c.bg);
+  el.style.setProperty("--text", c.text);
+  el.style.setProperty("--muted", c.muted);
+  el.style.setProperty("--surface", c.surface);
+  el.style.setProperty("--border", c.border);
 }
 
 function fillSlots(svg: SVGElement, slots: Record<string, string>) {
@@ -370,11 +374,11 @@ const Index = () => {
                       }`}
                     >
                       <div className="flex gap-1 mb-1.5">
-                        <span className="w-4 h-4 rounded" style={{ background: p.primary }} />
-                        <span className="w-4 h-4 rounded" style={{ background: p.accent }} />
-                        <span className="w-4 h-4 rounded border" style={{ background: p.bg }} />
+                        <span className="w-4 h-4 rounded" style={{ background: p.colors.primary }} />
+                        <span className="w-4 h-4 rounded" style={{ background: p.colors.accent }} />
+                        <span className="w-4 h-4 rounded border" style={{ background: p.colors.bg }} />
                       </div>
-                      <div className="text-xs font-medium">{paletteLabels[k]}</div>
+                      <div className="text-xs font-medium">{p.name}</div>
                     </button>
                   );
                 })}
