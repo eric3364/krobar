@@ -732,6 +732,10 @@ const Index = () => {
       const sx = t.sx ?? 1;
       const sy = t.sy ?? 1;
       const isFO = el.tagName.toLowerCase() === "foreignobject";
+      if (!isFO && el.tagName.toLowerCase() === "text" && (sx !== 1 || sy !== 1)) {
+        promoteTextToWrap(el as SVGTextElement);
+      }
+      const isWrapText = isWrapTextEl(el);
       if (isFO) {
         // Translate via x/y attribute (transform on <foreignObject> doesn't
         // reliably move the embedded HTML in all browsers). Resize via
@@ -747,7 +751,7 @@ const Index = () => {
         }
       } else if (sx === 1 && sy === 1) {
         el.setAttribute("transform", `translate(${t.dx} ${t.dy})`);
-      } else if (isWrapTextEl(el)) {
+      } else if (isWrapText) {
         // Texte SVG avec wrap : on N'utilise PAS scale() (qui déforme les
         // glyphes). À la place, on ajuste la largeur de wrap (en caractères)
         // et le nombre de lignes max proportionnellement à sx/sy, puis on
