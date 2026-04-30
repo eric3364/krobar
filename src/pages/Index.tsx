@@ -287,22 +287,71 @@ const Index = () => {
     [selectedSuggestion, slotOverrides]
   );
 
-  // Apply translation transforms to slot elements (idempotent).
+  // Get the element we should apply move/scale transforms to (foreignObject for HTML slots).
+  const getMovable = (slotEl: Element): SVGGraphicsElement | null => {
+    const fo = slotEl.closest("foreignObject") as SVGForeignObjectElement | null;
+    return (fo ?? (slotEl as unknown as SVGGraphicsElement)) || null;
+  };
+
+  // Local-space bbox of the movable element (without our transform applied).
+  const getLocalBBox = (el: SVGGraphicsElement): { x: number; y: number; w: number; h: number } => {
+    if (el.tagName.toLowerCase() === "foreignobject") {
+      const fo = el as unknown as SVGForeignObjectElement;
+      const x = parseFloat(fo.getAttribute("x") || "0");
+      const y = parseFloat(fo.getAttribute("y") || "0");
+      const w = parseFloat(fo.getAttribute("width") || "0");
+      const h = parseFloat(fo.getAttribute("height") || "0");
+      return { x, y, w, h };
+    }
+    // Temporarily clear our transform to get an unaffected bbox.
+    const prev = el.getAttribute("transform");
+    if (prev) el.removeAttribute("transform");
+    const b = el.getBBox();
+    if (prev) el.setAttribute("transform", prev);
+    return { x: b.x, y: b.y, w: b.width, h: b.height };
+  };
+
+  // Build a transform string that translates by (dx,dy) and scales (sx,sy)
+  // around the given anchor in local coordinates.
+  const buildTransform = (
+    dx: number,
+    dy: number,
+    sx: number,
+    sy: number,
+    ax: number,
+    ay: number
+  ) => {
+    // T(dx,dy) * T(ax,ay) * S(sx,sy) * T(-ax,-ay)
+    return `translate(${dx} ${dy}) translate(${ax} ${ay}) scale(${sx} ${sy}) translate(${-ax} ${-ay})`;
+  };
+
+  // Apply translation+scale transforms to slot elements (idempotent).
   const applyTransforms = (
     svg: SVGElement,
-    transforms: Record<string, { dx: number; dy: number }>
+    transforms: Record<string, { dx: number; dy: number; sx?: number; sy?: number }>
   ) => {
-    // Reset previously applied transforms (only those we manage)
     svg.querySelectorAll("[data-slot][data-krobar-moved='1']").forEach((el) => {
       el.removeAttribute("transform");
       el.removeAttribute("data-krobar-moved");
     });
     Object.entries(transforms).forEach(([key, t]) => {
       const slotEl = svg.querySelector(`[data-slot="${key}"]`) as Element | null;
-      const el =
-        (slotEl?.closest("foreignObject") as SVGForeignObjectElement | null) ?? slotEl;
+      if (!slotEl) return;
+      const el = getMovable(slotEl);
       if (!el) return;
-      el.setAttribute("transform", `translate(${t.dx} ${t.dy})`);
+      const sx = t.sx ?? 1;
+      const sy = t.sy ?? 1;
+      if (sx === 1 && sy === 1) {
+        el.setAttribute("transform", `translate(${t.dx} ${t.dy})`);
+      } else {
+        const bb = getLocalBBox(el);
+        // Anchor at top-left of local bbox keeps math stable; the live resize
+        // already accounts for which corner moved.
+        el.setAttribute(
+          "transform",
+          buildTransform(t.dx, t.dy, sx, sy, bb.x, bb.y)
+        );
+      }
       el.setAttribute("data-krobar-moved", "1");
     });
   };
