@@ -709,6 +709,14 @@ const Index = () => {
             direction="horizontal"
             autoSaveId="krobar-columns"
             className="h-full gap-0"
+            onLayout={() => {
+              // Tout redimensionnement de colonnes invalide la position
+              // du cadre de sélection (calculée en coordonnées viewport).
+              if (selectedSlotKey) {
+                setSelectedSlotKey(null);
+                setSelectedRect(null);
+              }
+            }}
           >
             <ResizablePanel defaultSize={28} minSize={18} className="pr-2">
               {renderInputSection()}
