@@ -215,7 +215,22 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
     setRunning(false);
   };
 
-  const pause = () => {
+  const runSelection = async () => {
+    if (selectedIds.size === 0) return;
+    setRunning(true);
+    pauseRef.current = false;
+    setPaused(false);
+    const subset = testSuite.filter((t) => selectedIds.has(t.id));
+    for (const test of subset) {
+      if (pauseRef.current) {
+        toast.info("Pause — exécution arrêtée");
+        break;
+      }
+      await runOne(test, palette);
+      await new Promise((r) => setTimeout(r, 1000));
+    }
+    setRunning(false);
+  };
     if (!running) return;
     pauseRef.current = true;
     setPaused(true);
