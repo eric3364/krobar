@@ -131,6 +131,20 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
   const clearSelection = () => setSelectedIds(new Set());
   const allSelected = selectedIds.size === testSuite.length;
 
+  // Compute "new" tests: those whose id isn't present in the persisted results snapshot at mount.
+  const [newTestIds] = useState<Set<number>>(() => {
+    try {
+      const cached = localStorage.getItem(RESULTS_STORAGE);
+      if (!cached) return new Set(testSuite.map((t) => t.id));
+      const parsed = JSON.parse(cached) as Array<{ id: number }>;
+      const known = new Set(parsed.map((r) => r.id));
+      return new Set(testSuite.filter((t) => !known.has(t.id)).map((t) => t.id));
+    } catch {
+      return new Set(testSuite.map((t) => t.id));
+    }
+  });
+  const selectNew = () => setSelectedIds(new Set(newTestIds));
+
   const palette = palettes[paletteKey];
 
   // Persist results.
