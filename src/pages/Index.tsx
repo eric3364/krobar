@@ -282,6 +282,24 @@ const Index = () => {
     [selectedSuggestion, slotOverrides]
   );
 
+  // Apply translation transforms to slot elements (idempotent).
+  const applyTransforms = (
+    svg: SVGElement,
+    transforms: Record<string, { dx: number; dy: number }>
+  ) => {
+    // Reset previously applied transforms (only those we manage)
+    svg.querySelectorAll("[data-slot][data-krobar-moved='1']").forEach((el) => {
+      el.removeAttribute("transform");
+      el.removeAttribute("data-krobar-moved");
+    });
+    Object.entries(transforms).forEach(([key, t]) => {
+      const el = svg.querySelector(`[data-slot="${key}"]`) as SVGGraphicsElement | null;
+      if (!el) return;
+      el.setAttribute("transform", `translate(${t.dx} ${t.dy})`);
+      el.setAttribute("data-krobar-moved", "1");
+    });
+  };
+
   // Render big preview
   useEffect(() => {
     if (!selectedSuggestion || !selectedTemplate || !previewRef.current) return;
@@ -289,17 +307,56 @@ const Index = () => {
       const svg = await loadSvg(selectedTemplate.file);
       applyPaletteVars(svg, palette);
       fillSlots(svg, effectiveSlots);
+      applyTransforms(svg, slotTransforms);
       svg.setAttribute("width", "100%");
       svg.setAttribute("height", "100%");
       previewRef.current!.innerHTML = "";
       previewRef.current!.appendChild(svg);
+      // Re-measure currently selected slot, if any, after re-render.
+      if (selectedSlotKey) {
+        const el = svg.querySelector(`[data-slot="${selectedSlotKey}"]`) as Element | null;
+        if (el) {
+          const r = el.getBoundingClientRect();
+          setSelectedRect({ left: r.left, top: r.top, width: r.width, height: r.height });
+        }
+      }
     })();
-  }, [selectedSuggestion, selectedTemplate, palette, effectiveSlots]);
+  }, [selectedSuggestion, selectedTemplate, palette, effectiveSlots, slotTransforms]);
 
-  // Double-click delegation for in-place edition
+  // Convert a viewport-pixel delta into SVG user-unit delta, using the slot's CTM.
+  const viewportDeltaToSvgUnits = (slotEl: Element, dx: number, dy: number) => {
+    const svg = (slotEl.ownerSVGElement || slotEl) as SVGSVGElement;
+    const ctm = (slotEl as SVGGraphicsElement).getCTM?.() ?? svg.getScreenCTM();
+    if (!ctm) return { dx, dy };
+    // Screen → SVG: invert the CTM and apply to the delta vector (no translation component for a vector)
+    const inv = ctm.inverse();
+    return { dx: dx * inv.a + dy * inv.c, dy: dx * inv.b + dy * inv.d };
+  };
+
+  // Click + double-click delegation on the preview SVG.
   useEffect(() => {
     const container = previewRef.current;
     if (!container) return;
+
+    const onClick = (e: MouseEvent) => {
+      const target = e.target as Element | null;
+      if (!target) return;
+      const slotEl = target.closest("[data-slot]") as Element | null;
+      if (!slotEl || !container.contains(slotEl)) {
+        // Click outside any slot deselects
+        setSelectedSlotKey(null);
+        setSelectedRect(null);
+        return;
+      }
+      const slotKey = slotEl.getAttribute("data-slot") || "";
+      if (!slotKey) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const r = slotEl.getBoundingClientRect();
+      setSelectedSlotKey(slotKey);
+      setSelectedRect({ left: r.left, top: r.top, width: r.width, height: r.height });
+    };
+
     const onDblClick = (e: MouseEvent) => {
       const target = e.target as Element | null;
       if (!target) return;
@@ -310,11 +367,13 @@ const Index = () => {
 
       e.preventDefault();
       e.stopPropagation();
+      // Editing a slot deselects it from move-mode
+      setSelectedSlotKey(null);
+      setSelectedRect(null);
 
       const rect = slotEl.getBoundingClientRect();
       const tag = slotEl.tagName.toLowerCase();
 
-      // Icon-like nodes: <image>, <use>, or elements explicitly tagged
       const isIcon =
         tag === "image" ||
         tag === "use" ||
@@ -330,9 +389,7 @@ const Index = () => {
         return;
       }
 
-      // Text element: read computed style for visual match
       const computed = window.getComputedStyle(slotEl as Element);
-      // foreignObject inner div may carry the styling
       let styleSource: CSSStyleDeclaration = computed;
       if (tag === "foreignobject") {
         const inner = slotEl.querySelector("[data-slot]") || slotEl.firstElementChild;
@@ -352,9 +409,48 @@ const Index = () => {
         },
       });
     };
+
+    container.addEventListener("click", onClick);
     container.addEventListener("dblclick", onDblClick);
-    return () => container.removeEventListener("dblclick", onDblClick);
-  }, [effectiveSlots]);
+    return () => {
+      container.removeEventListener("click", onClick);
+      container.removeEventListener("dblclick", onDblClick);
+    };
+  }, [effectiveSlots, selectedSlotKey]);
+
+  // Live drag: temporarily apply visual translation on the slot element directly,
+  // without re-rendering the whole SVG (smoother and avoids React thrash).
+  const handleDrag = (dx: number, dy: number) => {
+    if (!selectedSlotKey || !previewRef.current || !selectedRect) return;
+    const slotEl = previewRef.current.querySelector(
+      `[data-slot="${selectedSlotKey}"]`
+    ) as SVGGraphicsElement | null;
+    if (!slotEl) return;
+    const base = slotTransforms[selectedSlotKey] ?? { dx: 0, dy: 0 };
+    const delta = viewportDeltaToSvgUnits(slotEl, dx, dy);
+    slotEl.setAttribute(
+      "transform",
+      `translate(${base.dx + delta.dx} ${base.dy + delta.dy})`
+    );
+    slotEl.setAttribute("data-krobar-moved", "1");
+    // Move the overlay frame in lockstep
+    setSelectedRect({ ...selectedRect, left: selectedRect.left + dx, top: selectedRect.top + dy });
+  };
+
+  const handleDragCommit = (dx: number, dy: number) => {
+    if (!selectedSlotKey || !previewRef.current) return;
+    const slotEl = previewRef.current.querySelector(
+      `[data-slot="${selectedSlotKey}"]`
+    ) as SVGGraphicsElement | null;
+    if (!slotEl) return;
+    const base = slotTransforms[selectedSlotKey] ?? { dx: 0, dy: 0 };
+    const delta = viewportDeltaToSvgUnits(slotEl, dx, dy);
+    setSlotTransforms((prev) => ({
+      ...prev,
+      [selectedSlotKey]: { dx: base.dx + delta.dx, dy: base.dy + delta.dy },
+    }));
+  };
+
 
   const analyze = async () => {
     if (!text.trim()) {
