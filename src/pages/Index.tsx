@@ -325,7 +325,7 @@ const Index = () => {
 
   // Convert a viewport-pixel delta into SVG user-unit delta, using the slot's CTM.
   const viewportDeltaToSvgUnits = (slotEl: Element, dx: number, dy: number) => {
-    const svg = (slotEl.ownerSVGElement || slotEl) as SVGSVGElement;
+    const svgEl = (slotEl as SVGElement).ownerSVGElement || (slotEl as unknown as SVGSVGElement);
     const ctm = (slotEl as SVGGraphicsElement).getCTM?.() ?? svg.getScreenCTM();
     if (!ctm) return { dx, dy };
     // Screen → SVG: invert the CTM and apply to the delta vector (no translation component for a vector)
