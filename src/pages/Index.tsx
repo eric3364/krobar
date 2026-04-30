@@ -842,6 +842,9 @@ const Index = () => {
   ) => {
     const r = computeResize(corner, dx, dy);
     dragStartRectRef.current = null;
+    if (!r) return;
+    // Skip no-op resize.
+    if (dx !== 0 || dy !== 0) pushHistory();
     const isFO = r.movable.tagName.toLowerCase() === "foreignobject";
     if (isFO) {
       // For FO, computeResize already encodes the anchored translation in
