@@ -970,8 +970,17 @@ const Index = () => {
     const newSy = baseSy * ratioY;
 
     // Local bbox of the element WITHOUT current transform.
+    // If we're resizing a plain SVG <text>, promote it to wrap-mode so the
+    // glyphs are NOT scaled (which would enlarge the font visually). After
+    // promotion the wrap branch below will handle re-flow naturally.
+    if (
+      movable.tagName.toLowerCase() === "text" &&
+      !movable.hasAttribute("data-wrap-max")
+    ) {
+      promoteTextToWrap(movable as SVGTextElement);
+    }
     const bb = getLocalBBox(movable);
-     const isFO = movable.tagName.toLowerCase() === "foreignobject";
+    const isFO = movable.tagName.toLowerCase() === "foreignobject";
 
     let next: { dx: number; dy: number; sx: number; sy: number };
 
