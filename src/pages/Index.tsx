@@ -5,11 +5,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Loader2, Download, Sparkles, RefreshCw, FlaskConical, Maximize2, Minimize2 } from "lucide-react";
+import { Loader2, Download, Sparkles, RefreshCw, FlaskConical } from "lucide-react";
 import TestSuiteView from "@/components/TestSuiteView";
 import CustomizePanel, { loadStoredDetailLevel, type DetailLevel } from "@/components/CustomizePanel";
 import EditableSlot from "@/components/EditableSlot";
 import IconPicker from "@/components/IconPicker";
+import {
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+} from "@/components/ui/resizable";
 import { formatScorePct, normalizeScore } from "@/lib/kroki";
 import { analyzeText } from "@/lib/api";
 
