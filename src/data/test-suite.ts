@@ -106,7 +106,7 @@ export const testSuite: TestCase[] = [
     id: 17,
     expected_template: "stacked_bar",
     category: "Parts of a Whole",
-    text: "Décomposition du budget annuel de production d'un cours en ligne. La conception pédagogique représente quinze pour cent du budget total. La production des contenus écrits et illustrations mobilise trente pour cent. L'enregistrement vidéo et le montage absorbent quarante pour cent. La diffusion, marketing et maintenance plateforme couvrent les quinze pour cent restants.",
+    text: "La structure de coûts d'un cours en ligne se décompose en quatre postes successifs qui s'additionnent jusqu'au coût total. Le poste conception pédagogique pèse quinze pour cent du budget global. Le poste production de contenus écrits et illustrations cumule trente pour cent supplémentaires. Le poste enregistrement vidéo et montage représente la part la plus lourde avec quarante pour cent. Le poste diffusion, marketing et maintenance plateforme complète le total avec les quinze pour cent restants. Cette ventilation linéaire permet de visualiser le poids relatif de chaque phase dans la chaîne de production.",
   },
   {
     id: 18,
