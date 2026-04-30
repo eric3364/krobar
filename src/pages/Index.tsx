@@ -325,7 +325,50 @@ const Index = () => {
     return `translate(${dx} ${dy}) translate(${ax} ${ay}) scale(${sx} ${sy}) translate(${-ax} ${-ay})`;
   };
 
-  // Apply translation+scale transforms to slot elements (idempotent).
+  // For foreignObject slots, scaling via SVG transform deforms glyphs. Instead,
+  // we resize the foreignObject's width/height and proportionally adjust the
+  // font-size of inner elements. We capture the originals once on the element
+  // via data-* attributes so repeated resizes stay accurate.
+  const captureOriginals = (fo: SVGForeignObjectElement) => {
+    if (!fo.hasAttribute("data-krobar-orig-w")) {
+      fo.setAttribute("data-krobar-orig-w", fo.getAttribute("width") || "0");
+      fo.setAttribute("data-krobar-orig-h", fo.getAttribute("height") || "0");
+    }
+    // Capture font-size on every text-bearing descendant.
+    const nodes = fo.querySelectorAll<HTMLElement>("*");
+    const all: HTMLElement[] = [fo.firstElementChild as HTMLElement, ...Array.from(nodes)].filter(
+      Boolean
+    ) as HTMLElement[];
+    all.forEach((node) => {
+      if (!node.dataset) return;
+      if (node.dataset.krobarOrigFs == null) {
+        const fs = window.getComputedStyle(node).fontSize;
+        if (fs) node.dataset.krobarOrigFs = fs;
+      }
+    });
+  };
+
+  const applyForeignObjectScale = (fo: SVGForeignObjectElement, sx: number, sy: number) => {
+    captureOriginals(fo);
+    const ow = parseFloat(fo.getAttribute("data-krobar-orig-w") || "0");
+    const oh = parseFloat(fo.getAttribute("data-krobar-orig-h") || "0");
+    if (ow > 0) fo.setAttribute("width", String(ow * sx));
+    if (oh > 0) fo.setAttribute("height", String(oh * sy));
+    // Use the smaller axis ratio for font scaling so text never overflows.
+    const fsRatio = Math.min(sx, sy);
+    const nodes = fo.querySelectorAll<HTMLElement>("*");
+    const all: HTMLElement[] = [fo.firstElementChild as HTMLElement, ...Array.from(nodes)].filter(
+      Boolean
+    ) as HTMLElement[];
+    all.forEach((node) => {
+      const orig = node.dataset?.krobarOrigFs;
+      if (!orig) return;
+      const px = parseFloat(orig);
+      if (Number.isFinite(px)) node.style.fontSize = `${px * fsRatio}px`;
+    });
+  };
+
+  // Apply translation (+ optional scale) transforms to slot elements (idempotent).
   const applyTransforms = (
     svg: SVGElement,
     transforms: Record<string, { dx: number; dy: number; sx?: number; sy?: number }>
@@ -333,6 +376,19 @@ const Index = () => {
     svg.querySelectorAll("[data-slot][data-krobar-moved='1']").forEach((el) => {
       el.removeAttribute("transform");
       el.removeAttribute("data-krobar-moved");
+      // Reset foreignObject size/font tweaks if any.
+      if (el.tagName.toLowerCase() === "foreignobject") {
+        const fo = el as unknown as SVGForeignObjectElement;
+        const ow = fo.getAttribute("data-krobar-orig-w");
+        const oh = fo.getAttribute("data-krobar-orig-h");
+        if (ow) fo.setAttribute("width", ow);
+        if (oh) fo.setAttribute("height", oh);
+        fo.querySelectorAll<HTMLElement>("*").forEach((n) => {
+          if (n.dataset?.krobarOrigFs) n.style.fontSize = "";
+        });
+        const first = fo.firstElementChild as HTMLElement | null;
+        if (first?.dataset?.krobarOrigFs) first.style.fontSize = "";
+      }
     });
     Object.entries(transforms).forEach(([key, t]) => {
       const slotEl = svg.querySelector(`[data-slot="${key}"]`) as Element | null;
@@ -341,16 +397,18 @@ const Index = () => {
       if (!el) return;
       const sx = t.sx ?? 1;
       const sy = t.sy ?? 1;
-      if (sx === 1 && sy === 1) {
+      const isFO = el.tagName.toLowerCase() === "foreignobject";
+      if (isFO) {
+        // Translate via transform; resize via width/height + font-size.
+        el.setAttribute("transform", `translate(${t.dx} ${t.dy})`);
+        if (sx !== 1 || sy !== 1) {
+          applyForeignObjectScale(el as unknown as SVGForeignObjectElement, sx, sy);
+        }
+      } else if (sx === 1 && sy === 1) {
         el.setAttribute("transform", `translate(${t.dx} ${t.dy})`);
       } else {
         const bb = getLocalBBox(el);
-        // Anchor at top-left of local bbox keeps math stable; the live resize
-        // already accounts for which corner moved.
-        el.setAttribute(
-          "transform",
-          buildTransform(t.dx, t.dy, sx, sy, bb.x, bb.y)
-        );
+        el.setAttribute("transform", buildTransform(t.dx, t.dy, sx, sy, bb.x, bb.y));
       }
       el.setAttribute("data-krobar-moved", "1");
     });
