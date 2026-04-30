@@ -521,6 +521,17 @@ const Index = () => {
         const first = fo.firstElementChild as HTMLElement | null;
         if (first?.dataset?.krobarOrigFs) first.style.fontSize = "";
       }
+      // Restaure les paramètres de wrap d'origine sur un <text data-wrap-max>
+      // (ils seront ré-appliqués par applyTransforms si sx/sy ≠ 1).
+      if (
+        el.tagName.toLowerCase() === "text" &&
+        el.hasAttribute("data-orig-wrap-max")
+      ) {
+        const om = el.getAttribute("data-orig-wrap-max");
+        const ol = el.getAttribute("data-orig-wrap-lines");
+        if (om) el.setAttribute("data-wrap-max", om);
+        if (ol) el.setAttribute("data-wrap-lines", ol);
+      }
     });
     Object.entries(transforms).forEach(([key, t]) => {
       const slotEl = svg.querySelector(`[data-slot="${key}"]`) as Element | null;
