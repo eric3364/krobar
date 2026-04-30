@@ -505,15 +505,21 @@ const Index = () => {
   const getMovableViewportRect = (slotEl: Element) => {
     const movable = getMovable(slotEl);
     if (movable && isWrapTextEl(movable)) {
-      const slotKey = slotEl.getAttribute("data-slot") || "";
-      const t = slotKey ? slotTransforms[slotKey] ?? { dx: 0, dy: 0, sx: 1, sy: 1 } : { dx: 0, dy: 0, sx: 1, sy: 1 };
-      const bb = captureWrapTextOriginalBox(movable);
-      return localRectToViewportRect(slotEl, {
-        x: bb.x + t.dx,
-        y: bb.y + t.dy,
-        w: bb.w * (t.sx ?? 1),
-        h: bb.h * (t.sy ?? 1),
-      });
+      // Pour un texte SVG en mode wrap, mesurer directement le rect rendu via
+      // getBoundingClientRect (qui inclut le transform actuel et reflète le
+      // re-wrap après resize). Ne pas multiplier par sx/sy car le wrap-mode
+      // ne déforme pas les glyphes — il re-flow le texte.
+      const r = (movable as SVGGraphicsElement).getBoundingClientRect();
+      if (r && r.width > 1 && r.height > 1) {
+        return {
+          left: r.left,
+          top: r.top,
+          width: r.width,
+          height: r.height,
+          right: r.right,
+          bottom: r.bottom,
+        };
+      }
     }
     // Pour un <foreignObject>, getBoundingClientRect() renvoie la taille du
     // conteneur SVG, qui peut être beaucoup plus grande (ou décalée par
