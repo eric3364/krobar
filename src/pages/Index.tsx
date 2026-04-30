@@ -222,22 +222,6 @@ const Index = () => {
   const [edit, setEdit] = useState<TextEdit | IconEdit | null>(null);
   const [slotOverrides, setSlotOverrides] = useState<Record<string, string>>({});
 
-  // Edit mode: enlarges the preview column for easier in-place editing.
-  const [editMode, setEditMode] = useState<boolean>(() => {
-    try {
-      return localStorage.getItem("krobar-edit-mode") === "1";
-    } catch {
-      return false;
-    }
-  });
-  useEffect(() => {
-    try {
-      localStorage.setItem("krobar-edit-mode", editMode ? "1" : "0");
-    } catch {
-      /* ignore */
-    }
-  }, [editMode]);
-
   useEffect(() => {
     fetch("/templates/manifest.json")
       .then((r) => r.json())
