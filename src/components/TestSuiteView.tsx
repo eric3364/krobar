@@ -107,7 +107,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
     }
     return testSuite.map((t) => emptyResult(t.id));
   });
-  const [paletteKey, setPaletteKey] = useState<keyof typeof palettes>("next-u-corporate");
+  const [paletteKey, setPaletteKey] = useState<keyof typeof palettes>("ocean");
   const [fastMode, setFastMode] = useState(true);
   const [running, setRunning] = useState(false);
   const pauseRef = useRef(false);
