@@ -494,21 +494,25 @@ const Index = () => {
       `[data-slot="${selectedSlotKey}"]`
     ) as Element | null;
     if (!slotEl) return;
-    const movableEl =
-      (slotEl.closest("foreignObject") as SVGForeignObjectElement | null) ?? slotEl;
-    // Snapshot rect on first move of this drag
+    const movableEl = getMovable(slotEl);
+    if (!movableEl) return;
     if (!dragStartRectRef.current && selectedRect) {
       dragStartRectRef.current = { ...selectedRect };
     }
     const startRect = dragStartRectRef.current;
-    const base = slotTransforms[selectedSlotKey] ?? { dx: 0, dy: 0 };
+    const base = slotTransforms[selectedSlotKey] ?? { dx: 0, dy: 0, sx: 1, sy: 1 };
+    const sx = base.sx ?? 1;
+    const sy = base.sy ?? 1;
     const delta = viewportDeltaToSvgUnits(slotEl, dx, dy);
-    movableEl.setAttribute(
-      "transform",
-      `translate(${base.dx + delta.dx} ${base.dy + delta.dy})`
-    );
+    const ndx = base.dx + delta.dx;
+    const ndy = base.dy + delta.dy;
+    if (sx === 1 && sy === 1) {
+      movableEl.setAttribute("transform", `translate(${ndx} ${ndy})`);
+    } else {
+      const bb = getLocalBBox(movableEl);
+      movableEl.setAttribute("transform", buildTransform(ndx, ndy, sx, sy, bb.x, bb.y));
+    }
     movableEl.setAttribute("data-krobar-moved", "1");
-    // Move the overlay frame in lockstep, anchored to the drag-start rect.
     if (startRect) {
       setSelectedRect({
         left: startRect.left + dx,
@@ -526,13 +530,149 @@ const Index = () => {
       `[data-slot="${selectedSlotKey}"]`
     ) as Element | null;
     if (!slotEl) return;
-    const base = slotTransforms[selectedSlotKey] ?? { dx: 0, dy: 0 };
+    const base = slotTransforms[selectedSlotKey] ?? { dx: 0, dy: 0, sx: 1, sy: 1 };
     const delta = viewportDeltaToSvgUnits(slotEl, dx, dy);
     setSlotTransforms((prev) => ({
       ...prev,
-      [selectedSlotKey]: { dx: base.dx + delta.dx, dy: base.dy + delta.dy },
+      [selectedSlotKey]: {
+        dx: base.dx + delta.dx,
+        dy: base.dy + delta.dy,
+        sx: base.sx ?? 1,
+        sy: base.sy ?? 1,
+      },
     }));
   };
+
+  // Compute new (dx,dy,sx,sy) for a corner-resize, anchoring at the OPPOSITE corner.
+  // dx,dy are viewport-space cumulative deltas of the dragged corner.
+  const computeResize = (
+    corner: "nw" | "ne" | "sw" | "se",
+    dx: number,
+    dy: number
+  ): {
+    movable: SVGGraphicsElement;
+    next: { dx: number; dy: number; sx: number; sy: number };
+    rect: { left: number; top: number; width: number; height: number };
+  } | null => {
+    if (!selectedSlotKey || !previewRef.current || !dragStartRectRef.current) return null;
+    const slotEl = previewRef.current.querySelector(
+      `[data-slot="${selectedSlotKey}"]`
+    ) as Element | null;
+    if (!slotEl) return null;
+    const movable = getMovable(slotEl);
+    if (!movable) return null;
+
+    const startRect = dragStartRectRef.current;
+    const base = slotTransforms[selectedSlotKey] ?? { dx: 0, dy: 0, sx: 1, sy: 1 };
+    const baseSx = base.sx ?? 1;
+    const baseSy = base.sy ?? 1;
+
+    // Sign of the corner along each axis: +1 if corner moves outward in +x/+y direction.
+    const signX = corner === "ne" || corner === "se" ? 1 : -1;
+    const signY = corner === "sw" || corner === "se" ? 1 : -1;
+
+    // New width/height in viewport px (clamped to a reasonable minimum).
+    const minPx = 24;
+    const newW = Math.max(minPx, startRect.width + signX * dx);
+    const newH = Math.max(minPx, startRect.height + signY * dy);
+
+    const ratioX = newW / startRect.width;
+    const ratioY = newH / startRect.height;
+
+    const newSx = baseSx * ratioX;
+    const newSy = baseSy * ratioY;
+
+    // Local bbox of the element WITHOUT current transform.
+    const bb = getLocalBBox(movable);
+
+    // Anchor in local coords = opposite corner of the dragged one.
+    const anchorLocalX = signX > 0 ? bb.x : bb.x + bb.w;
+    const anchorLocalY = signY > 0 ? bb.y : bb.y + bb.h;
+
+    // We want the anchor to remain visually fixed. The transform we use is:
+    //   T(dx,dy) * T(ax,ay) * S(sx,sy) * T(-ax,-ay)
+    // applied around (bb.x, bb.y). Easier: use a generic anchor (anchorLocal).
+    // To keep that anchor fixed across a scale change, the translation must
+    // satisfy: newDx = baseDx (anchor position is identity under that transform).
+    // So we keep dx,dy unchanged and change the anchor of the buildTransform.
+    // For simplicity, compute new translation so that anchor maps to its
+    // current viewport position (which is unchanged from startRect).
+    //
+    // Strategy: rebuild transform with anchor at (anchorLocalX, anchorLocalY)
+    // and the SAME (base.dx, base.dy). Mathematically:
+    //   pAfter = T(dx,dy) * (anchor + S*(p - anchor))
+    // For p = anchor: pAfter = anchor + (dx,dy). So anchor moves by (dx,dy)
+    // independent of scale — exactly what we want.
+    const next = {
+      dx: base.dx,
+      dy: base.dy,
+      sx: newSx,
+      sy: newSy,
+    };
+
+    // Apply transform now (live).
+    movable.setAttribute(
+      "transform",
+      buildTransform(next.dx, next.dy, next.sx, next.sy, anchorLocalX, anchorLocalY)
+    );
+    movable.setAttribute("data-krobar-moved", "1");
+
+    // New overlay rect: anchor corner stays put, opposite corner moves by (dx,dy).
+    const left = signX > 0 ? startRect.left : startRect.left + (startRect.width - newW);
+    const top = signY > 0 ? startRect.top : startRect.top + (startRect.height - newH);
+
+    return {
+      movable,
+      next,
+      rect: { left, top, width: newW, height: newH },
+    };
+  };
+
+  const handleResize = (corner: "nw" | "ne" | "sw" | "se", dx: number, dy: number) => {
+    if (!dragStartRectRef.current && selectedRect) {
+      dragStartRectRef.current = { ...selectedRect };
+    }
+    const r = computeResize(corner, dx, dy);
+    if (!r) return;
+    setSelectedRect(r.rect);
+  };
+
+  const handleResizeCommit = (
+    corner: "nw" | "ne" | "sw" | "se",
+    dx: number,
+    dy: number
+  ) => {
+    const r = computeResize(corner, dx, dy);
+    dragStartRectRef.current = null;
+    if (!r || !selectedSlotKey) return;
+    // We need to bake the anchored transform into a stable (dx,dy,sx,sy) form
+    // that uses our canonical anchor (bb.x, bb.y). Convert by composing.
+    const bb = getLocalBBox(r.movable);
+    const signX = corner === "ne" || corner === "se" ? 1 : -1;
+    const signY = corner === "sw" || corner === "se" ? 1 : -1;
+    const ax = signX > 0 ? bb.x : bb.x + bb.w;
+    const ay = signY > 0 ? bb.y : bb.y + bb.h;
+    // Effective translate in canonical form (anchor at bb.x, bb.y):
+    // T_total = T(dx,dy) * T(ax,ay) * S * T(-ax,-ay)
+    //         = T(dx + ax - sx*ax_rel, dy + ay - sy*ay_rel) * T(bb.x,bb.y) * S * T(-bb.x,-bb.y)
+    // Simpler: store dx',dy' = base translate so that buildTransform with anchor (bb.x,bb.y) is equivalent.
+    // Equivalent translation offset from anchor (ax,ay) -> (bb.x,bb.y):
+    //   extraDx = (ax - bb.x) * (1 - sx)
+    //   extraDy = (ay - bb.y) * (1 - sy)
+    const extraDx = (ax - bb.x) * (1 - r.next.sx);
+    const extraDy = (ay - bb.y) * (1 - r.next.sy);
+    setSlotTransforms((prev) => ({
+      ...prev,
+      [selectedSlotKey]: {
+        dx: r.next.dx + extraDx,
+        dy: r.next.dy + extraDy,
+        sx: r.next.sx,
+        sy: r.next.sy,
+      },
+    }));
+  };
+
+
 
 
   const analyze = async () => {
