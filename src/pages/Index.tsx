@@ -404,8 +404,90 @@ const Index = () => {
     return (fo ?? (slotEl as unknown as SVGGraphicsElement)) || null;
   };
 
+  const isWrapTextEl = (el: Element | null): el is SVGTextElement =>
+    !!el && el.tagName.toLowerCase() === "text" && el.hasAttribute("data-wrap-max");
+
+  const captureWrapTextOriginalBox = (textEl: SVGTextElement) => {
+    if (!textEl.hasAttribute("data-krobar-orig-box-w")) {
+      const prev = textEl.getAttribute("transform");
+      if (prev) textEl.removeAttribute("transform");
+      const b = textEl.getBBox();
+      if (prev) textEl.setAttribute("transform", prev);
+      textEl.setAttribute("data-krobar-orig-box-x", String(b.x));
+      textEl.setAttribute("data-krobar-orig-box-y", String(b.y));
+      textEl.setAttribute("data-krobar-orig-box-w", String(b.width));
+      textEl.setAttribute("data-krobar-orig-box-h", String(b.height));
+    }
+
+    return {
+      x: parseFloat(textEl.getAttribute("data-krobar-orig-box-x") || "0"),
+      y: parseFloat(textEl.getAttribute("data-krobar-orig-box-y") || "0"),
+      w: parseFloat(textEl.getAttribute("data-krobar-orig-box-w") || "0"),
+      h: parseFloat(textEl.getAttribute("data-krobar-orig-box-h") || "0"),
+    };
+  };
+
+  const localRectToViewportRect = (
+    slotEl: Element,
+    localRect: { x: number; y: number; w: number; h: number }
+  ) => {
+    const svgEl = slotEl.closest("svg") as SVGSVGElement | null;
+    if (!svgEl) {
+      const rect = (getMovable(slotEl) ?? slotEl).getBoundingClientRect();
+      return {
+        left: rect.left,
+        top: rect.top,
+        width: rect.width,
+        height: rect.height,
+        right: rect.right,
+        bottom: rect.bottom,
+      };
+    }
+
+    const viewBox = svgEl.viewBox.baseVal;
+    const renderedRect = svgEl.getBoundingClientRect();
+    if (!renderedRect.width || !renderedRect.height || !viewBox.width || !viewBox.height) {
+      const rect = (getMovable(slotEl) ?? slotEl).getBoundingClientRect();
+      return {
+        left: rect.left,
+        top: rect.top,
+        width: rect.width,
+        height: rect.height,
+        right: rect.right,
+        bottom: rect.bottom,
+      };
+    }
+
+    const scaleX = renderedRect.width / viewBox.width;
+    const scaleY = renderedRect.height / viewBox.height;
+    const left = renderedRect.left + (localRect.x - viewBox.x) * scaleX;
+    const top = renderedRect.top + (localRect.y - viewBox.y) * scaleY;
+    const width = localRect.w * scaleX;
+    const height = localRect.h * scaleY;
+
+    return {
+      left,
+      top,
+      width,
+      height,
+      right: left + width,
+      bottom: top + height,
+    };
+  };
+
   const getMovableViewportRect = (slotEl: Element) => {
     const movable = getMovable(slotEl);
+    if (movable && isWrapTextEl(movable)) {
+      const slotKey = slotEl.getAttribute("data-slot") || "";
+      const t = slotKey ? slotTransforms[slotKey] ?? { dx: 0, dy: 0, sx: 1, sy: 1 } : { dx: 0, dy: 0, sx: 1, sy: 1 };
+      const bb = captureWrapTextOriginalBox(movable);
+      return localRectToViewportRect(slotEl, {
+        x: bb.x + t.dx,
+        y: bb.y + t.dy,
+        w: bb.w * (t.sx ?? 1),
+        h: bb.h * (t.sy ?? 1),
+      });
+    }
     const rect = (movable ?? slotEl).getBoundingClientRect();
     return {
       left: rect.left,
@@ -426,6 +508,9 @@ const Index = () => {
       const w = parseFloat(fo.getAttribute("width") || "0");
       const h = parseFloat(fo.getAttribute("height") || "0");
       return { x, y, w, h };
+    }
+    if (isWrapTextEl(el)) {
+      return captureWrapTextOriginalBox(el);
     }
     // Temporarily clear our transform to get an unaffected bbox.
     const prev = el.getAttribute("transform");
