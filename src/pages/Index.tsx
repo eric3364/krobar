@@ -451,159 +451,34 @@ const Index = () => {
         </div>
       </header>
 
-      <main
-        className={`grid grid-cols-1 gap-4 p-4 h-[calc(100vh-65px)] transition-[grid-template-columns] duration-300 ${
-          editMode ? "lg:grid-cols-[1fr_1fr_3fr]" : "lg:grid-cols-3"
-        }`}
-      >
-        {/* Zone 1 — Saisie */}
-        <section className="flex flex-col gap-3">
-          <Card className="p-4 flex flex-col gap-3 flex-1">
-            <Label className="text-sm font-semibold">Votre texte</Label>
-            <Textarea
-              placeholder="Collez votre texte ici (extrait de cours, paragraphe, idée)…"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              className="flex-1 resize-none min-h-[260px] font-mono text-sm"
-            />
-            <div className="space-y-2">
-              <Label className="text-sm font-semibold">Palette</Label>
-              <div className="grid grid-cols-2 gap-2">
-                {Object.keys(palettes).map((k) => {
-                  const p = palettes[k];
-                  const active = k === paletteKey;
-                  return (
-                    <button
-                      key={k}
-                      onClick={() => setPaletteKey(k as keyof typeof palettes)}
-                      className={`text-left p-2 rounded-md border transition ${
-                        active
-                          ? "border-foreground ring-2 ring-foreground/20"
-                          : "border-border hover:border-foreground/40"
-                      }`}
-                    >
-                      <div className="flex gap-1 mb-1.5">
-                        <span className="w-4 h-4 rounded" style={{ background: p.colors.primary }} />
-                        <span className="w-4 h-4 rounded" style={{ background: p.colors.accent }} />
-                        <span className="w-4 h-4 rounded border" style={{ background: p.colors.bg }} />
-                      </div>
-                      <div className="text-xs font-medium">{p.name}</div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-            <Button onClick={analyze} disabled={loading} size="lg" className="w-full">
-              {loading ? (
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              ) : (
-                <Sparkles className="w-4 h-4 mr-2" />
-              )}
-              Analyser et proposer des visuels
-            </Button>
-          </Card>
-        </section>
+      <main className="h-[calc(100vh-65px)]">
+        {/* Mobile: stack vertical */}
+        <div className="lg:hidden grid grid-cols-1 gap-4 p-4">
+          {renderInputSection()}
+          {renderSuggestionsSection()}
+          {renderPreviewSection()}
+        </div>
 
-        {/* Zone 2 — Suggestions */}
-        <section className="flex flex-col gap-3 overflow-hidden">
-          <Card className="p-4 flex flex-col gap-3 flex-1 overflow-y-auto">
-            <Label className="text-sm font-semibold">Suggestions IA</Label>
-            {suggestions.length === 0 && !loading && (
-              <div className="flex-1 flex items-center justify-center text-center text-sm text-muted-foreground p-6">
-                Les vignettes proposées par l'IA apparaîtront ici.
-              </div>
-            )}
-            {loading && (
-              <div className="flex-1 flex items-center justify-center">
-                <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
-              </div>
-            )}
-            <div className="space-y-3">
-              {suggestions.map((sug, i) => {
-                const tpl = manifest?.templates.find((t) => t.id === sug.template_id);
-                const active = i === selectedIdx;
-                return (
-                  <button
-                    key={i}
-                    onClick={() => setSelectedIdx(i)}
-                    className={`w-full text-left rounded-lg border-2 p-3 transition ${
-                      active
-                        ? "border-foreground bg-accent"
-                        : "border-border hover:border-foreground/40"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs font-bold uppercase tracking-wide">
-                        {tpl?.name ?? sug.template_id}
-                      </span>
-                      <span className="text-xs font-mono px-2 py-0.5 rounded bg-foreground text-background">
-                        {formatScorePct(sug.score)}
-                      </span>
-                    </div>
-                    <div
-                      ref={(el) => (thumbRefs.current[i] = el)}
-                      className="w-full aspect-[4/3] bg-card border rounded overflow-hidden"
-                    />
-                    <p className="text-xs text-muted-foreground mt-2 line-clamp-2">
-                      {sug.reasoning}
-                    </p>
-                  </button>
-                );
-              })}
-            </div>
-          </Card>
-        </section>
-
-        {/* Zone 3 — Aperçu et export */}
-        <section className="flex flex-col gap-3 overflow-hidden">
-          <Card className="p-4 flex flex-col gap-3 flex-1">
-            <div className="flex items-center justify-between gap-2">
-              <Label className="text-sm font-semibold">Aperçu</Label>
-              <div className="flex items-center gap-2 min-w-0">
-                {selectedTemplate && (
-                  <span className="text-xs text-muted-foreground truncate">{selectedTemplate.name}</span>
-                )}
-                <Button
-                  size="sm"
-                  variant={editMode ? "default" : "outline"}
-                  onClick={() => setEditMode((v) => !v)}
-                  title={editMode ? "Revenir à la vue compacte" : "Élargir l'aperçu pour éditer"}
-                >
-                  {editMode ? (
-                    <>
-                      <Minimize2 className="w-4 h-4 mr-1.5" /> Vue compacte
-                    </>
-                  ) : (
-                    <>
-                      <Maximize2 className="w-4 h-4 mr-1.5" /> Mode édition
-                    </>
-                  )}
-                </Button>
-              </div>
-            </div>
-            <div
-              ref={previewRef}
-              className="flex-1 min-h-[300px] border rounded-lg bg-card overflow-hidden flex items-center justify-center"
-            >
-              {!selectedSuggestion && (
-                <span className="text-sm text-muted-foreground">
-                  Sélectionnez une suggestion
-                </span>
-              )}
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-              <Button onClick={downloadSVG} disabled={!selectedSuggestion} variant="outline">
-                <Download className="w-4 h-4 mr-2" /> SVG
-              </Button>
-              <Button onClick={downloadPNG} disabled={!selectedSuggestion} variant="outline">
-                <Download className="w-4 h-4 mr-2" /> PNG
-              </Button>
-            </div>
-            <Button onClick={cyclePalette} disabled={!selectedSuggestion} variant="secondary">
-              <RefreshCw className="w-4 h-4 mr-2" /> Régénérer avec autre palette
-            </Button>
-          </Card>
-        </section>
+        {/* Desktop: colonnes redimensionnables */}
+        <div className="hidden lg:block h-full p-4">
+          <ResizablePanelGroup
+            direction="horizontal"
+            autoSaveId="krobar-columns"
+            className="h-full gap-0"
+          >
+            <ResizablePanel defaultSize={28} minSize={18} className="pr-2">
+              {renderInputSection()}
+            </ResizablePanel>
+            <ResizableHandle withHandle className="mx-1" />
+            <ResizablePanel defaultSize={32} minSize={18} className="px-2">
+              {renderSuggestionsSection()}
+            </ResizablePanel>
+            <ResizableHandle withHandle className="mx-1" />
+            <ResizablePanel defaultSize={40} minSize={20} className="pl-2">
+              {renderPreviewSection()}
+            </ResizablePanel>
+          </ResizablePanelGroup>
+        </div>
       </main>
 
       {edit?.kind === "text" && (
