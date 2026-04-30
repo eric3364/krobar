@@ -515,7 +515,25 @@ const Index = () => {
         h: bb.h * (t.sy ?? 1),
       });
     }
-    const rect = (movable ?? slotEl).getBoundingClientRect();
+    // Pour un <foreignObject>, getBoundingClientRect() renvoie la taille du
+    // conteneur SVG, qui peut être beaucoup plus grande que le texte HTML
+    // visible à l'intérieur. Résultat : le cadre de sélection apparaît
+    // décalé par rapport au texte. On préfère donc le rect du contenu HTML
+    // réel (1er enfant) quand il est plus petit que le foreignObject.
+    const target = movable ?? slotEl;
+    let rect = target.getBoundingClientRect();
+    if (target.tagName && target.tagName.toLowerCase() === "foreignobject") {
+      const fo = target as unknown as SVGForeignObjectElement;
+      const inner = fo.firstElementChild as HTMLElement | null;
+      if (inner) {
+        const innerRect = inner.getBoundingClientRect();
+        // Garde-fou : on n'utilise le rect interne que s'il a une taille
+        // non nulle (sinon on retomberait sur un cadre vide).
+        if (innerRect.width > 1 && innerRect.height > 1) {
+          rect = innerRect;
+        }
+      }
+    }
     return {
       left: rect.left,
       top: rect.top,
