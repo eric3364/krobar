@@ -51,10 +51,63 @@ function applyPaletteVars(el: SVGElement, palette: Palette) {
   el.style.setProperty("--border", c.border);
 }
 
+// Wrappe un texte en plusieurs <tspan> à l'intérieur d'un <text> SVG en
+// se basant sur les attributs data-wrap-* présents sur l'élément (mêmes
+// règles que src/lib/kroki.ts pour rester cohérent entre vignettes et aperçu).
+function wrapTextIntoTspans(
+  el: SVGElement,
+  text: string,
+  x: number,
+  maxChars: number,
+  maxLines: number,
+  dy: number,
+) {
+  const words = String(text).split(/\s+/).filter(Boolean);
+  const lines: string[] = [];
+  let cur = "";
+  for (const w of words) {
+    const cand = cur ? cur + " " + w : w;
+    if (cand.length <= maxChars) {
+      cur = cand;
+    } else {
+      if (cur) lines.push(cur);
+      cur = w;
+      if (lines.length >= maxLines) break;
+    }
+  }
+  if (cur && lines.length < maxLines) lines.push(cur);
+  if (lines.length > maxLines) lines.length = maxLines;
+  const joined = lines.join(" ");
+  if (joined.length < text.replace(/\s+/g, " ").trim().length && lines.length > 0) {
+    const last = lines[lines.length - 1];
+    lines[lines.length - 1] =
+      (last.length > maxChars - 3 ? last.slice(0, maxChars - 3) : last) + "…";
+  }
+  while (el.firstChild) el.removeChild(el.firstChild);
+  const SVG_NS = "http://www.w3.org/2000/svg";
+  lines.forEach((line, i) => {
+    const tspan = document.createElementNS(SVG_NS, "tspan");
+    tspan.setAttribute("x", String(x));
+    tspan.setAttribute("dy", i === 0 ? "0" : String(dy));
+    tspan.textContent = line;
+    el.appendChild(tspan);
+  });
+}
+
 function fillSlots(svg: SVGElement, slots: Record<string, string>) {
   Object.entries(slots).forEach(([k, v]) => {
     const el = svg.querySelector(`[data-slot="${k}"]`) as HTMLElement | SVGElement | null;
     if (!el) return;
+    // Texte SVG avec metadata de wrap → multi-lignes via tspans (évite le
+    // dépassement hors des cartes pour process_3_steps, etc.).
+    if (el instanceof SVGElement && el.hasAttribute("data-wrap-max")) {
+      const x = parseFloat(el.getAttribute("data-wrap-x") || "0");
+      const maxChars = parseInt(el.getAttribute("data-wrap-max") || "22", 10);
+      const maxLines = parseInt(el.getAttribute("data-wrap-lines") || "3", 10);
+      const dy = parseFloat(el.getAttribute("data-wrap-dy") || "18");
+      wrapTextIntoTspans(el, v ?? "", x, maxChars, maxLines, dy);
+      return;
+    }
     el.textContent = v;
     // Fallback : si malgré la contrainte le slot dépasse 35 caractères, réduire la police.
     if (v && v.length > 35 && el instanceof HTMLElement) {
