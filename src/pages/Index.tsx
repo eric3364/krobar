@@ -605,31 +605,51 @@ const Index = () => {
     captureOriginals(fo);
     const ow = parseFloat(fo.getAttribute("data-krobar-orig-w") || "0");
     const oh = parseFloat(fo.getAttribute("data-krobar-orig-h") || "0");
-    if (ow > 0) fo.setAttribute("width", String(ow * sx));
-    if (oh > 0) fo.setAttribute("height", String(oh * sy));
+    const newW = ow > 0 ? ow * sx : NaN;
+    const newH = oh > 0 ? oh * sy : NaN;
+    if (Number.isFinite(newW)) fo.setAttribute("width", String(newW));
+    if (Number.isFinite(newH)) fo.setAttribute("height", String(newH));
+
     // NOTE: on NE modifie PAS la taille de la police lors d'un redimensionnement.
     // Le HTML embarqué doit utiliser word-wrap/overflow-wrap pour que le texte
-    // se réajuste naturellement. On force ces propriétés sur le 1er enfant et
-    // on s'assure qu'il occupe 100% du foreignObject (sinon le bloc grandit
-    // sans que le texte ne re-wrappe).
-    const nodes = fo.querySelectorAll<HTMLElement>("*");
-    const all: HTMLElement[] = [fo.firstElementChild as HTMLElement, ...Array.from(nodes)].filter(
-      Boolean
-    ) as HTMLElement[];
-    all.forEach((node) => {
-      if (node.style && node.style.fontSize) node.style.fontSize = "";
-    });
+    // se réajuste naturellement. On neutralise donc :
+    //   - les font-size inline éventuels,
+    //   - les white-space: nowrap (qui empêchent tout retour à la ligne),
+    //   - les largeurs fixes en pixels sur les descendants directs.
+    // Et on force le 1er enfant à occuper 100% du foreignObject.
     const root = fo.firstElementChild as HTMLElement | null;
     if (root && root.style) {
       root.style.width = "100%";
       root.style.height = "100%";
+      root.style.maxWidth = "100%";
       root.style.boxSizing = "border-box";
       root.style.wordWrap = "break-word";
       root.style.overflowWrap = "break-word";
       root.style.whiteSpace = "normal";
       root.style.overflow = "hidden";
     }
+    const all = fo.querySelectorAll<HTMLElement>("*");
+    all.forEach((node) => {
+      if (!node.style) return;
+      // Reset font sizes set by previous (legacy) scale code.
+      if (node.style.fontSize) node.style.fontSize = "";
+      // Force wrappable text — common offenders inside slot HTML.
+      if (node.style.whiteSpace === "nowrap") node.style.whiteSpace = "normal";
+      node.style.wordWrap = "break-word";
+      node.style.overflowWrap = "break-word";
+      // Neutralize any inline pixel width that would override the FO's new width.
+      const w = node.style.width;
+      if (w && /px\s*$/.test(w)) node.style.width = "100%";
+      const mw = node.style.minWidth;
+      if (mw && /px\s*$/.test(mw)) node.style.minWidth = "0";
+    });
+
+    // Nudge the browser to re-flow the foreignObject contents immediately
+    // (some engines lazily layout HTML inside SVG until something forces it).
+    // Reading offsetHeight on the root triggers a synchronous reflow.
+    if (root) void root.offsetHeight;
   };
+
 
   // Apply translation (+ optional scale) transforms to slot elements (idempotent).
   const applyTransforms = (
