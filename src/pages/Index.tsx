@@ -298,7 +298,9 @@ const Index = () => {
       el.removeAttribute("data-krobar-moved");
     });
     Object.entries(transforms).forEach(([key, t]) => {
-      const el = svg.querySelector(`[data-slot="${key}"]`) as SVGGraphicsElement | null;
+      const slotEl = svg.querySelector(`[data-slot="${key}"]`) as Element | null;
+      const el =
+        (slotEl?.closest("foreignObject") as SVGForeignObjectElement | null) ?? slotEl;
       if (!el) return;
       el.setAttribute("transform", `translate(${t.dx} ${t.dy})`);
       el.setAttribute("data-krobar-moved", "1");
@@ -441,8 +443,10 @@ const Index = () => {
     if (!selectedSlotKey || !previewRef.current) return;
     const slotEl = previewRef.current.querySelector(
       `[data-slot="${selectedSlotKey}"]`
-    ) as SVGGraphicsElement | null;
+    ) as Element | null;
     if (!slotEl) return;
+    const movableEl =
+      (slotEl.closest("foreignObject") as SVGForeignObjectElement | null) ?? slotEl;
     // Snapshot rect on first move of this drag
     if (!dragStartRectRef.current && selectedRect) {
       dragStartRectRef.current = { ...selectedRect };
@@ -450,11 +454,11 @@ const Index = () => {
     const startRect = dragStartRectRef.current;
     const base = slotTransforms[selectedSlotKey] ?? { dx: 0, dy: 0 };
     const delta = viewportDeltaToSvgUnits(slotEl, dx, dy);
-    slotEl.setAttribute(
+    movableEl.setAttribute(
       "transform",
       `translate(${base.dx + delta.dx} ${base.dy + delta.dy})`
     );
-    slotEl.setAttribute("data-krobar-moved", "1");
+    movableEl.setAttribute("data-krobar-moved", "1");
     // Move the overlay frame in lockstep, anchored to the drag-start rect.
     if (startRect) {
       setSelectedRect({
@@ -471,7 +475,7 @@ const Index = () => {
     if (!selectedSlotKey || !previewRef.current) return;
     const slotEl = previewRef.current.querySelector(
       `[data-slot="${selectedSlotKey}"]`
-    ) as SVGGraphicsElement | null;
+    ) as Element | null;
     if (!slotEl) return;
     const base = slotTransforms[selectedSlotKey] ?? { dx: 0, dy: 0 };
     const delta = viewportDeltaToSvgUnits(slotEl, dx, dy);
