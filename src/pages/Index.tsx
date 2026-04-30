@@ -747,6 +747,16 @@ const Index = () => {
           }}
           onCancel={() => setEdit(null)}
         />
+      {selectedSlotKey && selectedRect && !edit && (
+        <MovableSlotOverlay
+          rect={selectedRect}
+          onDrag={handleDrag}
+          onCommit={handleDragCommit}
+          onCancel={() => {
+            setSelectedSlotKey(null);
+            setSelectedRect(null);
+          }}
+        />
       )}
     </div>
   );
