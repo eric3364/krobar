@@ -430,6 +430,8 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
               test={test}
               result={r}
               note={notes[test.id] || ""}
+              selected={selectedIds.has(test.id)}
+              onToggleSelect={() => toggleSelected(test.id)}
               onReplay={() => replayOne(test)}
               onZoom={(svg) => setZoom({ id: test.id, svg })}
               onShowFullText={() => setFullText(test)}
