@@ -482,17 +482,17 @@ const Index = () => {
     const oh = parseFloat(fo.getAttribute("data-krobar-orig-h") || "0");
     if (ow > 0) fo.setAttribute("width", String(ow * sx));
     if (oh > 0) fo.setAttribute("height", String(oh * sy));
-    // Use the smaller axis ratio for font scaling so text never overflows.
-    const fsRatio = Math.min(sx, sy);
+    // NOTE: on NE modifie PAS la taille de la police lors d'un redimensionnement.
+    // Le HTML embarqué utilise déjà word-wrap/overflow-wrap, donc le texte se
+    // réajuste naturellement (retour à la ligne si on rétrécit le bloc, plus
+    // d'espace disponible si on l'agrandit). Si une font-size avait été posée
+    // par un précédent appel, on la nettoie pour revenir à la taille d'origine.
     const nodes = fo.querySelectorAll<HTMLElement>("*");
     const all: HTMLElement[] = [fo.firstElementChild as HTMLElement, ...Array.from(nodes)].filter(
       Boolean
     ) as HTMLElement[];
     all.forEach((node) => {
-      const orig = node.dataset?.krobarOrigFs;
-      if (!orig) return;
-      const px = parseFloat(orig);
-      if (Number.isFinite(px)) node.style.fontSize = `${px * fsRatio}px`;
+      if (node.style && node.style.fontSize) node.style.fontSize = "";
     });
   };
 
@@ -521,6 +521,17 @@ const Index = () => {
         const first = fo.firstElementChild as HTMLElement | null;
         if (first?.dataset?.krobarOrigFs) first.style.fontSize = "";
       }
+      // Restaure les paramètres de wrap d'origine sur un <text data-wrap-max>
+      // (ils seront ré-appliqués par applyTransforms si sx/sy ≠ 1).
+      if (
+        el.tagName.toLowerCase() === "text" &&
+        el.hasAttribute("data-orig-wrap-max")
+      ) {
+        const om = el.getAttribute("data-orig-wrap-max");
+        const ol = el.getAttribute("data-orig-wrap-lines");
+        if (om) el.setAttribute("data-wrap-max", om);
+        if (ol) el.setAttribute("data-wrap-lines", ol);
+      }
     });
     Object.entries(transforms).forEach(([key, t]) => {
       const slotEl = svg.querySelector(`[data-slot="${key}"]`) as Element | null;
@@ -544,6 +555,45 @@ const Index = () => {
           applyForeignObjectScale(fo, sx, sy);
         }
       } else if (sx === 1 && sy === 1) {
+        el.setAttribute("transform", `translate(${t.dx} ${t.dy})`);
+      } else if (
+        el.tagName.toLowerCase() === "text" &&
+        (el as Element).hasAttribute("data-wrap-max")
+      ) {
+        // Texte SVG avec wrap : on N'utilise PAS scale() (qui déforme les
+        // glyphes). À la place, on ajuste la largeur de wrap (en caractères)
+        // et le nombre de lignes max proportionnellement à sx/sy, puis on
+        // re-wrappe le contenu avec la même police d'origine.
+        const textEl = el as unknown as SVGTextElement;
+        if (!textEl.hasAttribute("data-orig-wrap-max")) {
+          textEl.setAttribute(
+            "data-orig-wrap-max",
+            textEl.getAttribute("data-wrap-max") || "22"
+          );
+          textEl.setAttribute(
+            "data-orig-wrap-lines",
+            textEl.getAttribute("data-wrap-lines") || "3"
+          );
+        }
+        const origMax = parseInt(
+          textEl.getAttribute("data-orig-wrap-max") || "22",
+          10
+        );
+        const origLines = parseInt(
+          textEl.getAttribute("data-orig-wrap-lines") || "3",
+          10
+        );
+        const newMax = Math.max(4, Math.round(origMax * sx));
+        const newLines = Math.max(1, Math.round(origLines * sy));
+        textEl.setAttribute("data-wrap-max", String(newMax));
+        textEl.setAttribute("data-wrap-lines", String(newLines));
+        const wrapX = parseFloat(textEl.getAttribute("data-wrap-x") || "0");
+        const wrapDy = parseFloat(textEl.getAttribute("data-wrap-dy") || "18");
+        const fullText =
+          (effectiveSlots as Record<string, string>)[key] ??
+          textEl.textContent ??
+          "";
+        wrapTextIntoTspans(textEl, fullText, wrapX, newMax, newLines, wrapDy);
         el.setAttribute("transform", `translate(${t.dx} ${t.dy})`);
       } else {
         const bb = getLocalBBox(el);
@@ -823,6 +873,45 @@ const Index = () => {
       fo.setAttribute("x", String(ox + next.dx));
       fo.setAttribute("y", String(oy + next.dy));
       applyForeignObjectScale(fo, next.sx, next.sy);
+    } else if (
+      movable.tagName.toLowerCase() === "text" &&
+      (movable as Element).hasAttribute("data-wrap-max")
+    ) {
+      // Texte SVG avec wrap : pas de scale (déformerait les glyphes), on
+      // re-wrappe avec une largeur de ligne / nb de lignes ajustés.
+      const textEl = movable as unknown as SVGTextElement;
+      if (!textEl.hasAttribute("data-orig-wrap-max")) {
+        textEl.setAttribute(
+          "data-orig-wrap-max",
+          textEl.getAttribute("data-wrap-max") || "22"
+        );
+        textEl.setAttribute(
+          "data-orig-wrap-lines",
+          textEl.getAttribute("data-wrap-lines") || "3"
+        );
+      }
+      const origMax = parseInt(
+        textEl.getAttribute("data-orig-wrap-max") || "22",
+        10
+      );
+      const origLines = parseInt(
+        textEl.getAttribute("data-orig-wrap-lines") || "3",
+        10
+      );
+      const newMax = Math.max(4, Math.round(origMax * newSx));
+      const newLines = Math.max(1, Math.round(origLines * newSy));
+      textEl.setAttribute("data-wrap-max", String(newMax));
+      textEl.setAttribute("data-wrap-lines", String(newLines));
+      const wrapX = parseFloat(textEl.getAttribute("data-wrap-x") || "0");
+      const wrapDy = parseFloat(textEl.getAttribute("data-wrap-dy") || "18");
+      const fullText =
+        (effectiveSlots as Record<string, string>)[selectedSlotKey!] ??
+        textEl.textContent ??
+        "";
+      wrapTextIntoTspans(textEl, fullText, wrapX, newMax, newLines, wrapDy);
+      // L'anchor n'a pas de sens ici, on translate seulement.
+      next = { dx: base.dx, dy: base.dy, sx: newSx, sy: newSy };
+      textEl.setAttribute("transform", `translate(${next.dx} ${next.dy})`);
     } else {
       // Anchor in local coords = opposite corner of the dragged one.
       const anchorLocalX = signX > 0 ? bb.x : bb.x + bb.w;
