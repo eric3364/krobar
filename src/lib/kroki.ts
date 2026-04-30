@@ -193,9 +193,10 @@ export function svgToString(svg: SVGElement): string {
  */
 export async function callBackend(
   text: string,
+  detail_level: string = "auto",
 ): Promise<{ suggestions: Suggestion[]; latencyMs: number }> {
   const t0 = performance.now();
-  const data = await analyzeText(text);
+  const data = await analyzeText(text, detail_level);
   const rawSuggestions: Suggestion[] = data.suggestions ?? [];
   if (rawSuggestions.length === 0) throw new Error("Aucune suggestion");
   const suggestions = rawSuggestions.map((s) => ({ ...s, score: normalizeScore(s.score) }));
