@@ -364,22 +364,60 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
             </div>
           </div>
 
-          {allDone && (
+          {hasAnyCompleted && (
             <div className="rounded-lg border bg-accent/30 px-4 py-3 flex items-center justify-between gap-3 flex-wrap">
               <div className="flex items-center gap-4 text-sm">
                 <span className="font-bold">
-                  Score global : {successCount}/{testSuite.length} (
-                  {Math.round((successCount / testSuite.length) * 100)}%)
+                  Score global : {successCount}/{completedCount} (
+                  {completedCount > 0 ? Math.round((successCount / completedCount) * 100) : 0}%)
                 </span>
                 <span>✅ {successCount} réussis</span>
                 <span>⚠️ {warningCount} avertissements</span>
                 <span>❌ {failCount} échecs</span>
+                <span className="text-muted-foreground">
+                  ({completedCount}/{testSuite.length} exécutés)
+                </span>
               </div>
-              <Button onClick={exportReport} size="sm" variant="outline">
+              <Button onClick={exportReport} size="sm" variant="outline" disabled={!allDone}>
                 <Download className="w-4 h-4 mr-2" /> Exporter le rapport
               </Button>
             </div>
           )}
+
+          <div className="flex items-center gap-4 flex-wrap text-xs border rounded-lg px-3 py-2 bg-muted/30">
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="select-all"
+                checked={allSelected}
+                onCheckedChange={(c) => (c ? selectAll() : clearSelection())}
+              />
+              <Label htmlFor="select-all" className="text-xs cursor-pointer">
+                Tout sélectionner
+              </Label>
+            </div>
+            <span className="text-muted-foreground">
+              {selectedIds.size} test{selectedIds.size > 1 ? "s" : ""} sélectionné
+              {selectedIds.size > 1 ? "s" : ""}
+            </span>
+            <div className="flex items-center gap-2 ml-auto">
+              <Button
+                onClick={runSelection}
+                disabled={running || selectedIds.size === 0}
+                size="sm"
+                variant="secondary"
+              >
+                <Play className="w-4 h-4 mr-2" /> Lancer la sélection
+              </Button>
+              <Button
+                onClick={clearSelection}
+                disabled={selectedIds.size === 0}
+                size="sm"
+                variant="ghost"
+              >
+                Effacer la sélection
+              </Button>
+            </div>
+          </div>
         </div>
       </header>
 
