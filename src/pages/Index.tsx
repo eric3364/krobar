@@ -718,6 +718,9 @@ const Index = () => {
     if (!slotEl) return;
     const base = slotTransforms[selectedSlotKey] ?? { dx: 0, dy: 0, sx: 1, sy: 1 };
     const delta = viewportDeltaToSvgUnits(slotEl, dx, dy);
+    // No-op drag (e.g. simple click) → don't pollute history.
+    if (delta.dx === 0 && delta.dy === 0) return;
+    pushHistory();
     setSlotTransforms((prev) => ({
       ...prev,
       [selectedSlotKey]: {
