@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Loader2, Download, Sparkles, RefreshCw, FlaskConical } from "lucide-react";
+import { Loader2, Download, Sparkles, RefreshCw, FlaskConical, Maximize2, Minimize2 } from "lucide-react";
 import TestSuiteView from "@/components/TestSuiteView";
 import CustomizePanel, { loadStoredDetailLevel, type DetailLevel } from "@/components/CustomizePanel";
 import EditableSlot from "@/components/EditableSlot";
@@ -216,6 +216,22 @@ const Index = () => {
   };
   const [edit, setEdit] = useState<TextEdit | IconEdit | null>(null);
   const [slotOverrides, setSlotOverrides] = useState<Record<string, string>>({});
+
+  // Edit mode: enlarges the preview column for easier in-place editing.
+  const [editMode, setEditMode] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem("krobar-edit-mode") === "1";
+    } catch {
+      return false;
+    }
+  });
+  useEffect(() => {
+    try {
+      localStorage.setItem("krobar-edit-mode", editMode ? "1" : "0");
+    } catch {
+      /* ignore */
+    }
+  }, [editMode]);
 
   useEffect(() => {
     fetch("/templates/manifest.json")
@@ -446,7 +462,11 @@ const Index = () => {
         </div>
       </header>
 
-      <main className="grid grid-cols-1 lg:grid-cols-3 gap-4 p-4 h-[calc(100vh-65px)]">
+      <main
+        className={`grid grid-cols-1 gap-4 p-4 h-[calc(100vh-65px)] transition-[grid-template-columns] duration-300 ${
+          editMode ? "lg:grid-cols-[1fr_1fr_3fr]" : "lg:grid-cols-3"
+        }`}
+      >
         {/* Zone 1 — Saisie */}
         <section className="flex flex-col gap-3">
           <Card className="p-4 flex flex-col gap-3 flex-1">
@@ -548,11 +568,29 @@ const Index = () => {
         {/* Zone 3 — Aperçu et export */}
         <section className="flex flex-col gap-3 overflow-hidden">
           <Card className="p-4 flex flex-col gap-3 flex-1">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-2">
               <Label className="text-sm font-semibold">Aperçu</Label>
-              {selectedTemplate && (
-                <span className="text-xs text-muted-foreground">{selectedTemplate.name}</span>
-              )}
+              <div className="flex items-center gap-2 min-w-0">
+                {selectedTemplate && (
+                  <span className="text-xs text-muted-foreground truncate">{selectedTemplate.name}</span>
+                )}
+                <Button
+                  size="sm"
+                  variant={editMode ? "default" : "outline"}
+                  onClick={() => setEditMode((v) => !v)}
+                  title={editMode ? "Revenir à la vue compacte" : "Élargir l'aperçu pour éditer"}
+                >
+                  {editMode ? (
+                    <>
+                      <Minimize2 className="w-4 h-4 mr-1.5" /> Vue compacte
+                    </>
+                  ) : (
+                    <>
+                      <Maximize2 className="w-4 h-4 mr-1.5" /> Mode édition
+                    </>
+                  )}
+                </Button>
+              </div>
             </div>
             <div
               ref={previewRef}
