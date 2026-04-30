@@ -407,6 +407,33 @@ const Index = () => {
   const isWrapTextEl = (el: Element | null): el is SVGTextElement =>
     !!el && el.tagName.toLowerCase() === "text" && el.hasAttribute("data-wrap-max");
 
+  // Promote a plain SVG <text> into a wrap-capable text element so resize can
+  // re-flow it instead of scaling glyphs (which would visibly grow the font).
+  const promoteTextToWrap = (textEl: SVGTextElement) => {
+    if (textEl.hasAttribute("data-wrap-max")) return;
+    const prev = textEl.getAttribute("transform");
+    if (prev) textEl.removeAttribute("transform");
+    const b = textEl.getBBox();
+    if (prev) textEl.setAttribute("transform", prev);
+    const fontSizePx =
+      parseFloat(window.getComputedStyle(textEl).fontSize || "14") || 14;
+    // Average glyph advance ≈ 0.55 em for proportional fonts.
+    const avgChar = Math.max(4, fontSizePx * 0.55);
+    const text = textEl.textContent || "";
+    const maxChars =
+      Math.max(4, Math.round(b.width / avgChar)) || text.length || 8;
+    const lineHeight = Math.max(fontSizePx * 1.2, fontSizePx + 2);
+    const lines = Math.max(1, Math.round(b.height / lineHeight)) || 1;
+    const xAttr = textEl.getAttribute("x");
+    const wrapX = xAttr != null ? parseFloat(xAttr) : b.x;
+    textEl.setAttribute("data-wrap-x", String(wrapX));
+    textEl.setAttribute("data-wrap-max", String(maxChars));
+    textEl.setAttribute("data-wrap-lines", String(lines));
+    textEl.setAttribute("data-wrap-dy", String(lineHeight));
+    textEl.setAttribute("data-orig-wrap-max", String(maxChars));
+    textEl.setAttribute("data-orig-wrap-lines", String(lines));
+  };
+
   const captureWrapTextOriginalBox = (textEl: SVGTextElement) => {
     if (!textEl.hasAttribute("data-krobar-orig-box-w")) {
       const prev = textEl.getAttribute("transform");
