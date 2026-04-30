@@ -610,13 +610,12 @@ const Index = () => {
     if (Number.isFinite(newW)) fo.setAttribute("width", String(newW));
     if (Number.isFinite(newH)) fo.setAttribute("height", String(newH));
 
-    // NOTE: on NE modifie PAS la taille de la police lors d'un redimensionnement.
-    // Le HTML embarqué doit utiliser word-wrap/overflow-wrap pour que le texte
-    // se réajuste naturellement. On neutralise donc :
-    //   - les font-size inline éventuels,
-    //   - les white-space: nowrap (qui empêchent tout retour à la ligne),
-    //   - les largeurs fixes en pixels sur les descendants directs.
-    // Et on force le 1er enfant à occuper 100% du foreignObject.
+    // CRITIQUE — la taille de police NE doit PAS bouger pendant le resize.
+    // Pour cela on capture, au tout 1er passage, la valeur calculée par le
+    // navigateur (computedStyle) sur chaque nœud, et on la réimpose en
+    // inline ensuite. Comme ça, peu importe ce que faisait le CSS hérité
+    // ou un éventuel transform parent, la police reste figée à sa valeur
+    // d'origine pour toute la session de redimensionnement.
     const root = fo.firstElementChild as HTMLElement | null;
     if (root && root.style) {
       root.style.width = "100%";
@@ -629,24 +628,33 @@ const Index = () => {
       root.style.overflow = "hidden";
     }
     const all = fo.querySelectorAll<HTMLElement>("*");
-    all.forEach((node) => {
+    const nodes: HTMLElement[] = root ? [root, ...Array.from(all)] : Array.from(all);
+    nodes.forEach((node) => {
       if (!node.style) return;
-      // Reset font sizes set by previous (legacy) scale code.
-      if (node.style.fontSize) node.style.fontSize = "";
-      // Force wrappable text — common offenders inside slot HTML.
+      // 1) Geler la taille de police d'origine (1ère fois seulement).
+      if (!node.dataset.krobarFrozenFs) {
+        const cs = window.getComputedStyle(node);
+        const fs = cs.fontSize;
+        if (fs) {
+          node.dataset.krobarFrozenFs = fs;
+        }
+      }
+      // 2) Réimposer la taille gelée à chaque resize.
+      const frozen = node.dataset.krobarFrozenFs;
+      if (frozen) node.style.fontSize = frozen;
+
+      // 3) Forcer le wrap, neutraliser nowrap & largeurs px qui empêchent
+      //    le retour à la ligne.
       if (node.style.whiteSpace === "nowrap") node.style.whiteSpace = "normal";
       node.style.wordWrap = "break-word";
       node.style.overflowWrap = "break-word";
-      // Neutralize any inline pixel width that would override the FO's new width.
       const w = node.style.width;
       if (w && /px\s*$/.test(w)) node.style.width = "100%";
       const mw = node.style.minWidth;
       if (mw && /px\s*$/.test(mw)) node.style.minWidth = "0";
     });
 
-    // Nudge the browser to re-flow the foreignObject contents immediately
-    // (some engines lazily layout HTML inside SVG until something forces it).
-    // Reading offsetHeight on the root triggers a synchronous reflow.
+    // Force un reflow synchrone pour que le re-wrap soit visible immédiatement.
     if (root) void root.offsetHeight;
   };
 
