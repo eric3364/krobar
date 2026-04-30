@@ -222,6 +222,16 @@ const Index = () => {
   };
   const [edit, setEdit] = useState<TextEdit | IconEdit | null>(null);
   const [slotOverrides, setSlotOverrides] = useState<Record<string, string>>({});
+  // Per-slot translation in SVG user units, persisted on the rendered element
+  // and serialized into the SVG export.
+  const [slotTransforms, setSlotTransforms] = useState<
+    Record<string, { dx: number; dy: number }>
+  >({});
+  // Currently selected (single-clicked) slot key for moving.
+  const [selectedSlotKey, setSelectedSlotKey] = useState<string | null>(null);
+  const [selectedRect, setSelectedRect] = useState<
+    { left: number; top: number; width: number; height: number } | null
+  >(null);
 
   useEffect(() => {
     fetch("/templates/manifest.json")
