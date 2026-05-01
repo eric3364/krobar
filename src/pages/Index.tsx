@@ -1054,19 +1054,30 @@ const Index = () => {
 
   // Live drag: temporarily apply visual translation on the slot element directly,
   // without re-rendering the whole SVG (smoother and avoids React thrash).
-  const handleDrag = (dx: number, dy: number) => {
-    if (!selectedSlotKey || !previewRef.current) return;
-    const slotEl = previewRef.current.querySelector(
-      `[data-slot="${selectedSlotKey}"]`
-    ) as Element | null;
+  // Snapshot of every co-selected slot's base transform & start rect, captured
+  // at pointerdown so the live preview adds the cumulative delta cleanly.
+  const dragGroupRef = useRef<
+    Record<
+      string,
+      {
+        base: { dx: number; dy: number; sx: number; sy: number };
+        startRect: { left: number; top: number; width: number; height: number } | null;
+      }
+    >
+  >({});
+
+  const liveDragSlot = (
+    slotKey: string,
+    dx: number,
+    dy: number,
+    base: { dx: number; dy: number; sx: number; sy: number }
+  ) => {
+    const container = previewRef.current;
+    if (!container) return;
+    const slotEl = container.querySelector(`[data-slot="${slotKey}"]`) as Element | null;
     if (!slotEl) return;
     const movableEl = getMovable(slotEl);
     if (!movableEl) return;
-    if (!dragStartRectRef.current && selectedRect) {
-      dragStartRectRef.current = { ...selectedRect };
-    }
-    const startRect = dragStartRectRef.current;
-    const base = slotTransforms[selectedSlotKey] ?? { dx: 0, dy: 0, sx: 1, sy: 1 };
     const sx = base.sx ?? 1;
     const sy = base.sy ?? 1;
     const delta = viewportDeltaToSvgUnits(slotEl, dx, dy);
@@ -1090,37 +1101,95 @@ const Index = () => {
       movableEl.setAttribute("transform", buildTransform(ndx, ndy, sx, sy, bb.x, bb.y));
     }
     movableEl.setAttribute("data-krobar-moved", "1");
-    if (startRect) {
+  };
+
+  const handleDrag = (dx: number, dy: number) => {
+    if (!selectedSlotKey || !previewRef.current) return;
+
+    // First move of this gesture → snapshot base transforms + rects for the
+    // whole co-selected group so the live preview can offset them cleanly.
+    if (Object.keys(dragGroupRef.current).length === 0) {
+      const keys = [selectedSlotKey, ...extraSelectedKeys];
+      const snap: typeof dragGroupRef.current = {};
+      keys.forEach((k) => {
+        const base = slotTransforms[k] ?? { dx: 0, dy: 0, sx: 1, sy: 1 };
+        const rect =
+          k === selectedSlotKey
+            ? selectedRect
+            : extraSelectedRects[k] ?? null;
+        snap[k] = {
+          base: { dx: base.dx, dy: base.dy, sx: base.sx ?? 1, sy: base.sy ?? 1 },
+          startRect: rect ? { ...rect } : null,
+        };
+      });
+      dragGroupRef.current = snap;
+      if (!dragStartRectRef.current && selectedRect) {
+        dragStartRectRef.current = { ...selectedRect };
+      }
+    }
+
+    Object.entries(dragGroupRef.current).forEach(([k, info]) => {
+      liveDragSlot(k, dx, dy, info.base);
+    });
+
+    // Update floating overlays (primary frame + extra halos) by translating
+    // their start rects by the cumulative viewport delta.
+    const primarySnap = dragGroupRef.current[selectedSlotKey];
+    if (primarySnap?.startRect) {
       setSelectedRect({
-        left: startRect.left + dx,
-        top: startRect.top + dy,
-        width: startRect.width,
-        height: startRect.height,
+        left: primarySnap.startRect.left + dx,
+        top: primarySnap.startRect.top + dy,
+        width: primarySnap.startRect.width,
+        height: primarySnap.startRect.height,
+      });
+    }
+    if (extraSelectedKeys.length) {
+      setExtraSelectedRects((prev) => {
+        const next = { ...prev };
+        extraSelectedKeys.forEach((k) => {
+          const sr = dragGroupRef.current[k]?.startRect;
+          if (sr) {
+            next[k] = {
+              left: sr.left + dx,
+              top: sr.top + dy,
+              width: sr.width,
+              height: sr.height,
+            };
+          }
+        });
+        return next;
       });
     }
   };
 
   const handleDragCommit = (dx: number, dy: number) => {
     dragStartRectRef.current = null;
+    const group = dragGroupRef.current;
+    dragGroupRef.current = {};
     if (!selectedSlotKey || !previewRef.current) return;
     const slotEl = previewRef.current.querySelector(
       `[data-slot="${selectedSlotKey}"]`
     ) as Element | null;
     if (!slotEl) return;
-    const base = slotTransforms[selectedSlotKey] ?? { dx: 0, dy: 0, sx: 1, sy: 1 };
     const delta = viewportDeltaToSvgUnits(slotEl, dx, dy);
     // No-op drag (e.g. simple click) → don't pollute history.
     if (delta.dx === 0 && delta.dy === 0) return;
     pushHistory();
-    setSlotTransforms((prev) => ({
-      ...prev,
-      [selectedSlotKey]: {
-        dx: base.dx + delta.dx,
-        dy: base.dy + delta.dy,
-        sx: base.sx ?? 1,
-        sy: base.sy ?? 1,
-      },
-    }));
+    setSlotTransforms((prev) => {
+      const next = { ...prev };
+      const keys = [selectedSlotKey, ...extraSelectedKeys];
+      keys.forEach((k) => {
+        const base =
+          group[k]?.base ?? prev[k] ?? { dx: 0, dy: 0, sx: 1, sy: 1 };
+        next[k] = {
+          dx: base.dx + delta.dx,
+          dy: base.dy + delta.dy,
+          sx: base.sx ?? 1,
+          sy: base.sy ?? 1,
+        };
+      });
+      return next;
+    });
   };
 
   // Compute new (dx,dy,sx,sy) for a corner-resize, anchoring at the OPPOSITE corner.
