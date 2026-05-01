@@ -367,6 +367,29 @@ const Index = () => {
       .then(setManifest);
   }, []);
 
+  // Reprise d'une session passée via ?resume=<generation_id>
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const resumeId = params.get("resume");
+    if (!resumeId) return;
+    (async () => {
+      const { supabase } = await import("@/integrations/supabase/client");
+      const { data } = await supabase
+        .from("generations")
+        .select("input_text,palette_key")
+        .eq("id", resumeId)
+        .maybeSingle();
+      if (data?.input_text) setText(data.input_text);
+      if (data?.palette_key && data.palette_key in palettes) {
+        setPaletteKey(data.palette_key as keyof typeof palettes);
+      }
+      // Nettoie l'URL pour éviter de re-déclencher au refresh
+      const url = new URL(window.location.href);
+      url.searchParams.delete("resume");
+      window.history.replaceState({}, "", url.toString());
+    })();
+  }, []);
+
   const palette = palettes[paletteKey];
 
   const selectedSuggestion = selectedIdx !== null ? suggestions[selectedIdx] : null;
