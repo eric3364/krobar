@@ -962,22 +962,34 @@ const Index = () => {
       const isIcon = tag === "image" || tag === "use" || kind === "icon";
 
       if (e.shiftKey && selectedSlotKey && !isIcon && slotKey !== selectedSlotKey) {
-        setExtraSelectedKeys((prev) => {
-          if (prev.includes(slotKey)) {
-            // Deselect this extra
-            setExtraSelectedRects((rects) => {
-              const next = { ...rects };
-              delete next[slotKey];
-              return next;
-            });
-            return prev.filter((k) => k !== slotKey);
-          }
+        // If clicking an already-co-selected extra → deselect it (toggle off).
+        if (extraSelectedKeys.includes(slotKey)) {
+          setExtraSelectedKeys((prev) => prev.filter((k) => k !== slotKey));
+          setExtraSelectedRects((rects) => {
+            const next = { ...rects };
+            delete next[slotKey];
+            return next;
+          });
+          return;
+        }
+        // Otherwise: the newly clicked block becomes the PRIMARY (handles +
+        // toolbar anchor), and the previous primary is demoted to an extra.
+        // This matches the user expectation that the move handles always sit
+        // on the most recently selected block.
+        const prevPrimary = selectedSlotKey;
+        const prevPrimaryRect = selectedRect;
+        setSelectedSlotKey(slotKey);
+        setSelectedRect(getMovableViewportRect(slotEl));
+        setExtraSelectedKeys((prev) => [
+          ...prev.filter((k) => k !== prevPrimary),
+          prevPrimary,
+        ]);
+        if (prevPrimaryRect) {
           setExtraSelectedRects((rects) => ({
             ...rects,
-            [slotKey]: getMovableViewportRect(slotEl),
+            [prevPrimary]: prevPrimaryRect,
           }));
-          return [...prev, slotKey];
-        });
+        }
         return;
       }
 
@@ -1132,33 +1144,28 @@ const Index = () => {
       liveDragSlot(k, dx, dy, info.base);
     });
 
-    // Update floating overlays (primary frame + extra halos) by translating
-    // their start rects by the cumulative viewport delta.
-    const primarySnap = dragGroupRef.current[selectedSlotKey];
-    if (primarySnap?.startRect) {
-      setSelectedRect({
-        left: primarySnap.startRect.left + dx,
-        top: primarySnap.startRect.top + dy,
-        width: primarySnap.startRect.width,
-        height: primarySnap.startRect.height,
-      });
-    }
-    if (extraSelectedKeys.length) {
-      setExtraSelectedRects((prev) => {
-        const next = { ...prev };
-        extraSelectedKeys.forEach((k) => {
-          const sr = dragGroupRef.current[k]?.startRect;
-          if (sr) {
-            next[k] = {
-              left: sr.left + dx,
-              top: sr.top + dy,
-              width: sr.width,
-              height: sr.height,
-            };
-          }
+    // Re-measure overlays from the actual rendered position of each slot
+    // AFTER the live transform has been applied. This keeps the selection
+    // frame and halos glued to the visible text instead of drifting because
+    // of the viewport-px ↔ SVG-units scale mismatch on large drags.
+    const container = previewRef.current;
+    if (container) {
+      const primaryEl = container.querySelector(
+        `[data-slot="${selectedSlotKey}"]`
+      ) as Element | null;
+      if (primaryEl) {
+        setSelectedRect(getMovableViewportRect(primaryEl));
+      }
+      if (extraSelectedKeys.length) {
+        setExtraSelectedRects((prev) => {
+          const next = { ...prev };
+          extraSelectedKeys.forEach((k) => {
+            const el = container.querySelector(`[data-slot="${k}"]`) as Element | null;
+            if (el) next[k] = getMovableViewportRect(el);
+          });
+          return next;
         });
-        return next;
-      });
+      }
     }
   };
 
