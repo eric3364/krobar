@@ -1,4 +1,13 @@
-export type PaletteKey = 'ocean' | 'foret' | 'crepuscule' | 'aurore' | 'encre';
+export type PaletteKey =
+  | 'ocean'
+  | 'foret'
+  | 'crepuscule'
+  | 'aurore'
+  | 'encre'
+  | 'corail'
+  | 'menthe'
+  | 'lavande'
+  | 'sable';
 
 export interface PaletteColors {
   primary: string;
