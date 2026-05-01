@@ -11,6 +11,7 @@ import CustomizePanel, { loadStoredDetailLevel, type DetailLevel } from "@/compo
 import EditableSlot from "@/components/EditableSlot";
 import IconPicker from "@/components/IconPicker";
 import MovableSlotOverlay from "@/components/MovableSlotOverlay";
+import TextFormatToolbar, { type TextStyleOverride } from "@/components/TextFormatToolbar";
 import {
   ResizablePanelGroup,
   ResizablePanel,
@@ -280,6 +281,8 @@ const Index = () => {
   const [slotTransforms, setSlotTransforms] = useState<
     Record<string, { dx: number; dy: number; sx?: number; sy?: number }>
   >({});
+  // Per-slot text style overrides applied via inline CSS on the rendered SVG element.
+  const [slotTextStyles, setSlotTextStyles] = useState<Record<string, TextStyleOverride>>({});
   // Currently selected (single-clicked) slot key for moving.
   const [selectedSlotKey, setSelectedSlotKey] = useState<string | null>(null);
   const [selectedRect, setSelectedRect] = useState<
@@ -797,6 +800,40 @@ const Index = () => {
     });
   };
 
+  // Applique les overrides de style texte (taille/poids/italique/etc.) en CSS
+  // inline sur l'élément rendu (text, foreignObject inner, etc.).
+  const applySlotTextStyles = (
+    svg: SVGElement,
+    styles: Record<string, TextStyleOverride>
+  ) => {
+    Object.entries(styles).forEach(([key, s]) => {
+      const slotEl = svg.querySelector(`[data-slot="${key}"]`) as Element | null;
+      if (!slotEl) return;
+      const tag = slotEl.tagName.toLowerCase();
+      const targets: HTMLElement[] = [];
+      if (tag === "foreignobject") {
+        const inner = (slotEl.querySelector("[data-slot]") ||
+          slotEl.firstElementChild) as HTMLElement | null;
+        if (inner) targets.push(inner);
+      } else {
+        targets.push(slotEl as unknown as HTMLElement);
+      }
+      targets.forEach((t) => {
+        if (s.fontSize != null) t.style.fontSize = `${s.fontSize}px`;
+        if (s.fontWeight) t.style.fontWeight = s.fontWeight;
+        if (s.fontStyle) t.style.fontStyle = s.fontStyle;
+        if (s.textAlign) t.style.textAlign = s.textAlign;
+        if (s.textDecoration) t.style.textDecoration = s.textDecoration;
+        if (s.color) {
+          t.style.color = s.color;
+          // SVG <text> uses fill rather than color
+          if (tag === "text") (slotEl as SVGElement).setAttribute("fill", s.color);
+        }
+        if (s.fontFamily) t.style.fontFamily = s.fontFamily;
+      });
+    });
+  };
+
   // Render big preview
   useEffect(() => {
     if (!selectedSuggestion || !selectedTemplate || !previewRef.current) return;
@@ -805,6 +842,7 @@ const Index = () => {
       applyPaletteVars(svg, palette);
       fillSlots(svg, effectiveSlots);
       applyTransforms(svg, slotTransforms);
+      applySlotTextStyles(svg, slotTextStyles);
       svg.setAttribute("width", "100%");
       svg.setAttribute("height", "100%");
       previewRef.current!.innerHTML = "";
@@ -817,7 +855,7 @@ const Index = () => {
         }
       }
     })();
-  }, [selectedSuggestion, selectedTemplate, palette, effectiveSlots, slotTransforms]);
+  }, [selectedSuggestion, selectedTemplate, palette, effectiveSlots, slotTransforms, slotTextStyles]);
 
   // Convertit un delta viewport (px CSS) en unités SVG en se basant sur le viewBox
   // et la taille affichée réelle du SVG. Compatible avec les slots dans foreignObject.
@@ -924,6 +962,38 @@ const Index = () => {
       container.removeEventListener("dblclick", onDblClick);
     };
   }, [effectiveSlots, selectedSlotKey]);
+
+  // Keyboard shortcuts for text formatting on the selected slot.
+  useEffect(() => {
+    if (!selectedSlotKey || edit) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (!(e.ctrlKey || e.metaKey)) return;
+      const target = e.target as HTMLElement | null;
+      if (target && /^(input|textarea|select)$/i.test(target.tagName)) return;
+      const cur = slotTextStyles[selectedSlotKey] ?? {};
+      let patch: TextStyleOverride | null = null;
+      if (e.key.toLowerCase() === "b") {
+        const isBold = cur.fontWeight === "bold" || cur.fontWeight === "700";
+        patch = { fontWeight: isBold ? "normal" : "bold" };
+      } else if (e.key.toLowerCase() === "i") {
+        patch = { fontStyle: cur.fontStyle === "italic" ? "normal" : "italic" };
+      } else if (e.key === "=" || e.key === "+") {
+        patch = { fontSize: Math.min(96, (cur.fontSize ?? 16) + 2) };
+      } else if (e.key === "-") {
+        patch = { fontSize: Math.max(8, (cur.fontSize ?? 16) - 2) };
+      }
+      if (patch) {
+        e.preventDefault();
+        pushHistory();
+        setSlotTextStyles((prev) => ({
+          ...prev,
+          [selectedSlotKey]: { ...(prev[selectedSlotKey] ?? {}), ...patch! },
+        }));
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [selectedSlotKey, edit, slotTextStyles]);
 
   // Live drag: temporarily apply visual translation on the slot element directly,
   // without re-rendering the whole SVG (smoother and avoids React thrash).
@@ -1506,18 +1576,44 @@ const Index = () => {
         />
       )}
       {selectedSlotKey && selectedRect && !edit && (
-        <MovableSlotOverlay
-          rect={selectedRect}
-          onDrag={handleDrag}
-          onCommit={handleDragCommit}
-          onResize={handleResize}
-          onResizeCommit={handleResizeCommit}
-          onEdit={() => openEditorForSlot(selectedSlotKey)}
-          onCancel={() => {
-            setSelectedSlotKey(null);
-            setSelectedRect(null);
-          }}
-        />
+        <>
+          <MovableSlotOverlay
+            rect={selectedRect}
+            onDrag={handleDrag}
+            onCommit={handleDragCommit}
+            onResize={handleResize}
+            onResizeCommit={handleResizeCommit}
+            onEdit={() => openEditorForSlot(selectedSlotKey)}
+            onCancel={() => {
+              setSelectedSlotKey(null);
+              setSelectedRect(null);
+            }}
+          />
+          {(() => {
+            const slotEl = previewRef.current?.querySelector(
+              `[data-slot="${selectedSlotKey}"]`
+            ) as Element | null;
+            if (!slotEl) return null;
+            const tag = slotEl.tagName.toLowerCase();
+            const kind = slotEl.getAttribute("data-slot-kind");
+            const isIcon =
+              tag === "image" || tag === "use" || kind === "icon";
+            if (isIcon) return null;
+            return (
+              <TextFormatToolbar
+                rect={selectedRect}
+                value={slotTextStyles[selectedSlotKey] ?? {}}
+                onChange={(patch) => {
+                  pushHistory();
+                  setSlotTextStyles((prev) => ({
+                    ...prev,
+                    [selectedSlotKey]: { ...(prev[selectedSlotKey] ?? {}), ...patch },
+                  }));
+                }}
+              />
+            );
+          })()}
+        </>
       )}
     </div>
   );
