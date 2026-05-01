@@ -1763,9 +1763,6 @@ const Index = () => {
             <Download className="w-4 h-4 mr-2" /> PNG
           </Button>
         </div>
-        <Button onClick={cyclePalette} disabled={!selectedSuggestion} variant="secondary">
-          <RefreshCw className="w-4 h-4 mr-2" /> Régénérer avec autre palette
-        </Button>
       </Card>
     </section>
   );
