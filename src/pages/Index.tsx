@@ -890,11 +890,9 @@ const Index = () => {
 
   // Render big preview
   useEffect(() => {
-    if (!selectedSuggestion || !selectedTemplate || !previewRef.current) return;
+    if (!selectedSuggestion || !previewRef.current) return;
     (async () => {
-      const svg = await loadSvg(selectedTemplate.file);
-      applyPaletteVars(svg, palette);
-      fillSlots(svg, effectiveSlots);
+      const svg = await loadRenderedSvg(selectedSuggestion.template_id, effectiveSlots, palette);
       applyTransforms(svg, slotTransforms);
       applySlotTextStyles(svg, slotTextStyles);
       svg.setAttribute("width", "100%");
@@ -917,7 +915,7 @@ const Index = () => {
         setExtraSelectedRects(next);
       }
     })();
-  }, [selectedSuggestion, selectedTemplate, palette, effectiveSlots, slotTransforms, slotTextStyles]);
+  }, [selectedSuggestion, palette, effectiveSlots, slotTransforms, slotTextStyles]);
 
   // Convertit un delta viewport (px CSS) en unités SVG en se basant sur le viewBox
   // et la taille affichée réelle du SVG. Compatible avec les slots dans foreignObject.
