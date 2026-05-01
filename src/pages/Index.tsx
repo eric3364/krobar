@@ -1428,7 +1428,11 @@ const Index = () => {
       setSuggestions(sug);
       setSelectedIdx(0);
       try {
-        await quota.recordGeneration();
+        await quota.recordGeneration({
+          templateId: sug[0]?.template_id,
+          inputText: text,
+          paletteKey: paletteKey as string,
+        });
       } catch (e) {
         console.warn("Impossible d'enregistrer l'usage", e);
       }
