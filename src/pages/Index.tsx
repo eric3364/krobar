@@ -936,17 +936,48 @@ const Index = () => {
       if (!target) return;
       const slotEl = target.closest("[data-slot]") as Element | null;
       if (!slotEl || !container.contains(slotEl)) {
-        // Click outside any slot deselects
+        // Click outside any slot deselects everything
         setSelectedSlotKey(null);
         setSelectedRect(null);
+        setExtraSelectedKeys([]);
+        setExtraSelectedRects({});
         return;
       }
       const slotKey = slotEl.getAttribute("data-slot") || "";
       if (!slotKey) return;
       e.preventDefault();
       e.stopPropagation();
+
+      // Shift+click → toggle co-selection (text slots only).
+      const tag = slotEl.tagName.toLowerCase();
+      const kind = slotEl.getAttribute("data-slot-kind");
+      const isIcon = tag === "image" || tag === "use" || kind === "icon";
+
+      if (e.shiftKey && selectedSlotKey && !isIcon && slotKey !== selectedSlotKey) {
+        setExtraSelectedKeys((prev) => {
+          if (prev.includes(slotKey)) {
+            // Deselect this extra
+            setExtraSelectedRects((rects) => {
+              const next = { ...rects };
+              delete next[slotKey];
+              return next;
+            });
+            return prev.filter((k) => k !== slotKey);
+          }
+          setExtraSelectedRects((rects) => ({
+            ...rects,
+            [slotKey]: getMovableViewportRect(slotEl),
+          }));
+          return [...prev, slotKey];
+        });
+        return;
+      }
+
+      // Plain click → reset multi-selection and pick this slot as primary.
       setSelectedSlotKey(slotKey);
       setSelectedRect(getMovableViewportRect(slotEl));
+      setExtraSelectedKeys([]);
+      setExtraSelectedRects({});
     };
 
     const onDblClick = (e: MouseEvent) => {
