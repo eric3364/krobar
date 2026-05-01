@@ -1408,11 +1408,11 @@ const Index = () => {
     }
     if (!manifest) return;
     if (!quota.canGenerate) {
-      if (!quota.profile?.is_active && quota.profile) {
-        toast.error("Compte désactivé. Contactez l'administrateur.");
-      } else {
-        toast.error(`Limite atteinte (${quota.used}/${quota.limit}). Passez à un plan supérieur.`);
-      }
+      toast.error(
+        quota.limit === 0
+          ? "Compte désactivé ou plan non configuré."
+          : `Limite atteinte (${quota.used}/${quota.limit}). Passez à un plan supérieur.`,
+      );
       return;
     }
 
