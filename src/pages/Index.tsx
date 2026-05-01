@@ -288,6 +288,13 @@ const Index = () => {
   const [selectedRect, setSelectedRect] = useState<
     { left: number; top: number; width: number; height: number } | null
   >(null);
+  // Additional slots co-selected with Shift+click. The "primary" slot remains
+  // selectedSlotKey (it owns the move/resize handles + toolbar position);
+  // the extras are styled together via the toolbar but only display a halo.
+  const [extraSelectedKeys, setExtraSelectedKeys] = useState<string[]>([]);
+  const [extraSelectedRects, setExtraSelectedRects] = useState<
+    Record<string, { left: number; top: number; width: number; height: number }>
+  >({});
   // Snapshot of selectedRect at pointerdown — used to compute live overlay
   // position from the cumulative pointer delta without drift.
   const dragStartRectRef = useRef<
