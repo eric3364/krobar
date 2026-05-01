@@ -808,6 +808,7 @@ const Index = () => {
       applyPaletteVars(svg, palette);
       fillSlots(svg, effectiveSlots);
       applyTransforms(svg, slotTransforms);
+      applySlotTextStyles(svg, slotTextStyles);
       svg.setAttribute("width", "100%");
       svg.setAttribute("height", "100%");
       previewRef.current!.innerHTML = "";
@@ -820,7 +821,7 @@ const Index = () => {
         }
       }
     })();
-  }, [selectedSuggestion, selectedTemplate, palette, effectiveSlots, slotTransforms]);
+  }, [selectedSuggestion, selectedTemplate, palette, effectiveSlots, slotTransforms, slotTextStyles]);
 
   // Convertit un delta viewport (px CSS) en unités SVG en se basant sur le viewBox
   // et la taille affichée réelle du SVG. Compatible avec les slots dans foreignObject.
