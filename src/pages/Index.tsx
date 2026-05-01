@@ -963,6 +963,38 @@ const Index = () => {
     };
   }, [effectiveSlots, selectedSlotKey]);
 
+  // Keyboard shortcuts for text formatting on the selected slot.
+  useEffect(() => {
+    if (!selectedSlotKey || edit) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (!(e.ctrlKey || e.metaKey)) return;
+      const target = e.target as HTMLElement | null;
+      if (target && /^(input|textarea|select)$/i.test(target.tagName)) return;
+      const cur = slotTextStyles[selectedSlotKey] ?? {};
+      let patch: TextStyleOverride | null = null;
+      if (e.key.toLowerCase() === "b") {
+        const isBold = cur.fontWeight === "bold" || cur.fontWeight === "700";
+        patch = { fontWeight: isBold ? "normal" : "bold" };
+      } else if (e.key.toLowerCase() === "i") {
+        patch = { fontStyle: cur.fontStyle === "italic" ? "normal" : "italic" };
+      } else if (e.key === "=" || e.key === "+") {
+        patch = { fontSize: Math.min(96, (cur.fontSize ?? 16) + 2) };
+      } else if (e.key === "-") {
+        patch = { fontSize: Math.max(8, (cur.fontSize ?? 16) - 2) };
+      }
+      if (patch) {
+        e.preventDefault();
+        pushHistory();
+        setSlotTextStyles((prev) => ({
+          ...prev,
+          [selectedSlotKey]: { ...(prev[selectedSlotKey] ?? {}), ...patch! },
+        }));
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [selectedSlotKey, edit, slotTextStyles]);
+
   // Live drag: temporarily apply visual translation on the slot element directly,
   // without re-rendering the whole SVG (smoother and avoids React thrash).
   const handleDrag = (dx: number, dy: number) => {
