@@ -173,13 +173,25 @@ export function fillSlots(svg: SVGElement, slots: Record<string, string>) {
 }
 
 /**
- * Charge le SVG d'un template depuis /templates/ (servi en statique par nginx).
- * Le backend FastAPI ne sert PAS le SVG : il ne fait que la sélection IA.
+ * Charge le SVG rendu depuis le backend via POST /api/render.
+ * Accepte un nom de fichier (ignoré) ou un template_id + slots + palette.
  */
 export async function loadSvg(file: string): Promise<SVGElement> {
-  const res = await fetch(`/templates/${file}`);
-  const txt = await res.text();
-  const doc = new DOMParser().parseFromString(txt, "image/svg+xml");
+  // Fallback: charge depuis le backend avec des slots vides.
+  // Pour un rendu complet, utiliser loadRenderedSvg.
+  const templateId = file.replace(/\.svg$/, "");
+  const result = await renderTemplate(templateId, {}, {});
+  const doc = new DOMParser().parseFromString(result.svg, "image/svg+xml");
+  return doc.documentElement as unknown as SVGElement;
+}
+
+export async function loadRenderedSvg(
+  templateId: string,
+  slots: Record<string, string>,
+  palette: Palette,
+): Promise<SVGElement> {
+  const result = await renderTemplate(templateId, slots, palette.colors as unknown as Record<string, string>);
+  const doc = new DOMParser().parseFromString(result.svg, "image/svg+xml");
   return doc.documentElement as unknown as SVGElement;
 }
 
