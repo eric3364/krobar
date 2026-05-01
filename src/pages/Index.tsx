@@ -18,7 +18,7 @@ import {
   ResizableHandle,
 } from "@/components/ui/resizable";
 import { formatScorePct, normalizeScore } from "@/lib/kroki";
-import { analyzeText } from "@/lib/api";
+import { analyzeText, renderTemplate, getTemplates } from "@/lib/api";
 import AccountMenu from "@/components/AccountMenu";
 import { useQuota } from "@/hooks/useQuota";
 
