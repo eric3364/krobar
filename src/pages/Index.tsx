@@ -222,12 +222,22 @@ function applyDonutPercentages(svg: SVGElement, slots: Record<string, string>) {
   });
 }
 
-// SVG chargé en statique depuis /templates/ (servi par nginx).
-async function loadSvg(file: string): Promise<SVGElement> {
-  const res = await fetch(`/templates/${file}`);
-  const txt = await res.text();
-  const doc = new DOMParser().parseFromString(txt, "image/svg+xml");
+// Parse une chaîne SVG en élément DOM.
+function parseSvgString(svgStr: string): SVGElement {
+  const doc = new DOMParser().parseFromString(svgStr, "image/svg+xml");
   return doc.documentElement as unknown as SVGElement;
+}
+
+// Charge le SVG rendu depuis le backend via POST /api/render.
+// Retourne un SVGElement DOM prêt à être inséré.
+async function loadRenderedSvg(
+  templateId: string,
+  slots: Record<string, string>,
+  palette: Palette,
+): Promise<SVGElement> {
+  const paletteColors = palette.colors;
+  const result = await renderTemplate(templateId, slots, paletteColors as unknown as Record<string, string>);
+  return parseSvgString(result.svg);
 }
 
 function svgToString(svg: SVGElement): string {
