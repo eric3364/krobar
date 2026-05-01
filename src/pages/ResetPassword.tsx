@@ -42,7 +42,23 @@ export default function ResetPassword() {
     e.preventDefault();
     if (password.length < 8) return toast.error("Mot de passe : 8 caractères minimum");
     setBusy(true);
-    const { error } = await supabase.auth.updateUser({ password });
+    let { error } = await supabase.auth.updateUser({ password });
+
+    if (error) {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const accessToken = sessionData.session?.access_token;
+
+      if (accessToken) {
+        const { error: fallbackError } = await supabase.functions.invoke("set-password", {
+          body: { password },
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        error = fallbackError ?? null;
+      }
+    }
+
     setBusy(false);
     if (error) return toast.error(error.message);
     toast.success("Mot de passe enregistré");
