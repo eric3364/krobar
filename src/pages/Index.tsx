@@ -861,6 +861,14 @@ const Index = () => {
           setSelectedRect(getMovableViewportRect(el));
         }
       }
+      if (extraSelectedKeys.length) {
+        const next: Record<string, { left: number; top: number; width: number; height: number }> = {};
+        extraSelectedKeys.forEach((k) => {
+          const el = svg.querySelector(`[data-slot="${k}"]`) as Element | null;
+          if (el) next[k] = getMovableViewportRect(el);
+        });
+        setExtraSelectedRects(next);
+      }
     })();
   }, [selectedSuggestion, selectedTemplate, palette, effectiveSlots, slotTransforms, slotTextStyles]);
 
