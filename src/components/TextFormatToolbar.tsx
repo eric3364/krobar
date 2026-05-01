@@ -14,6 +14,8 @@ type Props = {
   rect: { left: number; top: number; width: number; height: number };
   value: TextStyleOverride;
   onChange: (patch: TextStyleOverride) => void;
+  /** Number of slots receiving the changes (primary + Shift-co-selected). */
+  selectionCount?: number;
 };
 
 const FONT_SIZES = [10, 12, 14, 16, 18, 20, 24, 28, 32, 40, 48, 64];
