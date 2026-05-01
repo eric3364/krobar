@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { BYPASS_AUTH, DEV_PROFILE, DEV_USER } from "@/lib/devAuth";
 
 type Profile = {
   id: string;
@@ -44,6 +45,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
+    if (BYPASS_AUTH) {
+      setSession(null);
+      setUser(DEV_USER);
+      setProfile(DEV_PROFILE as Profile);
+      setIsAdmin(true);
+      setLoading(false);
+      return;
+    }
+
     // Set up listener FIRST
     const { data: sub } = supabase.auth.onAuthStateChange((_event, sess) => {
       setSession(sess);
