@@ -11,6 +11,7 @@ import { Loader2, Mail } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { useAuth } from "@/hooks/useAuth";
+import PasswordInput from "@/components/PasswordInput";
 
 const emailSchema = z.string().trim().email("Email invalide").max(255);
 const passwordSchema = z.string().min(8, "Mot de passe : 8 caractères minimum").max(72);
@@ -144,7 +145,7 @@ export default function AuthPage() {
           <TabsContent value="signin">
             <form onSubmit={handleSignIn} className="space-y-3 pt-3">
               <div><Label>Email</Label><Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required /></div>
-              <div><Label>Mot de passe</Label><Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required /></div>
+              <div><Label>Mot de passe</Label><PasswordInput value={password} onChange={(e) => setPassword(e.target.value)} required /></div>
               <Button type="submit" className="w-full" disabled={busy}>
                 {busy ? <Loader2 className="animate-spin" /> : "Se connecter"}
               </Button>
@@ -158,7 +159,7 @@ export default function AuthPage() {
             <form onSubmit={handleSignUp} className="space-y-3 pt-3">
               <div><Label>Nom (optionnel)</Label><Input value={displayName} onChange={(e) => setDisplayName(e.target.value)} maxLength={100} /></div>
               <div><Label>Email</Label><Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required /></div>
-              <div><Label>Mot de passe</Label><Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} /></div>
+              <div><Label>Mot de passe</Label><PasswordInput value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} /></div>
               <Button type="submit" className="w-full" disabled={busy}>
                 {busy ? <Loader2 className="animate-spin" /> : "Créer un compte"}
               </Button>
