@@ -1,5 +1,5 @@
 import { palettes, type Palette } from "@/palettes";
-import { analyzeText } from "@/lib/api";
+import { analyzeText, renderTemplate } from "@/lib/api";
 
 export type ManifestTemplate = {
   id: string;
