@@ -7,7 +7,8 @@ export type PaletteKey =
   | 'corail'
   | 'menthe'
   | 'lavande'
-  | 'sable';
+  | 'sable'
+  | 'ardoise';
 
 export interface PaletteColors {
   primary: string;
@@ -108,6 +109,15 @@ export const palettes: Record<PaletteKey, Palette> = {
       muted: '#78716C', surface: '#F1EAD9', border: '#E2D6BC',
     },
   },
+  ardoise: {
+    key: 'ardoise',
+    name: 'Ardoise',
+    description: 'Moderne, high-tech — startup, tech, data, ingénierie',
+    colors: {
+      primary: '#1E293B', accent: '#38BDF8', bg: '#F8FAFC', text: '#0F172A',
+      muted: '#94A3B8', surface: '#F1F5F9', border: '#E2E8F0',
+    },
+  },
 };
 
 export const defaultPalette: PaletteKey = 'ocean';
@@ -123,4 +133,5 @@ export const paletteLabels: Record<PaletteKey, string> = {
   menthe: palettes.menthe.name,
   lavande: palettes.lavande.name,
   sable: palettes.sable.name,
+  ardoise: palettes.ardoise.name,
 };
