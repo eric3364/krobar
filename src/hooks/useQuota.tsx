@@ -46,11 +46,18 @@ export function useQuota() {
   const remaining = Math.max(0, limit - used);
   const canGenerate = Boolean(profile?.is_active) && remaining > 0;
 
-  const recordGeneration = async (templateId?: string) => {
+  const recordGeneration = async (opts?: {
+    templateId?: string;
+    inputText?: string;
+    paletteKey?: string;
+  }) => {
     if (!user) throw new Error("Non connecté");
-    const { error } = await supabase
-      .from("generations")
-      .insert({ user_id: user.id, template_id: templateId ?? null });
+    const { error } = await supabase.from("generations").insert({
+      user_id: user.id,
+      template_id: opts?.templateId ?? null,
+      input_text: opts?.inputText ?? null,
+      palette_key: opts?.paletteKey ?? null,
+    });
     if (error) throw error;
     await refresh();
   };

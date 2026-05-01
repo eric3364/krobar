@@ -5,7 +5,7 @@ import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem,
   DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogIn, LogOut, Shield, User as UserIcon } from "lucide-react";
+import { Home, History, LogIn, LogOut, Shield, User as UserIcon } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useQuota } from "@/hooks/useQuota";
 
@@ -38,11 +38,18 @@ export default function AccountMenu() {
         <DropdownMenuContent align="end" className="w-56 bg-popover">
           <DropdownMenuLabel className="truncate">{profile?.email ?? user.email}</DropdownMenuLabel>
           <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
+            <Link to="/welcome"><Home className="w-4 h-4" /> Accueil</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link to="/historique"><History className="w-4 h-4" /> Historique</Link>
+          </DropdownMenuItem>
           {isAdmin && (
             <DropdownMenuItem asChild>
               <Link to="/admin"><Shield className="w-4 h-4" /> Back-office</Link>
             </DropdownMenuItem>
           )}
+          <DropdownMenuSeparator />
           <DropdownMenuItem onClick={async () => { await signOut(); navigate("/auth"); }}>
             <LogOut className="w-4 h-4" /> Se déconnecter
           </DropdownMenuItem>

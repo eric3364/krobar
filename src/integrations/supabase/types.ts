@@ -18,18 +18,24 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          input_text: string | null
+          palette_key: string | null
           template_id: string | null
           user_id: string
         }
         Insert: {
           created_at?: string
           id?: string
+          input_text?: string | null
+          palette_key?: string | null
           template_id?: string | null
           user_id: string
         }
         Update: {
           created_at?: string
           id?: string
+          input_text?: string | null
+          palette_key?: string | null
           template_id?: string | null
           user_id?: string
         }
@@ -61,6 +67,7 @@ export type Database = {
           created_at: string
           display_name: string | null
           email: string | null
+          hide_welcome: boolean
           id: string
           is_active: boolean
           plan: Database["public"]["Enums"]["user_plan"]
@@ -70,6 +77,7 @@ export type Database = {
           created_at?: string
           display_name?: string | null
           email?: string | null
+          hide_welcome?: boolean
           id: string
           is_active?: boolean
           plan?: Database["public"]["Enums"]["user_plan"]
@@ -79,6 +87,7 @@ export type Database = {
           created_at?: string
           display_name?: string | null
           email?: string | null
+          hide_welcome?: boolean
           id?: string
           is_active?: boolean
           plan?: Database["public"]["Enums"]["user_plan"]
