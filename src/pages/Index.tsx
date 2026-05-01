@@ -1544,18 +1544,44 @@ const Index = () => {
         />
       )}
       {selectedSlotKey && selectedRect && !edit && (
-        <MovableSlotOverlay
-          rect={selectedRect}
-          onDrag={handleDrag}
-          onCommit={handleDragCommit}
-          onResize={handleResize}
-          onResizeCommit={handleResizeCommit}
-          onEdit={() => openEditorForSlot(selectedSlotKey)}
-          onCancel={() => {
-            setSelectedSlotKey(null);
-            setSelectedRect(null);
-          }}
-        />
+        <>
+          <MovableSlotOverlay
+            rect={selectedRect}
+            onDrag={handleDrag}
+            onCommit={handleDragCommit}
+            onResize={handleResize}
+            onResizeCommit={handleResizeCommit}
+            onEdit={() => openEditorForSlot(selectedSlotKey)}
+            onCancel={() => {
+              setSelectedSlotKey(null);
+              setSelectedRect(null);
+            }}
+          />
+          {(() => {
+            const slotEl = previewRef.current?.querySelector(
+              `[data-slot="${selectedSlotKey}"]`
+            ) as Element | null;
+            if (!slotEl) return null;
+            const tag = slotEl.tagName.toLowerCase();
+            const kind = slotEl.getAttribute("data-slot-kind");
+            const isIcon =
+              tag === "image" || tag === "use" || kind === "icon";
+            if (isIcon) return null;
+            return (
+              <TextFormatToolbar
+                rect={selectedRect}
+                value={slotTextStyles[selectedSlotKey] ?? {}}
+                onChange={(patch) => {
+                  pushHistory();
+                  setSlotTextStyles((prev) => ({
+                    ...prev,
+                    [selectedSlotKey]: { ...(prev[selectedSlotKey] ?? {}), ...patch },
+                  }));
+                }}
+              />
+            );
+          })()}
+        </>
       )}
     </div>
   );
