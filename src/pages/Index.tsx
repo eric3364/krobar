@@ -19,6 +19,8 @@ import {
 } from "@/components/ui/resizable";
 import { formatScorePct, normalizeScore } from "@/lib/kroki";
 import { analyzeText } from "@/lib/api";
+import AccountMenu from "@/components/AccountMenu";
+import { useQuota } from "@/hooks/useQuota";
 
 type ManifestTemplate = {
   id: string;
