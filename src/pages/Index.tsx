@@ -1294,12 +1294,90 @@ const Index = () => {
     }
   };
 
+  // Convertit les <foreignObject> (HTML) du SVG en <text>/<tspan> SVG natifs.
+  // Indispensable pour l'export PNG : un canvas qui dessine un SVG contenant
+  // du foreignObject est marqué "tainted" par le navigateur, ce qui empêche
+  // toBlob/toDataURL. La conversion préserve la position, la taille de police
+  // approximative, la couleur, l'alignement et le retour à la ligne.
+  const inlineForeignObjectsAsSvgText = (svg: SVGElement) => {
+    const SVG_NS = "http://www.w3.org/2000/svg";
+    const fos = Array.from(svg.querySelectorAll("foreignObject"));
+    fos.forEach((fo) => {
+      const x = parseFloat(fo.getAttribute("x") || "0");
+      const y = parseFloat(fo.getAttribute("y") || "0");
+      const w = parseFloat(fo.getAttribute("width") || "0");
+      const inner = fo.firstElementChild as HTMLElement | null;
+      const text = (inner?.textContent || fo.textContent || "").trim();
+      const cs = inner ? window.getComputedStyle(inner) : null;
+      const fontSize = cs ? parseFloat(cs.fontSize) || 14 : 14;
+      const fontFamily = cs?.fontFamily || "sans-serif";
+      const fontWeight = cs?.fontWeight || "normal";
+      const fontStyle = cs?.fontStyle || "normal";
+      const color = cs?.color || "#000";
+      const align = cs?.textAlign || "left";
+      const padding = 8;
+
+      let anchor: "start" | "middle" | "end" = "start";
+      let tx = x + padding;
+      if (align === "center") {
+        anchor = "middle";
+        tx = x + w / 2;
+      } else if (align === "right" || align === "end") {
+        anchor = "end";
+        tx = x + w - padding;
+      }
+
+      // Wrap par largeur approximative (0.55 em par caractère).
+      const avgChar = Math.max(4, fontSize * 0.55);
+      const maxChars = Math.max(4, Math.floor((w - padding * 2) / avgChar));
+      const lineHeight = Math.max(fontSize * 1.2, fontSize + 2);
+      const words = text.split(/\s+/).filter(Boolean);
+      const lines: string[] = [];
+      let cur = "";
+      for (const word of words) {
+        const candidate = cur ? `${cur} ${word}` : word;
+        if (candidate.length > maxChars && cur) {
+          lines.push(cur);
+          cur = word;
+        } else {
+          cur = candidate;
+        }
+      }
+      if (cur) lines.push(cur);
+      if (lines.length === 0) lines.push("");
+
+      const textEl = document.createElementNS(SVG_NS, "text");
+      textEl.setAttribute("x", String(tx));
+      textEl.setAttribute("y", String(y + padding + fontSize));
+      textEl.setAttribute("fill", color);
+      textEl.setAttribute("font-family", fontFamily);
+      textEl.setAttribute("font-size", String(fontSize));
+      textEl.setAttribute("font-weight", fontWeight);
+      textEl.setAttribute("font-style", fontStyle);
+      textEl.setAttribute("text-anchor", anchor);
+      textEl.setAttribute("dominant-baseline", "alphabetic");
+
+      lines.forEach((ln, i) => {
+        const tspan = document.createElementNS(SVG_NS, "tspan");
+        tspan.setAttribute("x", String(tx));
+        if (i > 0) tspan.setAttribute("dy", String(lineHeight));
+        tspan.textContent = ln;
+        textEl.appendChild(tspan);
+      });
+
+      // Préserver les data-* du slot pour la cohérence.
+      const slotKey = fo.getAttribute("data-slot");
+      if (slotKey) textEl.setAttribute("data-slot", slotKey);
+
+      fo.parentNode?.replaceChild(textEl, fo);
+    });
+  };
+
   const downloadSVG = () => {
     if (!previewRef.current) return;
     const svg = previewRef.current.querySelector("svg");
     if (!svg) return;
     const clone = svg.cloneNode(true) as SVGElement;
-    // Inline palette for portability
     applyPaletteVars(clone, palette);
     const str = svgToString(clone);
     downloadBlob(new Blob([str], { type: "image/svg+xml" }), "krobar.svg");
@@ -1311,39 +1389,65 @@ const Index = () => {
     if (!svg) return;
     const clone = svg.cloneNode(true) as SVGElement;
     applyPaletteVars(clone, palette);
+    // Étape clé : neutraliser foreignObject pour éviter le canvas "tainted".
+    inlineForeignObjectsAsSvgText(clone);
     const vb = (clone.getAttribute("viewBox") || "0 0 800 600").split(" ").map(Number);
     const w = vb[2] || 800;
     const h = vb[3] || 600;
     clone.setAttribute("width", String(w));
     clone.setAttribute("height", String(h));
+    // Assurer le namespace XML pour la sérialisation hors document.
+    if (!clone.getAttribute("xmlns")) {
+      clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    }
     const str = svgToString(clone);
     const svgBlob = new Blob([str], { type: "image/svg+xml;charset=utf-8" });
     const url = URL.createObjectURL(svgBlob);
-    const img = new Image();
-    img.onload = () => {
-      const scale = 2;
-      const canvas = document.createElement("canvas");
-      canvas.width = w * scale;
-      canvas.height = h * scale;
-      const ctx = canvas.getContext("2d")!;
-      ctx.scale(scale, scale);
-      ctx.drawImage(img, 0, 0);
-      canvas.toBlob((b) => {
-        if (b) downloadBlob(b, "krobar.png");
-        URL.revokeObjectURL(url);
-      }, "image/png");
-    };
-    img.onerror = () => {
+    try {
+      await new Promise<void>((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.onload = () => {
+          try {
+            const scale = 2;
+            const canvas = document.createElement("canvas");
+            canvas.width = Math.round(w * scale);
+            canvas.height = Math.round(h * scale);
+            const ctx = canvas.getContext("2d")!;
+            // Fond blanc pour les zones transparentes.
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.scale(scale, scale);
+            ctx.drawImage(img, 0, 0);
+            canvas.toBlob((b) => {
+              if (b) {
+                downloadBlob(b, "krobar.png");
+                resolve();
+              } else {
+                reject(new Error("toBlob a renvoyé null"));
+              }
+            }, "image/png");
+          } catch (err) {
+            reject(err);
+          }
+        };
+        img.onerror = () => reject(new Error("Chargement de l'image SVG échoué"));
+        img.src = url;
+      });
+      toast.success("Export PNG réussi");
+    } catch (err) {
+      console.error(err);
       toast.error("Erreur d'export PNG");
+    } finally {
       URL.revokeObjectURL(url);
-    };
-    img.src = url;
+    }
   };
 
   const cyclePalette = () => {
     const keys = Object.keys(palettes);
     const idx = keys.indexOf(paletteKey);
     setPaletteKey(keys[(idx + 1) % keys.length] as keyof typeof palettes);
+    toast.success(`Palette : ${paletteLabels[keys[(idx + 1) % keys.length] as keyof typeof palettes]}`);
   };
 
   if (testSuiteOpen && manifest) {
