@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "./useAuth";
+import { isDevBypassUser } from "@/lib/devAuth";
 
 type Quotas = Record<"free" | "basic" | "premium", number>;
 
@@ -11,6 +12,13 @@ export function useQuota() {
   const [loading, setLoading] = useState(true);
 
   const refresh = useCallback(async () => {
+    if (isDevBypassUser(user)) {
+      setQuotas({ free: 10, basic: 100, premium: 9999 });
+      setUsed(0);
+      setLoading(false);
+      return;
+    }
+
     if (!user) {
       setUsed(0);
       setLoading(false);
@@ -51,6 +59,11 @@ export function useQuota() {
     inputText?: string;
     paletteKey?: string;
   }) => {
+    if (isDevBypassUser(user)) {
+      setUsed((prev) => prev + 1);
+      return;
+    }
+
     if (!user) throw new Error("Non connecté");
     const { error } = await supabase.from("generations").insert({
       user_id: user.id,
