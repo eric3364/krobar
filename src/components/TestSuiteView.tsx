@@ -22,7 +22,7 @@ import {
   checkSlotsLength,
   fillSlots,
   formatScorePct,
-  loadSvg,
+  loadRenderedSvg,
   svgToString,
   type Manifest,
   type Suggestion,
