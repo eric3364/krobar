@@ -800,6 +800,40 @@ const Index = () => {
     });
   };
 
+  // Applique les overrides de style texte (taille/poids/italique/etc.) en CSS
+  // inline sur l'élément rendu (text, foreignObject inner, etc.).
+  const applySlotTextStyles = (
+    svg: SVGElement,
+    styles: Record<string, TextStyleOverride>
+  ) => {
+    Object.entries(styles).forEach(([key, s]) => {
+      const slotEl = svg.querySelector(`[data-slot="${key}"]`) as Element | null;
+      if (!slotEl) return;
+      const tag = slotEl.tagName.toLowerCase();
+      const targets: HTMLElement[] = [];
+      if (tag === "foreignobject") {
+        const inner = (slotEl.querySelector("[data-slot]") ||
+          slotEl.firstElementChild) as HTMLElement | null;
+        if (inner) targets.push(inner);
+      } else {
+        targets.push(slotEl as unknown as HTMLElement);
+      }
+      targets.forEach((t) => {
+        if (s.fontSize != null) t.style.fontSize = `${s.fontSize}px`;
+        if (s.fontWeight) t.style.fontWeight = s.fontWeight;
+        if (s.fontStyle) t.style.fontStyle = s.fontStyle;
+        if (s.textAlign) t.style.textAlign = s.textAlign;
+        if (s.textDecoration) t.style.textDecoration = s.textDecoration;
+        if (s.color) {
+          t.style.color = s.color;
+          // SVG <text> uses fill rather than color
+          if (tag === "text") (slotEl as SVGElement).setAttribute("fill", s.color);
+        }
+        if (s.fontFamily) t.style.fontFamily = s.fontFamily;
+      });
+    });
+  };
+
   // Render big preview
   useEffect(() => {
     if (!selectedSuggestion || !selectedTemplate || !previewRef.current) return;
