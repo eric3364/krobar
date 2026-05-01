@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import PasswordInput from "@/components/PasswordInput";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
@@ -68,7 +69,7 @@ export default function ResetPassword() {
           </form>
         ) : (
           <form onSubmit={updatePassword} className="space-y-3">
-            <div><Label>Nouveau mot de passe</Label><Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} /></div>
+            <div><Label>Nouveau mot de passe</Label><PasswordInput value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} /></div>
             <Button type="submit" className="w-full" disabled={busy}>
               {busy ? <Loader2 className="animate-spin" /> : "Enregistrer"}
             </Button>
