@@ -1468,11 +1468,8 @@ const Index = () => {
       const data = await analyzeText(text, detailLevel);
       const rawSug: Suggestion[] = data.suggestions ?? [];
       if (rawSug.length === 0) throw new Error("Aucune suggestion");
-      // Filter out suggestions whose template_id doesn't exist in the manifest
-      const knownIds = new Set(manifest?.templates.map((t) => t.id) ?? []);
-      const validSug = rawSug.filter((s) => knownIds.has(s.template_id));
-      if (validSug.length === 0) throw new Error("Aucun template correspondant trouvé");
-      const sug = validSug.map((s) => ({ ...s, score: normalizeScore(s.score) }));
+      // Tous les templates sont gérés par le backend — pas de filtre local
+      const sug = rawSug.map((s) => ({ ...s, score: normalizeScore(s.score) }));
       setSuggestions(sug);
       setSelectedIdx(0);
       try {
