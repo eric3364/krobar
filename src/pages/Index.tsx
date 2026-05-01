@@ -918,8 +918,10 @@ const Index = () => {
     const slotEl = previewRef.current.querySelector(`[data-slot="${slotKey}"]`) as Element | null;
     if (!slotEl) return;
 
-    setSelectedSlotKey(null);
-    setSelectedRect(null);
+    // Keep selectedSlotKey & selectedRect so the TextFormatToolbar stays
+    // visible while the inline text editor is open.
+    setSelectedSlotKey(slotKey);
+    setSelectedRect(getMovableViewportRect(slotEl));
 
     const rect = getMovableViewportRect(slotEl);
     const tag = slotEl.tagName.toLowerCase();
@@ -1855,7 +1857,7 @@ const Index = () => {
           onCancel={() => setEdit(null)}
         />
       )}
-      {selectedSlotKey && selectedRect && !edit && (
+      {selectedSlotKey && selectedRect && edit?.kind !== "icon" && (
         <>
           {/* Halo overlays for Shift-co-selected slots (read-only). */}
           {extraSelectedKeys.map((k) => {
