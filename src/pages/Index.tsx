@@ -19,6 +19,8 @@ import {
 } from "@/components/ui/resizable";
 import { formatScorePct, normalizeScore } from "@/lib/kroki";
 import { analyzeText } from "@/lib/api";
+import AccountMenu from "@/components/AccountMenu";
+import { useQuota } from "@/hooks/useQuota";
 
 type ManifestTemplate = {
   id: string;
@@ -242,6 +244,7 @@ function downloadBlob(blob: Blob, filename: string) {
 }
 
 const Index = () => {
+  const quota = useQuota();
   const [manifest, setManifest] = useState<Manifest | null>(null);
   const [text, setText] = useState("");
   const [paletteKey, setPaletteKey] = useState<keyof typeof palettes>("ocean");
@@ -1404,6 +1407,14 @@ const Index = () => {
       return;
     }
     if (!manifest) return;
+    if (!quota.canGenerate) {
+      toast.error(
+        quota.limit === 0
+          ? "Compte désactivé ou plan non configuré."
+          : `Limite atteinte (${quota.used}/${quota.limit}). Passez à un plan supérieur.`,
+      );
+      return;
+    }
 
     setLoading(true);
     setSuggestions([]);
@@ -1413,10 +1424,14 @@ const Index = () => {
       const data = await analyzeText(text, detailLevel);
       const rawSug: Suggestion[] = data.suggestions ?? [];
       if (rawSug.length === 0) throw new Error("Aucune suggestion");
-      // Normalisation à réception : score décimal 0-1 garanti dans l'état.
       const sug = rawSug.map((s) => ({ ...s, score: normalizeScore(s.score) }));
       setSuggestions(sug);
       setSelectedIdx(0);
+      try {
+        await quota.recordGeneration();
+      } catch (e) {
+        console.warn("Impossible d'enregistrer l'usage", e);
+      }
       toast.success(`${sug.length} suggestions générées`);
     } catch (e) {
       console.error(e);
@@ -1741,6 +1756,7 @@ const Index = () => {
             <Button variant="outline" size="sm" onClick={() => setTestSuiteOpen(true)}>
               <FlaskConical className="w-4 h-4 mr-2" /> Lancer la suite de tests
             </Button>
+            <AccountMenu />
           </div>
         </div>
       </header>
