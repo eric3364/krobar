@@ -8,6 +8,7 @@ type Profile = {
   display_name: string | null;
   plan: "free" | "basic" | "premium";
   is_active: boolean;
+  hide_welcome: boolean;
 };
 
 type AuthContextValue = {
@@ -31,7 +32,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const fetchProfileAndRole = async (uid: string) => {
     const [{ data: prof }, { data: roles }] = await Promise.all([
-      supabase.from("profiles").select("id,email,display_name,plan,is_active").eq("id", uid).maybeSingle(),
+      supabase.from("profiles").select("id,email,display_name,plan,is_active,hide_welcome").eq("id", uid).maybeSingle(),
       supabase.from("user_roles").select("role").eq("user_id", uid),
     ]);
     setProfile((prof as Profile) ?? null);
