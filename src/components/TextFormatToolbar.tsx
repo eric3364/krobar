@@ -53,6 +53,14 @@ export default function TextFormatToolbar({ rect, value, onChange, selectionCoun
       onMouseDown={(e) => e.stopPropagation()}
       onClick={(e) => e.stopPropagation()}
     >
+      {selectionCount > 1 && (
+        <span
+          className="inline-flex h-6 items-center rounded bg-primary px-2 text-[11px] font-semibold text-primary-foreground"
+          title={`${selectionCount} blocs sélectionnés`}
+        >
+          {selectionCount} blocs
+        </span>
+      )}
       <select
         className="h-8 rounded border border-border bg-background px-1 text-xs"
         value={
