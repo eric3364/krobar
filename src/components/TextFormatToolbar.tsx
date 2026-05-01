@@ -49,8 +49,8 @@ export default function TextFormatToolbar({ rect, value, onChange, selectionCoun
     <div
       className="fixed z-50 flex items-center gap-1.5 rounded-lg border border-border bg-background px-2 py-1.5 shadow-lg"
       style={{ left, top }}
-      onPointerDown={(e) => e.stopPropagation()}
-      onMouseDown={(e) => e.stopPropagation()}
+      onPointerDown={(e) => { e.preventDefault(); e.stopPropagation(); }}
+      onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); }}
       onClick={(e) => e.stopPropagation()}
     >
       {selectionCount > 1 && (
