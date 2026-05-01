@@ -25,7 +25,6 @@ export default function AuthPage() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-  useEffect(() => {
     if (authLoading || !user) return;
     // If user just arrived from a magic link (no password set yet), send to reset-password
     const hash = window.location.hash;
