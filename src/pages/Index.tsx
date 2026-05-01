@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Loader2, Download, Sparkles, RefreshCw, FlaskConical } from "lucide-react";
+import { Loader2, Download, Sparkles, FlaskConical } from "lucide-react";
 import TestSuiteView from "@/components/TestSuiteView";
 import CustomizePanel, { loadStoredDetailLevel, type DetailLevel } from "@/components/CustomizePanel";
 import EditableSlot from "@/components/EditableSlot";
@@ -1620,12 +1620,6 @@ const Index = () => {
     }
   };
 
-  const cyclePalette = () => {
-    const keys = Object.keys(palettes);
-    const idx = keys.indexOf(paletteKey);
-    setPaletteKey(keys[(idx + 1) % keys.length] as keyof typeof palettes);
-    toast.success(`Palette : ${paletteLabels[keys[(idx + 1) % keys.length] as keyof typeof palettes]}`);
-  };
 
   if (testSuiteOpen && manifest) {
     return (
@@ -1763,9 +1757,6 @@ const Index = () => {
             <Download className="w-4 h-4 mr-2" /> PNG
           </Button>
         </div>
-        <Button onClick={cyclePalette} disabled={!selectedSuggestion} variant="secondary">
-          <RefreshCw className="w-4 h-4 mr-2" /> Régénérer avec autre palette
-        </Button>
       </Card>
     </section>
   );
