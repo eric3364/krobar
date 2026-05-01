@@ -1877,20 +1877,22 @@ const Index = () => {
               />
             );
           })}
-          <MovableSlotOverlay
-            rect={selectedRect}
-            onDrag={handleDrag}
-            onCommit={handleDragCommit}
-            onResize={handleResize}
-            onResizeCommit={handleResizeCommit}
-            onEdit={() => openEditorForSlot(selectedSlotKey)}
-            onCancel={() => {
-              setSelectedSlotKey(null);
-              setSelectedRect(null);
-              setExtraSelectedKeys([]);
-              setExtraSelectedRects({});
-            }}
-          />
+          {!edit && (
+            <MovableSlotOverlay
+              rect={selectedRect}
+              onDrag={handleDrag}
+              onCommit={handleDragCommit}
+              onResize={handleResize}
+              onResizeCommit={handleResizeCommit}
+              onEdit={() => openEditorForSlot(selectedSlotKey)}
+              onCancel={() => {
+                setSelectedSlotKey(null);
+                setSelectedRect(null);
+                setExtraSelectedKeys([]);
+                setExtraSelectedRects({});
+              }}
+            />
+          )}
           {(() => {
             const slotEl = previewRef.current?.querySelector(
               `[data-slot="${selectedSlotKey}"]`
