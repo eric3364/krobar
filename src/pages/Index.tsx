@@ -1009,7 +1009,22 @@ const Index = () => {
     };
   }, [effectiveSlots, selectedSlotKey]);
 
-  // Keyboard shortcuts for text formatting on the selected slot.
+  // Apply a text-style patch to the primary selection AND every co-selected
+  // (Shift+click) slot, in a single history step.
+  const applyTextStylePatchToSelection = (patch: TextStyleOverride) => {
+    if (!selectedSlotKey) return;
+    const keys = [selectedSlotKey, ...extraSelectedKeys];
+    pushHistory();
+    setSlotTextStyles((prev) => {
+      const next = { ...prev };
+      keys.forEach((k) => {
+        next[k] = { ...(prev[k] ?? {}), ...patch };
+      });
+      return next;
+    });
+  };
+
+  // Keyboard shortcuts for text formatting on the selected slot(s).
   useEffect(() => {
     if (!selectedSlotKey || edit) return;
     const onKey = (e: KeyboardEvent) => {
@@ -1030,16 +1045,12 @@ const Index = () => {
       }
       if (patch) {
         e.preventDefault();
-        pushHistory();
-        setSlotTextStyles((prev) => ({
-          ...prev,
-          [selectedSlotKey]: { ...(prev[selectedSlotKey] ?? {}), ...patch! },
-        }));
+        applyTextStylePatchToSelection(patch);
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [selectedSlotKey, edit, slotTextStyles]);
+  }, [selectedSlotKey, extraSelectedKeys, edit, slotTextStyles]);
 
   // Live drag: temporarily apply visual translation on the slot element directly,
   // without re-rendering the whole SVG (smoother and avoids React thrash).
