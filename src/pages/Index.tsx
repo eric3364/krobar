@@ -281,6 +281,8 @@ const Index = () => {
   const [slotTransforms, setSlotTransforms] = useState<
     Record<string, { dx: number; dy: number; sx?: number; sy?: number }>
   >({});
+  // Per-slot text style overrides applied via inline CSS on the rendered SVG element.
+  const [slotTextStyles, setSlotTextStyles] = useState<Record<string, TextStyleOverride>>({});
   // Currently selected (single-clicked) slot key for moving.
   const [selectedSlotKey, setSelectedSlotKey] = useState<string | null>(null);
   const [selectedRect, setSelectedRect] = useState<
