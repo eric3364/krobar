@@ -72,25 +72,6 @@ export const palettes: Record<PaletteKey, Palette> = {
       muted: '#737373', surface: '#F4F4F5', border: '#E4E4E7',
     },
   },
-};
-
-export const defaultPalette: PaletteKey = 'ocean';
-
-// Backwards-compat: labels map (name) for any code still importing it
-export const paletteLabels: Record<PaletteKey, string> = {
-  ocean: palettes.ocean.name,
-  foret: palettes.foret.name,
-  crepuscule: palettes.crepuscule.name,
-  aurore: palettes.aurore.name,
-  encre: {
-    key: 'encre',
-    name: 'Encre',
-    description: 'Sobre, intemporel — formel, institutionnel, juridique',
-    colors: {
-      primary: '#18181B', accent: '#525252', bg: '#FAFAFA', text: '#09090B',
-      muted: '#737373', surface: '#F4F4F5', border: '#E4E4E7',
-    },
-  },
   corail: {
     key: 'corail',
     name: 'Corail',
