@@ -1738,6 +1738,24 @@ const Index = () => {
       )}
       {selectedSlotKey && selectedRect && !edit && (
         <>
+          {/* Halo overlays for Shift-co-selected slots (read-only). */}
+          {extraSelectedKeys.map((k) => {
+            const r = extraSelectedRects[k];
+            if (!r) return null;
+            return (
+              <div
+                key={`extra-${k}`}
+                className="fixed z-30 pointer-events-none rounded-sm ring-2 ring-primary/70"
+                style={{
+                  left: r.left - 4,
+                  top: r.top - 4,
+                  width: r.width + 8,
+                  height: r.height + 8,
+                  background: "hsl(var(--primary) / 0.06)",
+                }}
+              />
+            );
+          })}
           <MovableSlotOverlay
             rect={selectedRect}
             onDrag={handleDrag}
@@ -1748,6 +1766,8 @@ const Index = () => {
             onCancel={() => {
               setSelectedSlotKey(null);
               setSelectedRect(null);
+              setExtraSelectedKeys([]);
+              setExtraSelectedRects({});
             }}
           />
           {(() => {
@@ -1760,17 +1780,13 @@ const Index = () => {
             const isIcon =
               tag === "image" || tag === "use" || kind === "icon";
             if (isIcon) return null;
+            const count = 1 + extraSelectedKeys.length;
             return (
               <TextFormatToolbar
                 rect={selectedRect}
                 value={slotTextStyles[selectedSlotKey] ?? {}}
-                onChange={(patch) => {
-                  pushHistory();
-                  setSlotTextStyles((prev) => ({
-                    ...prev,
-                    [selectedSlotKey]: { ...(prev[selectedSlotKey] ?? {}), ...patch },
-                  }));
-                }}
+                selectionCount={count}
+                onChange={(patch) => applyTextStylePatchToSelection(patch)}
               />
             );
           })()}
