@@ -424,20 +424,20 @@ const Index = () => {
 
   // Render thumbnails when suggestions change
   useEffect(() => {
-    if (!manifest) return;
     suggestions.forEach(async (sug, i) => {
-      const tpl = manifest.templates.find((t) => t.id === sug.template_id);
       const node = thumbRefs.current[i];
-      if (!tpl || !node) return;
-      const svg = await loadSvg(tpl.file);
-      applyPaletteVars(svg, palette);
-      fillSlots(svg, sug.slots);
-      svg.setAttribute("width", "100%");
-      svg.setAttribute("height", "100%");
-      node.innerHTML = "";
-      node.appendChild(svg);
+      if (!node) return;
+      try {
+        const svg = await loadRenderedSvg(sug.template_id, sug.slots, palette);
+        svg.setAttribute("width", "100%");
+        svg.setAttribute("height", "100%");
+        node.innerHTML = "";
+        node.appendChild(svg);
+      } catch (err) {
+        console.warn(`Erreur rendu vignette ${sug.template_id}`, err);
+      }
     });
-  }, [suggestions, manifest, palette]);
+  }, [suggestions, palette]);
 
   // Reset per-edit overrides whenever the chosen suggestion changes
   useEffect(() => {
