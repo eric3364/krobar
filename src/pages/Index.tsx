@@ -288,6 +288,13 @@ const Index = () => {
   const [selectedRect, setSelectedRect] = useState<
     { left: number; top: number; width: number; height: number } | null
   >(null);
+  // Additional slots co-selected with Shift+click. The "primary" slot remains
+  // selectedSlotKey (it owns the move/resize handles + toolbar position);
+  // the extras are styled together via the toolbar but only display a halo.
+  const [extraSelectedKeys, setExtraSelectedKeys] = useState<string[]>([]);
+  const [extraSelectedRects, setExtraSelectedRects] = useState<
+    Record<string, { left: number; top: number; width: number; height: number }>
+  >({});
   // Snapshot of selectedRect at pointerdown — used to compute live overlay
   // position from the cumulative pointer delta without drift.
   const dragStartRectRef = useRef<
@@ -854,6 +861,14 @@ const Index = () => {
           setSelectedRect(getMovableViewportRect(el));
         }
       }
+      if (extraSelectedKeys.length) {
+        const next: Record<string, { left: number; top: number; width: number; height: number }> = {};
+        extraSelectedKeys.forEach((k) => {
+          const el = svg.querySelector(`[data-slot="${k}"]`) as Element | null;
+          if (el) next[k] = getMovableViewportRect(el);
+        });
+        setExtraSelectedRects(next);
+      }
     })();
   }, [selectedSuggestion, selectedTemplate, palette, effectiveSlots, slotTransforms, slotTextStyles]);
 
@@ -929,17 +944,48 @@ const Index = () => {
       if (!target) return;
       const slotEl = target.closest("[data-slot]") as Element | null;
       if (!slotEl || !container.contains(slotEl)) {
-        // Click outside any slot deselects
+        // Click outside any slot deselects everything
         setSelectedSlotKey(null);
         setSelectedRect(null);
+        setExtraSelectedKeys([]);
+        setExtraSelectedRects({});
         return;
       }
       const slotKey = slotEl.getAttribute("data-slot") || "";
       if (!slotKey) return;
       e.preventDefault();
       e.stopPropagation();
+
+      // Shift+click → toggle co-selection (text slots only).
+      const tag = slotEl.tagName.toLowerCase();
+      const kind = slotEl.getAttribute("data-slot-kind");
+      const isIcon = tag === "image" || tag === "use" || kind === "icon";
+
+      if (e.shiftKey && selectedSlotKey && !isIcon && slotKey !== selectedSlotKey) {
+        setExtraSelectedKeys((prev) => {
+          if (prev.includes(slotKey)) {
+            // Deselect this extra
+            setExtraSelectedRects((rects) => {
+              const next = { ...rects };
+              delete next[slotKey];
+              return next;
+            });
+            return prev.filter((k) => k !== slotKey);
+          }
+          setExtraSelectedRects((rects) => ({
+            ...rects,
+            [slotKey]: getMovableViewportRect(slotEl),
+          }));
+          return [...prev, slotKey];
+        });
+        return;
+      }
+
+      // Plain click → reset multi-selection and pick this slot as primary.
       setSelectedSlotKey(slotKey);
       setSelectedRect(getMovableViewportRect(slotEl));
+      setExtraSelectedKeys([]);
+      setExtraSelectedRects({});
     };
 
     const onDblClick = (e: MouseEvent) => {
@@ -963,7 +1009,22 @@ const Index = () => {
     };
   }, [effectiveSlots, selectedSlotKey]);
 
-  // Keyboard shortcuts for text formatting on the selected slot.
+  // Apply a text-style patch to the primary selection AND every co-selected
+  // (Shift+click) slot, in a single history step.
+  const applyTextStylePatchToSelection = (patch: TextStyleOverride) => {
+    if (!selectedSlotKey) return;
+    const keys = [selectedSlotKey, ...extraSelectedKeys];
+    pushHistory();
+    setSlotTextStyles((prev) => {
+      const next = { ...prev };
+      keys.forEach((k) => {
+        next[k] = { ...(prev[k] ?? {}), ...patch };
+      });
+      return next;
+    });
+  };
+
+  // Keyboard shortcuts for text formatting on the selected slot(s).
   useEffect(() => {
     if (!selectedSlotKey || edit) return;
     const onKey = (e: KeyboardEvent) => {
@@ -984,16 +1045,12 @@ const Index = () => {
       }
       if (patch) {
         e.preventDefault();
-        pushHistory();
-        setSlotTextStyles((prev) => ({
-          ...prev,
-          [selectedSlotKey]: { ...(prev[selectedSlotKey] ?? {}), ...patch! },
-        }));
+        applyTextStylePatchToSelection(patch);
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [selectedSlotKey, edit, slotTextStyles]);
+  }, [selectedSlotKey, extraSelectedKeys, edit, slotTextStyles]);
 
   // Live drag: temporarily apply visual translation on the slot element directly,
   // without re-rendering the whole SVG (smoother and avoids React thrash).
@@ -1681,6 +1738,24 @@ const Index = () => {
       )}
       {selectedSlotKey && selectedRect && !edit && (
         <>
+          {/* Halo overlays for Shift-co-selected slots (read-only). */}
+          {extraSelectedKeys.map((k) => {
+            const r = extraSelectedRects[k];
+            if (!r) return null;
+            return (
+              <div
+                key={`extra-${k}`}
+                className="fixed z-30 pointer-events-none rounded-sm ring-2 ring-primary/70"
+                style={{
+                  left: r.left - 4,
+                  top: r.top - 4,
+                  width: r.width + 8,
+                  height: r.height + 8,
+                  background: "hsl(var(--primary) / 0.06)",
+                }}
+              />
+            );
+          })}
           <MovableSlotOverlay
             rect={selectedRect}
             onDrag={handleDrag}
@@ -1691,6 +1766,8 @@ const Index = () => {
             onCancel={() => {
               setSelectedSlotKey(null);
               setSelectedRect(null);
+              setExtraSelectedKeys([]);
+              setExtraSelectedRects({});
             }}
           />
           {(() => {
@@ -1703,17 +1780,13 @@ const Index = () => {
             const isIcon =
               tag === "image" || tag === "use" || kind === "icon";
             if (isIcon) return null;
+            const count = 1 + extraSelectedKeys.length;
             return (
               <TextFormatToolbar
                 rect={selectedRect}
                 value={slotTextStyles[selectedSlotKey] ?? {}}
-                onChange={(patch) => {
-                  pushHistory();
-                  setSlotTextStyles((prev) => ({
-                    ...prev,
-                    [selectedSlotKey]: { ...(prev[selectedSlotKey] ?? {}), ...patch },
-                  }));
-                }}
+                selectionCount={count}
+                onChange={(patch) => applyTextStylePatchToSelection(patch)}
               />
             );
           })()}

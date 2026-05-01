@@ -14,6 +14,8 @@ type Props = {
   rect: { left: number; top: number; width: number; height: number };
   value: TextStyleOverride;
   onChange: (patch: TextStyleOverride) => void;
+  /** Number of slots receiving the changes (primary + Shift-co-selected). */
+  selectionCount?: number;
 };
 
 const FONT_SIZES = [10, 12, 14, 16, 18, 20, 24, 28, 32, 40, 48, 64];
@@ -24,7 +26,7 @@ const FONT_FAMILIES = [
   { label: "Display", value: '"Bebas Neue", Impact, sans-serif' },
 ];
 
-export default function TextFormatToolbar({ rect, value, onChange }: Props) {
+export default function TextFormatToolbar({ rect, value, onChange, selectionCount = 1 }: Props) {
   const isBold =
     value.fontWeight === "bold" ||
     value.fontWeight === "700" ||
@@ -51,6 +53,14 @@ export default function TextFormatToolbar({ rect, value, onChange }: Props) {
       onMouseDown={(e) => e.stopPropagation()}
       onClick={(e) => e.stopPropagation()}
     >
+      {selectionCount > 1 && (
+        <span
+          className="inline-flex h-6 items-center rounded bg-primary px-2 text-[11px] font-semibold text-primary-foreground"
+          title={`${selectionCount} blocs sélectionnés`}
+        >
+          {selectionCount} blocs
+        </span>
+      )}
       <select
         className="h-8 rounded border border-border bg-background px-1 text-xs"
         value={
