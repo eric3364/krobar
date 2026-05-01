@@ -11,6 +11,7 @@ import CustomizePanel, { loadStoredDetailLevel, type DetailLevel } from "@/compo
 import EditableSlot from "@/components/EditableSlot";
 import IconPicker from "@/components/IconPicker";
 import MovableSlotOverlay from "@/components/MovableSlotOverlay";
+import TextFormatToolbar, { type TextStyleOverride } from "@/components/TextFormatToolbar";
 import {
   ResizablePanelGroup,
   ResizablePanel,
