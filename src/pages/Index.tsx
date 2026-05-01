@@ -244,6 +244,7 @@ function downloadBlob(blob: Blob, filename: string) {
 }
 
 const Index = () => {
+  const quota = useQuota();
   const [manifest, setManifest] = useState<Manifest | null>(null);
   const [text, setText] = useState("");
   const [paletteKey, setPaletteKey] = useState<keyof typeof palettes>("ocean");
@@ -1406,6 +1407,14 @@ const Index = () => {
       return;
     }
     if (!manifest) return;
+    if (!quota.canGenerate) {
+      if (!quota.profile?.is_active && quota.profile) {
+        toast.error("Compte désactivé. Contactez l'administrateur.");
+      } else {
+        toast.error(`Limite atteinte (${quota.used}/${quota.limit}). Passez à un plan supérieur.`);
+      }
+      return;
+    }
 
     setLoading(true);
     setSuggestions([]);
@@ -1415,10 +1424,14 @@ const Index = () => {
       const data = await analyzeText(text, detailLevel);
       const rawSug: Suggestion[] = data.suggestions ?? [];
       if (rawSug.length === 0) throw new Error("Aucune suggestion");
-      // Normalisation à réception : score décimal 0-1 garanti dans l'état.
       const sug = rawSug.map((s) => ({ ...s, score: normalizeScore(s.score) }));
       setSuggestions(sug);
       setSelectedIdx(0);
+      try {
+        await quota.recordGeneration();
+      } catch (e) {
+        console.warn("Impossible d'enregistrer l'usage", e);
+      }
       toast.success(`${sug.length} suggestions générées`);
     } catch (e) {
       console.error(e);
