@@ -10,7 +10,7 @@
 
 import { isMockForced, mockAnalyze, mockRender } from "./mockBackend";
 
-const API_BASE = "/api";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://krobar.online/api";
 
 // Mémorise un fallback automatique après le premier échec pour éviter
 // de re-tenter inutilement le backend pendant la session.
