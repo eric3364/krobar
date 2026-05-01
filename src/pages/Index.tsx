@@ -18,7 +18,7 @@ import {
   ResizableHandle,
 } from "@/components/ui/resizable";
 import { formatScorePct, normalizeScore } from "@/lib/kroki";
-import { analyzeText } from "@/lib/api";
+import { analyzeText, renderTemplate, getTemplates } from "@/lib/api";
 import AccountMenu from "@/components/AccountMenu";
 import { useQuota } from "@/hooks/useQuota";
 
@@ -222,12 +222,22 @@ function applyDonutPercentages(svg: SVGElement, slots: Record<string, string>) {
   });
 }
 
-// SVG chargé en statique depuis /templates/ (servi par nginx).
-async function loadSvg(file: string): Promise<SVGElement> {
-  const res = await fetch(`/templates/${file}`);
-  const txt = await res.text();
-  const doc = new DOMParser().parseFromString(txt, "image/svg+xml");
+// Parse une chaîne SVG en élément DOM.
+function parseSvgString(svgStr: string): SVGElement {
+  const doc = new DOMParser().parseFromString(svgStr, "image/svg+xml");
   return doc.documentElement as unknown as SVGElement;
+}
+
+// Charge le SVG rendu depuis le backend via POST /api/render.
+// Retourne un SVGElement DOM prêt à être inséré.
+async function loadRenderedSvg(
+  templateId: string,
+  slots: Record<string, string>,
+  palette: Palette,
+): Promise<SVGElement> {
+  const paletteColors = palette.colors;
+  const result = await renderTemplate(templateId, slots, paletteColors as unknown as Record<string, string>);
+  return parseSvgString(result.svg);
 }
 
 function svgToString(svg: SVGElement): string {
@@ -362,9 +372,20 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    fetch("/templates/manifest.json")
-      .then((r) => r.json())
-      .then(setManifest);
+    getTemplates()
+      .then((data) => {
+        // L'API peut retourner { templates: [...] } ou directement un tableau
+        const templates = Array.isArray(data) ? data : data.templates;
+        setManifest({ templates });
+      })
+      .catch((err) => {
+        console.error("Impossible de charger les templates depuis le backend", err);
+        // Fallback sur le manifest local
+        fetch("/templates/manifest.json")
+          .then((r) => r.json())
+          .then(setManifest)
+          .catch(() => toast.error("Impossible de charger les templates"));
+      });
   }, []);
 
   // Reprise d'une session passée via ?resume=<generation_id>
@@ -403,20 +424,20 @@ const Index = () => {
 
   // Render thumbnails when suggestions change
   useEffect(() => {
-    if (!manifest) return;
     suggestions.forEach(async (sug, i) => {
-      const tpl = manifest.templates.find((t) => t.id === sug.template_id);
       const node = thumbRefs.current[i];
-      if (!tpl || !node) return;
-      const svg = await loadSvg(tpl.file);
-      applyPaletteVars(svg, palette);
-      fillSlots(svg, sug.slots);
-      svg.setAttribute("width", "100%");
-      svg.setAttribute("height", "100%");
-      node.innerHTML = "";
-      node.appendChild(svg);
+      if (!node) return;
+      try {
+        const svg = await loadRenderedSvg(sug.template_id, sug.slots, palette);
+        svg.setAttribute("width", "100%");
+        svg.setAttribute("height", "100%");
+        node.innerHTML = "";
+        node.appendChild(svg);
+      } catch (err) {
+        console.warn(`Erreur rendu vignette ${sug.template_id}`, err);
+      }
     });
-  }, [suggestions, manifest, palette]);
+  }, [suggestions, palette]);
 
   // Reset per-edit overrides whenever the chosen suggestion changes
   useEffect(() => {
@@ -869,11 +890,9 @@ const Index = () => {
 
   // Render big preview
   useEffect(() => {
-    if (!selectedSuggestion || !selectedTemplate || !previewRef.current) return;
+    if (!selectedSuggestion || !previewRef.current) return;
     (async () => {
-      const svg = await loadSvg(selectedTemplate.file);
-      applyPaletteVars(svg, palette);
-      fillSlots(svg, effectiveSlots);
+      const svg = await loadRenderedSvg(selectedSuggestion.template_id, effectiveSlots, palette);
       applyTransforms(svg, slotTransforms);
       applySlotTextStyles(svg, slotTextStyles);
       svg.setAttribute("width", "100%");
@@ -896,7 +915,7 @@ const Index = () => {
         setExtraSelectedRects(next);
       }
     })();
-  }, [selectedSuggestion, selectedTemplate, palette, effectiveSlots, slotTransforms, slotTextStyles]);
+  }, [selectedSuggestion, palette, effectiveSlots, slotTransforms, slotTextStyles]);
 
   // Convertit un delta viewport (px CSS) en unités SVG en se basant sur le viewBox
   // et la taille affichée réelle du SVG. Compatible avec les slots dans foreignObject.
@@ -1449,11 +1468,8 @@ const Index = () => {
       const data = await analyzeText(text, detailLevel);
       const rawSug: Suggestion[] = data.suggestions ?? [];
       if (rawSug.length === 0) throw new Error("Aucune suggestion");
-      // Filter out suggestions whose template_id doesn't exist in the manifest
-      const knownIds = new Set(manifest?.templates.map((t) => t.id) ?? []);
-      const validSug = rawSug.filter((s) => knownIds.has(s.template_id));
-      if (validSug.length === 0) throw new Error("Aucun template correspondant trouvé");
-      const sug = validSug.map((s) => ({ ...s, score: normalizeScore(s.score) }));
+      // Tous les templates sont gérés par le backend — pas de filtre local
+      const sug = rawSug.map((s) => ({ ...s, score: normalizeScore(s.score) }));
       setSuggestions(sug);
       setSelectedIdx(0);
       try {

@@ -22,7 +22,7 @@ import {
   checkSlotsLength,
   fillSlots,
   formatScorePct,
-  loadSvg,
+  loadRenderedSvg,
   svgToString,
   type Manifest,
   type Suggestion,
@@ -177,9 +177,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
       let svgString: string | null = null;
       let paletteOk = false;
       if (tpl) {
-        const svg = await loadSvg(tpl.file);
-        applyPaletteVars(svg, currentPalette);
-        fillSlots(svg, top.slots);
+        const svg = await loadRenderedSvg(top.template_id, top.slots, currentPalette);
         svg.setAttribute("width", "100%");
         svg.setAttribute("height", "100%");
         paletteOk = checkPaletteApplied(svg, currentPalette);
