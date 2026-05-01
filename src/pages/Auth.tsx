@@ -25,7 +25,12 @@ export default function AuthPage() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    if (!authLoading && user) navigate("/", { replace: true });
+  useEffect(() => {
+    if (authLoading || !user) return;
+    // If user just arrived from a magic link (no password set yet), send to reset-password
+    const hash = window.location.hash;
+    const fromMagicLink = hash.includes("type=magiclink") || hash.includes("type=signup");
+    navigate(fromMagicLink ? "/reset-password" : "/", { replace: true });
   }, [user, authLoading, navigate]);
 
   const handleSignIn = async (e: React.FormEvent) => {
