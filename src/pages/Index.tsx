@@ -1167,10 +1167,6 @@ const Index = () => {
         });
       }
     }
-        });
-        return next;
-      });
-    }
   };
 
   const handleDragCommit = (dx: number, dy: number) => {
