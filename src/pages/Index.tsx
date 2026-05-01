@@ -1756,6 +1756,7 @@ const Index = () => {
             <Button variant="outline" size="sm" onClick={() => setTestSuiteOpen(true)}>
               <FlaskConical className="w-4 h-4 mr-2" /> Lancer la suite de tests
             </Button>
+            <AccountMenu />
           </div>
         </div>
       </header>
