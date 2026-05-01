@@ -26,7 +26,7 @@ const FONT_FAMILIES = [
   { label: "Display", value: '"Bebas Neue", Impact, sans-serif' },
 ];
 
-export default function TextFormatToolbar({ rect, value, onChange }: Props) {
+export default function TextFormatToolbar({ rect, value, onChange, selectionCount = 1 }: Props) {
   const isBold =
     value.fontWeight === "bold" ||
     value.fontWeight === "700" ||
