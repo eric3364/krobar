@@ -372,9 +372,20 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    fetch("/templates/manifest.json")
-      .then((r) => r.json())
-      .then(setManifest);
+    getTemplates()
+      .then((data) => {
+        // L'API peut retourner { templates: [...] } ou directement un tableau
+        const templates = Array.isArray(data) ? data : data.templates;
+        setManifest({ templates });
+      })
+      .catch((err) => {
+        console.error("Impossible de charger les templates depuis le backend", err);
+        // Fallback sur le manifest local
+        fetch("/templates/manifest.json")
+          .then((r) => r.json())
+          .then(setManifest)
+          .catch(() => toast.error("Impossible de charger les templates"));
+      });
   }, []);
 
   // Reprise d'une session passée via ?resume=<generation_id>
