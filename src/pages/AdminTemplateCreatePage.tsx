@@ -357,10 +357,15 @@ export default function AdminTemplateCreatePage() {
               <p className="text-xs text-muted-foreground mt-1">{hint.length}/500</p>
             </div>
 
-            <Button onClick={handleCreate} disabled={!canCreate}>
-              {creating ? <Loader2 className="animate-spin mr-2 h-4 w-4" /> : null}
-              Créer le draft
-            </Button>
+            <div className="space-y-1">
+              <Button onClick={handleCreate} disabled={!canCreate}>
+                {creating ? <Loader2 className="animate-spin mr-2 h-4 w-4" /> : null}
+                Créer le draft
+              </Button>
+              {!hasToken && svgContent && (
+                <p className="text-xs text-destructive">⬆ Saisissez le token admin dans la barre en haut pour activer ce bouton.</p>
+              )}
+            </div>
           </>
         ) : (
           /* Summary when done */
