@@ -555,10 +555,7 @@ function TestCard({ test, result, note, selected, onToggleSelect, onReplay, onZo
           />
           <span className="text-base">{statusIcon[result.status]}</span>
           <div>
-            <div className="text-xs font-bold">Test {test.id}</div>
-            <div className="text-[10px] text-muted-foreground font-mono">
-              {test.expected_template}
-            </div>
+            <div className="text-xs font-bold font-mono">{test.expected_template} <span className="text-[10px] text-muted-foreground font-normal">· #{test.id}</span></div>
           </div>
         </div>
         <span className="text-[10px] text-muted-foreground">{statusLabel[result.status]}</span>
