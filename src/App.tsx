@@ -4,9 +4,13 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/useAuth";
+import { AdminRoute } from "@/components/AdminRoute";
 import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import BenchmarkPage from "./pages/BenchmarkPage.tsx";
+import Admin from "./pages/Admin.tsx";
+import AdminTemplateCreatePage from "./pages/AdminTemplateCreatePage.tsx";
+import AdminDraftsPage from "./pages/AdminDraftsPage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -20,7 +24,13 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/workspace" element={<Index />} />
-            <Route path="/benchmark" element={<BenchmarkPage />} />
+
+            {/* Admin routes */}
+            <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
+            <Route path="/admin/benchmark" element={<AdminRoute><BenchmarkPage /></AdminRoute>} />
+            <Route path="/admin/templates/new" element={<AdminRoute><AdminTemplateCreatePage /></AdminRoute>} />
+            <Route path="/admin/templates/drafts" element={<AdminRoute><AdminDraftsPage /></AdminRoute>} />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
