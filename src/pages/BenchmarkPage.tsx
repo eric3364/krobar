@@ -117,9 +117,8 @@ export default function BenchmarkPage() {
 
       try {
         // Analyze
-        const analyzeRes = await fetchJson<{ suggestions: { template_id: string; score: number; slots: Record<string, string> }[] }>(
-          `${API}/analyze`,
-          { method: "POST", body: JSON.stringify({ text: tc.text, detail_level: "auto" }) }
+        const analyzeRes = await proxyFetch<{ suggestions: { template_id: string; score: number; slots: Record<string, string> }[] }>(
+          "analyze", "POST", { text: tc.text, detail_level: "auto" }
         );
 
         const suggestions = analyzeRes.suggestions || [];
