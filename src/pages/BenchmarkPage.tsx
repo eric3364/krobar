@@ -52,15 +52,13 @@ function computeCellStatus(r: BenchmarkResult): CellStatus {
   return "lightgreen";
 }
 
-const API = "https://krobar.online/api";
-
-async function fetchJson<T>(url: string, opts?: RequestInit): Promise<T> {
-  const res = await fetch(url, {
-    ...opts,
-    headers: { "Content-Type": "application/json", Accept: "application/json", ...(opts?.headers as Record<string, string> || {}) },
+async function proxyFetch<T>(endpoint: string, method: string, payload?: unknown): Promise<T> {
+  const { data, error } = await supabase.functions.invoke("krobar-proxy", {
+    body: { endpoint, method: method.toUpperCase(), payload },
   });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return res.json();
+  if (error) throw new Error(error.message);
+  if (data?.error) throw new Error(data.error);
+  return data as T;
 }
 
 export default function BenchmarkPage() {
