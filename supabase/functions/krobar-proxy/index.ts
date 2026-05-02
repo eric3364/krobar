@@ -35,7 +35,7 @@ Deno.serve(async (req) => {
       const url = `${KROBAR_API_BASE}${path}`;
       const httpMethod = (reqMethod ?? "POST").toUpperCase();
       const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), 115000);
+      const timer = setTimeout(() => controller.abort(), 150000);
 
       const storedToken = Deno.env.get("KROBAR_ADMIN_TOKEN");
       const headers: Record<string, string> = {
@@ -96,7 +96,7 @@ Deno.serve(async (req) => {
 
     const url = `${KROBAR_API_BASE}/${endpoint}`;
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 115000);
+    const timer = setTimeout(() => controller.abort(), 150000);
 
     let upstream: Response;
     try {

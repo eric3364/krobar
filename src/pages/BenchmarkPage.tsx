@@ -52,13 +52,24 @@ function computeCellStatus(r: BenchmarkResult): CellStatus {
   return "lightgreen";
 }
 
-async function proxyFetch<T>(endpoint: string, method: string, payload?: unknown): Promise<T> {
-  const { data, error } = await supabase.functions.invoke("krobar-proxy", {
-    body: { endpoint, method: method.toUpperCase(), payload },
-  });
-  if (error) throw new Error(error.message);
-  if (data?.error) throw new Error(data.error);
-  return data as T;
+async function proxyFetch<T>(endpoint: string, method: string, payload?: unknown, retries = 2): Promise<T> {
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    const { data, error } = await supabase.functions.invoke("krobar-proxy", {
+      body: { endpoint, method: method.toUpperCase(), payload },
+    });
+    const errMsg = error?.message || data?.error;
+    if (errMsg) {
+      const isTimeout = typeof errMsg === "string" && (errMsg.includes("temps") || errMsg.includes("504") || errMsg.includes("timeout"));
+      if (isTimeout && attempt < retries) {
+        console.warn(`Timeout on ${endpoint}, retry ${attempt + 1}/${retries}…`);
+        await new Promise(r => setTimeout(r, 2000));
+        continue;
+      }
+      throw new Error(errMsg);
+    }
+    return data as T;
+  }
+  throw new Error("Max retries reached");
 }
 
 export default function BenchmarkPage() {
