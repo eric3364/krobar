@@ -172,16 +172,18 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
         status = "warning";
       }
 
-      // Render the SVG of the actually chosen template via the backend.
-      const tpl = manifest.templates.find((t) => t.id === top.template_id);
+      // Render the SVG via the backend (supports all 49 templates).
       let svgString: string | null = null;
       let paletteOk = false;
-      if (tpl) {
+      try {
         const svg = await loadRenderedSvg(top.template_id, top.slots, currentPalette);
         svg.setAttribute("width", "100%");
         svg.setAttribute("height", "100%");
         paletteOk = checkPaletteApplied(svg, currentPalette);
         svgString = svgToString(svg);
+      } catch {
+        // Render failed — downgrade status
+        if (status === "success") status = "warning";
       }
       const lengthCheck = checkSlotsLength(top.slots);
 
