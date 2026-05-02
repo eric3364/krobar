@@ -1,64 +1,37 @@
 import { useAdminToken } from "@/contexts/AdminTokenContext";
-
-const API = "https://krobar.online/api";
+import { supabase } from "@/integrations/supabase/client";
 
 type ErrorBody = { detail?: string; error?: string; message?: string };
 
-async function handleResponse<T>(res: Response): Promise<T> {
-  const text = await res.text();
-  let data: T & ErrorBody;
-  try {
-    data = JSON.parse(text);
-  } catch {
-    throw new Error(
-      res.status === 503
-        ? "Backend non configuré"
-        : `Réponse inattendue du serveur (${res.status})`
-    );
-  }
-
-  if (!res.ok) {
-    if (res.status === 401) throw new Error("Token invalide");
-    if (res.status === 503) throw new Error("Backend non configuré");
-    const msg =
-      (data as ErrorBody).detail ||
-      (data as ErrorBody).error ||
-      (data as ErrorBody).message ||
-      `Erreur serveur (${res.status})`;
-    throw new Error(msg);
-  }
-
-  return data;
-}
-
 export async function adminFetch<T>(
-  endpoint: string,
+  path: string,
   token: string,
   options?: { method?: string; body?: unknown }
 ): Promise<T> {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 120_000);
+  const method = options?.method ?? "POST";
 
-  try {
-    const res = await fetch(`${API}${endpoint}`, {
-      method: options?.method ?? "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "X-Admin-Token": token,
-      },
-      signal: controller.signal,
-      body: options?.body ? JSON.stringify(options.body) : undefined,
-    });
-    return await handleResponse<T>(res);
-  } catch (err) {
-    if (err instanceof DOMException && err.name === "AbortError") {
-      throw new Error("Le serveur n'a pas répondu dans les 2 minutes.");
-    }
-    throw err;
-  } finally {
-    clearTimeout(timer);
+  const { data, error } = await supabase.functions.invoke("krobar-proxy", {
+    body: {
+      path,
+      method,
+      payload: options?.body ?? {},
+      admin_token: token,
+    },
+  });
+
+  if (error) {
+    throw new Error(error.message || "Erreur de communication avec le proxy");
   }
+
+  const result = data as T & ErrorBody;
+
+  if ((result as any)?.error) {
+    const msg = (result as any).error;
+    if (msg.includes?.("401") || msg.includes?.("Token")) throw new Error("Token invalide");
+    throw new Error(msg);
+  }
+
+  return result;
 }
 
 export function useAdminApi() {
