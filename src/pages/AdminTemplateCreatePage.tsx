@@ -309,7 +309,7 @@ export default function AdminTemplateCreatePage() {
 
                 {/* Convert button */}
                 {!svgContent && (
-                  <Button onClick={handleConvertPng} disabled={converting || !hasToken} variant="secondary">
+                  <Button onClick={handleConvertPng} disabled={converting} variant="secondary">
                     {converting ? (
                       <>
                         <Loader2 className="animate-spin mr-2 h-4 w-4" />
