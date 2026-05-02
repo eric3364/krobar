@@ -1,16 +1,17 @@
 import React, { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAdminToken } from "@/contexts/AdminTokenContext";
 import { useAdminApi } from "@/lib/adminApi";
+import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Loader2, Upload, Check, X, AlertTriangle, RotateCcw } from "lucide-react";
+import { Loader2, Upload, Check, X, AlertTriangle, RotateCcw, Image, FileCode } from "lucide-react";
 
 type DraftResult = {
   draft_id: string;
@@ -34,6 +35,8 @@ type DeployResult = {
   manifest_backup: string;
 };
 
+type ConversionMode = "smart" | "trace";
+
 const STEPS = ["Créer", "Valider", "Déployer"] as const;
 
 export default function AdminTemplateCreatePage() {
@@ -45,7 +48,12 @@ export default function AdminTemplateCreatePage() {
 
   // Step 1
   const [svgContent, setSvgContent] = useState("");
-  const [svgFileName, setSvgFileName] = useState("");
+  const [fileName, setFileName] = useState("");
+  const [fileType, setFileType] = useState<"svg" | "png" | null>(null);
+  const [pngPreview, setPngPreview] = useState<string | null>(null);
+  const [pngBase64, setPngBase64] = useState<string | null>(null);
+  const [conversionMode, setConversionMode] = useState<ConversionMode>("smart");
+  const [converting, setConverting] = useState(false);
   const [hint, setHint] = useState("");
   const [creating, setCreating] = useState(false);
   const [draft, setDraft] = useState<DraftResult | null>(null);
@@ -60,14 +68,32 @@ export default function AdminTemplateCreatePage() {
   const [deployResult, setDeployResult] = useState<DeployResult | null>(null);
 
   const handleFile = useCallback((file: File) => {
-    if (!file.name.endsWith(".svg")) {
-      toast.error("Seuls les fichiers .svg sont acceptés");
-      return;
+    const ext = file.name.split(".").pop()?.toLowerCase();
+
+    if (ext === "svg") {
+      setFileType("svg");
+      setFileName(file.name);
+      setPngPreview(null);
+      setPngBase64(null);
+      const reader = new FileReader();
+      reader.onload = (e) => setSvgContent(e.target?.result as string);
+      reader.readAsText(file);
+    } else if (ext === "png" || ext === "jpg" || ext === "jpeg" || ext === "webp") {
+      setFileType("png");
+      setFileName(file.name);
+      setSvgContent("");
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const dataUrl = e.target?.result as string;
+        setPngPreview(dataUrl);
+        // Strip data URL prefix for API
+        const base64 = dataUrl.replace(/^data:image\/\w+;base64,/, "");
+        setPngBase64(base64);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      toast.error("Formats acceptés : .svg, .png, .jpg, .webp");
     }
-    setSvgFileName(file.name);
-    const reader = new FileReader();
-    reader.onload = (e) => setSvgContent(e.target?.result as string);
-    reader.readAsText(file);
   }, []);
 
   const onDrop = useCallback(
@@ -78,6 +104,30 @@ export default function AdminTemplateCreatePage() {
     },
     [handleFile]
   );
+
+  const handleConvertPng = async () => {
+    if (!pngBase64) return;
+    setConverting(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("png-to-svg", {
+        body: { image_base64: pngBase64, mode: conversionMode, hint: hint || undefined },
+      });
+
+      if (error) throw new Error(error.message || "Erreur de conversion");
+      if (data?.error) throw new Error(data.error);
+
+      setSvgContent(data.svg);
+      toast.success(
+        conversionMode === "smart"
+          ? `SVG généré avec ${data.slot_count} slots détectés`
+          : "SVG tracé généré avec succès"
+      );
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "Erreur lors de la conversion PNG → SVG");
+    } finally {
+      setConverting(false);
+    }
+  };
 
   const handleCreate = async () => {
     setCreating(true);
@@ -141,13 +191,18 @@ export default function AdminTemplateCreatePage() {
 
   const resetAll = () => {
     setSvgContent("");
-    setSvgFileName("");
+    setFileName("");
+    setFileType(null);
+    setPngPreview(null);
+    setPngBase64(null);
     setHint("");
     setDraft(null);
     setValidation(null);
     setDeployResult(null);
     setCurrentStep(0);
   };
+
+  const canCreate = svgContent.length > 0 && hasToken && !creating;
 
   // Deployed state
   if (deployResult) {
@@ -188,7 +243,7 @@ export default function AdminTemplateCreatePage() {
       <Card className="p-6 space-y-4">
         <h2 className="text-lg font-semibold flex items-center gap-2">
           <StepBadge n={1} active={currentStep === 0} done={currentStep > 0} />
-          Upload SVG
+          Upload fichier
         </h2>
 
         {currentStep === 0 ? (
@@ -198,25 +253,94 @@ export default function AdminTemplateCreatePage() {
               onDragOver={(e) => e.preventDefault()}
               onDrop={onDrop}
               className="border-2 border-dashed border-border rounded-lg p-8 text-center cursor-pointer hover:border-primary transition-colors"
-              onClick={() => document.getElementById("svg-input")?.click()}
+              onClick={() => document.getElementById("file-input")?.click()}
             >
               <Upload className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
               <p className="text-sm text-muted-foreground">
-                {svgFileName ? svgFileName : "Glisser un fichier .svg ici ou cliquer pour choisir"}
+                {fileName ? (
+                  <span className="flex items-center justify-center gap-2">
+                    {fileType === "svg" ? <FileCode className="w-4 h-4" /> : <Image className="w-4 h-4" />}
+                    {fileName}
+                  </span>
+                ) : (
+                  "Glisser un fichier .svg ou .png ici, ou cliquer pour choisir"
+                )}
               </p>
+              <p className="text-xs text-muted-foreground mt-1">SVG (direct) • PNG/JPG/WebP (conversion IA)</p>
               <input
-                id="svg-input"
+                id="file-input"
                 type="file"
-                accept=".svg"
+                accept=".svg,.png,.jpg,.jpeg,.webp"
                 className="hidden"
                 onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
               />
             </div>
 
-            {/* SVG Preview */}
+            {/* PNG Preview + Conversion */}
+            {fileType === "png" && pngPreview && (
+              <div className="space-y-3">
+                <div className="border rounded-lg p-4 bg-white overflow-auto max-h-64">
+                  <img src={pngPreview} alt="Preview" className="max-w-full h-auto mx-auto" />
+                </div>
+
+                {/* Mode selector */}
+                <div className="flex items-center gap-3">
+                  <label className="text-sm font-medium whitespace-nowrap">Mode de conversion :</label>
+                  <Select value={conversionMode} onValueChange={(v) => setConversionMode(v as ConversionMode)}>
+                    <SelectTrigger className="w-64">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="smart">
+                        🧠 Interprétation intelligente (slots éditables)
+                      </SelectItem>
+                      <SelectItem value="trace">
+                        ✏️ Tracé vectoriel fidèle
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <p className="text-xs text-muted-foreground">
+                  {conversionMode === "smart"
+                    ? "L'IA analyse le schéma et génère un SVG templaté avec des slots {{slot_name}} éditables."
+                    : "L'IA reproduit l'image pixel par pixel en SVG. Pas de slots éditables."}
+                </p>
+
+                {/* Convert button */}
+                {!svgContent && (
+                  <Button onClick={handleConvertPng} disabled={converting || !hasToken} variant="secondary">
+                    {converting ? (
+                      <>
+                        <Loader2 className="animate-spin mr-2 h-4 w-4" />
+                        Conversion en cours (peut prendre 15-30s)...
+                      </>
+                    ) : (
+                      <>
+                        <Image className="w-4 h-4 mr-2" /> Convertir en SVG
+                      </>
+                    )}
+                  </Button>
+                )}
+              </div>
+            )}
+
+            {/* SVG Preview (from direct upload or conversion) */}
             {svgContent && (
-              <div className="border rounded-lg p-4 bg-white overflow-auto max-h-64">
-                <div dangerouslySetInnerHTML={{ __html: svgContent }} className="[&>svg]:max-w-full [&>svg]:h-auto" />
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline" className="text-xs">
+                    {fileType === "png" ? "SVG converti" : "SVG importé"}
+                  </Badge>
+                  {fileType === "png" && (
+                    <Button variant="ghost" size="sm" onClick={() => { setSvgContent(""); }} className="text-xs">
+                      Reconvertir
+                    </Button>
+                  )}
+                </div>
+                <div className="border rounded-lg p-4 bg-white overflow-auto max-h-64">
+                  <div dangerouslySetInnerHTML={{ __html: svgContent }} className="[&>svg]:max-w-full [&>svg]:h-auto" />
+                </div>
               </div>
             )}
 
@@ -233,7 +357,7 @@ export default function AdminTemplateCreatePage() {
               <p className="text-xs text-muted-foreground mt-1">{hint.length}/500</p>
             </div>
 
-            <Button onClick={handleCreate} disabled={!svgContent || !hasToken || creating}>
+            <Button onClick={handleCreate} disabled={!canCreate}>
               {creating ? <Loader2 className="animate-spin mr-2 h-4 w-4" /> : null}
               Créer le draft
             </Button>
