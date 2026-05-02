@@ -96,7 +96,7 @@ Deno.serve(async (req) => {
 
     const url = `${KROBAR_API_BASE}/${endpoint}`;
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 55000);
+    const timer = setTimeout(() => controller.abort(), 115000);
 
     let upstream: Response;
     try {
