@@ -7,6 +7,48 @@ import { isMockForced, mockAnalyze, mockRender } from "./mockBackend";
 
 type KrobarEndpoint = "analyze" | "render" | "templates" | "health";
 
+export type ApiSuggestion = {
+  template_id: string;
+  score: number;
+  reasoning: string;
+  slots: Record<string, string>;
+};
+
+export type AnalyzeResponse = {
+  suggestions: ApiSuggestion[];
+  latency_ms?: number;
+};
+
+export type RenderResponse = {
+  svg: string;
+  template_id?: string;
+};
+
+export type TemplateMetadata = {
+  id: string;
+  name: string;
+  category: string;
+  description: string;
+  file: string;
+  slots: string[];
+  best_for: string;
+  priority?: number;
+};
+
+export type TemplatesResponse = {
+  templates: TemplateMetadata[];
+  total_count?: number;
+  version?: string;
+};
+
+export type HealthResponse = {
+  status: string;
+  version?: string;
+  templates_count?: number;
+  claude_configured?: boolean;
+  timestamp?: string;
+};
+
 async function readInvokeError(error: unknown): Promise<string> {
   if (error && typeof error === "object" && "context" in error) {
     const response = (error as { context?: Response }).context;
@@ -33,28 +75,28 @@ async function invokeKrobar<T>(endpoint: KrobarEndpoint, payload?: Record<string
   return data as T;
 }
 
-export async function analyzeText(text: string, detail_level: string = "auto") {
+export async function analyzeText(text: string, detail_level: string = "auto"): Promise<AnalyzeResponse> {
   if (isMockForced()) {
     return mockAnalyze(text, detail_level);
   }
-  return invokeKrobar("analyze", { text, detail_level });
+  return invokeKrobar<AnalyzeResponse>("analyze", { text, detail_level });
 }
 
 export async function renderTemplate(
   template_id: string,
   slots: Record<string, string>,
   palette: Record<string, string>,
-) {
+): Promise<RenderResponse> {
   if (isMockForced()) {
     return mockRender(template_id, slots);
   }
-  return invokeKrobar("render", { template_id, slots, palette });
+  return invokeKrobar<RenderResponse>("render", { template_id, slots, palette });
 }
 
-export async function getTemplates() {
-  return invokeKrobar("templates");
+export async function getTemplates(): Promise<TemplatesResponse> {
+  return invokeKrobar<TemplatesResponse>("templates");
 }
 
-export async function checkHealth() {
-  return invokeKrobar("health");
+export async function checkHealth(): Promise<HealthResponse> {
+  return invokeKrobar<HealthResponse>("health");
 }
