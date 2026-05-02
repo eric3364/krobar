@@ -37,12 +37,13 @@ Deno.serve(async (req) => {
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), 115000);
 
+      const storedToken = Deno.env.get("KROBAR_ADMIN_TOKEN");
       const headers: Record<string, string> = {
         "Content-Type": "application/json",
         Accept: "application/json",
       };
-      if (admin_token) {
-        headers["X-Admin-Token"] = admin_token;
+      if (storedToken) {
+        headers["X-Admin-Token"] = storedToken;
       }
 
       let upstream: Response;

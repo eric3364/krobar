@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useAdminToken } from "@/contexts/AdminTokenContext";
 import { useAdminApi } from "@/lib/adminApi";
 import { toast } from "sonner";
 import { Loader2, RefreshCw } from "lucide-react";
@@ -23,13 +22,11 @@ const statusColors: Record<string, string> = {
 };
 
 export default function AdminDraftsPage() {
-  const { hasToken } = useAdminToken();
   const api = useAdminApi();
   const [drafts, setDrafts] = useState<Draft[]>([]);
   const [loading, setLoading] = useState(false);
 
   const load = useCallback(async () => {
-    if (!hasToken) return;
     setLoading(true);
     try {
       const res = await api.listDrafts();
@@ -39,11 +36,11 @@ export default function AdminDraftsPage() {
     } finally {
       setLoading(false);
     }
-  }, [hasToken, api]);
+  }, [api]);
 
   useEffect(() => {
-    if (hasToken) load();
-  }, [hasToken]); // eslint-disable-line react-hooks/exhaustive-deps
+    load();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fmt = (d: string | null) => d ? new Date(d).toLocaleDateString("fr-FR", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }) : "—";
 
@@ -51,16 +48,14 @@ export default function AdminDraftsPage() {
     <div className="max-w-4xl mx-auto space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Drafts de templates</h1>
-        <Button variant="outline" size="sm" onClick={load} disabled={loading || !hasToken}>
+        <Button variant="outline" size="sm" onClick={load} disabled={loading}>
           <RefreshCw className={`w-4 h-4 mr-2 ${loading ? "animate-spin" : ""}`} /> Rafraîchir
         </Button>
       </div>
 
-      {!hasToken && <p className="text-sm text-muted-foreground">Saisissez le token admin pour charger les drafts.</p>}
-
       {loading ? (
         <div className="py-12 text-center"><Loader2 className="animate-spin mx-auto" /></div>
-      ) : drafts.length === 0 && hasToken ? (
+      ) : drafts.length === 0 ? (
         <p className="text-sm text-muted-foreground py-8 text-center">Aucun draft trouvé.</p>
       ) : (
         <div className="overflow-x-auto">
