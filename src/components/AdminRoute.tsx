@@ -1,11 +1,8 @@
 import { ReactNode } from "react";
 import { Navigate, Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { useAdminToken } from "@/contexts/AdminTokenContext";
-import { AdminTokenProvider } from "@/contexts/AdminTokenContext";
 import { Loader2, LogOut, LayoutDashboard, FlaskConical, FolderOpen, Plus } from "lucide-react";
 import { BYPASS_AUTH } from "@/lib/devAuth";
-import { Input } from "@/components/ui/input";
 import { Helmet } from "react-helmet-async";
 
 const navItems = [
@@ -17,7 +14,6 @@ const navItems = [
 
 function AdminLayoutInner({ children }: { children: ReactNode }) {
   const { signOut } = useAuth();
-  const { token, setToken, hasToken } = useAdminToken();
   const { pathname } = useLocation();
 
   return (
@@ -55,19 +51,6 @@ function AdminLayoutInner({ children }: { children: ReactNode }) {
 
         {/* Main */}
         <div className="flex-1 flex flex-col min-w-0">
-          {/* Token bar */}
-          <header className="h-12 flex items-center gap-3 px-4 border-b border-border bg-background shrink-0">
-            <label className="text-xs text-muted-foreground whitespace-nowrap">Token admin :</label>
-            <Input
-              type="password"
-              value={token}
-              onChange={(e) => setToken(e.target.value)}
-              placeholder="Saisir le token API admin"
-              className="max-w-xs h-8 text-sm"
-            />
-            {!hasToken && <span className="text-xs text-destructive">Requis pour toute action</span>}
-          </header>
-
           <main className="flex-1 overflow-auto p-6">
             {children}
           </main>
@@ -81,11 +64,7 @@ export function AdminRoute({ children }: { children: ReactNode }) {
   const { user, isAdmin, loading } = useAuth();
 
   if (BYPASS_AUTH) {
-    return (
-      <AdminTokenProvider>
-        <AdminLayoutInner>{children}</AdminLayoutInner>
-      </AdminTokenProvider>
-    );
+    return <AdminLayoutInner>{children}</AdminLayoutInner>;
   }
 
   if (loading) {
@@ -96,9 +75,5 @@ export function AdminRoute({ children }: { children: ReactNode }) {
     return <Navigate to="/" replace />;
   }
 
-  return (
-    <AdminTokenProvider>
-      <AdminLayoutInner>{children}</AdminLayoutInner>
-    </AdminTokenProvider>
-  );
+  return <AdminLayoutInner>{children}</AdminLayoutInner>;
 }
