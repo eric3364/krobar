@@ -59,7 +59,15 @@ Deno.serve(async (req) => {
     clearTimeout(timer);
 
     const text = await upstream.text();
-    const data = text ? JSON.parse(text) : {};
+    let data: Record<string, unknown>;
+    try {
+      data = text ? JSON.parse(text) : {};
+    } catch {
+      return jsonResponse(
+        { error: `Réponse non-JSON du backend Krobar (${upstream.status}). Début: ${text.slice(0, 120)}` },
+        502,
+      );
+    }
 
     if (!upstream.ok) {
       const message =
