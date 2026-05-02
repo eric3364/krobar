@@ -71,7 +71,7 @@ export default function BenchmarkPage() {
   const abortRef = useRef(false);
 
   const loadTests = useCallback(async () => {
-    const data = await fetchJson<{ tests: TestCase[] }>(`${API}/test-texts`);
+    const data = await proxyFetch<{ tests: TestCase[] }>("test-texts", "GET");
     setTests(data.tests);
     setResults(new Array(data.tests.length).fill(null));
     return data.tests;
