@@ -6,7 +6,7 @@ const corsHeaders = {
 
 const KROBAR_API_BASE = "https://krobar.online/api";
 
-const PUBLIC_ENDPOINTS = ["analyze", "render", "templates", "health"];
+const PUBLIC_ENDPOINTS = ["analyze", "render", "templates", "health", "test-texts"];
 
 function jsonResponse(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
