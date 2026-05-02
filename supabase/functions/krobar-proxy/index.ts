@@ -112,7 +112,7 @@ Deno.serve(async (req) => {
     } catch (fetchErr) {
       clearTimeout(timer);
       const msg = fetchErr instanceof DOMException && fetchErr.name === "AbortError"
-        ? "Le backend Krobar n'a pas répondu dans les 55 secondes."
+        ? "Le backend Krobar n'a pas répondu à temps."
         : `Impossible de joindre le backend Krobar: ${fetchErr instanceof Error ? fetchErr.message : String(fetchErr)}`;
       return jsonResponse({ error: msg }, 504);
     }
