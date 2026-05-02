@@ -35,14 +35,28 @@ Deno.serve(async (req) => {
     }
 
     const url = `${KROBAR_API_BASE}/${endpoint}`;
-    const upstream = await fetch(url, {
-      method: endpoint === "analyze" || endpoint === "render" ? "POST" : "GET",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body:
-        endpoint === "analyze" || endpoint === "render"
-          ? JSON.stringify(payload ?? {})
-          : undefined,
-    });
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 55000);
+
+    let upstream: Response;
+    try {
+      upstream = await fetch(url, {
+        method: endpoint === "analyze" || endpoint === "render" ? "POST" : "GET",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        signal: controller.signal,
+        body:
+          endpoint === "analyze" || endpoint === "render"
+            ? JSON.stringify(payload ?? {})
+            : undefined,
+      });
+    } catch (fetchErr) {
+      clearTimeout(timer);
+      const msg = fetchErr instanceof DOMException && fetchErr.name === "AbortError"
+        ? "Le backend Krobar n'a pas répondu dans les 55 secondes."
+        : `Impossible de joindre le backend Krobar: ${fetchErr instanceof Error ? fetchErr.message : String(fetchErr)}`;
+      return jsonResponse({ error: msg }, 504);
+    }
+    clearTimeout(timer);
 
     const text = await upstream.text();
     const data = text ? JSON.parse(text) : {};
