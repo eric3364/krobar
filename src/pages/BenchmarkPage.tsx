@@ -136,9 +136,8 @@ export default function BenchmarkPage() {
 
         // Render
         try {
-          const renderRes = await fetchJson<{ svg: string; filled_slots?: string[] }>(
-            `${API}/render`,
-            { method: "POST", body: JSON.stringify({ template_id: chosen.template_id, slots: chosen.slots, palette: {} }) }
+          const renderRes = await proxyFetch<{ svg: string; filled_slots?: string[] }>(
+            "render", "POST", { template_id: chosen.template_id, slots: chosen.slots, palette: {} }
           );
           result.svg = renderRes.svg;
           result.filled_slots = renderRes.filled_slots || Object.keys(chosen.slots);
