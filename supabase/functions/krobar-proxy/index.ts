@@ -1,12 +1,12 @@
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-admin-token",
+  "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
 };
 
 const KROBAR_API_BASE = "https://krobar.online/api";
 
-type Endpoint = "analyze" | "render" | "templates" | "health";
+const PUBLIC_ENDPOINTS = ["analyze", "render", "templates", "health"];
 
 function jsonResponse(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -20,17 +20,76 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
-  if (req.method !== "POST") {
-    return jsonResponse({ error: "Method not allowed" }, 405);
-  }
-
   try {
-    const { endpoint, payload } = await req.json() as {
-      endpoint?: Endpoint;
+    const body = req.method !== "GET" ? await req.json() : {} as Record<string, unknown>;
+    const { endpoint, payload, path, method: reqMethod, admin_token } = body as {
+      endpoint?: string;
       payload?: Record<string, unknown>;
+      path?: string;
+      method?: string;
+      admin_token?: string;
     };
 
-    if (!endpoint || !["analyze", "render", "templates", "health"].includes(endpoint)) {
+    // Admin path mode: path like "/admin/template/create"
+    if (path) {
+      const url = `${KROBAR_API_BASE}${path}`;
+      const httpMethod = (reqMethod ?? "POST").toUpperCase();
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 115000);
+
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      };
+      if (admin_token) {
+        headers["X-Admin-Token"] = admin_token;
+      }
+
+      let upstream: Response;
+      try {
+        upstream = await fetch(url, {
+          method: httpMethod,
+          headers,
+          signal: controller.signal,
+          body: httpMethod !== "GET" ? JSON.stringify(payload ?? {}) : undefined,
+        });
+      } catch (fetchErr) {
+        clearTimeout(timer);
+        const msg = fetchErr instanceof DOMException && fetchErr.name === "AbortError"
+          ? "Le backend Krobar n'a pas répondu à temps."
+          : `Impossible de joindre le backend Krobar: ${fetchErr instanceof Error ? fetchErr.message : String(fetchErr)}`;
+        return jsonResponse({ error: msg }, 504);
+      }
+      clearTimeout(timer);
+
+      const text = await upstream.text();
+      let data: Record<string, unknown>;
+      try {
+        data = text ? JSON.parse(text) : {};
+      } catch {
+        return jsonResponse(
+          { error: `Réponse non-JSON du backend (${upstream.status}). Début: ${text.slice(0, 120)}` },
+          502,
+        );
+      }
+
+      if (!upstream.ok) {
+        const message =
+          (typeof data?.detail === "string" && data.detail) ||
+          (typeof data?.error === "string" && data.error) ||
+          `Erreur Krobar (${upstream.status})`;
+        return jsonResponse({ error: message, status: upstream.status }, upstream.status);
+      }
+
+      return jsonResponse(data, 200);
+    }
+
+    // Legacy public endpoint mode
+    if (req.method !== "POST") {
+      return jsonResponse({ error: "Method not allowed" }, 405);
+    }
+
+    if (!endpoint || !PUBLIC_ENDPOINTS.includes(endpoint)) {
       return jsonResponse({ error: "Invalid endpoint" }, 400);
     }
 
