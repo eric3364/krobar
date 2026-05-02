@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { Download, Play, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 type TestCase = {
   template_id: string;
