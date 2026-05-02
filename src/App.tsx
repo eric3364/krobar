@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import BenchmarkPage from "./pages/BenchmarkPage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/workspace" element={<Index />} />
+            <Route path="/benchmark" element={<BenchmarkPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
