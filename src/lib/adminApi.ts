@@ -1,11 +1,9 @@
-import { useAdminToken } from "@/contexts/AdminTokenContext";
 import { supabase } from "@/integrations/supabase/client";
 
 type ErrorBody = { detail?: string; error?: string; message?: string };
 
 export async function adminFetch<T>(
   path: string,
-  token: string,
   options?: { method?: string; body?: unknown }
 ): Promise<T> {
   const method = options?.method ?? "POST";
@@ -15,7 +13,6 @@ export async function adminFetch<T>(
       path,
       method,
       payload: options?.body ?? {},
-      admin_token: token,
     },
   });
 
@@ -35,8 +32,6 @@ export async function adminFetch<T>(
 }
 
 export function useAdminApi() {
-  const { token } = useAdminToken();
-
   return {
     createDraft: (svg_content: string, hint?: string) =>
       adminFetch<{
@@ -45,7 +40,7 @@ export function useAdminApi() {
         slots: string[];
         slot_count: number;
         test_text: string;
-      }>("/admin/template/create", token, { body: { svg_content, hint } }),
+      }>("/admin/template/create", { body: { svg_content, hint } }),
 
     validateDraft: (draft_id: string, max_iterations: number) =>
       adminFetch<{
@@ -54,7 +49,7 @@ export function useAdminApi() {
         attempts: { attempt: number; position_in_top3: number; fill_ratio: number; top1_suggested: string }[];
         final_metadata: Record<string, unknown>;
         next_step?: string;
-      }>("/admin/template/validate", token, { body: { draft_id, max_iterations } }),
+      }>("/admin/template/validate", { body: { draft_id, max_iterations } }),
 
     deployDraft: (draft_id: string) =>
       adminFetch<{
@@ -62,7 +57,7 @@ export function useAdminApi() {
         template_id: string;
         total_templates: number;
         manifest_backup: string;
-      }>("/admin/template/deploy", token, { body: { draft_id } }),
+      }>("/admin/template/deploy", { body: { draft_id } }),
 
     listDrafts: () =>
       adminFetch<{
@@ -74,6 +69,6 @@ export function useAdminApi() {
           deployed_at: string | null;
           metadata: Record<string, string>;
         }[];
-      }>("/admin/template/drafts", token, { method: "GET" }),
+      }>("/admin/template/drafts", { method: "GET" }),
   };
 }
