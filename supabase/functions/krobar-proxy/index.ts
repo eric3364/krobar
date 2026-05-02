@@ -6,7 +6,7 @@ const corsHeaders = {
 
 const KROBAR_API_BASE = "https://krobar.online/api";
 
-const PUBLIC_ENDPOINTS = ["analyze", "render", "templates", "health"];
+const PUBLIC_ENDPOINTS = ["analyze", "render", "templates", "health", "test-texts"];
 
 function jsonResponse(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -96,7 +96,7 @@ Deno.serve(async (req) => {
 
     const url = `${KROBAR_API_BASE}/${endpoint}`;
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 55000);
+    const timer = setTimeout(() => controller.abort(), 115000);
 
     let upstream: Response;
     try {
@@ -112,7 +112,7 @@ Deno.serve(async (req) => {
     } catch (fetchErr) {
       clearTimeout(timer);
       const msg = fetchErr instanceof DOMException && fetchErr.name === "AbortError"
-        ? "Le backend Krobar n'a pas répondu dans les 55 secondes."
+        ? "Le backend Krobar n'a pas répondu à temps."
         : `Impossible de joindre le backend Krobar: ${fetchErr instanceof Error ? fetchErr.message : String(fetchErr)}`;
       return jsonResponse({ error: msg }, 504);
     }

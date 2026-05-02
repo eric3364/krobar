@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { Download, Play, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 type TestCase = {
   template_id: string;
@@ -51,15 +52,13 @@ function computeCellStatus(r: BenchmarkResult): CellStatus {
   return "lightgreen";
 }
 
-const API = "https://krobar.online/api";
-
-async function fetchJson<T>(url: string, opts?: RequestInit): Promise<T> {
-  const res = await fetch(url, {
-    ...opts,
-    headers: { "Content-Type": "application/json", Accept: "application/json", ...(opts?.headers as Record<string, string> || {}) },
+async function proxyFetch<T>(endpoint: string, method: string, payload?: unknown): Promise<T> {
+  const { data, error } = await supabase.functions.invoke("krobar-proxy", {
+    body: { endpoint, method: method.toUpperCase(), payload },
   });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return res.json();
+  if (error) throw new Error(error.message);
+  if (data?.error) throw new Error(data.error);
+  return data as T;
 }
 
 export default function BenchmarkPage() {
@@ -72,7 +71,7 @@ export default function BenchmarkPage() {
   const abortRef = useRef(false);
 
   const loadTests = useCallback(async () => {
-    const data = await fetchJson<{ tests: TestCase[] }>(`${API}/test-texts`);
+    const data = await proxyFetch<{ tests: TestCase[] }>("test-texts", "GET");
     setTests(data.tests);
     setResults(new Array(data.tests.length).fill(null));
     return data.tests;
@@ -118,9 +117,8 @@ export default function BenchmarkPage() {
 
       try {
         // Analyze
-        const analyzeRes = await fetchJson<{ suggestions: { template_id: string; score: number; slots: Record<string, string> }[] }>(
-          `${API}/analyze`,
-          { method: "POST", body: JSON.stringify({ text: tc.text, detail_level: "auto" }) }
+        const analyzeRes = await proxyFetch<{ suggestions: { template_id: string; score: number; slots: Record<string, string> }[] }>(
+          "analyze", "POST", { text: tc.text, detail_level: "auto" }
         );
 
         const suggestions = analyzeRes.suggestions || [];
@@ -138,9 +136,8 @@ export default function BenchmarkPage() {
 
         // Render
         try {
-          const renderRes = await fetchJson<{ svg: string; filled_slots?: string[] }>(
-            `${API}/render`,
-            { method: "POST", body: JSON.stringify({ template_id: chosen.template_id, slots: chosen.slots, palette: {} }) }
+          const renderRes = await proxyFetch<{ svg: string; filled_slots?: string[] }>(
+            "render", "POST", { template_id: chosen.template_id, slots: chosen.slots, palette: {} }
           );
           result.svg = renderRes.svg;
           result.filled_slots = renderRes.filled_slots || Object.keys(chosen.slots);
