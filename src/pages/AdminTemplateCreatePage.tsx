@@ -7,7 +7,6 @@ import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useAdminToken } from "@/contexts/AdminTokenContext";
 import { useAdminApi } from "@/lib/adminApi";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -40,7 +39,6 @@ type ConversionMode = "smart" | "trace";
 const STEPS = ["Créer", "Valider", "Déployer"] as const;
 
 export default function AdminTemplateCreatePage() {
-  const { hasToken } = useAdminToken();
   const api = useAdminApi();
 
   // Step tracking
@@ -202,7 +200,7 @@ export default function AdminTemplateCreatePage() {
     setCurrentStep(0);
   };
 
-  const canCreate = svgContent.length > 0 && hasToken && !creating;
+  const canCreate = svgContent.length > 0 && !creating;
 
   // Deployed state
   if (deployResult) {
@@ -362,9 +360,6 @@ export default function AdminTemplateCreatePage() {
                 {creating ? <Loader2 className="animate-spin mr-2 h-4 w-4" /> : null}
                 Créer le draft
               </Button>
-              {!hasToken && svgContent && (
-                <p className="text-xs text-destructive">⬆ Saisissez le token admin dans la barre en haut pour activer ce bouton.</p>
-              )}
             </div>
           </>
         ) : (
@@ -413,7 +408,7 @@ export default function AdminTemplateCreatePage() {
                 </div>
               )}
 
-              <Button onClick={handleValidate} disabled={!hasToken || validating}>
+              <Button onClick={handleValidate} disabled={validating}>
                 {validating ? <Loader2 className="animate-spin mr-2 h-4 w-4" /> : null}
                 Lancer la validation
               </Button>
@@ -468,7 +463,7 @@ export default function AdminTemplateCreatePage() {
                     <Button variant="outline" onClick={() => { setDraft(null); setValidation(null); setCurrentStep(0); }}>
                       <RotateCcw className="w-4 h-4 mr-2" /> Recommencer avec un nouvel hint
                     </Button>
-                    <Button variant="destructive" onClick={handleForceDeploy} disabled={deploying || !hasToken}>
+                    <Button variant="destructive" onClick={handleForceDeploy} disabled={deploying}>
                       {deploying ? <Loader2 className="animate-spin mr-2 h-4 w-4" /> : <AlertTriangle className="w-4 h-4 mr-2" />}
                       Forcer le déploiement
                     </Button>
@@ -501,7 +496,7 @@ export default function AdminTemplateCreatePage() {
 
           <div className="flex gap-2">
             <Button variant="ghost" onClick={() => setCurrentStep(1)}>← Retour</Button>
-            <Button onClick={handleDeploy} disabled={!hasToken || deploying}>
+            <Button onClick={handleDeploy} disabled={deploying}>
               {deploying ? <Loader2 className="animate-spin mr-2 h-4 w-4" /> : null}
               Déployer définitivement
             </Button>
