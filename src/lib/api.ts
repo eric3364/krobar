@@ -3,7 +3,6 @@
 // problèmes CORS/réseau entre le navigateur et krobar.online.
 
 import { supabase } from "@/integrations/supabase/client";
-import { isMockForced, mockAnalyze, mockRender } from "./mockBackend";
 
 type KrobarEndpoint = "analyze" | "render" | "templates" | "health";
 
