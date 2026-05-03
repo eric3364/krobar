@@ -3,7 +3,6 @@
 // problèmes CORS/réseau entre le navigateur et krobar.online.
 
 import { supabase } from "@/integrations/supabase/client";
-import { isMockForced, mockAnalyze, mockRender } from "./mockBackend";
 
 type KrobarEndpoint = "analyze" | "render" | "templates" | "health";
 
@@ -76,9 +75,6 @@ async function invokeKrobar<T>(endpoint: KrobarEndpoint, payload?: Record<string
 }
 
 export async function analyzeText(text: string, detail_level: string = "auto"): Promise<AnalyzeResponse> {
-  if (isMockForced()) {
-    return mockAnalyze(text, detail_level);
-  }
   return invokeKrobar<AnalyzeResponse>("analyze", { text, detail_level });
 }
 
@@ -87,9 +83,6 @@ export async function renderTemplate(
   slots: Record<string, string>,
   palette: Record<string, string>,
 ): Promise<RenderResponse> {
-  if (isMockForced()) {
-    return mockRender(template_id, slots);
-  }
   return invokeKrobar<RenderResponse>("render", { template_id, slots, palette });
 }
 
