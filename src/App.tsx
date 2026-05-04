@@ -25,7 +25,8 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Landing />} />
-            <Route path="/workspace" element={<Index />} />
+            <Route path="/auth" element={<AuthPage />} />
+            <Route path="/workspace" element={<ProtectedRoute><Index /></ProtectedRoute>} />
 
             {/* Admin routes */}
             <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
