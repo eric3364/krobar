@@ -180,10 +180,10 @@ export default function Landing() {
             Aucune inscription requise. Commencez à créer des diagrammes professionnels en quelques secondes.
           </p>
           <button
-            onClick={() => navigate("/auth")}
+            onClick={() => navigate("/auth?tab=signup")}
             className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white px-8 h-12 font-medium text-sm transition-colors rounded-md inline-flex items-center gap-2"
           >
-            Lancer l'éditeur <ArrowRight className="w-4 h-4" />
+            Créer un compte gratuitement <ArrowRight className="w-4 h-4" />
           </button>
         </div>
 
