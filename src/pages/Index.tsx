@@ -414,6 +414,10 @@ const Index = () => {
   }, []);
 
   const palette = palettes[paletteKey];
+  const effectivePalette = useMemo<Palette>(() => {
+    if (!whiteBackground) return palette;
+    return { ...palette, colors: { ...palette.colors, bg: "#ffffff" } };
+  }, [palette, whiteBackground]);
 
   const selectedSuggestion = selectedIdx !== null ? suggestions[selectedIdx] : null;
   const selectedTemplate = useMemo(
