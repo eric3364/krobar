@@ -14,6 +14,7 @@ import Admin from "./pages/Admin.tsx";
 import AdminTemplateCreatePage from "./pages/AdminTemplateCreatePage.tsx";
 import AdminDraftsPage from "./pages/AdminDraftsPage.tsx";
 import AuthPage from "./pages/Auth.tsx";
+import ResetPassword from "./pages/ResetPassword.tsx";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/auth" element={<AuthPage />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/workspace" element={<ProtectedRoute><Index /></ProtectedRoute>} />
 
             {/* Admin routes */}
