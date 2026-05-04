@@ -1667,7 +1667,13 @@ const Index = () => {
           className="flex-1 resize-none min-h-[260px] font-mono text-sm"
         />
         <div className="space-y-2">
-          <Label className="text-sm font-semibold">Palette</Label>
+          <div className="flex items-center justify-between">
+            <Label className="text-sm font-semibold">Palette</Label>
+            <div className="flex items-center gap-2">
+              <Label htmlFor="white-bg-toggle" className="text-xs text-muted-foreground cursor-pointer">Fond blanc</Label>
+              <Switch id="white-bg-toggle" checked={whiteBackground} onCheckedChange={setWhiteBackground} />
+            </div>
+          </div>
           <div className="grid grid-cols-2 gap-2">
             {Object.keys(palettes).map((k) => {
               const p = palettes[k];
