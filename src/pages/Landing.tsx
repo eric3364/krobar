@@ -22,12 +22,21 @@ export default function Landing() {
             <a href="#how" className="hover:text-foreground transition-colors">Comment ça marche</a>
           </div>
           <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigate("/auth")}
-              className="text-sm font-medium bg-foreground text-background px-5 h-9 hover:bg-foreground/90 transition-colors rounded-md"
-            >
-              Ouvrir l'éditeur
-            </button>
+            {user ? (
+              <button
+                onClick={async () => { await signOut(); }}
+                className="text-sm font-medium bg-foreground text-background px-5 h-9 hover:bg-foreground/90 transition-colors rounded-md flex items-center gap-2"
+              >
+                <LogOut className="w-4 h-4" /> Se déconnecter
+              </button>
+            ) : (
+              <button
+                onClick={() => navigate("/auth")}
+                className="text-sm font-medium bg-foreground text-background px-5 h-9 hover:bg-foreground/90 transition-colors rounded-md flex items-center gap-2"
+              >
+                <LogIn className="w-4 h-4" /> Se connecter
+              </button>
+            )}
           </div>
         </nav>
 
