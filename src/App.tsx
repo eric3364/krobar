@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/useAuth";
 import { AdminRoute } from "@/components/AdminRoute";
 import Index from "./pages/Index.tsx";
+import Landing from "./pages/Landing.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import BenchmarkPage from "./pages/BenchmarkPage.tsx";
 import Admin from "./pages/Admin.tsx";
