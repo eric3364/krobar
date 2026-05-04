@@ -4,6 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 export default function Landing() {
   const navigate = useNavigate();
+  const { user, signOut } = useAuth();
 
   return (
     <div className="min-h-dvh antialiased flex flex-col items-center py-8 px-4 bg-secondary text-foreground selection:bg-primary selection:text-primary-foreground">
