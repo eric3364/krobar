@@ -8,6 +8,34 @@ const KROBAR_API_BASE = "https://krobar.online/api";
 
 const PUBLIC_ENDPOINTS = ["analyze", "render", "templates", "health", "test-texts"];
 
+/**
+ * Fix duplicate style="" attributes on the opening <svg> tag.
+ * Some backend templates already carry style="--primary:..." and the renderer
+ * appends a second style="..." with the user palette → invalid XML.
+ * This keeps only the LAST style attribute (the palette override).
+ */
+function fixDuplicateSvgStyle(svg: string): string {
+  // Match the opening <svg ...> tag
+  const svgTagRe = /^(<svg\b)((?:[^>]*?)>)/i;
+  const m = svg.match(svgTagRe);
+  if (!m) return svg;
+
+  const prefix = m[1]; // "<svg"
+  const attrsAndClose = m[2]; // ' style="..." style="..." viewBox="...">'
+
+  // Find all style="..." occurrences
+  const styleRe = /\s+style\s*=\s*"[^"]*"/g;
+  const matches = [...attrsAndClose.matchAll(styleRe)];
+  if (matches.length <= 1) return svg; // no duplication
+
+  // Keep only the last style attribute, remove earlier ones
+  const lastStyle = matches[matches.length - 1][0];
+  // Remove ALL style attrs, then re-insert the last one right after <svg
+  const cleaned = attrsAndClose.replace(styleRe, "");
+  const fixed = `${prefix}${lastStyle}${cleaned}`;
+  return svg.replace(m[0], fixed);
+}
+
 function jsonResponse(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
