@@ -50,7 +50,7 @@ export default function AuthPage() {
       return;
     }
     toast.success("Connecté");
-    navigate("/", { replace: true });
+    navigate("/workspace", { replace: true });
   };
 
   const handleSignUp = async (e: React.FormEvent) => {
@@ -77,7 +77,7 @@ export default function AuthPage() {
       return;
     }
     toast.success("Compte créé");
-    navigate("/", { replace: true });
+    navigate("/workspace", { replace: true });
   };
 
   const handleMagic = async (e: React.FormEvent) => {
@@ -108,7 +108,7 @@ export default function AuthPage() {
       return;
     }
     if (result.redirected) return; // browser redirect
-    navigate("/", { replace: true });
+    navigate("/workspace", { replace: true });
   };
 
   return (
