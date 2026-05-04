@@ -1786,7 +1786,7 @@ const Index = () => {
       <header className="border-b bg-card">
         <div className="px-6 py-4 flex items-center justify-between">
           <div className="flex items-baseline gap-3">
-            <h1 className="text-2xl font-black tracking-tight text-[#0F2A44]">Krobar</h1>
+            <h1 className="text-2xl font-black tracking-tight text-[#2563EB]">Krobar</h1>
             <span className="text-sm text-muted-foreground">
               Texte → Visuel SVG
             </span>
