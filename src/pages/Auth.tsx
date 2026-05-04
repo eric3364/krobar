@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,8 +18,10 @@ const passwordSchema = z.string().min(8, "Mot de passe : 8 caractères minimum")
 
 export default function AuthPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user, loading: authLoading } = useAuth();
-  const [tab, setTab] = useState<"signin" | "signup" | "magic">("signin");
+  const initialTab = searchParams.get("tab") === "signup" ? "signup" : "signin";
+  const [tab, setTab] = useState<"signin" | "signup" | "magic">(initialTab as "signin" | "signup" | "magic");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");

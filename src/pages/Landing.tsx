@@ -1,8 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Sparkles, Palette, Download } from "lucide-react";
+import { ArrowRight, Sparkles, Palette, Download, LogIn, LogOut } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Landing() {
   const navigate = useNavigate();
+  const { user, signOut } = useAuth();
 
   return (
     <div className="min-h-dvh antialiased flex flex-col items-center py-8 px-4 bg-secondary text-foreground selection:bg-primary selection:text-primary-foreground">
@@ -20,12 +22,21 @@ export default function Landing() {
             <a href="#how" className="hover:text-foreground transition-colors">Comment ça marche</a>
           </div>
           <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigate("/auth")}
-              className="text-sm font-medium bg-foreground text-background px-5 h-9 hover:bg-foreground/90 transition-colors rounded-md"
-            >
-              Ouvrir l'éditeur
-            </button>
+            {user ? (
+              <button
+                onClick={async () => { await signOut(); }}
+                className="text-sm font-medium bg-foreground text-background px-5 h-9 hover:bg-foreground/90 transition-colors rounded-md flex items-center gap-2"
+              >
+                <LogOut className="w-4 h-4" /> Se déconnecter
+              </button>
+            ) : (
+              <button
+                onClick={() => navigate("/auth")}
+                className="text-sm font-medium bg-foreground text-background px-5 h-9 hover:bg-foreground/90 transition-colors rounded-md flex items-center gap-2"
+              >
+                <LogIn className="w-4 h-4" /> Se connecter
+              </button>
+            )}
           </div>
         </nav>
 
@@ -47,7 +58,7 @@ export default function Landing() {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <button
-                onClick={() => navigate("/auth")}
+                onClick={() => navigate("/auth?tab=signup")}
                 className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white px-8 h-12 font-medium text-sm transition-colors rounded-md flex items-center justify-center gap-2"
               >
                 Essayer gratuitement <ArrowRight className="w-4 h-4" />
@@ -169,10 +180,10 @@ export default function Landing() {
             Aucune inscription requise. Commencez à créer des diagrammes professionnels en quelques secondes.
           </p>
           <button
-            onClick={() => navigate("/auth")}
+            onClick={() => navigate("/auth?tab=signup")}
             className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white px-8 h-12 font-medium text-sm transition-colors rounded-md inline-flex items-center gap-2"
           >
-            Lancer l'éditeur <ArrowRight className="w-4 h-4" />
+            Créer un compte gratuitement <ArrowRight className="w-4 h-4" />
           </button>
         </div>
 
