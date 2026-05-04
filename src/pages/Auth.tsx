@@ -30,7 +30,7 @@ export default function AuthPage() {
     // If user just arrived from a magic link (no password set yet), send to reset-password
     const hash = window.location.hash;
     const fromMagicLink = hash.includes("type=magiclink") || hash.includes("type=signup");
-    navigate(fromMagicLink ? "/reset-password" : "/", { replace: true });
+    navigate(fromMagicLink ? "/reset-password" : "/workspace", { replace: true });
   }, [user, authLoading, navigate]);
 
   const handleSignIn = async (e: React.FormEvent) => {
