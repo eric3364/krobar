@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Switch } from "@/components/ui/switch";
 import { palettes, paletteLabels, type Palette } from "@/palettes";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -258,6 +259,7 @@ const Index = () => {
   const [manifest, setManifest] = useState<Manifest | null>(null);
   const [text, setText] = useState("");
   const [paletteKey, setPaletteKey] = useState<keyof typeof palettes>("ocean");
+  const [whiteBackground, setWhiteBackground] = useState(false);
   const [loading, setLoading] = useState(false);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
@@ -412,6 +414,10 @@ const Index = () => {
   }, []);
 
   const palette = palettes[paletteKey];
+  const effectivePalette = useMemo<Palette>(() => {
+    if (!whiteBackground) return palette;
+    return { ...palette, colors: { ...palette.colors, bg: "#ffffff" } };
+  }, [palette, whiteBackground]);
 
   const selectedSuggestion = selectedIdx !== null ? suggestions[selectedIdx] : null;
   const selectedTemplate = useMemo(
@@ -428,7 +434,7 @@ const Index = () => {
       const node = thumbRefs.current[i];
       if (!node) return;
       try {
-        const svg = await loadRenderedSvg(sug.template_id, sug.slots, palette);
+        const svg = await loadRenderedSvg(sug.template_id, sug.slots, effectivePalette);
         svg.setAttribute("width", "100%");
         svg.setAttribute("height", "100%");
         node.innerHTML = "";
@@ -437,7 +443,7 @@ const Index = () => {
         console.warn(`Erreur rendu vignette ${sug.template_id}`, err);
       }
     });
-  }, [suggestions, palette]);
+  }, [suggestions, effectivePalette]);
 
   // Reset per-edit overrides whenever the chosen suggestion changes
   useEffect(() => {
@@ -892,7 +898,7 @@ const Index = () => {
   useEffect(() => {
     if (!selectedSuggestion || !previewRef.current) return;
     (async () => {
-      const svg = await loadRenderedSvg(selectedSuggestion.template_id, effectiveSlots, palette);
+      const svg = await loadRenderedSvg(selectedSuggestion.template_id, effectiveSlots, effectivePalette);
       applyTransforms(svg, slotTransforms);
       applySlotTextStyles(svg, slotTextStyles);
       svg.setAttribute("width", "100%");
@@ -915,7 +921,7 @@ const Index = () => {
         setExtraSelectedRects(next);
       }
     })();
-  }, [selectedSuggestion, palette, effectiveSlots, slotTransforms, slotTextStyles]);
+  }, [selectedSuggestion, effectivePalette, effectiveSlots, slotTransforms, slotTextStyles]);
 
   // Convertit un delta viewport (px CSS) en unités SVG en se basant sur le viewBox
   // et la taille affichée réelle du SVG. Compatible avec les slots dans foreignObject.
@@ -1575,7 +1581,7 @@ const Index = () => {
     const svg = previewRef.current.querySelector("svg");
     if (!svg) return;
     const clone = svg.cloneNode(true) as SVGElement;
-    applyPaletteVars(clone, palette);
+    applyPaletteVars(clone, effectivePalette);
     const str = svgToString(clone);
     downloadBlob(new Blob([str], { type: "image/svg+xml" }), "krobar.svg");
   };
@@ -1585,7 +1591,7 @@ const Index = () => {
     const svg = previewRef.current.querySelector("svg");
     if (!svg) return;
     const clone = svg.cloneNode(true) as SVGElement;
-    applyPaletteVars(clone, palette);
+    applyPaletteVars(clone, effectivePalette);
     // Étape clé : neutraliser foreignObject pour éviter le canvas "tainted".
     inlineForeignObjectsAsSvgText(clone);
     const vb = (clone.getAttribute("viewBox") || "0 0 800 600").split(" ").map(Number);
@@ -1661,7 +1667,13 @@ const Index = () => {
           className="flex-1 resize-none min-h-[260px] font-mono text-sm"
         />
         <div className="space-y-2">
-          <Label className="text-sm font-semibold">Palette</Label>
+          <div className="flex items-center justify-between">
+            <Label className="text-sm font-semibold">Palette</Label>
+            <div className="flex items-center gap-2">
+              <Label htmlFor="white-bg-toggle" className="text-xs text-muted-foreground cursor-pointer">Fond blanc</Label>
+              <Switch id="white-bg-toggle" checked={whiteBackground} onCheckedChange={setWhiteBackground} />
+            </div>
+          </div>
           <div className="grid grid-cols-2 gap-2">
             {Object.keys(palettes).map((k) => {
               const p = palettes[k];
