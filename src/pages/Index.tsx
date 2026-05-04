@@ -434,7 +434,7 @@ const Index = () => {
       const node = thumbRefs.current[i];
       if (!node) return;
       try {
-        const svg = await loadRenderedSvg(sug.template_id, sug.slots, palette);
+        const svg = await loadRenderedSvg(sug.template_id, sug.slots, effectivePalette);
         svg.setAttribute("width", "100%");
         svg.setAttribute("height", "100%");
         node.innerHTML = "";
@@ -443,7 +443,7 @@ const Index = () => {
         console.warn(`Erreur rendu vignette ${sug.template_id}`, err);
       }
     });
-  }, [suggestions, palette]);
+  }, [suggestions, effectivePalette]);
 
   // Reset per-edit overrides whenever the chosen suggestion changes
   useEffect(() => {
@@ -898,7 +898,7 @@ const Index = () => {
   useEffect(() => {
     if (!selectedSuggestion || !previewRef.current) return;
     (async () => {
-      const svg = await loadRenderedSvg(selectedSuggestion.template_id, effectiveSlots, palette);
+      const svg = await loadRenderedSvg(selectedSuggestion.template_id, effectiveSlots, effectivePalette);
       applyTransforms(svg, slotTransforms);
       applySlotTextStyles(svg, slotTextStyles);
       svg.setAttribute("width", "100%");
@@ -921,7 +921,7 @@ const Index = () => {
         setExtraSelectedRects(next);
       }
     })();
-  }, [selectedSuggestion, palette, effectiveSlots, slotTransforms, slotTextStyles]);
+  }, [selectedSuggestion, effectivePalette, effectiveSlots, slotTransforms, slotTextStyles]);
 
   // Convertit un delta viewport (px CSS) en unités SVG en se basant sur le viewBox
   // et la taille affichée réelle du SVG. Compatible avec les slots dans foreignObject.
@@ -1581,7 +1581,7 @@ const Index = () => {
     const svg = previewRef.current.querySelector("svg");
     if (!svg) return;
     const clone = svg.cloneNode(true) as SVGElement;
-    applyPaletteVars(clone, palette);
+    applyPaletteVars(clone, effectivePalette);
     const str = svgToString(clone);
     downloadBlob(new Blob([str], { type: "image/svg+xml" }), "krobar.svg");
   };
@@ -1591,7 +1591,7 @@ const Index = () => {
     const svg = previewRef.current.querySelector("svg");
     if (!svg) return;
     const clone = svg.cloneNode(true) as SVGElement;
-    applyPaletteVars(clone, palette);
+    applyPaletteVars(clone, effectivePalette);
     // Étape clé : neutraliser foreignObject pour éviter le canvas "tainted".
     inlineForeignObjectsAsSvgText(clone);
     const vb = (clone.getAttribute("viewBox") || "0 0 800 600").split(" ").map(Number);
