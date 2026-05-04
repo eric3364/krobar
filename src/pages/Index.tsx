@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Switch } from "@/components/ui/switch";
 import { palettes, paletteLabels, type Palette } from "@/palettes";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
