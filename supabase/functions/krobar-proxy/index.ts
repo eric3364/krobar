@@ -165,6 +165,11 @@ Deno.serve(async (req) => {
       return jsonResponse({ error: message, status: upstream.status }, upstream.status);
     }
 
+    // Fix duplicate style attributes on <svg> for render responses
+    if (endpoint === "render" && typeof data.svg === "string") {
+      data.svg = fixDuplicateSvgStyle(data.svg);
+    }
+
     return jsonResponse(data, 200);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unexpected failure";
