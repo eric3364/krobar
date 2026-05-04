@@ -58,7 +58,7 @@ export default function Landing() {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <button
-                onClick={() => navigate("/auth")}
+                onClick={() => navigate("/auth?tab=signup")}
                 className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white px-8 h-12 font-medium text-sm transition-colors rounded-md flex items-center justify-center gap-2"
               >
                 Essayer gratuitement <ArrowRight className="w-4 h-4" />
