@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/useAuth";
 import { AdminRoute } from "@/components/AdminRoute";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Index from "./pages/Index.tsx";
 import Landing from "./pages/Landing.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -12,6 +13,7 @@ import BenchmarkPage from "./pages/BenchmarkPage.tsx";
 import Admin from "./pages/Admin.tsx";
 import AdminTemplateCreatePage from "./pages/AdminTemplateCreatePage.tsx";
 import AdminDraftsPage from "./pages/AdminDraftsPage.tsx";
+import AuthPage from "./pages/Auth.tsx";
 
 const queryClient = new QueryClient();
 
@@ -24,7 +26,8 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Landing />} />
-            <Route path="/workspace" element={<Index />} />
+            <Route path="/auth" element={<AuthPage />} />
+            <Route path="/workspace" element={<ProtectedRoute><Index /></ProtectedRoute>} />
 
             {/* Admin routes */}
             <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
