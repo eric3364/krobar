@@ -1,0 +1,302 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 600" font-family="Plus Jakarta Sans, system-ui, sans-serif">
+
+  <!-- Définitions -->
+  <defs>
+    <linearGradient id="rangeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:var(--accent);stop-opacity:1"/>
+      <stop offset="60%" style="stop-color:var(--primary);stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:var(--text);stop-opacity:0.85"/>
+    </linearGradient>
+    <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:var(--bg);stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:var(--accent);stop-opacity:0.1"/>
+    </linearGradient>
+    <linearGradient id="groundGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:var(--accent);stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:var(--text);stop-opacity:0.1"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Fond blanc essentiel -->
+  <rect width="1040" height="600" fill="var(--bg)"/>
+
+  <!-- DÉCORATIF : ciel + sol (mode magazine) -->
+  <rect width="1040" height="435" fill="url(#skyGradient)" opacity="var(--decoration-opacity, 0)"/>
+  <rect y="435" width="1040" height="35" fill="url(#groundGradient)" opacity="var(--decoration-opacity, 0)"/>
+
+  <!-- Header label -->
+  <text x="60" y="72" font-size="13" font-weight="600" fill="var(--text)" opacity="0.55"
+        style="text-transform: uppercase; letter-spacing: 0.5px;">Roadmap Montagne</text>
+
+  <!-- Titre principal -->
+  <foreignObject x="60" y="90" width="920" height="56">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="title"
+         style="width:100%;height:100%;display:flex;align-items:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:36px;color:var(--text);box-sizing:border-box;">
+      Roadmap projet ascendante
+    </div>
+  </foreignObject>
+
+  <!-- Ligne d'horizon -->
+  <line x1="60" y1="435" x2="980" y2="435" stroke="var(--text)" stroke-width="1.5" opacity="0.3"/>
+
+  <!-- ============================================ -->
+  <!-- CHAÎNE DE MONTAGNES — UN SEUL PATH CONTINU (inchangée) -->
+  <!-- ============================================ -->
+  <path d="M 60 435
+           L 100 410
+           L 120 395
+           L 140 405
+           L 155 385
+           L 165 395
+           L 170 370
+           L 180 385
+           L 195 380
+           L 210 395
+           L 230 380
+           L 250 360
+           L 270 370
+           L 290 345
+           L 305 355
+           L 315 320
+           L 325 340
+           L 340 335
+           L 360 350
+           L 380 320
+           L 395 335
+           L 415 305
+           L 430 320
+           L 450 290
+           L 460 270
+           L 470 290
+           L 485 280
+           L 500 300
+           L 520 275
+           L 540 290
+           L 560 260
+           L 580 240
+           L 595 250
+           L 605 215
+           L 615 235
+           L 630 225
+           L 645 245
+           L 665 215
+           L 685 230
+           L 705 200
+           L 720 215
+           L 740 185
+           L 755 200
+           L 775 175
+           L 790 185
+           L 800 170
+           L 810 160
+           L 825 175
+           L 840 165
+           L 855 185
+           L 870 200
+           L 890 230
+           L 910 280
+           L 935 350
+           L 955 410
+           L 970 435
+           Z"
+        fill="url(#rangeGradient)"
+        stroke="var(--primary)" stroke-width="2"
+        stroke-linejoin="round"/>
+
+  <!-- ============================================ -->
+  <!-- TEXTURE ROCHEUSE ESSENTIELLE (visible en mode plain) -->
+  <!-- ============================================ -->
+  <!-- Arêtes sombres descendantes des sommets vers la base (versants ombrés) -->
+  <g opacity="0.35">
+    <path d="M 170 370 L 195 410 L 215 435" stroke="var(--text)" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+    <path d="M 315 320 L 340 380 L 360 435" stroke="var(--text)" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+    <path d="M 490 320 L 510 435" stroke="var(--text)" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+    <path d="M 635 280 L 665 350 L 685 435" stroke="var(--text)" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+    <path d="M 870 240 L 895 320 L 925 435" stroke="var(--text)" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Arêtes claires : DÉPLACÉES vers le bloc décoratif (mode magazine seulement) -->
+
+  <!-- Petits traits horizontaux de strates (effet roche stratifiée) -->
+  <g opacity="0.3">
+    <line x1="180" y1="410" x2="200" y2="410" stroke="var(--text)" stroke-width="1"/>
+    <line x1="320" y1="380" x2="345" y2="380" stroke="var(--text)" stroke-width="1"/>
+    <line x1="465" y1="345" x2="495" y2="345" stroke="var(--text)" stroke-width="1"/>
+    <line x1="635" y1="305" x2="670" y2="305" stroke="var(--text)" stroke-width="1"/>
+    <line x1="845" y1="290" x2="890" y2="290" stroke="var(--text)" stroke-width="1"/>
+    <line x1="170" y1="420" x2="195" y2="420" stroke="var(--text)" stroke-width="1"/>
+    <line x1="310" y1="405" x2="345" y2="405" stroke="var(--text)" stroke-width="1"/>
+    <line x1="455" y1="395" x2="500" y2="395" stroke="var(--text)" stroke-width="1"/>
+    <line x1="605" y1="380" x2="660" y2="380" stroke="var(--text)" stroke-width="1"/>
+    <line x1="800" y1="370" x2="880" y2="370" stroke="var(--text)" stroke-width="1"/>
+  </g>
+
+  <!-- ============================================ -->
+  <!-- CALOTTES NEIGEUSES ÉLARGIES (essentielles) -->
+  <!-- ============================================ -->
+  <!-- Sommets 3, 4, 5 : couverture neigeuse plus généreuse, descend sur les flancs -->
+
+  <!-- Calotte sommet 3 (descend modérément) -->
+  <path d="M 430 320
+           L 450 290
+           L 460 270
+           L 470 290
+           L 485 280
+           L 500 300
+           L 495 320
+           L 480 315
+           L 465 322
+           L 450 318
+           L 440 325 Z"
+        fill="var(--bg)" stroke="var(--primary)" stroke-width="1" stroke-opacity="0.55"
+        stroke-linejoin="round"/>
+
+  <!-- Calotte sommet 4 (descend largement, glacier déjà présent) -->
+  <path d="M 540 290
+           L 560 260
+           L 580 240
+           L 595 250
+           L 605 215
+           L 615 235
+           L 630 225
+           L 645 245
+           L 640 270
+           L 625 268
+           L 610 275
+           L 595 270
+           L 580 282
+           L 565 278
+           L 550 290 Z"
+        fill="var(--bg)" stroke="var(--primary)" stroke-width="1" stroke-opacity="0.55"
+        stroke-linejoin="round"/>
+
+  <!-- Calotte sommet 5 (la plus grande, vrai glacier sommital qui descend bien) -->
+  <path d="M 685 230
+           L 705 200
+           L 720 215
+           L 740 185
+           L 755 200
+           L 775 175
+           L 790 185
+           L 800 170
+           L 810 160
+           L 825 175
+           L 840 165
+           L 855 185
+           L 870 200
+           L 865 230
+           L 850 232
+           L 835 240
+           L 820 232
+           L 805 240
+           L 790 235
+           L 775 245
+           L 760 240
+           L 745 248
+           L 730 245
+           L 715 252
+           L 700 245 Z"
+        fill="var(--bg)" stroke="var(--primary)" stroke-width="1" stroke-opacity="0.55"
+        stroke-linejoin="round"/>
+
+  <!-- ============================================ -->
+  <!-- DÉCORATIF : facettes supplémentaires (mode magazine, sur la neige et la roche) -->
+  <!-- ============================================ -->
+  <g opacity="var(--decoration-opacity, 0)">
+    <!-- Arêtes claires montantes (versants éclairés, ne fonctionnent que sur fond ciel) -->
+    <path d="M 100 410 L 130 395 L 165 380" stroke="var(--bg)" stroke-width="1.5" fill="none" stroke-linejoin="round" opacity="0.5"/>
+    <path d="M 230 380 L 270 360 L 305 340" stroke="var(--bg)" stroke-width="1.5" fill="none" stroke-linejoin="round" opacity="0.5"/>
+    <path d="M 360 350 L 400 325 L 435 320" stroke="var(--bg)" stroke-width="1.5" fill="none" stroke-linejoin="round" opacity="0.5"/>
+    <path d="M 500 300 L 540 285 L 575 280" stroke="var(--bg)" stroke-width="1.5" fill="none" stroke-linejoin="round" opacity="0.5"/>
+    <path d="M 660 270 L 720 250 L 770 240" stroke="var(--bg)" stroke-width="1.5" fill="none" stroke-linejoin="round" opacity="0.5"/>
+    <!-- Ombres de crevasses sur les calottes neigeuses -->
+    <line x1="465" y1="285" x2="475" y2="305" stroke="var(--accent)" stroke-width="0.8" opacity="0.4"/>
+    <line x1="595" y1="245" x2="605" y2="265" stroke="var(--accent)" stroke-width="0.8" opacity="0.4"/>
+    <line x1="800" y1="180" x2="815" y2="210" stroke="var(--accent)" stroke-width="0.8" opacity="0.4"/>
+    <line x1="775" y1="200" x2="785" y2="225" stroke="var(--accent)" stroke-width="0.8" opacity="0.4"/>
+    <!-- Reflets supplémentaires en versant éclairé -->
+    <line x1="155" y1="395" x2="165" y2="425" stroke="var(--bg)" stroke-width="1" opacity="0.5"/>
+    <line x1="295" y1="350" x2="305" y2="420" stroke="var(--bg)" stroke-width="1" opacity="0.5"/>
+    <line x1="445" y1="305" x2="455" y2="420" stroke="var(--bg)" stroke-width="1" opacity="0.5"/>
+  </g>
+
+  <!-- ============================================ -->
+  <!-- DRAPEAU AU SOMMET FINAL -->
+  <!-- ============================================ -->
+  <line x1="810" y1="160" x2="810" y2="125" stroke="var(--text)" stroke-width="2"/>
+  <path d="M 810 125 L 832 133 L 810 141 Z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1"/>
+
+  <!-- ============================================ -->
+  <!-- 5 NUMÉROS DE PHASES -->
+  <!-- ============================================ -->
+  <circle cx="170" cy="345" r="16" fill="var(--bg)" stroke="var(--primary)" stroke-width="2.5"/>
+  <text x="170" y="350" font-size="13" font-weight="700" fill="var(--primary)" text-anchor="middle">1</text>
+
+  <circle cx="315" cy="295" r="16" fill="var(--bg)" stroke="var(--primary)" stroke-width="2.5"/>
+  <text x="315" y="300" font-size="13" font-weight="700" fill="var(--primary)" text-anchor="middle">2</text>
+
+  <circle cx="460" cy="245" r="16" fill="var(--bg)" stroke="var(--primary)" stroke-width="2.5"/>
+  <text x="460" y="250" font-size="13" font-weight="700" fill="var(--primary)" text-anchor="middle">3</text>
+
+  <circle cx="605" cy="190" r="16" fill="var(--bg)" stroke="var(--primary)" stroke-width="2.5"/>
+  <text x="605" y="195" font-size="13" font-weight="700" fill="var(--primary)" text-anchor="middle">4</text>
+
+  <circle cx="880" cy="170" r="20" fill="var(--accent)" stroke="var(--accent)" stroke-width="2.5"/>
+  <text x="880" y="176" font-size="15" font-weight="700" fill="var(--bg)" text-anchor="middle">5</text>
+
+  <!-- ============================================ -->
+  <!-- 5 BOXES PHASES EN BAS -->
+  <!-- ============================================ -->
+  <rect x="60" y="475" width="170" height="60" rx="12"
+        fill="var(--bg)" stroke="var(--primary)" stroke-width="2"/>
+  <foreignObject x="60" y="475" width="170" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="phase_1_title"
+         style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:14px;color:var(--text);box-sizing:border-box;padding:8px;line-height:1.3;">
+      Découverte
+    </div>
+  </foreignObject>
+
+  <rect x="245" y="475" width="170" height="60" rx="12"
+        fill="var(--bg)" stroke="var(--accent)" stroke-width="2"/>
+  <foreignObject x="245" y="475" width="170" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="phase_2_title"
+         style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:14px;color:var(--text);box-sizing:border-box;padding:8px;line-height:1.3;">
+      Conception
+    </div>
+  </foreignObject>
+
+  <rect x="430" y="475" width="170" height="60" rx="12"
+        fill="var(--bg)" stroke="var(--primary)" stroke-width="2"/>
+  <foreignObject x="430" y="475" width="170" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="phase_3_title"
+         style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:14px;color:var(--text);box-sizing:border-box;padding:8px;line-height:1.3;">
+      Développement
+    </div>
+  </foreignObject>
+
+  <rect x="615" y="475" width="170" height="60" rx="12"
+        fill="var(--bg)" stroke="var(--accent)" stroke-width="2"/>
+  <foreignObject x="615" y="475" width="170" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="phase_4_title"
+         style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:14px;color:var(--text);box-sizing:border-box;padding:8px;line-height:1.3;">
+      Tests
+    </div>
+  </foreignObject>
+
+  <rect x="800" y="475" width="180" height="60" rx="12"
+        fill="var(--accent)" fill-opacity="0.1"
+        stroke="var(--accent)" stroke-width="2.5"/>
+  <foreignObject x="800" y="475" width="180" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="phase_5_title"
+         style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:14px;color:var(--accent);box-sizing:border-box;padding:8px;line-height:1.3;">
+      Lancement
+    </div>
+  </foreignObject>
+
+  <!-- Footer -->
+  <text x="60" y="585" font-size="11" font-weight="600" fill="var(--text)" opacity="0.5"
+        style="text-transform: uppercase; letter-spacing: 0.5px;">
+    Krobar · Roadmap
+  </text>
+
+</svg>

@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 600" font-family="Plus Jakarta Sans, system-ui, sans-serif">
+  <defs>
+    <filter id="editorialShadow"><feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="var(--primary)" flood-opacity="0.05"/></filter>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="var(--accent)" fill-opacity="0.6"/></marker>
+    
+    <!-- ZONES SÉCURISÉES - Système anti-collision -->
+    <g id="safe-zones-guide" opacity="0.05">
+      <rect x="60" y="60" width="920" height="480" fill="none" stroke="blue" stroke-width="1"/>
+      <circle cx="520" cy="350" r="150" fill="none" stroke="red" stroke-width="1"/>
+    </g>
+  </defs>
+  
+  <rect width="1040" height="600" fill="var(--bg)"/>
+  <g transform="translate(60, 60)" stroke="var(--accent)" stroke-width="1.5" fill="none"><circle cx="12" cy="12" r="10"/><path d="M12 7 L12 12 L17 12"/></g>
+  <text x="105" y="72" font-size="13" font-weight="600" letter-spacing="1.04" fill="var(--text)" opacity="0.55" style="text-transform: uppercase;">Cycle Process</text>
+  
+  <!-- TITRE - Zone sécurisée standard -->
+  <foreignObject x="60" y="90" width="920" height="56">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:flex-start;text-align:left;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:36px;letter-spacing:-0.01em;color:var(--text);box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Cycle d'amélioration continue</div>
+  </foreignObject>
+  
+  <line x1="60" y1="160" x2="148" y2="160" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/>
+  
+  <!-- CERCLE CENTRAL - Plus petit pour laisser place aux textes -->
+  <circle cx="520" cy="350" r="100" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.15"/>
+  
+  <!-- SYSTÈME DE ZONES SÉCURISÉES POUR 6 ÉTAPES -->
+  
+  <!-- Étape 1 - Position 12h - ZONE EXTERNE GARANTIE -->
+  <circle cx="520" cy="250" r="25" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2"/>
+  <text x="520" y="258" font-size="14" font-weight="700" fill="var(--primary)" text-anchor="middle">1</text>
+  <!-- Zone de texte sécurisée au-dessus, largeur généreuse -->
+  <foreignObject x="420" y="170" width="200" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="step_1_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:12px;color:var(--text);line-height:1.3;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;padding:5px;">Analyser les données actuelles</div>
+  </foreignObject>
+  
+  <!-- Étape 2 - Position 2h - ZONE EXTERNE DROITE -->
+  <circle cx="607" cy="300" r="25" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
+  <text x="607" y="308" font-size="14" font-weight="700" fill="var(--accent)" text-anchor="middle">2</text>
+  <!-- Zone de texte sécurisée à droite, bien éloignée -->
+  <foreignObject x="650" y="270" width="180" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="step_2_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:flex-start;text-align:left;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:12px;color:var(--text);line-height:1.3;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;padding:5px;">Planifier les améliorations</div>
+  </foreignObject>
+  
+  <!-- Étape 3 - Position 4h - ZONE EXTERNE DROITE BAS -->
+  <circle cx="607" cy="400" r="25" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2"/>
+  <text x="607" y="408" font-size="14" font-weight="700" fill="var(--primary)" text-anchor="middle">3</text>
+  <foreignObject x="650" y="370" width="180" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="step_3_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:flex-start;text-align:left;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:12px;color:var(--text);line-height:1.3;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;padding:5px;">Développer les solutions</div>
+  </foreignObject>
+  
+  <!-- Étape 4 - Position 6h - ZONE EXTERNE BAS -->
+  <circle cx="520" cy="450" r="25" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
+  <text x="520" y="458" font-size="14" font-weight="700" fill="var(--accent)" text-anchor="middle">4</text>
+  <foreignObject x="420" y="470" width="200" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="step_4_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:12px;color:var(--text);line-height:1.3;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;padding:5px;">Tester en environnement contrôlé</div>
+  </foreignObject>
+  
+  <!-- Étape 5 - Position 8h - ZONE EXTERNE GAUCHE BAS -->
+  <circle cx="433" cy="400" r="25" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2"/>
+  <text x="433" y="408" font-size="14" font-weight="700" fill="var(--primary)" text-anchor="middle">5</text>
+  <foreignObject x="210" y="370" width="180" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="step_5_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:flex-end;text-align:right;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:12px;color:var(--text);line-height:1.3;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;padding:5px;">Déployer en production</div>
+  </foreignObject>
+  
+  <!-- Étape 6 - Position 10h - ZONE EXTERNE GAUCHE -->
+  <circle cx="433" cy="300" r="25" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
+  <text x="433" y="308" font-size="14" font-weight="700" fill="var(--accent)" text-anchor="middle">6</text>
+  <foreignObject x="210" y="270" width="180" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="step_6_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:flex-end;text-align:right;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:12px;color:var(--text);line-height:1.3;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;padding:5px;">Mesurer les résultats</div>
+  </foreignObject>
+  
+  <!-- FLÈCHES optimisées pour éviter les textes -->
+  <path d="M 535 270 A 40 40 0 0 1 587 315" fill="none" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowhead)" opacity="0.6"/>
+  <path d="M 607 325 L 607 375" fill="none" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowhead)" opacity="0.6"/>
+  <path d="M 587 415 A 40 40 0 0 1 535 430" fill="none" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowhead)" opacity="0.6"/>
+  <path d="M 505 430 A 40 40 0 0 1 453 415" fill="none" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowhead)" opacity="0.6"/>
+  <path d="M 433 375 L 433 325" fill="none" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowhead)" opacity="0.6"/>
+  <path d="M 453 315 A 40 40 0 0 1 505 270" fill="none" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrowhead)" opacity="0.6"/>
+  
+  <text x="60" y="580" font-size="11" font-weight="600" letter-spacing="0.88" fill="var(--text)" opacity="0.5" style="text-transform: uppercase;">Krobar · Process</text>
+</svg>

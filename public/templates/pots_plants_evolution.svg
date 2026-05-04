@@ -1,0 +1,294 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 600" font-family="Plus Jakarta Sans, system-ui, sans-serif">
+
+  <!-- Définitions -->
+  <defs>
+    <!-- Dégradé essentiel : pots en céramique (volume) -->
+    <linearGradient id="potGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:var(--primary);stop-opacity:0.45"/>
+      <stop offset="50%" style="stop-color:var(--primary);stop-opacity:0.65"/>
+      <stop offset="100%" style="stop-color:var(--primary);stop-opacity:0.85"/>
+    </linearGradient>
+    <!-- Dégradé essentiel : terre dans les pots -->
+    <linearGradient id="soilGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:var(--text);stop-opacity:0.45"/>
+      <stop offset="100%" style="stop-color:var(--text);stop-opacity:0.7"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Fond blanc essentiel -->
+  <rect width="1040" height="600" fill="var(--bg)"/>
+
+  <!-- Header label -->
+  <text x="60" y="72" font-size="13" font-weight="600" fill="var(--text)" opacity="0.55"
+        style="text-transform: uppercase; letter-spacing: 0.5px;">Évolution par Étapes</text>
+
+  <!-- Titre principal -->
+  <foreignObject x="60" y="90" width="920" height="56">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="title"
+         style="width:100%;height:100%;display:flex;align-items:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:36px;color:var(--text);box-sizing:border-box;">
+      Croissance progressive de votre projet
+    </div>
+  </foreignObject>
+
+  <!-- ============================================ -->
+  <!-- ÉTAGÈRE / SOL (essentielle) -->
+  <!-- ============================================ -->
+  <line x1="60" y1="395" x2="980" y2="395" stroke="var(--text)" stroke-width="2" opacity="0.5"/>
+  <!-- Ligne d'ombre légère sous l'étagère -->
+  <line x1="60" y1="400" x2="980" y2="400" stroke="var(--text)" stroke-width="1" opacity="0.2"/>
+
+  <!-- DÉCORATIF : ombres portées sous chaque pot -->
+  <g opacity="var(--decoration-opacity, 0)">
+    <ellipse cx="175" cy="398" rx="65" ry="3" fill="var(--text)" fill-opacity="0.2"/>
+    <ellipse cx="380" cy="398" rx="65" ry="3" fill="var(--text)" fill-opacity="0.2"/>
+    <ellipse cx="585" cy="398" rx="65" ry="3" fill="var(--text)" fill-opacity="0.2"/>
+    <ellipse cx="790" cy="398" rx="65" ry="3" fill="var(--text)" fill-opacity="0.2"/>
+  </g>
+
+  <!-- ============================================ -->
+  <!-- POT 1 — STADE GRAINE (essentiel) -->
+  <!-- ============================================ -->
+  <!-- Forme trapézoïdale : large en haut, plus étroit en bas -->
+  <path d="M 115 325 L 235 325 L 220 395 L 130 395 Z"
+        fill="url(#potGradient)"
+        stroke="var(--primary)" stroke-width="2"
+        stroke-linejoin="round"/>
+  <!-- Lèvre supérieure du pot -->
+  <rect x="110" y="320" width="130" height="10" rx="2"
+        fill="var(--primary)" fill-opacity="0.85"
+        stroke="var(--primary)" stroke-width="1"/>
+  <!-- Terre dans le pot (visible à travers l'ouverture) -->
+  <ellipse cx="175" cy="328" rx="58" ry="6" fill="url(#soilGradient)"/>
+  <!-- Petits monticules de terre (texture) -->
+  <ellipse cx="155" cy="326" rx="8" ry="2" fill="var(--text)" fill-opacity="0.55"/>
+  <ellipse cx="195" cy="328" rx="10" ry="2.5" fill="var(--text)" fill-opacity="0.5"/>
+
+  <!-- GRAINE (juste posée sur la terre, partiellement enfouie) -->
+  <ellipse cx="175" cy="324" rx="6" ry="4" fill="var(--text)" fill-opacity="0.85"
+           stroke="var(--text)" stroke-width="0.5"/>
+  <!-- Petite ligne sur la graine (caractère) -->
+  <line x1="171" y1="324" x2="179" y2="324" stroke="var(--bg)" stroke-width="0.8" opacity="0.6"/>
+
+  <!-- DÉCORATIF : reflet sur le pot 1 -->
+  <line x1="135" y1="328" x2="138" y2="388" stroke="var(--bg)" stroke-width="2"
+        opacity="calc(var(--decoration-opacity, 0) * 0.4)"/>
+
+  <!-- ============================================ -->
+  <!-- POT 2 — STADE POUSSE (essentiel) -->
+  <!-- ============================================ -->
+  <path d="M 320 325 L 440 325 L 425 395 L 335 395 Z"
+        fill="url(#potGradient)"
+        stroke="var(--primary)" stroke-width="2"
+        stroke-linejoin="round"/>
+  <rect x="315" y="320" width="130" height="10" rx="2"
+        fill="var(--primary)" fill-opacity="0.85"
+        stroke="var(--primary)" stroke-width="1"/>
+  <ellipse cx="380" cy="328" rx="58" ry="6" fill="url(#soilGradient)"/>
+  <ellipse cx="360" cy="326" rx="8" ry="2" fill="var(--text)" fill-opacity="0.55"/>
+  <ellipse cx="400" cy="328" rx="10" ry="2.5" fill="var(--text)" fill-opacity="0.5"/>
+
+  <!-- POUSSE : tige verte courte + 2 cotylédons (feuilles primordiales ovales) -->
+  <!-- Tige -->
+  <line x1="380" y1="320" x2="380" y2="265" stroke="var(--accent)" stroke-width="2.5"
+        stroke-linecap="round"/>
+  <!-- Cotylédon gauche (feuille ovale) -->
+  <ellipse cx="368" cy="270" rx="11" ry="6" fill="var(--accent)" fill-opacity="0.85"
+           stroke="var(--accent)" stroke-width="1.5"
+           transform="rotate(-25 368 270)"/>
+  <!-- Cotylédon droit -->
+  <ellipse cx="392" cy="270" rx="11" ry="6" fill="var(--accent)" fill-opacity="0.85"
+           stroke="var(--accent)" stroke-width="1.5"
+           transform="rotate(25 392 270)"/>
+  <!-- Petite nervure centrale sur tige -->
+  <line x1="380" y1="280" x2="380" y2="320" stroke="var(--primary)" stroke-width="0.8" opacity="0.5"/>
+
+  <line x1="340" y1="328" x2="343" y2="388" stroke="var(--bg)" stroke-width="2"
+        opacity="calc(var(--decoration-opacity, 0) * 0.4)"/>
+
+  <!-- ============================================ -->
+  <!-- POT 3 — STADE PLANT (essentiel) -->
+  <!-- ============================================ -->
+  <path d="M 525 325 L 645 325 L 630 395 L 540 395 Z"
+        fill="url(#potGradient)"
+        stroke="var(--primary)" stroke-width="2"
+        stroke-linejoin="round"/>
+  <rect x="520" y="320" width="130" height="10" rx="2"
+        fill="var(--primary)" fill-opacity="0.85"
+        stroke="var(--primary)" stroke-width="1"/>
+  <ellipse cx="585" cy="328" rx="58" ry="6" fill="url(#soilGradient)"/>
+  <ellipse cx="565" cy="326" rx="8" ry="2" fill="var(--text)" fill-opacity="0.55"/>
+  <ellipse cx="605" cy="328" rx="10" ry="2.5" fill="var(--text)" fill-opacity="0.5"/>
+
+  <!-- PLANT : tige plus haute + 4 feuilles alternées -->
+  <line x1="585" y1="320" x2="585" y2="195" stroke="var(--accent)" stroke-width="3"
+        stroke-linecap="round"/>
+  <!-- Feuille bas-gauche -->
+  <path d="M 585 290 Q 565 285 555 270 Q 565 275 585 285 Z"
+        fill="var(--accent)" fill-opacity="0.85"
+        stroke="var(--accent)" stroke-width="1.5"
+        stroke-linejoin="round"/>
+  <!-- Feuille bas-droite -->
+  <path d="M 585 270 Q 605 265 615 250 Q 605 255 585 265 Z"
+        fill="var(--accent)" fill-opacity="0.85"
+        stroke="var(--accent)" stroke-width="1.5"
+        stroke-linejoin="round"/>
+  <!-- Feuille milieu-gauche -->
+  <path d="M 585 240 Q 562 232 550 215 Q 565 222 585 235 Z"
+        fill="var(--accent)" fill-opacity="0.85"
+        stroke="var(--accent)" stroke-width="1.5"
+        stroke-linejoin="round"/>
+  <!-- Feuille milieu-droite -->
+  <path d="M 585 215 Q 610 207 622 192 Q 608 200 585 210 Z"
+        fill="var(--accent)" fill-opacity="0.85"
+        stroke="var(--accent)" stroke-width="1.5"
+        stroke-linejoin="round"/>
+  <!-- Petit bourgeon au sommet -->
+  <circle cx="585" cy="192" r="4" fill="var(--accent)"
+          stroke="var(--accent)" stroke-width="1.5"/>
+
+  <line x1="545" y1="328" x2="548" y2="388" stroke="var(--bg)" stroke-width="2"
+        opacity="calc(var(--decoration-opacity, 0) * 0.4)"/>
+
+  <!-- ============================================ -->
+  <!-- POT 4 — STADE FLEUR (essentiel) -->
+  <!-- ============================================ -->
+  <path d="M 730 325 L 850 325 L 835 395 L 745 395 Z"
+        fill="url(#potGradient)"
+        stroke="var(--primary)" stroke-width="2"
+        stroke-linejoin="round"/>
+  <rect x="725" y="320" width="130" height="10" rx="2"
+        fill="var(--primary)" fill-opacity="0.85"
+        stroke="var(--primary)" stroke-width="1"/>
+  <ellipse cx="790" cy="328" rx="58" ry="6" fill="url(#soilGradient)"/>
+  <ellipse cx="770" cy="326" rx="8" ry="2" fill="var(--text)" fill-opacity="0.55"/>
+  <ellipse cx="810" cy="328" rx="10" ry="2.5" fill="var(--text)" fill-opacity="0.5"/>
+
+  <!-- FLEUR : tige développée + feuilles + 3 fleurs -->
+  <line x1="790" y1="320" x2="790" y2="170" stroke="var(--accent)" stroke-width="3"
+        stroke-linecap="round"/>
+  <!-- Feuilles sur la tige -->
+  <path d="M 790 295 Q 770 290 760 275 Q 770 280 790 290 Z"
+        fill="var(--accent)" fill-opacity="0.85"
+        stroke="var(--accent)" stroke-width="1.5"
+        stroke-linejoin="round"/>
+  <path d="M 790 275 Q 810 270 820 255 Q 810 260 790 270 Z"
+        fill="var(--accent)" fill-opacity="0.85"
+        stroke="var(--accent)" stroke-width="1.5"
+        stroke-linejoin="round"/>
+  <path d="M 790 245 Q 768 238 758 222 Q 770 228 790 240 Z"
+        fill="var(--accent)" fill-opacity="0.85"
+        stroke="var(--accent)" stroke-width="1.5"
+        stroke-linejoin="round"/>
+  <path d="M 790 220 Q 814 213 825 198 Q 813 205 790 215 Z"
+        fill="var(--accent)" fill-opacity="0.85"
+        stroke="var(--accent)" stroke-width="1.5"
+        stroke-linejoin="round"/>
+
+  <!-- 3 FLEURS au sommet -->
+  <!-- Fleur centrale (la plus grande) -->
+  <g transform="translate(790, 165)">
+    <!-- 5 pétales -->
+    <ellipse cx="0" cy="-9" rx="5" ry="8" fill="var(--primary)" fill-opacity="0.9"
+             stroke="var(--primary)" stroke-width="1"/>
+    <ellipse cx="9" cy="-3" rx="5" ry="8" fill="var(--primary)" fill-opacity="0.9"
+             stroke="var(--primary)" stroke-width="1"
+             transform="rotate(72)"/>
+    <ellipse cx="6" cy="6" rx="5" ry="8" fill="var(--primary)" fill-opacity="0.9"
+             stroke="var(--primary)" stroke-width="1"
+             transform="rotate(144)"/>
+    <ellipse cx="-6" cy="6" rx="5" ry="8" fill="var(--primary)" fill-opacity="0.9"
+             stroke="var(--primary)" stroke-width="1"
+             transform="rotate(216)"/>
+    <ellipse cx="-9" cy="-3" rx="5" ry="8" fill="var(--primary)" fill-opacity="0.9"
+             stroke="var(--primary)" stroke-width="1"
+             transform="rotate(288)"/>
+    <!-- Cœur de la fleur -->
+    <circle cx="0" cy="0" r="4" fill="var(--accent)"
+            stroke="var(--accent)" stroke-width="1"/>
+  </g>
+
+  <!-- Fleur secondaire gauche -->
+  <g transform="translate(770, 195)">
+    <circle cx="-4" cy="-3" r="3.5" fill="var(--primary)" fill-opacity="0.85"/>
+    <circle cx="4" cy="-3" r="3.5" fill="var(--primary)" fill-opacity="0.85"/>
+    <circle cx="-3" cy="3" r="3.5" fill="var(--primary)" fill-opacity="0.85"/>
+    <circle cx="3" cy="3" r="3.5" fill="var(--primary)" fill-opacity="0.85"/>
+    <circle cx="0" cy="0" r="2.5" fill="var(--accent)"/>
+  </g>
+
+  <!-- Fleur secondaire droite -->
+  <g transform="translate(815, 200)">
+    <circle cx="-4" cy="-3" r="3.5" fill="var(--primary)" fill-opacity="0.85"/>
+    <circle cx="4" cy="-3" r="3.5" fill="var(--primary)" fill-opacity="0.85"/>
+    <circle cx="-3" cy="3" r="3.5" fill="var(--primary)" fill-opacity="0.85"/>
+    <circle cx="3" cy="3" r="3.5" fill="var(--primary)" fill-opacity="0.85"/>
+    <circle cx="0" cy="0" r="2.5" fill="var(--accent)"/>
+  </g>
+
+  <line x1="750" y1="328" x2="753" y2="388" stroke="var(--bg)" stroke-width="2"
+        opacity="calc(var(--decoration-opacity, 0) * 0.4)"/>
+
+  <!-- ============================================ -->
+  <!-- 4 BOXES PHASES EN BAS (essentielles) -->
+  <!-- ============================================ -->
+
+  <!-- Phase 1 : Graine -->
+  <rect x="85" y="430" width="180" height="60" rx="12"
+        fill="var(--bg)" stroke="var(--primary)" stroke-width="2"/>
+  <circle cx="110" cy="460" r="14" fill="var(--primary)" fill-opacity="0.15"
+          stroke="var(--primary)" stroke-width="1.5"/>
+  <text x="110" y="465" font-size="13" font-weight="700" fill="var(--primary)" text-anchor="middle">1</text>
+  <foreignObject x="130" y="434" width="125" height="52">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="stage_1_title"
+         style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:14px;color:var(--text);box-sizing:border-box;padding:6px;line-height:1.3;">
+      Graine
+    </div>
+  </foreignObject>
+
+  <!-- Phase 2 : Pousse -->
+  <rect x="290" y="430" width="180" height="60" rx="12"
+        fill="var(--bg)" stroke="var(--accent)" stroke-width="2"/>
+  <circle cx="315" cy="460" r="14" fill="var(--accent)" fill-opacity="0.15"
+          stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="315" y="465" font-size="13" font-weight="700" fill="var(--accent)" text-anchor="middle">2</text>
+  <foreignObject x="335" y="434" width="125" height="52">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="stage_2_title"
+         style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:14px;color:var(--text);box-sizing:border-box;padding:6px;line-height:1.3;">
+      Pousse
+    </div>
+  </foreignObject>
+
+  <!-- Phase 3 : Plant -->
+  <rect x="495" y="430" width="180" height="60" rx="12"
+        fill="var(--bg)" stroke="var(--primary)" stroke-width="2"/>
+  <circle cx="520" cy="460" r="14" fill="var(--primary)" fill-opacity="0.15"
+          stroke="var(--primary)" stroke-width="1.5"/>
+  <text x="520" y="465" font-size="13" font-weight="700" fill="var(--primary)" text-anchor="middle">3</text>
+  <foreignObject x="540" y="434" width="125" height="52">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="stage_3_title"
+         style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:14px;color:var(--text);box-sizing:border-box;padding:6px;line-height:1.3;">
+      Plant
+    </div>
+  </foreignObject>
+
+  <!-- Phase 4 : Fleur (mise en valeur) -->
+  <rect x="700" y="430" width="190" height="60" rx="12"
+        fill="var(--accent)" fill-opacity="0.1"
+        stroke="var(--accent)" stroke-width="2.5"/>
+  <circle cx="725" cy="460" r="14" fill="var(--accent)"
+          stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="725" y="465" font-size="13" font-weight="700" fill="var(--bg)" text-anchor="middle">4</text>
+  <foreignObject x="745" y="434" width="135" height="52">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="stage_4_title"
+         style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:14px;color:var(--accent);box-sizing:border-box;padding:6px;line-height:1.3;">
+      Fleur
+    </div>
+  </foreignObject>
+
+  <!-- Footer -->
+  <text x="60" y="585" font-size="11" font-weight="600" fill="var(--text)" opacity="0.5"
+        style="text-transform: uppercase; letter-spacing: 0.5px;">
+    Krobar · Croissance
+  </text>
+
+</svg>

@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" font-family="Plus Jakarta Sans, system-ui, sans-serif">
+  <rect width="1400" height="900" fill="var(--bg)"/>
+  <text x="105" y="72" font-size="13" font-weight="600" fill="var(--text)" opacity="0.55" style="text-transform: uppercase;">Télescope Exploration</text>
+  <foreignObject x="60" y="90" width="1280" height="56">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="title" style="width:100%;height:100%;display:flex;align-items:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:36px;color:var(--text);box-sizing:border-box;">Vision prospective et exploration</div>
+  </foreignObject>
+
+  <!-- Tripod legs -->
+  <line x1="500" y1="650" x2="400" y2="800" stroke="var(--text)" stroke-width="6" opacity="0.7"/>
+  <line x1="500" y1="650" x2="600" y2="800" stroke="var(--text)" stroke-width="6" opacity="0.7"/>
+  <line x1="500" y1="650" x2="500" y2="780" stroke="var(--text)" stroke-width="6" opacity="0.7"/>
+
+  <!-- Telescope tube -->
+  <rect x="400" y="400" width="200" height="25" rx="12" fill="var(--primary)" fill-opacity="0.8" stroke="var(--primary)" stroke-width="2" transform="rotate(-30 500 412)"/>
+  <rect x="380" y="395" width="40" height="35" rx="6" fill="var(--accent)" fill-opacity="0.6" transform="rotate(-30 400 412)"/>
+  
+  <!-- Telescope mount -->
+  <circle cx="500" cy="650" r="20" fill="var(--accent)" fill-opacity="0.3" stroke="var(--accent)" stroke-width="3"/>
+
+  <!-- Stars in the background -->
+  <g opacity="0.6">
+    <circle cx="200" cy="250" r="3" fill="var(--accent)"/>
+    <circle cx="300" cy="200" r="2" fill="var(--primary)"/>
+    <circle cx="150" cy="300" r="2.5" fill="var(--accent)"/>
+    <circle cx="250" cy="180" r="1.5" fill="var(--text)"/>
+    <circle cx="180" cy="220" r="2" fill="var(--primary)"/>
+  </g>
+
+  <!-- Observation 1 - Top Right -->
+  <g transform="translate(900, 200)">
+    <circle cx="0" cy="0" r="15" fill="var(--primary)" opacity="0.8"/>
+    <text x="0" y="5" font-size="14" font-weight="700" fill="var(--bg)" text-anchor="middle">1</text>
+  </g>
+  <line x1="600" y1="380" x2="885" y2="200" stroke="var(--accent)" stroke-width="2" stroke-dasharray="5,5" opacity="0.6"/>
+  <foreignObject x="820" y="170" width="180" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="observation_1" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Tendances émergentes</div>
+  </foreignObject>
+
+  <!-- Observation 2 - Right -->
+  <g transform="translate(1100, 350)">
+    <circle cx="0" cy="0" r="15" fill="var(--accent)" opacity="0.8"/>
+    <text x="0" y="5" font-size="14" font-weight="700" fill="var(--bg)" text-anchor="middle">2</text>
+  </g>
+  <line x1="600" y1="400" x2="1085" y2="350" stroke="var(--accent)" stroke-width="2" stroke-dasharray="5,5" opacity="0.6"/>
+  <foreignObject x="1020" y="320" width="180" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="observation_2" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Opportunités de marché</div>
+  </foreignObject>
+
+  <!-- Observation 3 - Bottom Right -->
+  <g transform="translate(950, 500)">
+    <circle cx="0" cy="0" r="15" fill="var(--primary)" opacity="0.8"/>
+    <text x="0" y="5" font-size="14" font-weight="700" fill="var(--bg)" text-anchor="middle">3</text>
+  </g>
+  <line x1="590" y1="420" x2="935" y2="500" stroke="var(--accent)" stroke-width="2" stroke-dasharray="5,5" opacity="0.6"/>
+  <foreignObject x="870" y="470" width="180" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="observation_3" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Technologies futures</div>
+  </foreignObject>
+
+  <!-- Observation 4 - Far Right -->
+  <g transform="translate(1200, 600)">
+    <circle cx="0" cy="0" r="15" fill="var(--accent)" opacity="0.8"/>
+    <text x="0" y="5" font-size="14" font-weight="700" fill="var(--bg)" text-anchor="middle">4</text>
+  </g>
+  <line x1="600" y1="440" x2="1185" y2="600" stroke="var(--accent)" stroke-width="2" stroke-dasharray="5,5" opacity="0.6"/>
+  <foreignObject x="1120" y="570" width="180" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="observation_4" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Scénarios stratégiques</div>
+  </foreignObject>
+
+  <text x="60" y="880" font-size="11" font-weight="600" fill="var(--text)" opacity="0.5" style="text-transform: uppercase;">Krobar · Exploration</text>
+</svg>

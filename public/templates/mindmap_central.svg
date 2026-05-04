@@ -1,102 +1,57 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="Inter, system-ui, sans-serif">
-  <defs>
-    <filter id="soft-shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
-      <feOffset dx="0" dy="2"/>
-      <feComponentTransfer><feFuncA type="linear" slope="0.18"/></feComponentTransfer>
-      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-  </defs>
-
-  <rect width="800" height="600" fill="var(--bg)"/>
-
-  <foreignObject x="20" y="10" width="760" height="40">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="title" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:clamp(16px,2.6cqw,22px);color:var(--text);padding:6px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Carte mentale</div>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 600" font-family="Plus Jakarta Sans, system-ui, sans-serif">
+  <rect width="1040" height="600" fill="var(--bg)"/>
+  <text x="105" y="72" font-size="13" font-weight="600" fill="var(--text)" opacity="0.55" style="text-transform: uppercase;">Carte Mentale</text>
+  <foreignObject x="60" y="90" width="920" height="56">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="title" style="width:100%;height:100%;display:flex;align-items:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:36px;color:var(--text);box-sizing:border-box;">Stratégie d'entreprise</div>
   </foreignObject>
-
-  <!-- Branches (drawn first, behind nodes). Center = (400, 320). Main nodes at corners. -->
-  <!-- NE main: (640, 160), NO main: (160, 160), SE main: (640, 480), SO main: (160, 480) -->
-  <path d="M 470 290 Q 560 220 620 180" stroke="var(--accent)" stroke-width="3" fill="none"/>
-  <path d="M 330 290 Q 240 220 180 180" stroke="var(--accent)" stroke-width="3" fill="none"/>
-  <path d="M 470 350 Q 560 420 620 460" stroke="var(--accent)" stroke-width="3" fill="none"/>
-  <path d="M 330 350 Q 240 420 180 460" stroke="var(--accent)" stroke-width="3" fill="none"/>
-
-  <!-- Sub-branches (thin lines from each main node outward) -->
-  <!-- NE -->
-  <line x1="700" y1="160" x2="770" y2="100" stroke="var(--text)" stroke-width="1.5" opacity="0.55"/>
-  <line x1="700" y1="160" x2="770" y2="220" stroke="var(--text)" stroke-width="1.5" opacity="0.55"/>
-  <!-- NO -->
-  <line x1="100" y1="160" x2="30" y2="100" stroke="var(--text)" stroke-width="1.5" opacity="0.55"/>
-  <line x1="100" y1="160" x2="30" y2="220" stroke="var(--text)" stroke-width="1.5" opacity="0.55"/>
-  <!-- SE -->
-  <line x1="700" y1="480" x2="770" y2="420" stroke="var(--text)" stroke-width="1.5" opacity="0.55"/>
-  <line x1="700" y1="480" x2="770" y2="540" stroke="var(--text)" stroke-width="1.5" opacity="0.55"/>
-  <!-- SO -->
-  <line x1="100" y1="480" x2="30" y2="420" stroke="var(--text)" stroke-width="1.5" opacity="0.55"/>
-  <line x1="100" y1="480" x2="30" y2="540" stroke="var(--text)" stroke-width="1.5" opacity="0.55"/>
-
-  <!-- Central ellipse -->
-  <g filter="url(#soft-shadow)">
-    <ellipse cx="400" cy="320" rx="120" ry="65" fill="var(--primary)"/>
-  </g>
-  <foreignObject x="280" y="255" width="240" height="130">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="central" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:clamp(13px,2.6cqw,18px);color:var(--bg);padding:14px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Idée centrale</div>
+  
+  <!-- Central node -->
+  <circle cx="520" cy="320" r="80" fill="var(--primary)" fill-opacity="0.2" stroke="var(--primary)" stroke-width="3"/>
+  <foreignObject x="440" y="300" width="180" height="40">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="central_topic" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:18px;color:var(--primary);box-sizing:border-box;">Sujet central</div>
   </foreignObject>
-
-  <!-- Main branch nodes (rounded rects), one per corner -->
-  <!-- NE branch_1 -->
-  <g filter="url(#soft-shadow)">
-    <rect x="600" y="130" width="100" height="60" rx="12" fill="var(--accent)"/>
-  </g>
-  <foreignObject x="600" y="130" width="100" height="60">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_1" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:clamp(11px,2.4cqw,14px);color:var(--bg);padding:6px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Branche 1</div>
+  
+  <!-- Branch 1 - Top -->
+  <line x1="520" y1="240" x2="520" y2="180" stroke="var(--accent)" stroke-width="3"/>
+  <circle cx="520" cy="160" r="40" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
+  <foreignObject x="440" y="140" width="180" height="40">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_1" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Marketing</div>
   </foreignObject>
-  <foreignObject x="720" y="78" width="78" height="36">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_1_sub_1" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-size:clamp(10px,2cqw,12px);color:var(--text);padding:4px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Sous 1.1</div>
+  
+  <!-- Branch 2 - Top Right -->
+  <line x1="580" y1="260" x2="680" y2="200" stroke="var(--accent)" stroke-width="3"/>
+  <circle cx="700" cy="180" r="40" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
+  <foreignObject x="620" y="160" width="180" height="40">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_2" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Innovation</div>
   </foreignObject>
-  <foreignObject x="720" y="200" width="78" height="36">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_1_sub_2" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-size:clamp(10px,2cqw,12px);color:var(--text);padding:4px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Sous 1.2</div>
+  
+  <!-- Branch 3 - Right -->
+  <line x1="600" y1="320" x2="720" y2="320" stroke="var(--accent)" stroke-width="3"/>
+  <circle cx="740" cy="320" r="40" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
+  <foreignObject x="660" y="300" width="180" height="40">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_3" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Opérations</div>
   </foreignObject>
-
-  <!-- NO branch_2 -->
-  <g filter="url(#soft-shadow)">
-    <rect x="100" y="130" width="100" height="60" rx="12" fill="var(--accent)"/>
-  </g>
-  <foreignObject x="100" y="130" width="100" height="60">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_2" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:clamp(11px,2.4cqw,14px);color:var(--bg);padding:6px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Branche 2</div>
+  
+  <!-- Branch 4 - Bottom Right -->
+  <line x1="580" y1="380" x2="680" y2="440" stroke="var(--accent)" stroke-width="3"/>
+  <circle cx="700" cy="460" r="40" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
+  <foreignObject x="620" y="440" width="180" height="40">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_4" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Finances</div>
   </foreignObject>
-  <foreignObject x="2" y="78" width="78" height="36">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_2_sub_1" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:flex-end;text-align:right;font-family:Inter,system-ui,sans-serif;font-size:clamp(10px,2cqw,12px);color:var(--text);padding:4px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Sous 2.1</div>
+  
+  <!-- Branch 5 - Bottom Left -->
+  <line x1="460" y1="380" x2="360" y2="440" stroke="var(--accent)" stroke-width="3"/>
+  <circle cx="340" cy="460" r="40" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
+  <foreignObject x="260" y="440" width="180" height="40">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_5" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Ressources humaines</div>
   </foreignObject>
-  <foreignObject x="2" y="200" width="78" height="36">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_2_sub_2" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:flex-end;text-align:right;font-family:Inter,system-ui,sans-serif;font-size:clamp(10px,2cqw,12px);color:var(--text);padding:4px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Sous 2.2</div>
+  
+  <!-- Branch 6 - Left -->
+  <line x1="440" y1="320" x2="320" y2="320" stroke="var(--accent)" stroke-width="3"/>
+  <circle cx="300" cy="320" r="40" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
+  <foreignObject x="220" y="300" width="180" height="40">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_6" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Technologies</div>
   </foreignObject>
-
-  <!-- SE branch_3 -->
-  <g filter="url(#soft-shadow)">
-    <rect x="600" y="450" width="100" height="60" rx="12" fill="var(--accent)"/>
-  </g>
-  <foreignObject x="600" y="450" width="100" height="60">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_3" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:clamp(11px,2.4cqw,14px);color:var(--bg);padding:6px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Branche 3</div>
-  </foreignObject>
-  <foreignObject x="720" y="402" width="78" height="36">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_3_sub_1" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-size:clamp(10px,2cqw,12px);color:var(--text);padding:4px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Sous 3.1</div>
-  </foreignObject>
-  <foreignObject x="720" y="522" width="78" height="36">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_3_sub_2" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-size:clamp(10px,2cqw,12px);color:var(--text);padding:4px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Sous 3.2</div>
-  </foreignObject>
-
-  <!-- SO branch_4 -->
-  <g filter="url(#soft-shadow)">
-    <rect x="100" y="450" width="100" height="60" rx="12" fill="var(--accent)"/>
-  </g>
-  <foreignObject x="100" y="450" width="100" height="60">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_4" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:clamp(11px,2.4cqw,14px);color:var(--bg);padding:6px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Branche 4</div>
-  </foreignObject>
-  <foreignObject x="2" y="402" width="78" height="36">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_4_sub_1" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:flex-end;text-align:right;font-family:Inter,system-ui,sans-serif;font-size:clamp(10px,2cqw,12px);color:var(--text);padding:4px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Sous 4.1</div>
-  </foreignObject>
-  <foreignObject x="2" y="522" width="78" height="36">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_4_sub_2" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:flex-end;text-align:right;font-family:Inter,system-ui,sans-serif;font-size:clamp(10px,2cqw,12px);color:var(--text);padding:4px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Sous 4.2</div>
-  </foreignObject>
+  
+  <text x="60" y="580" font-size="11" font-weight="600" fill="var(--text)" opacity="0.5" style="text-transform: uppercase;">Krobar · Mindmap</text>
 </svg>

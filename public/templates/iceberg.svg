@@ -1,141 +1,189 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="Inter, system-ui, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 600" font-family="Plus Jakarta Sans, system-ui, sans-serif">
+
+  <!-- Définitions -->
   <defs>
-    <linearGradient id="sky-grad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.08"/>
-      <stop offset="100%" stop-color="var(--accent)" stop-opacity="0.02"/>
+    <!-- Dégradés essentiels (icebergs) : toujours visibles -->
+    <linearGradient id="icebergTopGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:var(--bg);stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:var(--primary);stop-opacity:0.25"/>
     </linearGradient>
-    <linearGradient id="water-grad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="var(--primary)" stop-opacity="0.10"/>
-      <stop offset="100%" stop-color="var(--primary)" stop-opacity="0.25"/>
+    <linearGradient id="icebergBottomGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:var(--accent);stop-opacity:0.45"/>
+      <stop offset="100%" style="stop-color:var(--primary);stop-opacity:0.65"/>
     </linearGradient>
-    <linearGradient id="ice-top-grad" x1="0.3" y1="0" x2="0.7" y2="1">
-      <stop offset="0%" stop-color="var(--bg)" stop-opacity="0.95"/>
-      <stop offset="40%" stop-color="var(--accent)" stop-opacity="0.5"/>
-      <stop offset="100%" stop-color="var(--accent)" stop-opacity="0.8"/>
+    <!-- Dégradés décoratifs (fonds environnement) -->
+    <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:var(--bg);stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:var(--accent);stop-opacity:0.08"/>
     </linearGradient>
-    <linearGradient id="ice-sub1" x1="0.5" y1="0" x2="0.5" y2="1">
-      <stop offset="0%" stop-color="var(--primary)" stop-opacity="0.35"/>
-      <stop offset="100%" stop-color="var(--primary)" stop-opacity="0.55"/>
+    <linearGradient id="seaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:var(--accent);stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:var(--primary);stop-opacity:0.25"/>
     </linearGradient>
-    <linearGradient id="ice-sub2" x1="0.5" y1="0" x2="0.5" y2="1">
-      <stop offset="0%" stop-color="var(--primary)" stop-opacity="0.55"/>
-      <stop offset="100%" stop-color="var(--primary)" stop-opacity="0.78"/>
-    </linearGradient>
-    <linearGradient id="ice-sub3" x1="0.5" y1="0" x2="0.5" y2="1">
-      <stop offset="0%" stop-color="var(--primary)" stop-opacity="0.78"/>
-      <stop offset="100%" stop-color="var(--primary)" stop-opacity="0.95"/>
-    </linearGradient>
-    <filter id="ice-glow" x="-10%" y="-10%" width="120%" height="120%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="6"/>
-      <feOffset dx="0" dy="3"/>
-      <feComponentTransfer><feFuncA type="linear" slope="0.15"/></feComponentTransfer>
-      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-    <filter id="blur-subtle">
-      <feGaussianBlur stdDeviation="1.5"/>
-    </filter>
-    <!-- Clip for above water (tip) -->
-    <clipPath id="clip-above">
-      <rect x="0" y="0" width="800" height="218"/>
-    </clipPath>
-    <!-- Clip for submerged zones -->
-    <clipPath id="clip-sub1"><rect x="0" y="218" width="800" height="112"/></clipPath>
-    <clipPath id="clip-sub2"><rect x="0" y="330" width="800" height="115"/></clipPath>
-    <clipPath id="clip-sub3"><rect x="0" y="445" width="800" height="155"/></clipPath>
   </defs>
 
-  <!-- Background -->
-  <rect width="800" height="600" fill="var(--bg)"/>
-  <!-- Sky tint -->
-  <rect width="800" height="218" fill="url(#sky-grad)"/>
-  <!-- Water tint -->
-  <rect y="218" width="800" height="382" fill="url(#water-grad)"/>
+  <!-- Fond blanc plein (essentiel) -->
+  <rect width="1040" height="600" fill="var(--bg)"/>
 
-  <!-- Title -->
-  <foreignObject x="20" y="10" width="760" height="40">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="title" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:clamp(16px,2.6cqw,22px);color:var(--text);padding:6px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Modèle de l'iceberg</div>
+  <!-- DÉCORATIF : fonds ciel et mer (visibles uniquement en mode magazine) -->
+  <rect width="1040" height="335" fill="url(#skyGradient)" opacity="var(--decoration-opacity, 0)"/>
+  <rect y="335" width="1040" height="265" fill="url(#seaGradient)" opacity="var(--decoration-opacity, 0)"/>
+
+  <!-- Header label (essentiel) -->
+  <text x="60" y="72" font-size="13" font-weight="600" fill="var(--text)" opacity="0.55"
+        style="text-transform: uppercase; letter-spacing: 0.5px;">Modèle Iceberg</text>
+
+  <!-- Titre principal (essentiel) -->
+  <foreignObject x="60" y="90" width="920" height="56">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="title"
+         style="width:100%;height:100%;display:flex;align-items:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:36px;color:var(--text);box-sizing:border-box;">
+      Analyse visible vs invisible
+    </div>
   </foreignObject>
 
-  <!-- ===== ICEBERG SHAPE ===== -->
-  <!-- Organic iceberg silhouette with curved edges -->
-  <g filter="url(#ice-glow)">
+  <!-- ============================================ -->
+  <!-- ICEBERG PIC ÉMERGÉ (essentiel : dégradé + contour) -->
+  <!-- ============================================ -->
+  <path d="M 425 335
+           L 460 280
+           L 478 248
+           L 495 215
+           L 512 188
+           L 530 175
+           L 548 195
+           L 562 218
+           L 578 245
+           L 595 275
+           L 615 308
+           L 640 335 Z"
+        fill="url(#icebergTopGradient)"
+        stroke="var(--primary)" stroke-width="2"
+        stroke-linejoin="round"/>
 
-    <!-- Above water: tip with highlight/frost effect -->
-    <g clip-path="url(#clip-above)">
-      <path d="M400,82 C410,82 430,110 455,145 Q480,178 510,200 Q530,212 540,218 L260,218 Q270,212 290,200 Q320,178 345,145 C370,110 390,82 400,82 Z"
-            fill="url(#ice-top-grad)"/>
-      <!-- Frost highlights -->
-      <path d="M400,88 C405,88 418,108 432,135 Q440,152 450,170 L390,170 Q395,150 398,130 C399,115 397,88 400,88 Z"
-            fill="var(--bg)" opacity="0.45"/>
-      <path d="M380,130 Q385,140 370,165 L355,165 Q360,145 380,130 Z"
-            fill="var(--bg)" opacity="0.25"/>
-    </g>
+  <!-- ESSENTIEL : ombre interne sur le flanc droit pour donner du volume sans décor -->
+  <path d="M 530 175 L 548 195 L 562 218 L 578 245 L 595 275 L 615 308 L 640 335 L 530 335 Z"
+        fill="var(--primary)" fill-opacity="0.18"/>
 
-    <!-- Submerged level 1 -->
-    <g clip-path="url(#clip-sub1)">
-      <path d="M260,218 L540,218 Q565,240 585,270 Q600,298 605,330 L195,330 Q200,298 215,270 Q235,240 260,218 Z"
-            fill="url(#ice-sub1)"/>
-      <!-- Subtle ice texture lines -->
-      <line x1="280" y1="250" x2="520" y2="250" stroke="var(--primary)" stroke-opacity="0.08" stroke-width="1"/>
-      <line x1="250" y1="285" x2="550" y2="285" stroke="var(--primary)" stroke-opacity="0.06" stroke-width="1"/>
-    </g>
+  <!-- DÉCORATIF : reflets blancs supplémentaires (modelé fin) -->
+  <path d="M 510 220 L 520 200 L 525 215 L 518 235 Z" fill="var(--bg)" opacity="calc(var(--decoration-opacity, 0) * 0.6)"/>
+  <path d="M 545 225 L 555 245 L 552 260 L 542 245 Z" fill="var(--bg)" opacity="calc(var(--decoration-opacity, 0) * 0.4)"/>
 
-    <!-- Submerged level 2 -->
-    <g clip-path="url(#clip-sub2)">
-      <path d="M195,330 L605,330 Q600,365 590,395 Q575,425 565,445 L235,445 Q225,425 210,395 Q200,365 195,330 Z"
-            fill="url(#ice-sub2)"/>
-      <line x1="230" y1="370" x2="570" y2="370" stroke="var(--primary)" stroke-opacity="0.06" stroke-width="1"/>
-      <line x1="240" y1="410" x2="560" y2="410" stroke="var(--primary)" stroke-opacity="0.05" stroke-width="1"/>
-    </g>
+  <!-- ============================================ -->
+  <!-- LIGNE D'EAU PRINCIPALE (essentielle, ondulée) -->
+  <!-- ============================================ -->
+  <path d="M 60 335
+           Q 130 332, 200 335
+           Q 270 338, 340 335
+           Q 410 332, 425 335
+           L 640 335
+           Q 710 338, 780 335
+           Q 850 332, 920 335
+           Q 970 338, 980 335"
+        fill="none" stroke="var(--accent)" stroke-width="2.5" opacity="0.7"/>
 
-    <!-- Submerged level 3 (deepest) -->
-    <g clip-path="url(#clip-sub3)">
-      <path d="M235,445 L565,445 Q555,475 530,505 Q500,540 470,558 Q440,572 400,575 Q360,572 330,558 Q300,540 270,505 Q245,475 235,445 Z"
-            fill="url(#ice-sub3)"/>
-      <line x1="265" y1="480" x2="535" y2="480" stroke="var(--primary)" stroke-opacity="0.05" stroke-width="1"/>
-    </g>
+  <!-- DÉCORATIF : ligne d'eau secondaire (effet profondeur) -->
+  <path d="M 60 340 Q 200 343, 340 340 T 640 340 T 920 340 T 980 340"
+        fill="none" stroke="var(--accent)" stroke-width="1"
+        opacity="calc(var(--decoration-opacity, 0) * 0.35)"/>
 
-    <!-- Subtle outer edge -->
-    <path d="M400,82 C410,82 430,110 455,145 Q480,178 510,200 Q530,212 540,218 Q565,240 585,270 Q600,298 605,330 Q600,365 590,395 Q575,425 565,445 Q555,475 530,505 Q500,540 470,558 Q440,572 400,575 Q360,572 330,558 Q300,540 270,505 Q245,475 235,445 Q225,425 210,395 Q200,365 195,330 Q200,298 215,270 Q235,240 260,218 Q270,212 290,200 Q320,178 345,145 C370,110 390,82 400,82 Z"
-          fill="none" stroke="var(--text)" stroke-opacity="0.10" stroke-width="1.5"/>
+  <!-- ============================================ -->
+  <!-- ICEBERG MASSE IMMERGÉE (essentiel : dégradé + contour) -->
+  <!-- ============================================ -->
+  <path d="M 425 335
+           L 360 358
+           L 305 380
+           L 268 408
+           L 245 445
+           L 235 488
+           L 252 527
+           L 285 555
+           L 340 575
+           L 410 583
+           L 475 580
+           L 530 585
+           L 580 575
+           L 640 565
+           L 700 545
+           L 745 510
+           L 760 470
+           L 740 432
+           L 705 400
+           L 660 372
+           L 640 335 Z"
+        fill="url(#icebergBottomGradient)"
+        stroke="var(--accent)" stroke-width="2"
+        stroke-linejoin="miter"/>
+
+  <!-- ESSENTIEL : 2 stries internes pour suggérer la glace stratifiée même en plain -->
+  <path d="M 270 410 L 380 415 L 510 412 L 640 415 L 730 410"
+        stroke="var(--accent)" stroke-width="1" fill="none" opacity="0.4"/>
+  <path d="M 270 530 L 400 535 L 510 532 L 620 535 L 720 530"
+        stroke="var(--accent)" stroke-width="1" fill="none" opacity="0.3"/>
+
+  <!-- DÉCORATIF : strie supplémentaire + facettes + reflets (enrichissement magazine) -->
+  <g opacity="var(--decoration-opacity, 0)">
+    <path d="M 250 470 L 380 475 L 510 472 L 640 475 L 750 470" stroke="var(--accent)" stroke-width="1" fill="none" opacity="0.4"/>
+    <path d="M 305 380 L 340 410 L 305 445 L 268 408 Z"
+          fill="var(--accent)" fill-opacity="0.12" stroke="var(--accent)" stroke-width="0.5" opacity="0.4"/>
+    <path d="M 660 372 L 705 400 L 685 440 L 640 410 Z"
+          fill="var(--primary)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="0.5" opacity="0.4"/>
+    <path d="M 410 583 L 475 580 L 470 545 L 410 540 Z"
+          fill="var(--accent)" fill-opacity="0.08" stroke="var(--accent)" stroke-width="0.5" opacity="0.3"/>
+    <path d="M 360 358 L 305 380 L 268 408 L 245 445 L 260 460 L 290 420 L 330 385 L 380 365 Z"
+          fill="var(--bg)" opacity="0.18"/>
   </g>
 
-  <!-- ===== WATERLINE ===== -->
-  <path d="M0,218 Q30,210 60,218 T120,218 T180,218 T240,218 T300,218 T360,218 T420,218 T480,218 T540,218 T600,218 T660,218 T720,218 T780,218 L800,218"
-        stroke="var(--accent)" stroke-width="2.5" fill="none" opacity="0.7"/>
-  <path d="M0,226 Q40,219 80,226 T160,226 T240,226 T320,226 T400,226 T480,226 T560,226 T640,226 T720,226 L800,226"
-        stroke="var(--accent)" stroke-width="1.5" fill="none" opacity="0.3"/>
+  <!-- ============================================ -->
+  <!-- BLOCS TEXTES — STANDARD V2 (essentiels) -->
+  <!-- ============================================ -->
 
-  <!-- Small water ripples near iceberg -->
-  <path d="M300,222 Q320,218 340,222" stroke="var(--accent)" stroke-width="1" fill="none" opacity="0.3"/>
-  <path d="M460,222 Q480,218 500,222" stroke="var(--accent)" stroke-width="1" fill="none" opacity="0.3"/>
+  <text x="820" y="332" font-size="12" font-weight="600" fill="var(--accent)" opacity="0.75"
+        style="text-transform: uppercase; letter-spacing: 0.5px;">
+    Niveau de l'eau
+  </text>
 
-  <!-- ===== ANNOTATIONS ===== -->
-
-  <!-- Visible label + item (above water) -->
-  <line x1="510" y1="155" x2="610" y2="155" stroke="var(--text)" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.35"/>
-  <foreignObject x="610" y="100" width="180" height="32">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="visible_label" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-weight:800;font-size:clamp(11px,2.4cqw,14px);color:var(--accent);padding:4px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Visible</div>
-  </foreignObject>
-  <foreignObject x="610" y="135" width="180" height="60">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="visible_item" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-size:clamp(11px,1.8cqw,13px);color:var(--text);padding:4px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Élément visible</div>
+  <!-- Bloc PARTIE VISIBLE -->
+  <rect x="650" y="200" width="280" height="48" rx="12"
+        fill="var(--bg)" stroke="var(--primary)" stroke-width="1.5"/>
+  <foreignObject x="650" y="200" width="280" height="48">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="visible_title"
+         style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:18px;color:var(--primary);box-sizing:border-box;padding:8px;line-height:1.3;">
+      Partie visible
+    </div>
   </foreignObject>
 
-  <!-- Level 1 -->
-  <line x1="600" y1="280" x2="650" y2="280" stroke="var(--text)" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.35"/>
-  <foreignObject x="650" y="255" width="140" height="50">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="level_1" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:clamp(11px,1.8cqw,13px);color:var(--text);padding:4px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Niveau 1</div>
+  <foreignObject x="650" y="252" width="280" height="72">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="visible_content"
+         style="width:100%;height:100%;display:flex;align-items:flex-start;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:400;font-size:14px;color:var(--text);line-height:1.4;box-sizing:border-box;padding:8px;">
+      Symptômes, comportements observables, résultats apparents
+    </div>
   </foreignObject>
 
-  <!-- Level 2 -->
-  <line x1="585" y1="390" x2="650" y2="390" stroke="var(--text)" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.35"/>
-  <foreignObject x="650" y="365" width="140" height="50">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="level_2" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:clamp(11px,1.8cqw,13px);color:var(--text);padding:4px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Niveau 2</div>
+  <line x1="600" y1="245" x2="650" y2="225" stroke="var(--primary)" stroke-width="1.5" opacity="0.4" stroke-dasharray="3 3"/>
+
+  <!-- Bloc PARTIE CACHÉE -->
+  <rect x="80" y="430" width="280" height="48" rx="12"
+        fill="var(--bg)" stroke="var(--accent)" stroke-width="1.5"/>
+  <foreignObject x="80" y="430" width="280" height="48">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="hidden_title"
+         style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:18px;color:var(--accent);box-sizing:border-box;padding:8px;line-height:1.3;">
+      Partie cachée
+    </div>
   </foreignObject>
 
-  <!-- Level 3 -->
-  <line x1="545" y1="500" x2="650" y2="500" stroke="var(--text)" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.35"/>
-  <foreignObject x="650" y="475" width="140" height="50">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="level_3" style="container-type:inline-size;width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:clamp(11px,1.8cqw,13px);color:var(--text);padding:4px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Niveau 3</div>
+  <foreignObject x="80" y="482" width="280" height="80">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="hidden_content"
+         style="width:100%;height:100%;display:flex;align-items:flex-start;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:400;font-size:14px;color:var(--text);line-height:1.4;box-sizing:border-box;padding:8px;">
+      Causes profondes, croyances, valeurs, systèmes sous-jacents
+    </div>
   </foreignObject>
+
+  <line x1="290" y1="465" x2="360" y2="455" stroke="var(--accent)" stroke-width="1.5" opacity="0.4" stroke-dasharray="3 3"/>
+
+  <!-- Footer (essentiel) -->
+  <text x="60" y="585" font-size="11" font-weight="600" fill="var(--text)" opacity="0.5"
+        style="text-transform: uppercase; letter-spacing: 0.5px;">
+    Krobar · Analyse
+  </text>
+
 </svg>

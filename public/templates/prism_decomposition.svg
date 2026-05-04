@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" font-family="Plus Jakarta Sans, system-ui, sans-serif">
+  <defs>
+    <linearGradient id="prismGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:var(--primary);stop-opacity:0.8"/>
+      <stop offset="100%" style="stop-color:var(--primary);stop-opacity:0.4"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="600" fill="var(--bg)"/>
+  <text x="105" y="72" font-size="13" font-weight="600" fill="var(--text)" opacity="0.55" style="text-transform: uppercase;">Prisme Décomposition</text>
+  <foreignObject x="60" y="90" width="1080" height="56">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="title" style="width:100%;height:100%;display:flex;align-items:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:36px;color:var(--text);box-sizing:border-box;">Décomposition en composantes clés</div>
+  </foreignObject>
+
+  <!-- Central prism/triangle -->
+  <path d="M 200 200 L 350 250 L 350 350 L 200 400 L 200 200 Z" fill="url(#prismGradient)" stroke="var(--primary)" stroke-width="3"/>
+  <path d="M 200 200 L 250 150 L 400 200 L 350 250 L 200 200 Z" fill="var(--primary)" fill-opacity="0.6" stroke="var(--primary)" stroke-width="3"/>
+  <path d="M 350 250 L 400 200 L 400 300 L 350 350 L 350 250 Z" fill="var(--primary)" fill-opacity="0.3" stroke="var(--primary)" stroke-width="3"/>
+  
+  <foreignObject x="220" y="290" width="180" height="30">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="central_concept" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:18px;color:var(--bg);box-sizing:border-box;">Concept Global</div>
+  </foreignObject>
+
+  <!-- Branch 1 - Top -->
+  <line x1="350" y1="200" x2="600" y2="180" stroke="var(--accent)" stroke-width="3"/>
+  <polygon points="595,185 605,180 595,175" fill="var(--accent)"/>
+  <circle cx="650" cy="180" r="40" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
+  <text x="650" y="175" font-size="14" font-weight="700" fill="var(--accent)" text-anchor="middle">A</text>
+  <foreignObject x="570" y="120" width="180" height="30">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="component_1" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Interface Utilisateur</div>
+  </foreignObject>
+
+  <!-- Branch 2 - Middle -->
+  <line x1="400" y1="250" x2="650" y2="280" stroke="var(--accent)" stroke-width="3"/>
+  <polygon points="645,285 655,280 645,275" fill="var(--accent)"/>
+  <circle cx="700" cy="280" r="40" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2"/>
+  <text x="700" y="275" font-size="14" font-weight="700" fill="var(--primary)" text-anchor="middle">B</text>
+  <foreignObject x="620" y="220" width="180" height="30">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="component_2" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Logique Métier</div>
+  </foreignObject>
+
+  <!-- Branch 3 - Lower Middle -->
+  <line x1="380" y1="320" x2="630" y2="380" stroke="var(--accent)" stroke-width="3"/>
+  <polygon points="625,385 635,380 625,375" fill="var(--accent)"/>
+  <circle cx="680" cy="380" r="40" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
+  <text x="680" y="375" font-size="14" font-weight="700" fill="var(--accent)" text-anchor="middle">C</text>
+  <foreignObject x="600" y="420" width="180" height="30">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="component_3" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Base de Données</div>
+  </foreignObject>
+
+  <!-- Branch 4 - Bottom -->
+  <line x1="320" y1="380" x2="570" y2="480" stroke="var(--accent)" stroke-width="3"/>
+  <polygon points="565,485 575,480 565,475" fill="var(--accent)"/>
+  <circle cx="620" cy="480" r="40" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2"/>
+  <text x="620" y="475" font-size="14" font-weight="700" fill="var(--primary)" text-anchor="middle">D</text>
+  <foreignObject x="540" y="520" width="180" height="30">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="component_4" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Sécurité</div>
+  </foreignObject>
+
+  <text x="60" y="580" font-size="11" font-weight="600" fill="var(--text)" opacity="0.5" style="text-transform: uppercase;">Krobar · Decomposition</text>
+</svg>

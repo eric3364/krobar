@@ -1,42 +1,40 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 700" font-family="Inter, system-ui, sans-serif">
-  <rect width="1040" height="700" fill="var(--bg)"/>
-  <foreignObject x="20" y="20" width="1000" height="60">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:clamp(18px,2.2vw,28px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Titre du cycle</div>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 600" font-family="Plus Jakarta Sans, system-ui, sans-serif">
+  <rect width="1040" height="600" fill="var(--bg)"/>
+  <text x="105" y="72" font-size="13" font-weight="600" fill="var(--text)" opacity="0.55" style="text-transform: uppercase;">Cycle 4 Étapes</text>
+  <foreignObject x="60" y="90" width="920" height="56">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="title" style="width:100%;height:100%;display:flex;align-items:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:36px;color:var(--text);box-sizing:border-box;">Cycle d'amélioration continue</div>
   </foreignObject>
-
-  <g>
-    <circle cx="520" cy="200" r="91" fill="var(--primary)"/>
-    <foreignObject x="429" y="109" width="182" height="182">
-      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="step_1" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:clamp(11px,1.2vw,15px);color:var(--bg);padding:14px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Étape 1</div>
-    </foreignObject>
-  </g>
-  <g>
-    <circle cx="806" cy="400" r="91" fill="var(--accent)"/>
-    <foreignObject x="715" y="309" width="182" height="182">
-      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="step_2" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:clamp(11px,1.2vw,15px);color:var(--bg);padding:14px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Étape 2</div>
-    </foreignObject>
-  </g>
-  <g>
-    <circle cx="520" cy="600" r="91" fill="var(--primary)"/>
-    <foreignObject x="429" y="509" width="182" height="182">
-      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="step_3" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:clamp(11px,1.2vw,15px);color:var(--bg);padding:14px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Étape 3</div>
-    </foreignObject>
-  </g>
-  <g>
-    <circle cx="234" cy="400" r="91" fill="var(--accent)"/>
-    <foreignObject x="143" y="309" width="182" height="182">
-      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="step_4" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:clamp(11px,1.2vw,15px);color:var(--bg);padding:14px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Étape 4</div>
-    </foreignObject>
-  </g>
-
-  <path d="M 611 230 Q 760 260 760 320" stroke="var(--text)" stroke-width="3" fill="none" marker-end="url(#a)" opacity="0.5"/>
-  <path d="M 770 480 Q 700 590 600 580" stroke="var(--text)" stroke-width="3" fill="none" marker-end="url(#a)" opacity="0.5"/>
-  <path d="M 430 580 Q 280 560 270 480" stroke="var(--text)" stroke-width="3" fill="none" marker-end="url(#a)" opacity="0.5"/>
-  <path d="M 270 320 Q 320 230 430 230" stroke="var(--text)" stroke-width="3" fill="none" marker-end="url(#a)" opacity="0.5"/>
-
-  <defs>
-    <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--text)"/>
-    </marker>
-  </defs>
+  
+  <!-- Central circle -->
+  <circle cx="520" cy="350" r="120" fill="none" stroke="var(--accent)" stroke-width="2" opacity="0.3"/>
+  
+  <!-- Step 1 - Top -->
+  <circle cx="520" cy="230" r="35" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2"/>
+  <text x="520" y="240" font-size="16" font-weight="700" fill="var(--primary)" text-anchor="middle">1</text>
+  <foreignObject x="440" y="160" width="180" height="40">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="step_1_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Planifier</div>
+  </foreignObject>
+  
+  <!-- Step 2 - Right -->
+  <circle cx="640" cy="350" r="35" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
+  <text x="640" y="360" font-size="16" font-weight="700" fill="var(--accent)" text-anchor="middle">2</text>
+  <foreignObject x="680" y="330" width="180" height="40">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="step_2_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:flex-start;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Exécuter</div>
+  </foreignObject>
+  
+  <!-- Step 3 - Bottom -->
+  <circle cx="520" cy="470" r="35" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2"/>
+  <text x="520" y="480" font-size="16" font-weight="700" fill="var(--primary)" text-anchor="middle">3</text>
+  <foreignObject x="440" y="500" width="180" height="40">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="step_3_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Vérifier</div>
+  </foreignObject>
+  
+  <!-- Step 4 - Left -->
+  <circle cx="400" cy="350" r="35" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
+  <text x="400" y="360" font-size="16" font-weight="700" fill="var(--accent)" text-anchor="middle">4</text>
+  <foreignObject x="180" y="330" width="180" height="40">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="step_4_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:flex-end;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Améliorer</div>
+  </foreignObject>
+  
+  <text x="60" y="580" font-size="11" font-weight="600" fill="var(--text)" opacity="0.5" style="text-transform: uppercase;">Krobar · Process</text>
 </svg>

@@ -1,40 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 600" font-family="Inter, system-ui, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 600" font-family="Plus Jakarta Sans, system-ui, sans-serif">
   <rect width="1040" height="600" fill="var(--bg)"/>
-  <foreignObject x="20" y="20" width="1000" height="70">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:clamp(20px,2.4vw,30px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Titre de comparaison</div>
+  <text x="105" y="72" font-size="13" font-weight="600" fill="var(--text)" opacity="0.55" style="text-transform: uppercase;">Comparaison 2 Colonnes</text>
+  <foreignObject x="60" y="90" width="920" height="56">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="title" style="width:100%;height:100%;display:flex;align-items:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:36px;color:var(--text);box-sizing:border-box;">Comparaison des options</div>
   </foreignObject>
-
-  <g>
-    <rect x="40" y="110" width="460" height="460" rx="14" fill="var(--primary)" opacity="0.08" stroke="var(--primary)" stroke-width="2"/>
-    <rect x="40" y="110" width="460" height="70" rx="14" fill="var(--primary)"/>
-    <foreignObject x="40" y="110" width="460" height="70">
-      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="left_label" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:clamp(14px,1.6vw,20px);color:var(--bg);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Option A</div>
-    </foreignObject>
-    <foreignObject x="60" y="200" width="420" height="60">
-      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="left_item_1" style="width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-size:clamp(12px,1.3vw,17px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">• Élément 1</div>
-    </foreignObject>
-    <foreignObject x="60" y="270" width="420" height="60">
-      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="left_item_2" style="width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-size:clamp(12px,1.3vw,17px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">• Élément 2</div>
-    </foreignObject>
-    <foreignObject x="60" y="340" width="420" height="60">
-      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="left_item_3" style="width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-size:clamp(12px,1.3vw,17px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">• Élément 3</div>
-    </foreignObject>
-  </g>
-
-  <g>
-    <rect x="540" y="110" width="460" height="460" rx="14" fill="var(--accent)" opacity="0.12" stroke="var(--accent)" stroke-width="2"/>
-    <rect x="540" y="110" width="460" height="70" rx="14" fill="var(--accent)"/>
-    <foreignObject x="540" y="110" width="460" height="70">
-      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="right_label" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:clamp(14px,1.6vw,20px);color:var(--bg);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Option B</div>
-    </foreignObject>
-    <foreignObject x="560" y="200" width="420" height="60">
-      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="right_item_1" style="width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-size:clamp(12px,1.3vw,17px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">• Élément 1</div>
-    </foreignObject>
-    <foreignObject x="560" y="270" width="420" height="60">
-      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="right_item_2" style="width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-size:clamp(12px,1.3vw,17px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">• Élément 2</div>
-    </foreignObject>
-    <foreignObject x="560" y="340" width="420" height="60">
-      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="right_item_3" style="width:100%;height:100%;display:flex;align-items:center;text-align:left;font-family:Inter,system-ui,sans-serif;font-size:clamp(12px,1.3vw,17px);color:var(--text);padding:8px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">• Élément 3</div>
-    </foreignObject>
-  </g>
+  
+  <!-- Column 1 -->
+  <rect x="80" y="180" width="400" height="320" rx="12" fill="var(--primary)" fill-opacity="0.05" stroke="var(--primary)" stroke-width="2"/>
+  <foreignObject x="90" y="200" width="180" height="40">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="column_1_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:20px;color:var(--primary);box-sizing:border-box;">Option A</div>
+  </foreignObject>
+  <foreignObject x="90" y="260" width="180" height="200">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="column_1_content" style="width:100%;height:100%;display:flex;align-items:flex-start;justify-content:flex-start;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:400;font-size:16px;color:var(--text);line-height:1.5;box-sizing:border-box;">• Avantages rapides<br/>• Coût réduit<br/>• Simple à mettre en œuvre</div>
+  </foreignObject>
+  
+  <!-- Column 2 -->
+  <rect x="560" y="180" width="400" height="320" rx="12" fill="var(--accent)" fill-opacity="0.05" stroke="var(--accent)" stroke-width="2"/>
+  <foreignObject x="570" y="200" width="180" height="40">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="column_2_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:20px;color:var(--accent);box-sizing:border-box;">Option B</div>
+  </foreignObject>
+  <foreignObject x="570" y="260" width="180" height="200">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="column_2_content" style="width:100%;height:100%;display:flex;align-items:flex-start;justify-content:flex-start;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:400;font-size:16px;color:var(--text);line-height:1.5;box-sizing:border-box;">• Évolutif à long terme<br/>• Meilleure qualité<br/>• Plus de fonctionnalités</div>
+  </foreignObject>
+  
+  <text x="60" y="580" font-size="11" font-weight="600" fill="var(--text)" opacity="0.5" style="text-transform: uppercase;">Krobar · Comparaisons</text>
 </svg>
