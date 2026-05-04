@@ -13,6 +13,7 @@ import BenchmarkPage from "./pages/BenchmarkPage.tsx";
 import Admin from "./pages/Admin.tsx";
 import AdminTemplateCreatePage from "./pages/AdminTemplateCreatePage.tsx";
 import AdminDraftsPage from "./pages/AdminDraftsPage.tsx";
+import AuthPage from "./pages/Auth.tsx";
 
 const queryClient = new QueryClient();
 
