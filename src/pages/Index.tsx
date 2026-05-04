@@ -259,6 +259,7 @@ const Index = () => {
   const [manifest, setManifest] = useState<Manifest | null>(null);
   const [text, setText] = useState("");
   const [paletteKey, setPaletteKey] = useState<keyof typeof palettes>("ocean");
+  const [whiteBackground, setWhiteBackground] = useState(false);
   const [loading, setLoading] = useState(false);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
