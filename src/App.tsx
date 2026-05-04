@@ -27,6 +27,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/auth" element={<AuthPage />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/workspace" element={<ProtectedRoute><Index /></ProtectedRoute>} />
 
             {/* Admin routes */}
