@@ -10,21 +10,31 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Decode SSH key
+      - name: Decode SSH key into env var
+        id: decode
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.VPS_SSH_KEY_B64 }}" | base64 -d > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          ls -la ~/.ssh/deploy_key
-          echo "Première ligne de la clé décodée :"
-          head -1 ~/.ssh/deploy_key
+          DECODED_KEY=$(echo "${{ secrets.VPS_SSH_KEY_B64 }}" | base64 -d)
+          echo "First line check:"
+          echo "$DECODED_KEY" | head -1
+          echo "Last line check:"
+          echo "$DECODED_KEY" | tail -1
+          echo "Line count: $(echo "$DECODED_KEY" | wc -l)"
+          # Stocker la clé décodée dans un fichier multi-lignes pour usage ultérieur
+          {
+            echo 'DECODED_SSH_KEY<<EOF_KEY'
+            echo "$DECODED_KEY"
+            echo 'EOF_KEY'
+          } >> $GITHUB_ENV
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
-          key_path: /home/runner/.ssh/deploy_key
+          key: ${{ env.DECODED_SSH_KEY }}
+          port: 22
+          timeout: 60s
+          command_timeout: 10m
           script: |
             set -e
             echo "=== Pull du dernier code ==="
