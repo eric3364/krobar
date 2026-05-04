@@ -1,22 +1,163 @@
 {
   "templates": [
     {
-      "id": "process_3_steps",
-      "name": "Process en 3 étapes",
-      "category": "Process",
-      "description": "Trois cartes éditoriales numérotées avec titre, label et description courte",
-      "file": "process_3_steps.svg",
-      "slots": ["title", "category_label", "step_1", "step_1_description", "step_2", "step_2_description", "step_3", "step_3_description"],
-      "best_for": "Décrire un processus court avec un début, un milieu et une fin"
+      "id": "asymmetric_mindmap",
+      "name": "Asymmetric Mindmap",
+      "category": "Asymmetric",
+      "description": "Une carte mentale avec un sujet central relié à des branches asymétriques : deux à gauche et trois à droite, créant un équilibre visuel dynamique et non symétrique.",
+      "file": "asymmetric_mindmap.svg",
+      "slots": [
+        "central_topic",
+        "left_branch_1",
+        "left_branch_2",
+        "right_branch_1",
+        "right_branch_2",
+        "right_branch_3",
+        "right_sub_1_1",
+        "right_sub_1_2",
+        "title",
+        "top_branch"
+      ],
+      "best_for": "Organiser une idée principale avec des développements inégaux, explorant plus de nuances d'un côté que de l'autre ou comparant des hiérarchies conceptuelles déséquilibrées."
     },
     {
-      "id": "process_5_steps",
-      "name": "Process en 5 étapes",
-      "category": "Process",
-      "description": "Séquence linéaire de 5 étapes numérotées et connectées par des flèches",
-      "file": "process_5_steps.svg",
-      "slots": ["title", "step_1", "step_2", "step_3", "step_4", "step_5"],
-      "best_for": "Détailler un processus en cinq étapes ordonnées"
+      "id": "bars_horizontal_sketchy",
+      "name": "Bars Horizontal Sketchy",
+      "category": "Charts",
+      "description": "Graphique à barres horizontales avec un style dessiné à main levée, comparant jusqu'à 4 valeurs avec leurs étiquettes respectives.",
+      "file": "bars_horizontal_sketchy.svg",
+      "slots": [
+        "bar_1_label",
+        "bar_1_value",
+        "bar_2_label",
+        "bar_2_value",
+        "bar_3_label",
+        "bar_3_value",
+        "bar_4_label",
+        "bar_4_value",
+        "title"
+      ],
+      "best_for": "Comparer 4 catégories ou métriques sur une même échelle avec un ton informel et accessible."
+    },
+    {
+      "id": "bcg_matrix",
+      "name": "Matrice BCG",
+      "category": "Business Frameworks",
+      "description": "Matrice 2x2 part de marché relative et taux de croissance avec quatre quadrants Vedettes, Vaches à lait, Dilemmes et Poids morts",
+      "file": "bcg_matrix.svg",
+      "slots": [
+        "cashcows_title",
+        "dogs_title",
+        "questions_title",
+        "stars_title",
+        "title"
+      ],
+      "best_for": "Analyser un portefeuille de produits selon leur part de marché et leur croissance"
+    },
+    {
+      "id": "bridge_problem_solution",
+      "name": "Pont problème vers solution",
+      "category": "Visual Metaphors",
+      "description": "Deux falaises problème et solution reliées par un pont avec leviers de transition en dessous",
+      "file": "bridge_problem_solution.svg",
+      "slots": [
+        "bridge_step_1",
+        "bridge_step_2",
+        "problem_item_1",
+        "problem_item_2",
+        "problem_label",
+        "solution_item_1",
+        "solution_item_2",
+        "solution_label",
+        "title"
+      ],
+      "best_for": "Illustrer le passage d'une situation problématique à une situation cible via des leviers d'action"
+    },
+    {
+      "id": "bullseye_target",
+      "name": "Bullseye Target",
+      "category": "Prioritization",
+      "description": "Cible concentrique avec quatre anneaux décroissants vers le centre, représentant des niveaux d'importance ou de priorité du plus critique au moins urgent.",
+      "file": "bullseye_target.svg",
+      "slots": [
+        "legend_high",
+        "legend_medium",
+        "ring_1_title",
+        "ring_2_title",
+        "ring_3_title",
+        "ring_4_title",
+        "title"
+      ],
+      "best_for": "Organiser des éléments par ordre de priorité décroissante ou classifier des tâches selon leur urgence et impact stratégique."
+    },
+    {
+      "id": "business_model_canvas",
+      "name": "Business Model Canvas",
+      "category": "Business Frameworks",
+      "description": "Canvas Osterwalder simplifié avec 9 blocs : partenaires, activités, ressources, proposition de valeur, relation, canaux, segments, coûts et revenus",
+      "file": "business_model_canvas.svg",
+      "slots": [
+        "activities",
+        "channels",
+        "cost_structure",
+        "partners",
+        "relationships",
+        "resources",
+        "revenue_streams",
+        "segments",
+        "title",
+        "value_proposition"
+      ],
+      "best_for": "Modéliser le fonctionnement global d'un business sur une seule page"
+    },
+    {
+      "id": "butterfly_metamorphosis",
+      "name": "Butterfly Metamorphosis",
+      "category": "Transformation",
+      "description": "Visualise les six étapes d'une transformation progressive, de la chrysalide à l'envol, en montrant l'évolution cyclique et la métamorphose complète d'un processus.",
+      "file": "butterfly_metamorphosis.svg",
+      "slots": [
+        "stage_1_title",
+        "stage_2_title",
+        "stage_3_title",
+        "stage_4_title",
+        "stage_5_title",
+        "stage_6_title",
+        "title"
+      ],
+      "best_for": "Décrire des processus de développement personnel, des cycles de vie, ou des transitions majeures passant par plusieurs phases distinctes et irréversibles."
+    },
+    {
+      "id": "cause_effect_arrows",
+      "name": "Causes vers effet",
+      "category": "Cause and Effect",
+      "description": "Trois causes à gauche convergeant par flèches vers un effet à droite",
+      "file": "cause_effect_arrows.svg",
+      "slots": [
+        "cause_1",
+        "cause_2",
+        "cause_3",
+        "effect",
+        "problem",
+        "title"
+      ],
+      "best_for": "Montrer comment plusieurs facteurs convergent vers un même résultat"
+    },
+    {
+      "id": "colorful_staircase",
+      "name": "Colorful Staircase",
+      "category": "Progression",
+      "description": "Un escalier coloré à cinq marches ascendantes représentant une progression linéaire croissante avec des étapes distinctes et visuellement séparées.",
+      "file": "colorful_staircase.svg",
+      "slots": [
+        "step_1_title",
+        "step_2_title",
+        "step_3_title",
+        "step_4_title",
+        "step_5_title",
+        "title"
+      ],
+      "best_for": "Présenter une évolution chronologique, un processus d'apprentissage ou une stratégie avec cinq étapes ordonnées où chaque niveau dépend du précédent."
     },
     {
       "id": "comparison_2_columns",
@@ -24,7 +165,13 @@
       "category": "Comparison",
       "description": "Deux colonnes côte à côte avec un titre commun",
       "file": "comparison_2_columns.svg",
-      "slots": ["title", "left_label", "left_item_1", "left_item_2", "left_item_3", "right_label", "right_item_1", "right_item_2", "right_item_3"],
+      "slots": [
+        "column_1_content",
+        "column_1_title",
+        "column_2_content",
+        "column_2_title",
+        "title"
+      ],
       "best_for": "Comparer deux concepts, options ou approches"
     },
     {
@@ -33,26 +180,46 @@
       "category": "Comparison",
       "description": "Trois colonnes côte à côte avec colonne centrale mise en valeur",
       "file": "comparison_3_columns.svg",
-      "slots": ["title", "col_1_label", "col_1_item_1", "col_1_item_2", "col_1_item_3", "col_2_label", "col_2_item_1", "col_2_item_2", "col_2_item_3", "col_3_label", "col_3_item_1", "col_3_item_2", "col_3_item_3"],
+      "slots": [
+        "column_1_content",
+        "column_1_title",
+        "column_2_content",
+        "column_2_title",
+        "column_3_content",
+        "column_3_title",
+        "title"
+      ],
       "best_for": "Comparer trois options ou approches en mettant l'option recommandée en avant"
     },
     {
-      "id": "hierarchy_pyramid",
-      "name": "Pyramide hiérarchique",
-      "category": "Hierarchy",
-      "description": "Pyramide à 3 niveaux",
-      "file": "hierarchy_pyramid.svg",
-      "slots": ["title", "top_label", "middle_label", "bottom_label"],
-      "best_for": "Montrer une hiérarchie, des priorités ou une structure pyramidale"
+      "id": "convergent_mindmap",
+      "name": "Convergent Mindmap",
+      "category": "Convergence",
+      "description": "Plusieurs flèches ou chemins qui convergent vers un point central unique, symbolisant la fusion ou l'aboutissement de multiples éléments.",
+      "file": "convergent_mindmap.svg",
+      "slots": [
+        "convergence_point",
+        "source_1",
+        "source_2",
+        "source_3",
+        "source_4",
+        "source_5",
+        "title"
+      ],
+      "best_for": "Montrer comment différentes idées, sources ou perspectives se rejoignent progressivement vers une conclusion, solution ou objectif commun."
     },
     {
-      "id": "org_tree",
-      "name": "Arbre organisationnel",
-      "category": "Hierarchy",
-      "description": "Arbre hiérarchique avec une racine et trois enfants reliés par des connecteurs",
-      "file": "org_tree.svg",
-      "slots": ["title", "root", "child_1", "child_2", "child_3"],
-      "best_for": "Représenter une structure parent-enfants comme un organigramme ou une décomposition"
+      "id": "curve_exponential",
+      "name": "Curve Exponential",
+      "category": "Charts",
+      "description": "Une courbe ascendante qui s'accélère progressivement, illustrant une croissance qui s'intensifie exponentiellement vers le haut.",
+      "file": "curve_exponential.svg",
+      "slots": [
+        "title",
+        "y_max",
+        "y_mid"
+      ],
+      "best_for": "Montrer une accélération de croissance, une multiplication d'impact ou une progression qui s'amplifie de manière non-linéaire dans le temps."
     },
     {
       "id": "cycle_4_steps",
@@ -60,71 +227,31 @@
       "category": "Process",
       "description": "4 cercles disposés en cycle, connectés par des flèches courbes",
       "file": "cycle_4_steps.svg",
-      "slots": ["title", "step_1", "step_2", "step_3", "step_4"],
+      "slots": [
+        "step_1_title",
+        "step_2_title",
+        "step_3_title",
+        "step_4_title",
+        "title"
+      ],
       "best_for": "Représenter un cycle, une boucle ou un processus itératif"
     },
     {
-      "id": "timeline_horizontal",
-      "name": "Frise chronologique",
-      "category": "Timelines",
-      "description": "Ligne horizontale avec 4 jalons, dates au-dessus et événements en dessous",
-      "file": "timeline_horizontal.svg",
-      "slots": ["title", "date_1", "event_1", "date_2", "event_2", "date_3", "event_3", "date_4", "event_4"],
-      "best_for": "Présenter une succession d'événements datés sur une période"
-    },
-    {
-      "id": "swot_matrix",
-      "name": "Matrice SWOT",
-      "category": "Business Frameworks",
-      "description": "Matrice 2x2 forces, faiblesses, opportunités et menaces, chaque case avec 3 puces",
-      "file": "swot_matrix.svg",
-      "slots": ["title", "strengths_label", "strength_1", "strength_2", "strength_3", "weaknesses_label", "weakness_1", "weakness_2", "weakness_3", "opportunities_label", "opp_1", "opp_2", "opp_3", "threats_label", "threat_1", "threat_2", "threat_3"],
-      "best_for": "Réaliser un diagnostic stratégique interne et externe d'une organisation ou d'un projet"
-    },
-    {
-      "id": "bcg_matrix",
-      "name": "Matrice BCG",
-      "category": "Business Frameworks",
-      "description": "Matrice 2x2 part de marché relative et taux de croissance avec quatre quadrants Vedettes, Vaches à lait, Dilemmes et Poids morts",
-      "file": "bcg_matrix.svg",
-      "slots": ["title", "stars_items", "cash_cows_items", "question_marks_items", "dogs_items"],
-      "best_for": "Analyser un portefeuille de produits selon leur part de marché et leur croissance"
-    },
-    {
-      "id": "five_forces",
-      "name": "5 forces de Porter",
-      "category": "Business Frameworks",
-      "description": "Pentagone central de la rivalité concurrentielle entouré des quatre forces concurrentielles avec flèches",
-      "file": "five_forces.svg",
-      "slots": ["title", "central_force", "suppliers", "buyers", "new_entrants", "substitutes"],
-      "best_for": "Analyser l'intensité concurrentielle et l'attractivité d'un secteur d'activité"
-    },
-    {
-      "id": "business_model_canvas",
-      "name": "Business Model Canvas",
-      "category": "Business Frameworks",
-      "description": "Canvas Osterwalder simplifié avec 9 blocs : partenaires, activités, ressources, proposition de valeur, relation, canaux, segments, coûts et revenus",
-      "file": "business_model_canvas.svg",
-      "slots": ["title", "partners", "activities", "value_proposition", "relationships", "segments", "resources", "channels", "cost_structure", "revenue_streams"],
-      "best_for": "Modéliser le fonctionnement global d'un business sur une seule page"
-    },
-    {
-      "id": "fishbone",
-      "name": "Diagramme d'Ishikawa",
-      "category": "Cause and Effect",
-      "description": "Arête centrale avec 4 catégories de causes et 2 sous-causes chacune, pointant vers un effet",
-      "file": "fishbone.svg",
-      "slots": ["title", "effect", "category_1", "cause_1_1", "cause_1_2", "category_2", "cause_2_1", "cause_2_2", "category_3", "cause_3_1", "cause_3_2", "category_4", "cause_4_1", "cause_4_2"],
-      "best_for": "Analyser les causes profondes d'un problème selon plusieurs catégories"
-    },
-    {
-      "id": "cause_effect_arrows",
-      "name": "Causes vers effet",
-      "category": "Cause and Effect",
-      "description": "Trois causes à gauche convergeant par flèches vers un effet à droite",
-      "file": "cause_effect_arrows.svg",
-      "slots": ["title", "cause_1", "cause_2", "cause_3", "effect"],
-      "best_for": "Montrer comment plusieurs facteurs convergent vers un même résultat"
+      "id": "cycle_6_steps",
+      "name": "Cycle 6 Steps",
+      "category": "Process",
+      "description": "Un cycle circulaire avec six étapes reliées par des flèches, représentant un processus itératif ou continu où chaque étape mène à la suivante de façon cyclique.",
+      "file": "cycle_6_steps.svg",
+      "slots": [
+        "step_1_title",
+        "step_2_title",
+        "step_3_title",
+        "step_4_title",
+        "step_5_title",
+        "step_6_title",
+        "title"
+      ],
+      "best_for": "Décrire des processus répétitifs, des workflows circulaires, ou des cycles de vie où l'étape 6 revient à l'étape 1 de manière continue et régulière."
     },
     {
       "id": "donut_4_parts",
@@ -132,26 +259,105 @@
       "category": "Parts of a Whole",
       "description": "Donut chart à 4 segments avec pourcentages paramétrables et légende latérale",
       "file": "donut_4_parts.svg",
-      "slots": ["title", "label_1", "percent_1", "label_2", "percent_2", "label_3", "percent_3", "label_4", "percent_4"],
-      "best_for": "Visualiser la répartition d'un tout en quatre proportions"
+      "slots": [
+        "arc_1",
+        "arc_2",
+        "arc_3",
+        "arc_4",
+        "label_1",
+        "label_2",
+        "label_3",
+        "label_4",
+        "percent_1",
+        "percent_2",
+        "percent_3",
+        "percent_4",
+        "title"
+      ],
+      "best_for": "Visualiser une répartition équilibrée d'un tout en proportions à comparer entre elles, comme des parts de marché, données démographiques ou catégories statistiques"
     },
     {
-      "id": "roadmap_quarters",
-      "name": "Roadmap trimestrielle",
-      "category": "Timelines",
-      "description": "Quatre colonnes Q1 à Q4 avec deux initiatives par trimestre et une barre de progression",
-      "file": "roadmap_quarters.svg",
-      "slots": ["title", "q1_item_1", "q1_item_2", "q2_item_1", "q2_item_2", "q3_item_1", "q3_item_2", "q4_item_1", "q4_item_2"],
-      "best_for": "Planifier les initiatives d'une année réparties sur quatre trimestres"
+      "id": "fishbone",
+      "name": "Diagramme d'Ishikawa",
+      "category": "Cause and Effect",
+      "description": "Arête centrale avec 4 catégories de causes et 2 sous-causes chacune, pointant vers un effet",
+      "file": "fishbone.svg",
+      "slots": [
+        "category_1",
+        "category_2",
+        "category_3",
+        "category_4",
+        "cause_1_1",
+        "cause_1_2",
+        "cause_2_1",
+        "cause_2_2",
+        "cause_3_1",
+        "cause_3_2",
+        "cause_4_1",
+        "cause_4_2",
+        "effect",
+        "title"
+      ],
+      "best_for": "Analyser les causes profondes d'un problème selon plusieurs catégories"
     },
     {
-      "id": "mindmap_central",
-      "name": "Carte mentale centrale",
-      "category": "Mindmap",
-      "description": "Nœud central avec quatre branches diagonales, chacune comportant deux sous-branches",
-      "file": "mindmap_central.svg",
-      "slots": ["title", "central", "branch_1", "branch_1_sub_1", "branch_1_sub_2", "branch_2", "branch_2_sub_1", "branch_2_sub_2", "branch_3", "branch_3_sub_1", "branch_3_sub_2", "branch_4", "branch_4_sub_1", "branch_4_sub_2"],
-      "best_for": "Brainstormer ou structurer un sujet autour d'une idée centrale et de quatre axes"
+      "id": "five_forces",
+      "name": "5 forces de Porter",
+      "category": "Business Frameworks",
+      "description": "Pentagone central de la rivalité concurrentielle entouré des quatre forces concurrentielles avec flèches",
+      "file": "five_forces.svg",
+      "slots": [
+        "bottom_force",
+        "center_force",
+        "left_force",
+        "right_force",
+        "title",
+        "top_force"
+      ],
+      "best_for": "Analyser l'intensité concurrentielle et l'attractivité d'un secteur d'activité"
+    },
+    {
+      "id": "flowchart_decision",
+      "name": "Flowchart Decision",
+      "category": "Process",
+      "description": "Un diagramme de flux avec des losanges de décision connectés par des flèches directionnelles, représentant les chemins alternatifs selon les réponses aux questions.",
+      "file": "flowchart_decision.svg",
+      "slots": [
+        "decision_question",
+        "start_step",
+        "title"
+      ],
+      "best_for": "Structurer des processus avec points de bifurcation, où chaque décision ouvre deux ou plusieurs branches divergentes et convergentes."
+    },
+    {
+      "id": "flowing_arrows",
+      "name": "Flowing Arrows",
+      "category": "Flow",
+      "description": "Des flèches fluides et courbes qui progressent de gauche à droite, symbolisant un mouvement continu et des transformations successives.",
+      "file": "flowing_arrows.svg",
+      "slots": [
+        "flow_output",
+        "flow_process",
+        "flow_refine",
+        "flow_start",
+        "flow_transform",
+        "title"
+      ],
+      "best_for": "Illustrer un processus itératif avec étapes de transformation, raffinage et output, où chaque phase alimente la suivante dans un flux continu."
+    },
+    {
+      "id": "hierarchy_pyramid",
+      "name": "Pyramide hiérarchique",
+      "category": "Hierarchy",
+      "description": "Pyramide à 3 niveaux",
+      "file": "hierarchy_pyramid.svg",
+      "slots": [
+        "bottom_label",
+        "middle_label",
+        "title",
+        "top_label"
+      ],
+      "best_for": "Montrer une hiérarchie, des priorités ou une structure pyramidale"
     },
     {
       "id": "iceberg",
@@ -159,17 +365,318 @@
       "category": "Visual Metaphors",
       "description": "Iceberg avec partie visible au-dessus de la ligne d'eau et trois niveaux immergés de profondeur croissante",
       "file": "iceberg.svg",
-      "slots": ["title", "visible_label", "visible_item", "level_1", "level_2", "level_3"],
+      "slots": [
+        "hidden_content",
+        "hidden_title",
+        "title",
+        "visible_content",
+        "visible_title"
+      ],
       "best_for": "Distinguer ce qui est apparent des couches sous-jacentes plus profondes d'un phénomène"
     },
     {
-      "id": "bridge_problem_solution",
-      "name": "Pont problème vers solution",
-      "category": "Visual Metaphors",
-      "description": "Deux falaises problème et solution reliées par un pont avec leviers de transition en dessous",
-      "file": "bridge_problem_solution.svg",
-      "slots": ["title", "problem_label", "problem_item_1", "problem_item_2", "bridge_step_1", "bridge_step_2", "solution_label", "solution_item_1", "solution_item_2"],
-      "best_for": "Illustrer le passage d'une situation problématique à une situation cible via des leviers d'action"
+      "id": "idea_cluster",
+      "name": "Cluster d'idées",
+      "category": "Brainstorming",
+      "description": "6 post-its dispersés avec rotations légères, alternance accent et primary, numérotation 01 à 06",
+      "file": "idea_cluster.svg",
+      "slots": [
+        "central_idea",
+        "idea_1",
+        "idea_2",
+        "idea_3",
+        "idea_4",
+        "idea_5",
+        "title"
+      ],
+      "best_for": "Capturer librement un brainstorming avec 6 idées disposées en cluster sans hiérarchie"
+    },
+    {
+      "id": "journey_map_gps",
+      "name": "Journey Map Gps",
+      "category": "Journey",
+      "description": "Une carte de progression avec six points connectés en itinéraire, symbolisant un parcours ou une trajectoire géographique et temporelle.",
+      "file": "journey_map_gps.svg",
+      "slots": [
+        "point_1",
+        "point_2",
+        "point_3",
+        "point_4",
+        "point_5",
+        "point_6",
+        "title"
+      ],
+      "best_for": "Illustrer une progression d'étapes séquentielles, un parcours client ou une évolution de positions sur une trajectoire définie."
+    },
+    {
+      "id": "lighthouse_beacon",
+      "name": "Lighthouse Beacon",
+      "category": "Vision",
+      "description": "Un phare avec faisceau lumineux guidant vers un objectif, symbolisant l'orientation, la clarté et le cap à suivre dans une progression.",
+      "file": "lighthouse_beacon.svg",
+      "slots": [
+        "title",
+        "main_target",
+        "target_description",
+        "prep_phase",
+        "passage_phase",
+        "arrival_phase"
+      ],
+      "best_for": "Structurer un parcours avec étapes progressives menant à un objectif central, ou mettre en lumière une direction stratégique à travers des phases séquencées."
+    },
+    {
+      "id": "mindmap_central",
+      "name": "Carte mentale centrale",
+      "category": "Mindmap",
+      "description": "Nœud central avec quatre branches diagonales, chacune comportant deux sous-branches",
+      "file": "mindmap_central.svg",
+      "slots": [
+        "branch_1",
+        "branch_2",
+        "branch_3",
+        "branch_4",
+        "branch_5",
+        "branch_6",
+        "central_topic",
+        "title"
+      ],
+      "best_for": "Brainstormer ou structurer un sujet autour d'une idée centrale et de quatre axes"
+    },
+    {
+      "id": "mountain_timeline",
+      "name": "Mountain Timeline",
+      "category": "Mountain",
+      "description": "Une progression visuelle en ascension montagnarde avec cinq pics successifs, symbolisant l'escalade progressive vers un sommet final.",
+      "file": "mountain_timeline.svg",
+      "slots": [
+        "phase_1_title",
+        "phase_2_title",
+        "phase_3_title",
+        "phase_4_title",
+        "phase_5_title",
+        "title"
+      ],
+      "best_for": "Structurer une trajectoire en cinq étapes croissantes ou un parcours d'évolution où chaque phase représente une altitude/complexité accrue."
+    },
+    {
+      "id": "multilevel_mindmap",
+      "name": "Multilevel Mindmap",
+      "category": "Multi-Level",
+      "description": "Une carte mentale hiérarchisée avec un concept central rayonnant vers trois branches principales, chacune se subdivisant en niveaux profonds jusqu'à trois étages de détails.",
+      "file": "multilevel_mindmap.svg",
+      "slots": [
+        "branch_1_1",
+        "branch_1_2",
+        "branch_1_3",
+        "central_concept",
+        "sub_branch_2_1_1",
+        "sub_branch_2_1_2",
+        "sub_branch_2_2_1",
+        "sub_branch_2_2_2",
+        "sub_sub_branch_3_1_1_1",
+        "sub_sub_branch_3_1_1_2",
+        "sub_sub_branch_3_2_2_1",
+        "title"
+      ],
+      "best_for": "Décomposer un sujet complexe en arborescence logique avec un noyau central et des ramifications progressives de concepts interdépendants."
+    },
+    {
+      "id": "multiple_donuts_kpi",
+      "name": "Multiple Donuts Kpi",
+      "category": "Dashboard",
+      "description": "Trois donuts concentriques ou alignés affichant des KPIs individuels avec titres, permettant de visualiser simultanément trois métriques clés avec leurs proportions respectives.",
+      "file": "multiple_donuts_kpi.svg",
+      "slots": [
+        "kpi_1_title",
+        "kpi_2_title",
+        "kpi_3_title",
+        "title"
+      ],
+      "best_for": "Comparer trois indicateurs de performance distincts avec leurs valeurs procentuelles ou leurs parts respectives dans un contexte de suivi multidimensionnel."
+    },
+    {
+      "id": "nodal_network",
+      "name": "Nodal Network",
+      "category": "Network",
+      "description": "Un hub central connecté à huit nœuds périphériques par des liens radiaux, formant une structure en étoile ou réseau décentralisé.",
+      "file": "nodal_network.svg",
+      "slots": [
+        "central_hub",
+        "node_1",
+        "node_2",
+        "node_3",
+        "node_4",
+        "node_5",
+        "node_6",
+        "node_7",
+        "node_8",
+        "title"
+      ],
+      "best_for": "Illustrer un concept central avec ses multiples dimensions, applications ou acteurs interconnectés autour d'une idée maîtresse."
+    },
+    {
+      "id": "org_tree",
+      "name": "Arbre organisationnel",
+      "category": "Hierarchy",
+      "description": "Arbre hiérarchique avec une racine et trois enfants reliés par des connecteurs",
+      "file": "org_tree.svg",
+      "slots": [
+        "ceo_title",
+        "dept_1_title",
+        "dept_2_title",
+        "dept_3_title",
+        "title"
+      ],
+      "best_for": "Représenter une structure parent-enfants comme un organigramme ou une décomposition"
+    },
+    {
+      "id": "pie_chart_simple",
+      "name": "Pie Chart Simple",
+      "category": "Charts",
+      "description": "Un graphique circulaire divisé en segments proportionnels, chacun représentant une part d'un tout, avec étiquettes et valeurs affichées.",
+      "file": "pie_chart_simple.svg",
+      "slots": [
+        "center_label",
+        "segment_1_label",
+        "segment_1_value",
+        "segment_2_label",
+        "segment_2_value",
+        "segment_3_label",
+        "segment_3_value",
+        "segment_4_label",
+        "segment_4_value",
+        "title"
+      ],
+      "best_for": "Montrer la répartition en pourcentages ou proportions d'un ensemble homogène divisé en 3 à 4 catégories distinctes."
+    },
+    {
+      "id": "pots_plants_evolution",
+      "name": "Pots Plants Evolution",
+      "category": "Growth",
+      "description": "Quatre pots de plantes progressant du vide à la floraison complète, visualisant l'évolution étape par étape d'une croissance organique.",
+      "file": "pots_plants_evolution.svg",
+      "slots": [
+        "stage_1_title",
+        "stage_2_title",
+        "stage_3_title",
+        "stage_4_title",
+        "title"
+      ],
+      "best_for": "Illustrer une progression linéaire en 4 phases avec transformation graduelle, idéal pour cycles de développement ou maturation successive."
+    },
+    {
+      "id": "prism_decomposition",
+      "name": "Prism Decomposition",
+      "category": "Decomposition",
+      "description": "Un prisme optique qui decompose un concept central en quatre composantes distinctes, comme la lumiere blanche separee en spectres de couleurs.",
+      "file": "prism_decomposition.svg",
+      "slots": [
+        "central_concept",
+        "component_1",
+        "component_2",
+        "component_3",
+        "component_4",
+        "title"
+      ],
+      "best_for": "Analyser un sujet complexe en ses elements constitutifs ou montrer comment un tout se divise en parties complementaires et interdependantes."
+    },
+    {
+      "id": "process_3_steps",
+      "name": "Process en 3 étapes",
+      "category": "Process",
+      "description": "Séquence linéaire de 3 étapes connectées",
+      "file": "process_3_steps.svg",
+      "slots": [
+        "step_1_title",
+        "step_2_title",
+        "step_3_title",
+        "title"
+      ],
+      "best_for": "Décrire un processus court avec un début, un milieu et une fin"
+    },
+    {
+      "id": "process_5_steps",
+      "name": "Process en 5 étapes",
+      "category": "Process",
+      "description": "Séquence linéaire de 5 étapes numérotées et connectées par des flèches",
+      "file": "process_5_steps.svg",
+      "slots": [
+        "step_1_title",
+        "step_2_title",
+        "step_3_title",
+        "step_4_title",
+        "step_5_title",
+        "title"
+      ],
+      "best_for": "Détailler un processus en cinq étapes ordonnées"
+    },
+    {
+      "id": "realistic_effect",
+      "name": "Realistic Effect",
+      "category": "Realistic",
+      "description": "Un design photoréaliste avec trois cartes visuelles épurées et un bouton d'action, créant une présentation moderne et tangible.",
+      "file": "realistic_effect.svg",
+      "slots": [
+        "action_button",
+        "card_1_title",
+        "card_2_title",
+        "card_3_title",
+        "title"
+      ],
+      "best_for": "Présenter trois solutions ou concepts distincts avec appel à l'action, idéal pour comparaisons de produits ou étapes de processus."
+    },
+    {
+      "id": "roadmap_quarters",
+      "name": "Roadmap trimestrielle",
+      "category": "Timelines",
+      "description": "Quatre colonnes Q1 à Q4 avec deux initiatives par trimestre et une barre de progression",
+      "file": "roadmap_quarters.svg",
+      "slots": [
+        "q1_content",
+        "q1_title",
+        "q2_content",
+        "q2_title",
+        "q3_content",
+        "q3_title",
+        "q4_content",
+        "q4_title",
+        "title"
+      ],
+      "best_for": "Planifier les initiatives d'une année réparties sur quatre trimestres"
+    },
+    {
+      "id": "rocket_innovation",
+      "name": "Rocket Innovation",
+      "category": "Innovation",
+      "description": "Une fusée décollant à travers quatre étapes visuelles ascendantes, symbolisant la progression accélérée d'une innovation du concept au lancement commercial.",
+      "file": "rocket_innovation.svg",
+      "slots": [
+        "stage_1_idea",
+        "stage_2_strategy",
+        "stage_3_development",
+        "stage_4_launch",
+        "title"
+      ],
+      "best_for": "Structurer un parcours d'innovation en quatre phases séquentielles : idéation, planification stratégique, développement et mise sur le marché."
+    },
+    {
+      "id": "sideways_tree",
+      "name": "Sideways Tree",
+      "category": "Structure",
+      "description": "Un arbre horizontal avec une racine centrale et branches se déployant latéralement, créant une structure hiérarchique en expansion progressive.",
+      "file": "sideways_tree.svg",
+      "slots": [
+        "branch_1_title",
+        "branch_2_title",
+        "branch_3_title",
+        "root_title",
+        "sub_branch_1_1",
+        "sub_branch_1_2",
+        "sub_branch_3_1",
+        "sub_branch_3_2",
+        "title"
+      ],
+      "best_for": "Organiser une idée centrale en ramifications thématiques distinctes avec sous-catégories pour explorer un sujet en profondeur."
     },
     {
       "id": "stacked_bar",
@@ -177,8 +684,156 @@
       "category": "Parts of a Whole",
       "description": "Barre horizontale empilée à 4 segments paramétrables avec pourcentages et légende verticale",
       "file": "stacked_bar.svg",
-      "slots": ["title", "segment_1_label", "segment_1_percent", "segment_2_label", "segment_2_percent", "segment_3_label", "segment_3_percent", "segment_4_label", "segment_4_percent"],
-      "best_for": "Comparer la part relative de quatre catégories formant un tout"
+      "slots": [
+        "bar_1_label",
+        "bar_2_label",
+        "bar_3_label",
+        "legend_1",
+        "legend_2",
+        "title"
+      ],
+      "best_for": "Décomposer linéairement un total (budget, coût, temps) en étapes ou phases qui s'additionnent, généralement en parts inégales lues de gauche à droite"
+    },
+    {
+      "id": "stages_evolution_6",
+      "name": "Stages Evolution 6",
+      "category": "Journey",
+      "description": "Six étapes disposées en progression linéaire ascendante, représentant une évolution, une montée ou un parcours structuré en phases distinctes.",
+      "file": "stages_evolution_6.svg",
+      "slots": [
+        "title",
+        "stage_1_title",
+        "stage_2_title",
+        "stage_3_title",
+        "stage_4_title",
+        "stage_5_title",
+        "stage_6_title"
+      ],
+      "best_for": "Présenter un processus chronologique ou évolutif avec six jalons clés, une croissance progressive, ou un cycle de transformation structuré en étapes numérotées."
+    },
+    {
+      "id": "story_arc",
+      "name": "Arc narratif",
+      "category": "Narrative",
+      "description": "5 actes disposés sur une courbe en arche, climax au sommet, situations initiale et finale aux extrémités",
+      "file": "story_arc.svg",
+      "slots": [
+        "act_1",
+        "act_2",
+        "act_3",
+        "act_4",
+        "act_5",
+        "title"
+      ],
+      "best_for": "Raconter une histoire en 5 actes : situation initiale, déclencheur, climax, résolution, situation finale"
+    },
+    {
+      "id": "swot_matrix",
+      "name": "Matrice SWOT",
+      "category": "Business Frameworks",
+      "description": "Matrice 2x2 forces, faiblesses, opportunités et menaces, chaque case avec 3 puces",
+      "file": "swot_matrix.svg",
+      "slots": [
+        "opportunities_content",
+        "opportunities_title",
+        "strengths_content",
+        "strengths_title",
+        "threats_content",
+        "threats_title",
+        "title",
+        "weaknesses_content",
+        "weaknesses_title"
+      ],
+      "best_for": "Réaliser un diagnostic stratégique interne et externe d'une organisation ou d'un projet"
+    },
+    {
+      "id": "telescope_tripod",
+      "name": "Telescope Tripod",
+      "category": "Exploration",
+      "description": "Un télescope sur trépied symbolise l'observation précise et dirigée, représentant la capacité à examiner des éléments distants ou complexes avec focus et stabilité.",
+      "file": "telescope_tripod.svg",
+      "slots": [
+        "observation_1",
+        "observation_2",
+        "observation_3",
+        "observation_4",
+        "title"
+      ],
+      "best_for": "Présenter quatre observations ou découvertes détaillées autour d'un sujet central d'exploration, en mettant l'accent sur l'analyse approfondie et progressive."
+    },
+    {
+      "id": "timeline_horizontal",
+      "name": "Frise chronologique",
+      "category": "Timelines",
+      "description": "Ligne horizontale avec 4 jalons, dates au-dessus et événements en dessous",
+      "file": "timeline_horizontal.svg",
+      "slots": [
+        "date_1",
+        "date_2",
+        "date_3",
+        "date_4",
+        "event_1",
+        "event_2",
+        "event_3",
+        "event_4",
+        "title"
+      ],
+      "best_for": "Présenter une succession d'événements datés sur une période"
+    },
+    {
+      "id": "venn_2_circles",
+      "name": "Diagramme de Venn 2 cercles",
+      "category": "Comparaisons",
+      "description": "Deux cercles qui se chevauchent pour montrer les éléments communs et distincts",
+      "file": "venn_2_circles.svg",
+      "slots": [
+        "circle_a_label",
+        "title"
+      ],
+      "best_for": "Comparer deux concepts en mettant en évidence leurs points communs et leurs différences"
+    },
+    {
+      "id": "watercolor_effect",
+      "name": "Watercolor Effect",
+      "category": "Watercolor",
+      "description": "Des taches de couleur fluides et translucides qui se diffusent organiquement, créant une atmosphère artistique et harmonieuse.",
+      "file": "watercolor_effect.svg",
+      "slots": [
+        "concept_1",
+        "concept_2",
+        "concept_3",
+        "synthesis",
+        "title"
+      ],
+      "best_for": "Présenter des concepts abstraits ou des idées fluides qui se nourrissent mutuellement dans une progression douce et progressive."
+    },
+    {
+      "id": "whiteboard_effect",
+      "name": "Whiteboard Effect",
+      "category": "Whiteboard",
+      "description": "Un tableau blanc esquissé avec trois zones d'idées principales et une synthèse centrale, évoquant une session créative collaborative et informelle.",
+      "file": "whiteboard_effect.svg",
+      "slots": [
+        "idea_1",
+        "idea_2",
+        "idea_3",
+        "synthesis",
+        "title"
+      ],
+      "best_for": "Structurer des brainstormings avec trois concepts distincts à combiner ou explorer avant d'en extraire une conclusion unifiée."
+    },
+    {
+      "id": "duality_panels",
+      "name": "Duality Panels",
+      "category": "Comparison",
+      "description": "Deux panneaux symétriques pour explorer une dualité, un contraste ou une transformation binaire avec clarté visuelle.",
+      "file": "duality_panels.svg",
+      "slots": [
+        "left_panel",
+        "right_panel",
+        "title"
+      ],
+      "best_for": "Confronter deux états, perspectives ou arguments opposés en les mettant visuellement en miroir pour mettre en évidence leurs différences fondamentales et leurs implications respectives."
     }
   ]
 }
