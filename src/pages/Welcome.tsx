@@ -73,7 +73,7 @@ export default function Welcome() {
     <div className="min-h-screen bg-muted/30">
       <header className="border-b bg-background">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <h1 className="text-xl font-bold text-[#0F2A44]">Krobar</h1>
+          <h1 className="text-xl font-bold text-[#2563EB]">Krobar</h1>
           <AccountMenu />
         </div>
       </header>
