@@ -1,0 +1,33 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            set -e
+            echo "=== Pull du dernier code ==="
+            cd /var/www/krobar.online
+            git fetch origin main
+            git reset --hard origin/main
+            echo ""
+            echo "=== Installation des dependances ==="
+            npm install
+            echo ""
+            echo "=== Build Vite ==="
+            npm run build
+            echo ""
+            echo "=== Deploiement termine ==="
+            ls -la dist/ | head -5
