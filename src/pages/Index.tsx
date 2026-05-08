@@ -1457,6 +1457,10 @@ const Index = () => {
       return;
     }
     if (!manifest) return;
+    if (quota.loading) {
+      toast.message("Vérification du quota en cours…");
+      return;
+    }
     if (!quota.canGenerate) {
       toast.error(
         quota.limit === 0
