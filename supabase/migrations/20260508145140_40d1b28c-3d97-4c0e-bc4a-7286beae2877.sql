@@ -1,0 +1,1 @@
+UPDATE public.profiles SET plan = 'premium', is_active = true WHERE email IN ('eric.combalbert@gmail.com', 'eric@next-u.fr');
