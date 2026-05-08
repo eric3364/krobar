@@ -1,0 +1,33 @@
+<svg viewBox="0 0 680 320" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .label-strong { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 15px; font-weight: 600; }
+    .label { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 13px; font-weight: 500; }
+    .gloss { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 400; font-style: italic; fill: var(--muted); }
+    .gloss-strong { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 500; }
+    .caption { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 10px; font-weight: 400; font-style: italic; fill: var(--muted); }
+    .axis { stroke: var(--border); stroke-width: 0.6; fill: none; }
+  </style>
+
+  <line x1="60" y1="190" x2="620" y2="190" stroke="var(--text)" stroke-width="1.4"/>
+  <line x1="60" y1="180" x2="60" y2="225" stroke="var(--cool)" stroke-width="2.2"/>
+  <line x1="180" y1="184" x2="180" y2="220" stroke="var(--cool)" stroke-width="1.6"/>
+  <line x1="300" y1="184" x2="300" y2="220" stroke="var(--cool)" stroke-width="1.4"/>
+  <line x1="380" y1="170" x2="380" y2="240" stroke="var(--tertiary)" stroke-width="2.8"/>
+  <circle cx="380" cy="155" r="6" fill="var(--bg)" stroke="var(--tertiary)" stroke-width="1.6"/>
+  <line x1="460" y1="184" x2="460" y2="220" stroke="var(--warm)" stroke-width="1.4"/>
+  <line x1="540" y1="184" x2="540" y2="220" stroke="var(--warm)" stroke-width="1.6"/>
+  <line x1="620" y1="180" x2="620" y2="225" stroke="var(--warm)" stroke-width="2.2"/>
+  <text x="60" y="170" class="label" text-anchor="middle" fill="var(--cool)">{{step_1}}</text>
+  <text x="60" y="245" class="gloss" text-anchor="middle">{{regime_before_label}}</text>
+  <text x="180" y="170" class="label" text-anchor="middle" fill="var(--cool)">{{step_2}}</text>
+  <text x="300" y="170" class="label" text-anchor="middle" fill="var(--cool)">{{step_3}}</text>
+  <text x="380" y="135" class="label-strong" text-anchor="middle" fill="var(--tertiary)">{{threshold_value}}</text>
+  <text x="380" y="120" class="gloss-strong" text-anchor="middle" fill="var(--tertiary)">{{threshold_label}}</text>
+  <text x="460" y="170" class="label" text-anchor="middle" fill="var(--warm)">{{step_4}}</text>
+  <text x="540" y="170" class="label" text-anchor="middle" fill="var(--warm)">{{step_5}}</text>
+  <text x="540" y="245" class="gloss" text-anchor="middle">{{regime_after_label}}</text>
+  <text x="620" y="170" class="label" text-anchor="middle" fill="var(--warm)">{{step_6}}</text>
+  <text x="180" y="280" class="caption" text-anchor="middle">{{regime_before_summary}}</text>
+  <text x="540" y="280" class="caption" text-anchor="middle">{{regime_after_summary}}</text>
+  <text x="40" y="40" class="caption">{{caption}}</text>
+</svg>

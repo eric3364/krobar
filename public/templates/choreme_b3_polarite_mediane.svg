@@ -1,0 +1,25 @@
+<svg viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .label-strong { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 15px; font-weight: 600; }
+    .label { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 13px; font-weight: 500; }
+    .gloss { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 400; font-style: italic; fill: var(--muted); }
+    .gloss-strong { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 500; }
+    .caption { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 10px; font-weight: 400; font-style: italic; fill: var(--muted); }
+    .axis { stroke: var(--border); stroke-width: 0.6; fill: none; }
+  </style>
+
+  <line x1="80" y1="140" x2="600" y2="140" stroke="var(--border)" stroke-width="0.6"/>
+  <circle cx="140" cy="140" r="55" fill="var(--bg)" stroke="var(--warm)" stroke-width="2"/>
+  <text x="140" y="143" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)">{{pole_left}}</text>
+  <text x="140" y="225" class="gloss" text-anchor="middle">{{pole_left_gloss_1}}</text>
+  <text x="140" y="243" class="gloss" text-anchor="middle">{{pole_left_gloss_2}}</text>
+  <polygon points="260,140 300,84 380,84 420,140 380,196 300,196" fill="var(--bg)" stroke="var(--accent)" stroke-width="2"/>
+  <text x="340" y="130" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--accent)">{{median_line1}}</text>
+  <text x="340" y="148" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--accent)">{{median_line2}}</text>
+  <text x="340" y="225" class="gloss" text-anchor="middle">{{median_gloss_1}}</text>
+  <text x="340" y="243" class="gloss" text-anchor="middle">{{median_gloss_2}}</text>
+  <circle cx="540" cy="140" r="55" fill="var(--bg)" stroke="var(--cool)" stroke-width="2"/>
+  <text x="540" y="143" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--cool)">{{pole_right}}</text>
+  <text x="540" y="225" class="gloss" text-anchor="middle">{{pole_right_gloss_1}}</text>
+  <text x="540" y="243" class="gloss" text-anchor="middle">{{pole_right_gloss_2}}</text>
+</svg>

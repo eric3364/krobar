@@ -1,0 +1,35 @@
+<svg viewBox="0 0 680 460" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .label-strong { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 15px; font-weight: 600; }
+    .label { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 13px; font-weight: 500; }
+    .gloss { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 400; font-style: italic; fill: var(--muted); }
+    .gloss-strong { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 500; }
+    .caption { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 10px; font-weight: 400; font-style: italic; fill: var(--muted); }
+    .axis { stroke: var(--border); stroke-width: 0.6; fill: none; }
+  </style>
+
+  <line x1="340" y1="155" x2="340" y2="195" stroke="var(--border)" stroke-width="0.8"/>
+  <line x1="510" y1="240" x2="475" y2="220" stroke="var(--border)" stroke-width="0.8"/>
+  <line x1="510" y1="320" x2="475" y2="300" stroke="var(--border)" stroke-width="0.8"/>
+  <line x1="170" y1="320" x2="205" y2="300" stroke="var(--border)" stroke-width="0.8"/>
+  <line x1="170" y1="240" x2="205" y2="220" stroke="var(--border)" stroke-width="0.8"/>
+  <circle cx="340" cy="260" r="65" fill="var(--bg)" stroke="var(--primary)" stroke-width="2.5"/>
+  <text x="340" y="252" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{core_line1}}</text>
+  <text x="340" y="270" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{core_line2}}</text>
+  <circle cx="340" cy="115" r="40" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
+  <text x="340" y="113" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{satellite_1}}</text>
+  <text x="340" y="65" class="gloss" text-anchor="middle">{{satellite_1_gloss}}</text>
+  <circle cx="540" cy="220" r="40" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
+  <text x="540" y="218" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{satellite_2}}</text>
+  <text x="540" y="170" class="gloss" text-anchor="middle">{{satellite_2_gloss}}</text>
+  <circle cx="540" cy="340" r="40" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
+  <text x="540" y="338" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{satellite_3}}</text>
+  <text x="540" y="395" class="gloss" text-anchor="middle">{{satellite_3_gloss}}</text>
+  <circle cx="140" cy="340" r="40" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
+  <text x="140" y="338" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{satellite_4}}</text>
+  <text x="140" y="395" class="gloss" text-anchor="middle">{{satellite_4_gloss}}</text>
+  <circle cx="140" cy="220" r="40" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
+  <text x="140" y="218" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{satellite_5}}</text>
+  <text x="140" y="170" class="gloss" text-anchor="middle">{{satellite_5_gloss}}</text>
+  <text x="40" y="440" class="caption">{{caption}}</text>
+</svg>

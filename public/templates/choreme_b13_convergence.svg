@@ -1,0 +1,52 @@
+<svg viewBox="0 0 680 460" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .label-strong { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 15px; font-weight: 600; }
+    .label { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 13px; font-weight: 500; }
+    .gloss { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 400; font-style: italic; fill: var(--muted); }
+    .gloss-strong { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 500; }
+    .caption { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 10px; font-weight: 400; font-style: italic; fill: var(--muted); }
+    .axis { stroke: var(--border); stroke-width: 0.6; fill: none; }
+  </style>
+
+  <defs>
+    <marker id="arrowb13a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arrowb13b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="var(--cool)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arrowb13c" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="var(--warm)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <pattern id="hatchb13" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="var(--tertiary)" stroke-width="0.5" opacity="0.4"/>
+    </pattern>
+  </defs>
+  <line x1="80" y1="120" x2="495" y2="220" stroke="var(--primary)" stroke-width="2" marker-end="url(#arrowb13a)"/>
+  <circle cx="180" cy="144" r="3" fill="var(--primary)"/>
+  <circle cx="280" cy="168" r="3" fill="var(--primary)"/>
+  <circle cx="380" cy="192" r="3" fill="var(--primary)"/>
+  <text x="40" y="115" class="label" fill="var(--primary)">{{trajectory_1}}</text>
+  <text x="40" y="135" class="gloss">{{trajectory_1_gloss}}</text>
+  <line x1="80" y1="220" x2="495" y2="240" stroke="var(--cool)" stroke-width="2" marker-end="url(#arrowb13b)"/>
+  <circle cx="180" cy="225" r="3" fill="var(--cool)"/>
+  <circle cx="280" cy="230" r="3" fill="var(--cool)"/>
+  <circle cx="380" cy="234" r="3" fill="var(--cool)"/>
+  <text x="40" y="215" class="label" fill="var(--cool)">{{trajectory_2}}</text>
+  <text x="40" y="195" class="gloss">{{trajectory_2_gloss}}</text>
+  <line x1="80" y1="320" x2="495" y2="265" stroke="var(--warm)" stroke-width="2" marker-end="url(#arrowb13c)"/>
+  <circle cx="180" cy="307" r="3" fill="var(--warm)"/>
+  <circle cx="280" cy="293" r="3" fill="var(--warm)"/>
+  <circle cx="380" cy="280" r="3" fill="var(--warm)"/>
+  <text x="40" y="315" class="label" fill="var(--warm)">{{trajectory_3}}</text>
+  <text x="40" y="335" class="gloss">{{trajectory_3_gloss}}</text>
+  <circle cx="540" cy="240" r="55" fill="var(--bg)" stroke="var(--accent)" stroke-width="2.5"/>
+  <text x="540" y="232" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--accent)">{{target_value}}</text>
+  <text x="540" y="252" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--accent)">{{target_label}}</text>
+  <rect x="40" y="380" width="600" height="50" fill="url(#hatchb13)" stroke="var(--tertiary)" stroke-width="0.8" stroke-dasharray="3 3"/>
+  <text x="55" y="402" class="gloss-strong" fill="var(--tertiary)">{{prerequisites_label}}</text>
+  <text x="280" y="402" class="gloss" fill="var(--tertiary)">{{prerequisite_1}}</text>
+  <text x="425" y="402" class="gloss" fill="var(--tertiary)">{{prerequisite_2}}</text>
+  <text x="555" y="402" class="gloss" fill="var(--tertiary)">{{prerequisite_3}}</text>
+  <text x="40" y="445" class="caption">{{caption}}</text>
+</svg>

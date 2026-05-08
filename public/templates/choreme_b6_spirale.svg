@@ -1,0 +1,35 @@
+<svg viewBox="0 0 680 460" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .label-strong { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 15px; font-weight: 600; }
+    .label { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 13px; font-weight: 500; }
+    .gloss { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 400; font-style: italic; fill: var(--muted); }
+    .gloss-strong { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 500; }
+    .caption { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 10px; font-weight: 400; font-style: italic; fill: var(--muted); }
+    .axis { stroke: var(--border); stroke-width: 0.6; fill: none; }
+  </style>
+
+  <defs>
+    <marker id="arrowb6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="var(--warm)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <path d="M 340 230
+           Q 380 230 380 200
+           Q 380 160 320 160
+           Q 240 160 240 240
+           Q 240 340 360 340
+           Q 500 340 500 200
+           Q 500 60 320 60"
+        fill="none" stroke="var(--warm)" stroke-width="2" marker-end="url(#arrowb6)"/>
+  <circle cx="380" cy="200" r="4" fill="var(--warm)"/>
+  <circle cx="500" cy="200" r="4" fill="var(--warm)"/>
+  <circle cx="320" cy="60" r="4" fill="var(--warm)"/>
+  <text x="395" y="195" class="gloss-strong" fill="var(--warm)">{{turn_1_label}}</text>
+  <text x="515" y="195" class="gloss-strong" fill="var(--warm)">{{turn_2_label}}</text>
+  <text x="335" y="55" class="gloss-strong" fill="var(--warm)">{{turn_3_label}}</text>
+  <text x="395" y="218" class="gloss" fill="var(--muted)">{{turn_1_gloss}}</text>
+  <text x="515" y="218" class="gloss" fill="var(--muted)">{{turn_2_gloss}}</text>
+  <text x="335" y="38" class="gloss" fill="var(--muted)">{{turn_3_gloss}}</text>
+  <text x="40" y="380" class="caption">{{caption_1}}</text>
+  <text x="40" y="402" class="caption">{{caption_2}}</text>
+</svg>

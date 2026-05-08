@@ -1,0 +1,39 @@
+<svg viewBox="0 0 680 460" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .label-strong { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 15px; font-weight: 600; }
+    .label { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 13px; font-weight: 500; }
+    .gloss { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 400; font-style: italic; fill: var(--muted); }
+    .gloss-strong { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 500; }
+    .caption { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 10px; font-weight: 400; font-style: italic; fill: var(--muted); }
+    .axis { stroke: var(--border); stroke-width: 0.6; fill: none; }
+  </style>
+
+  <line x1="180" y1="110" x2="320" y2="200" stroke="var(--border)" stroke-width="0.7"/>
+  <line x1="340" y1="65" x2="340" y2="200" stroke="var(--border)" stroke-width="0.7"/>
+  <line x1="500" y1="110" x2="360" y2="200" stroke="var(--border)" stroke-width="0.7"/>
+  <line x1="200" y1="290" x2="320" y2="240" stroke="var(--border)" stroke-width="0.7"/>
+  <line x1="480" y1="290" x2="360" y2="240" stroke="var(--border)" stroke-width="0.7"/>
+  <line x1="180" y1="110" x2="340" y2="65" stroke="var(--border)" stroke-width="0.5"/>
+  <line x1="340" y1="65" x2="500" y2="110" stroke="var(--border)" stroke-width="0.5"/>
+  <line x1="500" y1="110" x2="480" y2="290" stroke="var(--border)" stroke-width="0.5"/>
+  <line x1="200" y1="290" x2="480" y2="290" stroke="var(--border)" stroke-width="0.5"/>
+  <line x1="180" y1="110" x2="200" y2="290" stroke="var(--border)" stroke-width="0.5"/>
+  <circle cx="340" cy="220" r="35" fill="var(--bg)" stroke="var(--tertiary)" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="340" y="218" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--tertiary)" font-style="italic">{{center_line1}}</text>
+  <text x="340" y="234" class="gloss" text-anchor="middle" dominant-baseline="central">{{center_line2}}</text>
+  <circle cx="180" cy="110" r="42" fill="var(--bg)" stroke="var(--warm)" stroke-width="1.6"/>
+  <text x="180" y="108" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)">{{periphery_1}}</text>
+  <text x="180" y="56" class="gloss" text-anchor="middle">{{periphery_1_gloss}}</text>
+  <circle cx="340" cy="65" r="42" fill="var(--bg)" stroke="var(--warm)" stroke-width="1.6"/>
+  <text x="340" y="63" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)">{{periphery_2}}</text>
+  <circle cx="500" cy="110" r="42" fill="var(--bg)" stroke="var(--warm)" stroke-width="1.6"/>
+  <text x="500" y="108" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)">{{periphery_3}}</text>
+  <text x="500" y="56" class="gloss" text-anchor="middle">{{periphery_3_gloss}}</text>
+  <circle cx="200" cy="290" r="42" fill="var(--bg)" stroke="var(--warm)" stroke-width="1.6"/>
+  <text x="200" y="288" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)">{{periphery_4_line1}}</text>
+  <text x="200" y="304" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)">{{periphery_4_line2}}</text>
+  <circle cx="480" cy="290" r="42" fill="var(--bg)" stroke="var(--warm)" stroke-width="1.6"/>
+  <text x="480" y="288" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)">{{periphery_5_line1}}</text>
+  <text x="480" y="304" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)">{{periphery_5_line2}}</text>
+  <text x="40" y="430" class="caption">{{caption}}</text>
+</svg>

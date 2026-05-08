@@ -1,0 +1,36 @@
+<svg viewBox="0 0 680 460" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .label-strong { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 15px; font-weight: 600; }
+    .label { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 13px; font-weight: 500; }
+    .gloss { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 400; font-style: italic; fill: var(--muted); }
+    .gloss-strong { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 500; }
+    .caption { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 10px; font-weight: 400; font-style: italic; fill: var(--muted); }
+    .axis { stroke: var(--border); stroke-width: 0.6; fill: none; }
+  </style>
+
+  <defs>
+    <marker id="arrowb2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <line x1="340" y1="100" x2="340" y2="180" stroke="var(--muted)" stroke-width="0.9" marker-end="url(#arrowb2)"/>
+  <line x1="340" y1="380" x2="340" y2="300" stroke="var(--muted)" stroke-width="0.9" marker-end="url(#arrowb2)"/>
+  <line x1="160" y1="240" x2="240" y2="240" stroke="var(--muted)" stroke-width="0.9" marker-end="url(#arrowb2)"/>
+  <line x1="520" y1="240" x2="440" y2="240" stroke="var(--muted)" stroke-width="0.9" marker-end="url(#arrowb2)"/>
+  <circle cx="340" cy="240" r="65" fill="var(--bg)" stroke="var(--warm)" stroke-width="2.5"/>
+  <text x="340" y="234" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)">{{center_line1}}</text>
+  <text x="340" y="252" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)">{{center_line2}}</text>
+  <rect x="270" y="55" width="140" height="50" rx="4" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
+  <text x="340" y="72" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{force_top_line1}}</text>
+  <text x="340" y="90" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{force_top_line2}}</text>
+  <rect x="270" y="380" width="140" height="50" rx="4" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
+  <text x="340" y="397" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{force_bottom_line1}}</text>
+  <text x="340" y="415" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{force_bottom_line2}}</text>
+  <rect x="40" y="215" width="120" height="50" rx="4" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
+  <text x="100" y="232" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{force_left_line1}}</text>
+  <text x="100" y="250" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{force_left_line2}}</text>
+  <rect x="520" y="215" width="120" height="50" rx="4" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
+  <text x="580" y="232" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{force_right_line1}}</text>
+  <text x="580" y="250" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{force_right_line2}}</text>
+  <text x="40" y="445" class="caption">{{caption}}</text>
+</svg>

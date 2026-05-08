@@ -18,7 +18,29 @@
         "title",
         "top_branch"
       ],
-      "best_for": "Organiser une idée principale avec des développements inégaux, explorant plus de nuances d'un côté que de l'autre ou comparant des hiérarchies conceptuelles déséquilibrées."
+      "best_for": "Organiser une idée principale avec des développements inégaux, explorant plus de nuances d'un côté que de l'autre ou comparant des hiérarchies conceptuelles déséquilibrées.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "central_topic",
+            "left_branch_1",
+            "left_branch_2",
+            "right_branch_1",
+            "right_branch_2",
+            "right_branch_3",
+            "right_sub_1_1",
+            "right_sub_1_2",
+            "top_branch"
+          ]
+        }
+      }
     },
     {
       "id": "bars_horizontal_sketchy",
@@ -37,7 +59,28 @@
         "bar_4_value",
         "title"
       ],
-      "best_for": "Comparer 4 catégories ou métriques sur une même échelle avec un ton informel et accessible."
+      "best_for": "Comparer 4 catégories ou métriques sur une même échelle avec un ton informel et accessible.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "bar_1_label",
+            "bar_1_value",
+            "bar_2_label",
+            "bar_2_value",
+            "bar_3_label",
+            "bar_3_value",
+            "bar_4_label",
+            "bar_4_value"
+          ]
+        }
+      }
     },
     {
       "id": "bcg_matrix",
@@ -52,7 +95,24 @@
         "stars_title",
         "title"
       ],
-      "best_for": "Analyser un portefeuille de produits selon leur part de marché et leur croissance"
+      "best_for": "Analyser un portefeuille de produits selon leur part de marché et leur croissance",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "cashcows_title",
+            "dogs_title",
+            "questions_title",
+            "stars_title"
+          ]
+        }
+      }
     },
     {
       "id": "bridge_problem_solution",
@@ -71,7 +131,28 @@
         "solution_label",
         "title"
       ],
-      "best_for": "Illustrer le passage d'une situation problématique à une situation cible via des leviers d'action"
+      "best_for": "Illustrer le passage d'une situation problématique à une situation cible via des leviers d'action",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "bridge_step_1",
+            "bridge_step_2",
+            "problem_item_1",
+            "problem_item_2",
+            "problem_label",
+            "solution_item_1",
+            "solution_item_2",
+            "solution_label"
+          ]
+        }
+      }
     },
     {
       "id": "bullseye_target",
@@ -88,7 +169,26 @@
         "ring_4_title",
         "title"
       ],
-      "best_for": "Organiser des éléments par ordre de priorité décroissante ou classifier des tâches selon leur urgence et impact stratégique."
+      "best_for": "Organiser des éléments par ordre de priorité décroissante ou classifier des tâches selon leur urgence et impact stratégique.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "legend_high",
+            "legend_medium",
+            "ring_1_title",
+            "ring_2_title",
+            "ring_3_title",
+            "ring_4_title"
+          ]
+        }
+      }
     },
     {
       "id": "business_model_canvas",
@@ -108,7 +208,29 @@
         "title",
         "value_proposition"
       ],
-      "best_for": "Modéliser le fonctionnement global d'un business sur une seule page"
+      "best_for": "Modéliser le fonctionnement global d'un business sur une seule page",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "activities",
+            "channels",
+            "cost_structure",
+            "partners",
+            "relationships",
+            "resources",
+            "revenue_streams",
+            "segments",
+            "value_proposition"
+          ]
+        }
+      }
     },
     {
       "id": "butterfly_metamorphosis",
@@ -125,7 +247,26 @@
         "stage_6_title",
         "title"
       ],
-      "best_for": "Décrire des processus de développement personnel, des cycles de vie, ou des transitions majeures passant par plusieurs phases distinctes et irréversibles."
+      "best_for": "Décrire des processus de développement personnel, des cycles de vie, ou des transitions majeures passant par plusieurs phases distinctes et irréversibles.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "stage_1_title",
+            "stage_2_title",
+            "stage_3_title",
+            "stage_4_title",
+            "stage_5_title",
+            "stage_6_title"
+          ]
+        }
+      }
     },
     {
       "id": "cause_effect_arrows",
@@ -141,7 +282,25 @@
         "problem",
         "title"
       ],
-      "best_for": "Montrer comment plusieurs facteurs convergent vers un même résultat"
+      "best_for": "Montrer comment plusieurs facteurs convergent vers un même résultat",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "cause_1",
+            "cause_2",
+            "cause_3",
+            "effect",
+            "problem"
+          ]
+        }
+      }
     },
     {
       "id": "colorful_staircase",
@@ -157,7 +316,20 @@
         "step_5_title",
         "title"
       ],
-      "best_for": "Présenter une évolution chronologique, un processus d'apprentissage ou une stratégie avec cinq étapes ordonnées où chaque niveau dépend du précédent."
+      "best_for": "Présenter une évolution chronologique, un processus d'apprentissage ou une stratégie avec cinq étapes ordonnées où chaque niveau dépend du précédent.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "step_1_title",
+            "step_2_title",
+            "step_3_title",
+            "step_4_title",
+            "step_5_title",
+            "title"
+          ]
+        }
+      }
     },
     {
       "id": "comparison_2_columns",
@@ -172,7 +344,24 @@
         "column_2_title",
         "title"
       ],
-      "best_for": "Comparer deux concepts, options ou approches"
+      "best_for": "Comparer deux concepts, options ou approches",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "column_1_content",
+            "column_1_title",
+            "column_2_content",
+            "column_2_title"
+          ]
+        }
+      }
     },
     {
       "id": "comparison_3_columns",
@@ -189,7 +378,26 @@
         "column_3_title",
         "title"
       ],
-      "best_for": "Comparer trois options ou approches en mettant l'option recommandée en avant"
+      "best_for": "Comparer trois options ou approches en mettant l'option recommandée en avant",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "column_1_content",
+            "column_1_title",
+            "column_2_content",
+            "column_2_title",
+            "column_3_content",
+            "column_3_title"
+          ]
+        }
+      }
     },
     {
       "id": "convergent_mindmap",
@@ -206,7 +414,26 @@
         "source_5",
         "title"
       ],
-      "best_for": "Montrer comment différentes idées, sources ou perspectives se rejoignent progressivement vers une conclusion, solution ou objectif commun."
+      "best_for": "Montrer comment différentes idées, sources ou perspectives se rejoignent progressivement vers une conclusion, solution ou objectif commun.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "convergence_point",
+            "source_1",
+            "source_2",
+            "source_3",
+            "source_4",
+            "source_5"
+          ]
+        }
+      }
     },
     {
       "id": "curve_exponential",
@@ -219,7 +446,22 @@
         "y_max",
         "y_mid"
       ],
-      "best_for": "Montrer une accélération de croissance, une multiplication d'impact ou une progression qui s'amplifie de manière non-linéaire dans le temps."
+      "best_for": "Montrer une accélération de croissance, une multiplication d'impact ou une progression qui s'amplifie de manière non-linéaire dans le temps.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "y_max",
+            "y_mid"
+          ]
+        }
+      }
     },
     {
       "id": "cycle_4_steps",
@@ -234,7 +476,19 @@
         "step_4_title",
         "title"
       ],
-      "best_for": "Représenter un cycle, une boucle ou un processus itératif"
+      "best_for": "Représenter un cycle, une boucle ou un processus itératif",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "step_1_title",
+            "step_2_title",
+            "step_3_title",
+            "step_4_title",
+            "title"
+          ]
+        }
+      }
     },
     {
       "id": "cycle_6_steps",
@@ -251,7 +505,21 @@
         "step_6_title",
         "title"
       ],
-      "best_for": "Décrire des processus répétitifs, des workflows circulaires, ou des cycles de vie où l'étape 6 revient à l'étape 1 de manière continue et régulière."
+      "best_for": "Décrire des processus répétitifs, des workflows circulaires, ou des cycles de vie où l'étape 6 revient à l'étape 1 de manière continue et régulière.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "step_1_title",
+            "step_2_title",
+            "step_3_title",
+            "step_4_title",
+            "step_5_title",
+            "step_6_title",
+            "title"
+          ]
+        }
+      }
     },
     {
       "id": "donut_4_parts",
@@ -274,7 +542,32 @@
         "percent_4",
         "title"
       ],
-      "best_for": "Visualiser une répartition équilibrée d'un tout en proportions à comparer entre elles, comme des parts de marché, données démographiques ou catégories statistiques"
+      "best_for": "Visualiser une répartition équilibrée d'un tout en proportions à comparer entre elles, comme des parts de marché, données démographiques ou catégories statistiques",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "arc_1",
+            "arc_2",
+            "arc_3",
+            "arc_4",
+            "label_1",
+            "label_2",
+            "label_3",
+            "label_4",
+            "percent_1",
+            "percent_2",
+            "percent_3",
+            "percent_4"
+          ]
+        }
+      }
     },
     {
       "id": "fishbone",
@@ -298,7 +591,33 @@
         "effect",
         "title"
       ],
-      "best_for": "Analyser les causes profondes d'un problème selon plusieurs catégories"
+      "best_for": "Analyser les causes profondes d'un problème selon plusieurs catégories",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "category_1",
+            "category_2",
+            "category_3",
+            "category_4",
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "cause_1_1",
+            "cause_1_2",
+            "cause_2_1",
+            "cause_2_2",
+            "cause_3_1",
+            "cause_3_2",
+            "cause_4_1",
+            "cause_4_2",
+            "effect"
+          ]
+        }
+      }
     },
     {
       "id": "five_forces",
@@ -314,7 +633,25 @@
         "title",
         "top_force"
       ],
-      "best_for": "Analyser l'intensité concurrentielle et l'attractivité d'un secteur d'activité"
+      "best_for": "Analyser l'intensité concurrentielle et l'attractivité d'un secteur d'activité",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "bottom_force",
+            "center_force",
+            "left_force",
+            "right_force",
+            "top_force"
+          ]
+        }
+      }
     },
     {
       "id": "flowchart_decision",
@@ -327,7 +664,22 @@
         "start_step",
         "title"
       ],
-      "best_for": "Structurer des processus avec points de bifurcation, où chaque décision ouvre deux ou plusieurs branches divergentes et convergentes."
+      "best_for": "Structurer des processus avec points de bifurcation, où chaque décision ouvre deux ou plusieurs branches divergentes et convergentes.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "decision_question",
+            "start_step"
+          ]
+        }
+      }
     },
     {
       "id": "flowing_arrows",
@@ -343,7 +695,25 @@
         "flow_transform",
         "title"
       ],
-      "best_for": "Illustrer un processus itératif avec étapes de transformation, raffinage et output, où chaque phase alimente la suivante dans un flux continu."
+      "best_for": "Illustrer un processus itératif avec étapes de transformation, raffinage et output, où chaque phase alimente la suivante dans un flux continu.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "flow_output",
+            "flow_process",
+            "flow_refine",
+            "flow_start",
+            "flow_transform"
+          ]
+        }
+      }
     },
     {
       "id": "hierarchy_pyramid",
@@ -357,7 +727,23 @@
         "title",
         "top_label"
       ],
-      "best_for": "Montrer une hiérarchie, des priorités ou une structure pyramidale"
+      "best_for": "Montrer une hiérarchie, des priorités ou une structure pyramidale",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "bottom_label",
+            "middle_label",
+            "top_label"
+          ]
+        }
+      }
     },
     {
       "id": "iceberg",
@@ -372,7 +758,24 @@
         "visible_content",
         "visible_title"
       ],
-      "best_for": "Distinguer ce qui est apparent des couches sous-jacentes plus profondes d'un phénomène"
+      "best_for": "Distinguer ce qui est apparent des couches sous-jacentes plus profondes d'un phénomène",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "hidden_content",
+            "hidden_title",
+            "visible_content",
+            "visible_title"
+          ]
+        }
+      }
     },
     {
       "id": "idea_cluster",
@@ -389,7 +792,26 @@
         "idea_5",
         "title"
       ],
-      "best_for": "Capturer librement un brainstorming avec 6 idées disposées en cluster sans hiérarchie"
+      "best_for": "Capturer librement un brainstorming avec 6 idées disposées en cluster sans hiérarchie",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "central_idea",
+            "idea_1",
+            "idea_2",
+            "idea_3",
+            "idea_4",
+            "idea_5"
+          ]
+        }
+      }
     },
     {
       "id": "journey_map_gps",
@@ -406,7 +828,26 @@
         "point_6",
         "title"
       ],
-      "best_for": "Illustrer une progression d'étapes séquentielles, un parcours client ou une évolution de positions sur une trajectoire définie."
+      "best_for": "Illustrer une progression d'étapes séquentielles, un parcours client ou une évolution de positions sur une trajectoire définie.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "point_1",
+            "point_2",
+            "point_3",
+            "point_4",
+            "point_5",
+            "point_6"
+          ]
+        }
+      }
     },
     {
       "id": "lighthouse_beacon",
@@ -422,7 +863,25 @@
         "passage_phase",
         "arrival_phase"
       ],
-      "best_for": "Structurer un parcours avec étapes progressives menant à un objectif central, ou mettre en lumière une direction stratégique à travers des phases séquencées."
+      "best_for": "Structurer un parcours avec étapes progressives menant à un objectif central, ou mettre en lumière une direction stratégique à travers des phases séquencées.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "main_target",
+            "target_description",
+            "prep_phase",
+            "passage_phase",
+            "arrival_phase"
+          ]
+        }
+      }
     },
     {
       "id": "mindmap_central",
@@ -440,7 +899,27 @@
         "central_topic",
         "title"
       ],
-      "best_for": "Brainstormer ou structurer un sujet autour d'une idée centrale et de quatre axes"
+      "best_for": "Brainstormer ou structurer un sujet autour d'une idée centrale et de quatre axes",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "branch_1",
+            "branch_2",
+            "branch_3",
+            "branch_4",
+            "branch_5",
+            "branch_6",
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "central_topic"
+          ]
+        }
+      }
     },
     {
       "id": "mountain_timeline",
@@ -456,7 +935,25 @@
         "phase_5_title",
         "title"
       ],
-      "best_for": "Structurer une trajectoire en cinq étapes croissantes ou un parcours d'évolution où chaque phase représente une altitude/complexité accrue."
+      "best_for": "Structurer une trajectoire en cinq étapes croissantes ou un parcours d'évolution où chaque phase représente une altitude/complexité accrue.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "phase_1_title",
+            "phase_2_title",
+            "phase_3_title",
+            "phase_4_title",
+            "phase_5_title"
+          ]
+        }
+      }
     },
     {
       "id": "multilevel_mindmap",
@@ -478,7 +975,31 @@
         "sub_sub_branch_3_2_2_1",
         "title"
       ],
-      "best_for": "Décomposer un sujet complexe en arborescence logique avec un noyau central et des ramifications progressives de concepts interdépendants."
+      "best_for": "Décomposer un sujet complexe en arborescence logique avec un noyau central et des ramifications progressives de concepts interdépendants.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "branch_1_1",
+            "branch_1_2",
+            "branch_1_3",
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "central_concept",
+            "sub_branch_2_1_1",
+            "sub_branch_2_1_2",
+            "sub_branch_2_2_1",
+            "sub_branch_2_2_2",
+            "sub_sub_branch_3_1_1_1",
+            "sub_sub_branch_3_1_1_2",
+            "sub_sub_branch_3_2_2_1"
+          ]
+        }
+      }
     },
     {
       "id": "multiple_donuts_kpi",
@@ -492,7 +1013,23 @@
         "kpi_3_title",
         "title"
       ],
-      "best_for": "Comparer trois indicateurs de performance distincts avec leurs valeurs procentuelles ou leurs parts respectives dans un contexte de suivi multidimensionnel."
+      "best_for": "Comparer trois indicateurs de performance distincts avec leurs valeurs procentuelles ou leurs parts respectives dans un contexte de suivi multidimensionnel.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "kpi_1_title",
+            "kpi_2_title",
+            "kpi_3_title"
+          ]
+        }
+      }
     },
     {
       "id": "nodal_network",
@@ -512,7 +1049,29 @@
         "node_8",
         "title"
       ],
-      "best_for": "Illustrer un concept central avec ses multiples dimensions, applications ou acteurs interconnectés autour d'une idée maîtresse."
+      "best_for": "Illustrer un concept central avec ses multiples dimensions, applications ou acteurs interconnectés autour d'une idée maîtresse.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "node_1",
+            "node_2",
+            "node_3",
+            "node_4",
+            "node_5",
+            "node_6",
+            "node_7",
+            "node_8",
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "central_hub"
+          ]
+        }
+      }
     },
     {
       "id": "org_tree",
@@ -527,7 +1086,24 @@
         "dept_3_title",
         "title"
       ],
-      "best_for": "Représenter une structure parent-enfants comme un organigramme ou une décomposition"
+      "best_for": "Représenter une structure parent-enfants comme un organigramme ou une décomposition",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "ceo_title",
+            "dept_1_title",
+            "dept_2_title",
+            "dept_3_title"
+          ]
+        }
+      }
     },
     {
       "id": "pie_chart_simple",
@@ -547,7 +1123,29 @@
         "segment_4_value",
         "title"
       ],
-      "best_for": "Montrer la répartition en pourcentages ou proportions d'un ensemble homogène divisé en 3 à 4 catégories distinctes."
+      "best_for": "Montrer la répartition en pourcentages ou proportions d'un ensemble homogène divisé en 3 à 4 catégories distinctes.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "center_label",
+            "segment_1_label",
+            "segment_1_value",
+            "segment_2_label",
+            "segment_2_value",
+            "segment_3_label",
+            "segment_3_value",
+            "segment_4_label",
+            "segment_4_value"
+          ]
+        }
+      }
     },
     {
       "id": "pots_plants_evolution",
@@ -562,7 +1160,24 @@
         "stage_4_title",
         "title"
       ],
-      "best_for": "Illustrer une progression linéaire en 4 phases avec transformation graduelle, idéal pour cycles de développement ou maturation successive."
+      "best_for": "Illustrer une progression linéaire en 4 phases avec transformation graduelle, idéal pour cycles de développement ou maturation successive.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "stage_1_title",
+            "stage_2_title",
+            "stage_3_title",
+            "stage_4_title"
+          ]
+        }
+      }
     },
     {
       "id": "prism_decomposition",
@@ -578,7 +1193,25 @@
         "component_4",
         "title"
       ],
-      "best_for": "Analyser un sujet complexe en ses elements constitutifs ou montrer comment un tout se divise en parties complementaires et interdependantes."
+      "best_for": "Analyser un sujet complexe en ses elements constitutifs ou montrer comment un tout se divise en parties complementaires et interdependantes.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "central_concept",
+            "component_1",
+            "component_2",
+            "component_3",
+            "component_4"
+          ]
+        }
+      }
     },
     {
       "id": "process_3_steps",
@@ -592,7 +1225,18 @@
         "step_3_title",
         "title"
       ],
-      "best_for": "Décrire un processus court avec un début, un milieu et une fin"
+      "best_for": "Décrire un processus court avec un début, un milieu et une fin",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "step_1_title",
+            "step_2_title",
+            "step_3_title",
+            "title"
+          ]
+        }
+      }
     },
     {
       "id": "process_5_steps",
@@ -608,7 +1252,20 @@
         "step_5_title",
         "title"
       ],
-      "best_for": "Détailler un processus en cinq étapes ordonnées"
+      "best_for": "Détailler un processus en cinq étapes ordonnées",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "step_1_title",
+            "step_2_title",
+            "step_3_title",
+            "step_4_title",
+            "step_5_title",
+            "title"
+          ]
+        }
+      }
     },
     {
       "id": "realistic_effect",
@@ -623,7 +1280,24 @@
         "card_3_title",
         "title"
       ],
-      "best_for": "Présenter trois solutions ou concepts distincts avec appel à l'action, idéal pour comparaisons de produits ou étapes de processus."
+      "best_for": "Présenter trois solutions ou concepts distincts avec appel à l'action, idéal pour comparaisons de produits ou étapes de processus.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "action_button",
+            "card_1_title",
+            "card_2_title",
+            "card_3_title"
+          ]
+        }
+      }
     },
     {
       "id": "roadmap_quarters",
@@ -642,7 +1316,28 @@
         "q4_title",
         "title"
       ],
-      "best_for": "Planifier les initiatives d'une année réparties sur quatre trimestres"
+      "best_for": "Planifier les initiatives d'une année réparties sur quatre trimestres",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "q1_content",
+            "q1_title",
+            "q2_content",
+            "q2_title",
+            "q3_content",
+            "q3_title",
+            "q4_content",
+            "q4_title"
+          ]
+        }
+      }
     },
     {
       "id": "rocket_innovation",
@@ -657,7 +1352,24 @@
         "stage_4_launch",
         "title"
       ],
-      "best_for": "Structurer un parcours d'innovation en quatre phases séquentielles : idéation, planification stratégique, développement et mise sur le marché."
+      "best_for": "Structurer un parcours d'innovation en quatre phases séquentielles : idéation, planification stratégique, développement et mise sur le marché.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "stage_1_idea",
+            "stage_2_strategy",
+            "stage_3_development",
+            "stage_4_launch"
+          ]
+        }
+      }
     },
     {
       "id": "sideways_tree",
@@ -676,7 +1388,28 @@
         "sub_branch_3_2",
         "title"
       ],
-      "best_for": "Organiser une idée centrale en ramifications thématiques distinctes avec sous-catégories pour explorer un sujet en profondeur."
+      "best_for": "Organiser une idée centrale en ramifications thématiques distinctes avec sous-catégories pour explorer un sujet en profondeur.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "branch_1_title",
+            "branch_2_title",
+            "branch_3_title",
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "root_title",
+            "sub_branch_1_1",
+            "sub_branch_1_2",
+            "sub_branch_3_1",
+            "sub_branch_3_2"
+          ]
+        }
+      }
     },
     {
       "id": "stacked_bar",
@@ -692,7 +1425,25 @@
         "legend_2",
         "title"
       ],
-      "best_for": "Décomposer linéairement un total (budget, coût, temps) en étapes ou phases qui s'additionnent, généralement en parts inégales lues de gauche à droite"
+      "best_for": "Décomposer linéairement un total (budget, coût, temps) en étapes ou phases qui s'additionnent, généralement en parts inégales lues de gauche à droite",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "bar_1_label",
+            "bar_2_label",
+            "bar_3_label",
+            "legend_1",
+            "legend_2"
+          ]
+        }
+      }
     },
     {
       "id": "stages_evolution_6",
@@ -709,7 +1460,26 @@
         "stage_5_title",
         "stage_6_title"
       ],
-      "best_for": "Présenter un processus chronologique ou évolutif avec six jalons clés, une croissance progressive, ou un cycle de transformation structuré en étapes numérotées."
+      "best_for": "Présenter un processus chronologique ou évolutif avec six jalons clés, une croissance progressive, ou un cycle de transformation structuré en étapes numérotées.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "stage_1_title",
+            "stage_2_title",
+            "stage_3_title",
+            "stage_4_title",
+            "stage_5_title",
+            "stage_6_title"
+          ]
+        }
+      }
     },
     {
       "id": "story_arc",
@@ -725,7 +1495,25 @@
         "act_5",
         "title"
       ],
-      "best_for": "Raconter une histoire en 5 actes : situation initiale, déclencheur, climax, résolution, situation finale"
+      "best_for": "Raconter une histoire en 5 actes : situation initiale, déclencheur, climax, résolution, situation finale",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "act_1",
+            "act_2",
+            "act_3",
+            "act_4",
+            "act_5"
+          ]
+        }
+      }
     },
     {
       "id": "swot_matrix",
@@ -744,7 +1532,28 @@
         "weaknesses_content",
         "weaknesses_title"
       ],
-      "best_for": "Réaliser un diagnostic stratégique interne et externe d'une organisation ou d'un projet"
+      "best_for": "Réaliser un diagnostic stratégique interne et externe d'une organisation ou d'un projet",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "opportunities_content",
+            "opportunities_title",
+            "strengths_content",
+            "strengths_title",
+            "threats_content",
+            "threats_title",
+            "weaknesses_content",
+            "weaknesses_title"
+          ]
+        }
+      }
     },
     {
       "id": "telescope_tripod",
@@ -759,7 +1568,24 @@
         "observation_4",
         "title"
       ],
-      "best_for": "Présenter quatre observations ou découvertes détaillées autour d'un sujet central d'exploration, en mettant l'accent sur l'analyse approfondie et progressive."
+      "best_for": "Présenter quatre observations ou découvertes détaillées autour d'un sujet central d'exploration, en mettant l'accent sur l'analyse approfondie et progressive.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "observation_1",
+            "observation_2",
+            "observation_3",
+            "observation_4"
+          ]
+        }
+      }
     },
     {
       "id": "timeline_horizontal",
@@ -778,7 +1604,28 @@
         "event_4",
         "title"
       ],
-      "best_for": "Présenter une succession d'événements datés sur une période"
+      "best_for": "Présenter une succession d'événements datés sur une période",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "date_1",
+            "date_2",
+            "date_3",
+            "date_4",
+            "event_1",
+            "event_2",
+            "event_3",
+            "event_4"
+          ]
+        }
+      }
     },
     {
       "id": "venn_2_circles",
@@ -790,7 +1637,21 @@
         "circle_a_label",
         "title"
       ],
-      "best_for": "Comparer deux concepts en mettant en évidence leurs points communs et leurs différences"
+      "best_for": "Comparer deux concepts en mettant en évidence leurs points communs et leurs différences",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "circle_a_label"
+          ]
+        }
+      }
     },
     {
       "id": "watercolor_effect",
@@ -805,7 +1666,29 @@
         "synthesis",
         "title"
       ],
-      "best_for": "Présenter des concepts abstraits ou des idées fluides qui se nourrissent mutuellement dans une progression douce et progressive."
+      "best_for": "Présenter des concepts abstraits ou des idées fluides qui se nourrissent mutuellement dans une progression douce et progressive.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "concept_1",
+            "concept_2",
+            "concept_3"
+          ]
+        },
+        "long": {
+          "max_chars": 200,
+          "slots": [
+            "synthesis"
+          ]
+        }
+      }
     },
     {
       "id": "whiteboard_effect",
@@ -820,7 +1703,29 @@
         "synthesis",
         "title"
       ],
-      "best_for": "Structurer des brainstormings avec trois concepts distincts à combiner ou explorer avant d'en extraire une conclusion unifiée."
+      "best_for": "Structurer des brainstormings avec trois concepts distincts à combiner ou explorer avant d'en extraire une conclusion unifiée.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "idea_1",
+            "idea_2",
+            "idea_3"
+          ]
+        },
+        "long": {
+          "max_chars": 200,
+          "slots": [
+            "synthesis"
+          ]
+        }
+      }
     },
     {
       "id": "duality_panels",
@@ -833,7 +1738,1911 @@
         "right_panel",
         "title"
       ],
-      "best_for": "Confronter deux états, perspectives ou arguments opposés en les mettant visuellement en miroir pour mettre en évidence leurs différences fondamentales et leurs implications respectives."
+      "best_for": "Confronter deux états, perspectives ou arguments opposés en les mettant visuellement en miroir pour mettre en évidence leurs différences fondamentales et leurs implications respectives.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "left_panel",
+            "right_panel"
+          ]
+        }
+      }
+    },
+    {
+      "id": "choreme_a1_foyer",
+      "name": "Le Foyer",
+      "category": "Chorème",
+      "description": "Un terme-pivot autour duquel le texte gravite, sans satellites explicites identifiés.",
+      "file": "choreme_a1_foyer.svg",
+      "slots": [
+        "title",
+        "subtitle",
+        "caption"
+      ],
+      "best_for": "Représenter un texte qui pose un concept central rayonnant sans périphérie nommée",
+      "choreme": {
+        "code": "A1",
+        "family": "A",
+        "triplet": "(POL, POINT, simple)",
+        "dominant_processes": [
+          "POL"
+        ],
+        "signature": {
+          "PART": 0,
+          "CROIS": 0,
+          "POL": 3,
+          "CONFR": 0,
+          "INCL": 0,
+          "ORD": 0,
+          "GRA": 0,
+          "TRA": 0,
+          "BCL": 0,
+          "HIÉR": 0,
+          "EXC": 1
+        },
+        "textual_markers": [
+          "un concept revient avec une fréquence anormalement élevée",
+          "structures de définition étendue (« X est ce qui... »)",
+          "formulations totalisantes (« tout dépend de », « rien sans »)",
+          "un seul nom propre ou substantif tient lieu de fil conducteur"
+        ],
+        "transformer": false,
+        "transformer_detail": "facultatif (concept stable ou en cours de mutation)",
+        "matching_expressions": [
+          "tout dépend de",
+          "rien sans",
+          "au cœur",
+          "au centre",
+          "le pivot",
+          "cardinal",
+          "fil conducteur",
+          "condition de toute",
+          "sans quoi rien"
+        ]
+      }
+    },
+    {
+      "id": "choreme_a2_polarite",
+      "name": "La Polarité",
+      "category": "Chorème",
+      "description": "Deux termes en symétrie sur un axe d'opposition.",
+      "file": "choreme_a2_polarite.svg",
+      "slots": [
+        "pole_left",
+        "pole_left_gloss_1",
+        "pole_left_gloss_2",
+        "pole_right",
+        "pole_right_gloss_1",
+        "pole_right_gloss_2"
+      ],
+      "best_for": "T2 — Fragment philosophique sur les deux silences (avec instabilité, voir variation).",
+      "choreme": {
+        "code": "A2",
+        "family": "A",
+        "triplet": "(CONFR, LIGNE-AXE, simple)",
+        "dominant_processes": [
+          "CONFR"
+        ],
+        "signature": {
+          "PART": 1,
+          "CROIS": 0,
+          "POL": 1,
+          "CONFR": 3,
+          "INCL": 0,
+          "ORD": 0,
+          "GRA": 0,
+          "TRA": 0,
+          "BCL": 0,
+          "HIÉR": 0,
+          "EXC": 0
+        },
+        "textual_markers": [
+          "« d'une part / d'autre part »",
+          "« tandis que », « alors que », « en revanche »",
+          "« contrairement à », « à l'opposé de »",
+          "formulations doubles avec parallélisme syntaxique"
+        ],
+        "transformer": false,
+        "transformer_detail": "facultatif (les pôles peuvent être des états successifs ou simultanés)",
+        "matching_expressions": [
+          "d'un côté",
+          "de l'autre",
+          "à l'inverse",
+          "inversement",
+          "en regard",
+          "face à",
+          "opposé",
+          "opposition entre",
+          "contraste",
+          "à la fois",
+          "soit... soit",
+          "plutôt que"
+        ]
+      }
+    },
+    {
+      "id": "choreme_a3_liaison",
+      "name": "La Liaison",
+      "category": "Chorème",
+      "description": "Deux entités équivalentes reliées sans hiérarchie.",
+      "file": "choreme_a3_liaison.svg",
+      "slots": [
+        "link_label",
+        "link_subtitle",
+        "node_left",
+        "node_left_gloss",
+        "node_right",
+        "node_right_gloss",
+        "caption"
+      ],
+      "best_for": "L1 — Montaigne, De l'amitié (mini-vague de validation).",
+      "choreme": {
+        "code": "A3",
+        "family": "A",
+        "triplet": "(POL, LIGNE-LIEN, simple)",
+        "dominant_processes": [],
+        "signature": {
+          "PART": 0,
+          "CROIS": 0,
+          "POL": 2,
+          "CONFR": 0,
+          "INCL": 0,
+          "ORD": 0,
+          "GRA": 0,
+          "TRA": 0,
+          "BCL": 0,
+          "HIÉR": 0,
+          "EXC": 1
+        },
+        "textual_markers": [
+          "pronoms réciproques (« nous », « l'un et l'autre », « entre nous »)",
+          "noms appariés et permutables (« lui et moi », « X et Y »)",
+          "formulations symétriques (« parce que c'était lui, parce que c'était moi »)",
+          "absence de hiérarchie explicite ou implicite",
+          "vocabulaire de l'union, du mélange, de la fusion"
+        ],
+        "transformer": false,
+        "transformer_detail": "généralement absent (état stable)",
+        "matching_expressions": [
+          "lien entre",
+          "unit",
+          "reliés",
+          "rapport entre",
+          "entre les deux",
+          "amitié",
+          "alliance",
+          "connexion",
+          "union",
+          "corrélation"
+        ]
+      }
+    },
+    {
+      "id": "choreme_a4_sequence",
+      "name": "La Séquence",
+      "category": "Chorème",
+      "description": "Étapes discrètes ordonnées dans le temps.",
+      "file": "choreme_a4_sequence.svg",
+      "slots": [
+        "step_1",
+        "step_1_gloss",
+        "step_2",
+        "step_2_gloss",
+        "step_3",
+        "step_3_gloss",
+        "step_4",
+        "step_4_gloss",
+        "caption"
+      ],
+      "best_for": "M6 — Le cycle de vie du produit (Séquence graduée à quatre phases).",
+      "choreme": {
+        "code": "A4",
+        "family": "A",
+        "triplet": "(ORD + GRA, LIGNE-AXE, simple)",
+        "dominant_processes": [
+          "ORD"
+        ],
+        "signature": {
+          "PART": 1,
+          "CROIS": 0,
+          "POL": 0,
+          "CONFR": 0,
+          "INCL": 0,
+          "ORD": 3,
+          "GRA": 1,
+          "TRA": 0,
+          "BCL": 0,
+          "HIÉR": 0,
+          "EXC": 0
+        },
+        "textual_markers": [
+          "« d'abord / ensuite / enfin »",
+          "numérotations (« 1. … 2. … 3. … »)",
+          "verbes de succession (« puis », « après quoi », « il faut alors »)",
+          "présence d'étapes nommées explicitement",
+          "comparatifs gradués si Séquence graduée"
+        ],
+        "transformer": false,
+        "transformer_detail": "structurellement présent (la séquence est temporelle par nature)",
+        "matching_expressions": [
+          "d'abord",
+          "puis",
+          "ensuite",
+          "enfin",
+          "étape",
+          "phase",
+          "séquence",
+          "dans cet ordre",
+          "avant de",
+          "après quoi",
+          "aboutit à",
+          "mène à"
+        ]
+      }
+    },
+    {
+      "id": "choreme_a5_gradient",
+      "name": "Le Gradient",
+      "category": "Chorème",
+      "description": "Progression continue sans rupture identifiable et sans étapes discrètes nommées.",
+      "file": "choreme_a5_gradient.svg",
+      "slots": [
+        "level_1",
+        "level_1_gloss",
+        "level_2",
+        "level_2_gloss",
+        "level_3",
+        "level_3_gloss",
+        "level_4",
+        "level_4_gloss",
+        "level_5",
+        "level_5_gloss",
+        "threshold_label",
+        "threshold_subtitle",
+        "caption"
+      ],
+      "best_for": "T7 — La perte de biodiversité (cas-type validé).",
+      "choreme": {
+        "code": "A5",
+        "family": "A",
+        "triplet": "(GRA, LIGNE-AXE, simple)",
+        "dominant_processes": [
+          "GRA"
+        ],
+        "signature": {
+          "PART": 0,
+          "CROIS": 0,
+          "POL": 0,
+          "CONFR": 1,
+          "INCL": 0,
+          "ORD": 1,
+          "GRA": 3,
+          "TRA": 0,
+          "BCL": 0,
+          "HIÉR": 0,
+          "EXC": 1
+        },
+        "textual_markers": [
+          "« de plus en plus », « peu à peu », « graduellement »",
+          "comparatifs continus",
+          "absence d'étapes numérotées",
+          "mention explicite de continuité (« sans rupture », « sans seuil »)",
+          "échelle nommée"
+        ],
+        "transformer": false,
+        "transformer_detail": "structurellement présent",
+        "matching_expressions": [
+          "de plus en plus",
+          "de moins en moins",
+          "au fur et à mesure",
+          "progressivement",
+          "graduellement",
+          "continuum",
+          "au fil de",
+          "peu à peu",
+          "à mesure que",
+          "gradient"
+        ]
+      }
+    },
+    {
+      "id": "choreme_a6_cycle",
+      "name": "Le Cycle",
+      "category": "Chorème",
+      "description": "Boucle fermée à 3-6 stations qui se répète.",
+      "file": "choreme_a6_cycle.svg",
+      "slots": [
+        "station_1",
+        "station_1_gloss",
+        "station_2",
+        "station_2_gloss",
+        "station_3",
+        "station_3_gloss",
+        "station_4",
+        "station_4_gloss",
+        "pivot_label_1",
+        "pivot_label_2",
+        "caption"
+      ],
+      "best_for": "M9 — La méthode lean startup (cas-type validé).",
+      "choreme": {
+        "code": "A6",
+        "family": "A",
+        "triplet": "(BCL, LIGNE-AXE refermée, simple)",
+        "dominant_processes": [
+          "BCL"
+        ],
+        "signature": {
+          "PART": 1,
+          "CROIS": 0,
+          "POL": 0,
+          "CONFR": 0,
+          "INCL": 0,
+          "ORD": 2,
+          "GRA": 0,
+          "TRA": 0,
+          "BCL": 3,
+          "HIÉR": 0,
+          "EXC": 0
+        },
+        "textual_markers": [
+          "« puis on recommence », « retour à »",
+          "verbes itératifs (« on répète », « à chaque cycle »)",
+          "récursion explicite, mention de tours ou d'itérations",
+          "absence de point d'achèvement final dans le texte",
+          "vocabulaire de l'éternel retour, de la régénération"
+        ],
+        "transformer": false,
+        "transformer_detail": "absent (le cycle se reproduit identique à chaque tour, par définition)",
+        "matching_expressions": [
+          "on recommence",
+          "à chaque tour",
+          "à chaque cycle",
+          "à chaque itération",
+          "retour à",
+          "cycle",
+          "boucle",
+          "on répète",
+          "récursion",
+          "itératif",
+          "éternel retour",
+          "sans fin"
+        ]
+      }
+    },
+    {
+      "id": "choreme_a7_pente",
+      "name": "La Pente",
+      "category": "Chorème",
+      "description": "Direction abstraite sans centre concret.",
+      "file": "choreme_a7_pente.svg",
+      "slots": [
+        "time_start",
+        "time_end",
+        "vector_label",
+        "milestone_1",
+        "milestone_2",
+        "milestone_3",
+        "milestone_4",
+        "counter_vector_label",
+        "counter_vector_gloss",
+        "caption"
+      ],
+      "best_for": "T8 — Manifeste politique sur l'innovation (cas-type validé).",
+      "choreme": {
+        "code": "A7",
+        "family": "A",
+        "triplet": "(INCL, VECTEUR, simple)",
+        "dominant_processes": [
+          "INCL"
+        ],
+        "signature": {
+          "PART": 0,
+          "CROIS": 0,
+          "POL": 0,
+          "CONFR": 1,
+          "INCL": 3,
+          "ORD": 0,
+          "GRA": 1,
+          "TRA": 0,
+          "BCL": 0,
+          "HIÉR": 0,
+          "EXC": 0
+        },
+        "textual_markers": [
+          "« tend à », « penche vers », « glisse »",
+          "« inclination », « dérive », « pente »",
+          "comparatifs gradués sans étapes nommées (« de plus en plus »)",
+          "verbes de tendance plutôt que verbes d'événement",
+          "absence de centre concret nommé"
+        ],
+        "transformer": true,
+        "transformer_detail": "présent (la pente se mesure sur une décennie, un cycle, une période)",
+        "matching_expressions": [
+          "tend à",
+          "penche vers",
+          "inclination",
+          "glisse vers",
+          "dérive",
+          "pente",
+          "tendance",
+          "sans s'en rendre compte",
+          "au fil des années",
+          "sur une décennie",
+          "sur la durée"
+        ]
+      }
+    },
+    {
+      "id": "choreme_a8_emboitement",
+      "name": "L'Emboîtement",
+      "category": "Chorème",
+      "description": "Structures empilées par niveaux, chaque niveau contenant le suivant ou contenu par lui.",
+      "file": "choreme_a8_emboitement.svg",
+      "slots": [
+        "layer_1",
+        "layer_1_gloss",
+        "layer_2",
+        "layer_2_gloss",
+        "layer_3",
+        "layer_3_gloss",
+        "layer_4",
+        "layer_4_gloss",
+        "time_label_1",
+        "time_label_2",
+        "time_label_3",
+        "time_label_4",
+        "time_axis_label",
+        "depth_top",
+        "depth_bottom"
+      ],
+      "best_for": "T1 — Cours management performance (cas-type validé).",
+      "choreme": {
+        "code": "A8",
+        "family": "A",
+        "triplet": "(HIÉR, AIRE-ENVELOPPE, simple)",
+        "dominant_processes": [
+          "HIÉR"
+        ],
+        "signature": {
+          "PART": 1,
+          "CROIS": 0,
+          "POL": 0,
+          "CONFR": 0,
+          "INCL": 0,
+          "ORD": 0,
+          "GRA": 0,
+          "TRA": 0,
+          "BCL": 0,
+          "HIÉR": 3,
+          "EXC": 0
+        },
+        "textual_markers": [
+          "« au sein de », « à l'intérieur de »",
+          "« contient », « englobe », « inclut »",
+          "niveaux explicites avec mention de hiérarchie d'inclusion",
+          "« au plus profond », « en surface », « au fondement »",
+          "métaphores de couches, de strates, de coquilles"
+        ],
+        "transformer": false,
+        "transformer_detail": "facultatif (les niveaux peuvent avoir des durées d'effet différentes — cf. cours management performance)",
+        "matching_expressions": [
+          "au sein de",
+          "à l'intérieur de",
+          "contient",
+          "englobe",
+          "inclut",
+          "au plus profond",
+          "en surface",
+          "au fondement",
+          "plusieurs niveaux",
+          "strates",
+          "couches"
+        ]
+      }
+    },
+    {
+      "id": "choreme_a9_trame",
+      "name": "La Trame",
+      "category": "Chorème",
+      "description": "Réseau horizontal multidirectionnel sans centre ni hiérarchie.",
+      "file": "choreme_a9_trame.svg",
+      "slots": [
+        "node_1",
+        "node_2",
+        "node_3_line1",
+        "node_3_line2",
+        "node_4",
+        "node_5",
+        "node_6",
+        "node_7",
+        "node_8",
+        "caption"
+      ],
+      "best_for": "Représenter un système d'éléments interconnectés sans hiérarchie ni centre",
+      "choreme": {
+        "code": "A9",
+        "family": "A",
+        "triplet": "(PART_relations, RÉSEAU, simple)",
+        "dominant_processes": [],
+        "signature": {
+          "PART": 2,
+          "CROIS": 0,
+          "POL": 0,
+          "CONFR": 0,
+          "INCL": 0,
+          "ORD": 0,
+          "GRA": 0,
+          "TRA": 0,
+          "BCL": 0,
+          "HIÉR": 0,
+          "EXC": 0
+        },
+        "textual_markers": [
+          "« interconnecté », « écosystème », « réseau »",
+          "relations transverses multiples nommées",
+          "absence de hiérarchie ou de centre dominant",
+          "vocabulaire de la toile, du tissu, de la trame",
+          "multiples chemins possibles entre éléments"
+        ],
+        "transformer": false,
+        "transformer_detail": "facultatif (la trame peut être stable ou évoluer)",
+        "matching_expressions": [
+          "écosystème",
+          "interconnecté",
+          "réseau",
+          "maillage",
+          "tissu",
+          "sans centre",
+          "sans sommet",
+          "dépendances réciproques",
+          "chaque élément dépend",
+          "multiples chemins"
+        ]
+      }
+    },
+    {
+      "id": "choreme_a10_creux",
+      "name": "Le Creux",
+      "category": "Chorème",
+      "description": "Zone vide entourée d'éléments négatifs — l'objet du texte se définit par ce qu'il évite, refuse ou exclut.",
+      "file": "choreme_a10_creux.svg",
+      "slots": [
+        "void_label",
+        "void_subtitle",
+        "exclusion_1",
+        "exclusion_1_gloss",
+        "exclusion_2",
+        "exclusion_2_gloss",
+        "exclusion_3",
+        "exclusion_3_gloss",
+        "exclusion_4",
+        "exclusion_4_gloss",
+        "caption"
+      ],
+      "best_for": "Représenter un objet défini par ce qu'il refuse — chartes éthiques, manifestes négatifs",
+      "choreme": {
+        "code": "A10",
+        "family": "A",
+        "triplet": "(EXC, AIRE-DOMAINE, simple)",
+        "dominant_processes": [
+          "EXC"
+        ],
+        "signature": {
+          "PART": 1,
+          "CROIS": 0,
+          "POL": 0,
+          "CONFR": 1,
+          "INCL": 0,
+          "ORD": 0,
+          "GRA": 0,
+          "TRA": 0,
+          "BCL": 0,
+          "HIÉR": 0,
+          "EXC": 3
+        },
+        "textual_markers": [
+          "« ne pas », « éviter », « sans », « refus de »",
+          "négations structurelles répétées",
+          "définition par contre-exemples (« pas X, pas Y, plutôt... »)",
+          "vocabulaire de l'exclusion, de l'écart, du refus",
+          "absence d'affirmation positive directe sur l'objet"
+        ],
+        "transformer": false,
+        "transformer_detail": "absent par défaut (état stable de définition négative)",
+        "matching_expressions": [
+          "ne pas",
+          "sans",
+          "éviter",
+          "refus de",
+          "refuser",
+          "pas de",
+          "absence de",
+          "plutôt que",
+          "à l'écart de",
+          "défini par ses refus",
+          "ce qui n'est pas"
+        ]
+      }
+    },
+    {
+      "id": "choreme_b1_foyer_rayonnant",
+      "name": "Le Foyer Rayonnant",
+      "category": "Chorème",
+      "description": "Un cœur entouré de 3 à 6 satellites identifiés qui en dépendent.",
+      "file": "choreme_b1_foyer_rayonnant.svg",
+      "slots": [
+        "core_line1",
+        "core_line2",
+        "satellite_1",
+        "satellite_1_gloss",
+        "satellite_2",
+        "satellite_2_gloss",
+        "satellite_3",
+        "satellite_3_gloss",
+        "satellite_4",
+        "satellite_4_gloss",
+        "satellite_5",
+        "satellite_5_gloss",
+        "caption"
+      ],
+      "best_for": "Présenter un concept-mère décliné en satellites identifiés (marque, stratégie, valeurs)",
+      "choreme": {
+        "code": "B1",
+        "family": "B",
+        "triplet": "(POL + PART, POINT + RÉSEAU, convergence)",
+        "dominant_processes": [
+          "POL"
+        ],
+        "signature": {
+          "PART": 2,
+          "CROIS": 0,
+          "POL": 3,
+          "CONFR": 0,
+          "INCL": 0,
+          "ORD": 0,
+          "GRA": 0,
+          "TRA": 0,
+          "BCL": 0,
+          "HIÉR": 1,
+          "EXC": 0
+        },
+        "textual_markers": [
+          "un concept central + énumération de ses composantes",
+          "« autour de », « dépend de », « décline X en »",
+          "structure définition + extensions",
+          "vocabulaire de la galaxie, de l'écosystème centré, de la marque-mère"
+        ],
+        "transformer": false,
+        "transformer_detail": "facultatif (configuration stable ou en cours d'expansion)",
+        "matching_expressions": [
+          "autour de",
+          "décline en",
+          "se compose de",
+          "comprend",
+          "rassemble",
+          "satellites",
+          "composantes",
+          "volets",
+          "piliers",
+          "engagements",
+          "autour de cette idée"
+        ]
+      }
+    },
+    {
+      "id": "choreme_b2_etoile",
+      "name": "L'Étoile",
+      "category": "Chorème",
+      "description": "Un centre soumis à plusieurs pressions externes convergentes.",
+      "file": "choreme_b2_etoile.svg",
+      "slots": [
+        "center_line1",
+        "center_line2",
+        "force_top_line1",
+        "force_top_line2",
+        "force_bottom_line1",
+        "force_bottom_line2",
+        "force_left_line1",
+        "force_left_line2",
+        "force_right_line1",
+        "force_right_line2",
+        "caption"
+      ],
+      "best_for": "M2 — Les cinq forces de Porter (cas-type validé).",
+      "choreme": {
+        "code": "B2",
+        "family": "B",
+        "triplet": "(POL + CONFR, POINT + RÉSEAU, convergence)",
+        "dominant_processes": [
+          "POL",
+          "CONFR"
+        ],
+        "signature": {
+          "PART": 1,
+          "CROIS": 0,
+          "POL": 3,
+          "CONFR": 3,
+          "INCL": 0,
+          "ORD": 0,
+          "GRA": 0,
+          "TRA": 0,
+          "BCL": 0,
+          "HIÉR": 0,
+          "EXC": 0
+        },
+        "textual_markers": [
+          "« sous la pression de », « soumis à », « pris entre »",
+          "énumération de forces ou contraintes externes",
+          "vocabulaire de la pression, de l'étau, de la convergence",
+          "centre passif + agents externes actifs"
+        ],
+        "transformer": false,
+        "transformer_detail": "absent (état stable de pression structurelle)",
+        "matching_expressions": [
+          "sous la pression de",
+          "soumis à",
+          "pris entre",
+          "pèsent sur",
+          "forces qui",
+          "cinq forces",
+          "pressions externes",
+          "convergent",
+          "étau",
+          "subit"
+        ]
+      }
+    },
+    {
+      "id": "choreme_b3_polarite_mediane",
+      "name": "La Polarité Médiane",
+      "category": "Chorème",
+      "description": "Deux pôles symétriques en confrontation, avec une position médiane qui synthétise, arbitre ou tempère la tension entre les deux.",
+      "file": "choreme_b3_polarite_mediane.svg",
+      "slots": [
+        "pole_left",
+        "pole_left_gloss_1",
+        "pole_left_gloss_2",
+        "median_line1",
+        "median_line2",
+        "median_gloss_1",
+        "median_gloss_2",
+        "pole_right",
+        "pole_right_gloss_1",
+        "pole_right_gloss_2"
+      ],
+      "best_for": "Krobar prototype régulation financière (cas-type validé en début de projet).",
+      "choreme": {
+        "code": "B3",
+        "family": "B",
+        "triplet": "(CONFR + POL, LIGNE-AXE + POINT, couronne)",
+        "dominant_processes": [
+          "CONFR"
+        ],
+        "signature": {
+          "PART": 1,
+          "CROIS": 0,
+          "POL": 2,
+          "CONFR": 3,
+          "INCL": 0,
+          "ORD": 0,
+          "GRA": 1,
+          "TRA": 0,
+          "BCL": 0,
+          "HIÉR": 0,
+          "EXC": 1
+        },
+        "textual_markers": [
+          "« entre les deux »",
+          "« équilibre entre X et Y »",
+          "« ni X, ni Y »",
+          "« tiers », « médiateur », « arbitrage »",
+          "formulations de type « X sans excès, Y sans renoncement »"
+        ],
+        "transformer": false,
+        "transformer_detail": "facultatif (peut moduler si la position médiane est un état atteint dans le temps)",
+        "matching_expressions": [
+          "entre les deux",
+          "équilibre entre",
+          "ni... ni",
+          "tiers",
+          "médiateur",
+          "arbitrage",
+          "sans excès",
+          "sans renoncement",
+          "voie médiane",
+          "troisième voie"
+        ]
+      }
+    },
+    {
+      "id": "choreme_b4_basculement",
+      "name": "Le Basculement",
+      "category": "Chorème",
+      "description": "Avant/après séparés par une faille identifiable.",
+      "file": "choreme_b4_basculement.svg",
+      "slots": [
+        "regime_before",
+        "regime_before_period",
+        "before_trait_1",
+        "before_trait_2",
+        "before_trait_3",
+        "before_trait_4",
+        "before_trait_5",
+        "regime_after",
+        "regime_after_period",
+        "after_trait_1",
+        "after_trait_2",
+        "after_trait_3_line1",
+        "after_trait_3_line2",
+        "after_trait_4",
+        "rupture_label",
+        "caption"
+      ],
+      "best_for": "T3 — Éditorial sur la fin de la mondialisation (cas-type validé).",
+      "choreme": {
+        "code": "B4",
+        "family": "B",
+        "triplet": "(TRA + ORD, VECTEUR, confrontation)",
+        "dominant_processes": [
+          "TRA"
+        ],
+        "signature": {
+          "PART": 1,
+          "CROIS": 0,
+          "POL": 0,
+          "CONFR": 2,
+          "INCL": 0,
+          "ORD": 2,
+          "GRA": 0,
+          "TRA": 3,
+          "BCL": 0,
+          "HIÉR": 0,
+          "EXC": 0
+        },
+        "textual_markers": [
+          "« depuis », date-pivot explicite",
+          "« avant », « désormais », « pour la première fois »",
+          "rupture historique nommée",
+          "vocabulaire du seuil franchi, de la bascule, du tournant",
+          "verbes au passé pour décrire l'ancien, au présent pour le nouveau"
+        ],
+        "transformer": true,
+        "transformer_detail": "présent (par définition — le basculement est un changement temporel structurel)",
+        "matching_expressions": [
+          "pour la première fois",
+          "depuis",
+          "désormais",
+          "avant",
+          "tournant",
+          "rupture",
+          "bascule",
+          "a remplacé",
+          "appartient désormais au passé",
+          "ne se voit plus",
+          "a fait place à"
+        ]
+      }
+    },
+    {
+      "id": "choreme_b5_inversion",
+      "name": "L'Inversion",
+      "category": "Chorème",
+      "description": "Deux modèles symétriques où un flux change de sens.",
+      "file": "choreme_b5_inversion.svg",
+      "slots": [
+        "regime_left_title",
+        "regime_left_subtitle",
+        "level_top",
+        "level_middle",
+        "level_bottom",
+        "flow_left_label_1",
+        "flow_left_label_2",
+        "flow_left_label_3",
+        "flow_left_label_4",
+        "regime_left_summary_1",
+        "regime_left_summary_2",
+        "regime_right_title",
+        "regime_right_subtitle",
+        "level_top_right",
+        "level_middle_right",
+        "level_bottom_right",
+        "regime_right_summary_1",
+        "regime_right_summary_2",
+        "measure_label_1",
+        "measure_label_2",
+        "measure_label_3",
+        "caption"
+      ],
+      "best_for": "M3 — Le management par objectifs (cas-type validé).",
+      "choreme": {
+        "code": "B5",
+        "family": "B",
+        "triplet": "(CONFR + HIÉR, VECTEUR × 2, confrontation)",
+        "dominant_processes": [
+          "CONFR",
+          "HIÉR"
+        ],
+        "signature": {
+          "PART": 1,
+          "CROIS": 0,
+          "POL": 0,
+          "CONFR": 3,
+          "INCL": 0,
+          "ORD": 0,
+          "GRA": 0,
+          "TRA": 0,
+          "BCL": 0,
+          "HIÉR": 3,
+          "EXC": 1
+        },
+        "textual_markers": [
+          "« au lieu de X, c'est Y »",
+          "« inversion », « renversement », « basculement de logique »",
+          "comparaison entre deux modèles de fonctionnement",
+          "verbes opposés (« remonter » vs « descendre », « surveiller » vs « mesurer »)"
+        ],
+        "transformer": true,
+        "transformer_detail": "présent (le passage de l'un à l'autre est temporel)",
+        "matching_expressions": [
+          "au lieu de",
+          "inversion",
+          "renversement",
+          "à rebours",
+          "inverse le mouvement",
+          "au lieu que",
+          "inverse la logique",
+          "inverse le sens",
+          "sens inverse",
+          "flux inversé"
+        ]
+      }
+    },
+    {
+      "id": "choreme_b6_spirale",
+      "name": "La Spirale",
+      "category": "Chorème",
+      "description": "Cycle qui s'élargit ou se resserre à chaque tour.",
+      "file": "choreme_b6_spirale.svg",
+      "slots": [
+        "turn_1_label",
+        "turn_2_label",
+        "turn_3_label",
+        "turn_1_gloss",
+        "turn_2_gloss",
+        "turn_3_gloss",
+        "caption_1",
+        "caption_2"
+      ],
+      "best_for": "Représenter une dynamique d'escalade ou d'apprentissage cumulatif",
+      "choreme": {
+        "code": "B6",
+        "family": "B",
+        "triplet": "(BCL + GRA, LIGNE-AXE refermée, simple)",
+        "dominant_processes": [
+          "GRA",
+          "BCL"
+        ],
+        "signature": {
+          "PART": 1,
+          "CROIS": 0,
+          "POL": 0,
+          "CONFR": 0,
+          "INCL": 0,
+          "ORD": 1,
+          "GRA": 3,
+          "TRA": 0,
+          "BCL": 3,
+          "HIÉR": 0,
+          "EXC": 0
+        },
+        "textual_markers": [
+          "« à chaque itération », « à chaque tour »",
+          "« apprentissage cumulé », « escalade », « accumulation »",
+          "récursion + progression mentionnées ensemble",
+          "vocabulaire de la spirale, du tournant successif, du cumul"
+        ],
+        "transformer": true,
+        "transformer_detail": "présent (la spirale est par définition cumulative dans le temps)",
+        "matching_expressions": [
+          "à chaque tour",
+          "à chaque cycle",
+          "à chaque itération",
+          "escalade",
+          "se durcit",
+          "cumul",
+          "apprentissage cumulé",
+          "spirale",
+          "tour après tour",
+          "s'aggrave",
+          "positions se durcissent"
+        ]
+      }
+    },
+    {
+      "id": "choreme_b7_degrade_tranche",
+      "name": "Le Dégradé Tranché",
+      "category": "Chorème",
+      "description": "Bande dégradée continue avec un point de bascule explicite et signifiant.",
+      "file": "choreme_b7_degrade_tranche.svg",
+      "slots": [
+        "step_1",
+        "regime_before_label",
+        "step_2",
+        "step_3",
+        "threshold_value",
+        "threshold_label",
+        "step_4",
+        "step_5",
+        "regime_after_label",
+        "step_6",
+        "regime_before_summary",
+        "regime_after_summary",
+        "caption"
+      ],
+      "best_for": "Représenter un point de bascule sur un continuum (seuils écologiques, transitions)",
+      "choreme": {
+        "code": "B7",
+        "family": "B",
+        "triplet": "(GRA + TRA, LIGNE-AXE, simple)",
+        "dominant_processes": [
+          "GRA",
+          "TRA"
+        ],
+        "signature": {
+          "PART": 0,
+          "CROIS": 0,
+          "POL": 0,
+          "CONFR": 1,
+          "INCL": 0,
+          "ORD": 1,
+          "GRA": 3,
+          "TRA": 3,
+          "BCL": 0,
+          "HIÉR": 0,
+          "EXC": 0
+        },
+        "textual_markers": [
+          "« jusqu'à ce que », « au-delà de »",
+          "« seuil critique », « point de non-retour »",
+          "progression continue + mention d'un seuil franchi",
+          "distinction temporelle entre un avant gradué et un après qualitativement différent"
+        ],
+        "transformer": true,
+        "transformer_detail": "présent (la progression et le seuil sont temporels)",
+        "matching_expressions": [
+          "jusqu'à ce que",
+          "au-delà de",
+          "seuil critique",
+          "point de bascule",
+          "point de non-retour",
+          "point sans retour",
+          "au-delà du seuil",
+          "à partir de",
+          "à mesure qu'on dépasse",
+          "régime change"
+        ]
+      }
+    },
+    {
+      "id": "choreme_b8_hierarchie",
+      "name": "La Hiérarchie",
+      "category": "Chorème",
+      "description": "Arbre vertical à 3 niveaux ou plus, organigramme.",
+      "file": "choreme_b8_hierarchie.svg",
+      "slots": [
+        "root_label",
+        "level2_node_1",
+        "level2_node_2",
+        "level2_node_3",
+        "level3_node_1",
+        "level3_node_2",
+        "level3_node_3",
+        "level3_node_4",
+        "level3_node_5",
+        "level3_node_6",
+        "level1_label",
+        "level2_label",
+        "level3_label",
+        "caption"
+      ],
+      "best_for": "Représenter une organisation arborescente ou une taxonomie classificatoire",
+      "choreme": {
+        "code": "B8",
+        "family": "B",
+        "triplet": "(HIÉR + ORD, AIRE-ENVELOPPE + RÉSEAU, encastrement)",
+        "dominant_processes": [
+          "HIÉR"
+        ],
+        "signature": {
+          "PART": 2,
+          "CROIS": 0,
+          "POL": 1,
+          "CONFR": 0,
+          "INCL": 0,
+          "ORD": 2,
+          "GRA": 0,
+          "TRA": 0,
+          "BCL": 0,
+          "HIÉR": 3,
+          "EXC": 0
+        },
+        "textual_markers": [
+          "« se subdivise en », « se décompose en »",
+          "arborescences explicites avec niveaux nommés",
+          "vocabulaire de l'organigramme, de la taxonomie, de la classification",
+          "« sous », « au-dessus », « niveau N », « niveau N+1 »"
+        ],
+        "transformer": false,
+        "transformer_detail": "absent (état stable de structure organisationnelle)",
+        "matching_expressions": [
+          "se subdivise en",
+          "se décompose en",
+          "arborescence",
+          "sous",
+          "au-dessus",
+          "rend compte au",
+          "délègue",
+          "hiérarchie",
+          "organigramme",
+          "taxonomie",
+          "classification",
+          "plusieurs niveaux"
+        ]
+      }
+    },
+    {
+      "id": "choreme_b9_constellation",
+      "name": "La Constellation",
+      "category": "Chorème",
+      "description": "Centre faible + réseau périphérique d'éléments associés.",
+      "file": "choreme_b9_constellation.svg",
+      "slots": [
+        "center_line1",
+        "center_line2",
+        "periphery_1",
+        "periphery_1_gloss",
+        "periphery_2",
+        "periphery_3",
+        "periphery_3_gloss",
+        "periphery_4_line1",
+        "periphery_4_line2",
+        "periphery_5_line1",
+        "periphery_5_line2",
+        "caption"
+      ],
+      "best_for": "M10 — Les biais de décision (cas-type validé).",
+      "choreme": {
+        "code": "B9",
+        "family": "B",
+        "triplet": "(PART + POL, POINT + RÉSEAU, couronne)",
+        "dominant_processes": [
+          "PART"
+        ],
+        "signature": {
+          "PART": 3,
+          "CROIS": 0,
+          "POL": 1,
+          "CONFR": 1,
+          "INCL": 0,
+          "ORD": 0,
+          "GRA": 0,
+          "TRA": 0,
+          "BCL": 0,
+          "HIÉR": 0,
+          "EXC": 1
+        },
+        "textual_markers": [
+          "énumération de N éléments d'une même catégorie",
+          "thème commun + nombreux exemples",
+          "centre nommé en passant, périphéries détaillées",
+          "« ensemble de », « famille de », « catégorie des »",
+          "vocabulaire de l'inventaire, du recensement, de la collection"
+        ],
+        "transformer": false,
+        "transformer_detail": "absent par défaut",
+        "matching_expressions": [
+          "ensemble de",
+          "famille de",
+          "catégorie",
+          "gamme de",
+          "biais",
+          "inventaire",
+          "collection",
+          "recensement",
+          "plusieurs",
+          "nombreux",
+          "autant de"
+        ]
+      }
+    },
+    {
+      "id": "choreme_b10_contre_champ",
+      "name": "Le Contre-champ",
+      "category": "Chorème",
+      "description": "Foyer entouré d'éléments négatifs ou en absence.",
+      "file": "choreme_b10_contre_champ.svg",
+      "slots": [
+        "center_line1",
+        "center_line2",
+        "absence_1",
+        "absence_1_gloss",
+        "absence_2",
+        "absence_2_gloss",
+        "absence_3",
+        "absence_3_gloss",
+        "absence_4",
+        "absence_4_gloss",
+        "caption"
+      ],
+      "best_for": "M8 — Le leadership et la confiance (cas-type validé).",
+      "choreme": {
+        "code": "B10",
+        "family": "B",
+        "triplet": "(POL + EXC, POINT + AIRE-DOMAINE, couronne)",
+        "dominant_processes": [
+          "POL",
+          "EXC"
+        ],
+        "signature": {
+          "PART": 1,
+          "CROIS": 0,
+          "POL": 3,
+          "CONFR": 1,
+          "INCL": 0,
+          "ORD": 0,
+          "GRA": 0,
+          "TRA": 0,
+          "BCL": 0,
+          "HIÉR": 0,
+          "EXC": 3
+        },
+        "textual_markers": [
+          "« sans avoir besoin de »",
+          "« qui ne se demandent pas »",
+          "« absence de », « non-recours à »",
+          "vocabulaire de l'évidence implicite, de la confiance qui dispense",
+          "un centre nommé + une énumération de comportements évités"
+        ],
+        "transformer": false,
+        "transformer_detail": "absent par défaut (état stable de qualité reconnue)",
+        "matching_expressions": [
+          "sans avoir besoin de",
+          "qui ne se demandent pas",
+          "absence de",
+          "se mesure à ce qui ne",
+          "n'a plus besoin",
+          "plus la peine",
+          "qui ne se",
+          "évidence implicite",
+          "va de soi",
+          "tacite"
+        ]
+      }
+    },
+    {
+      "id": "choreme_b11_matrice",
+      "name": "La Matrice",
+      "category": "Chorème",
+      "description": "Grille 2×2 ou 3×3 produite par croisement de critères.",
+      "file": "choreme_b11_matrice.svg",
+      "slots": [
+        "axis_x_left",
+        "axis_x_right",
+        "axis_y_top",
+        "axis_y_bottom",
+        "quadrant_tl_line1",
+        "quadrant_tl_line2",
+        "quadrant_tl_gloss_1",
+        "quadrant_tl_gloss_2",
+        "quadrant_tr_line1",
+        "quadrant_tr_line2",
+        "quadrant_tr_gloss_1",
+        "quadrant_tr_gloss_2",
+        "quadrant_bl_line1",
+        "quadrant_bl_line2",
+        "quadrant_bl_gloss_1",
+        "quadrant_bl_gloss_2",
+        "quadrant_br_line1",
+        "quadrant_br_line2",
+        "quadrant_br_gloss_1",
+        "quadrant_br_gloss_2",
+        "caption"
+      ],
+      "best_for": "T6 — Analyse marketing par segments (cas-type validé).",
+      "choreme": {
+        "code": "B11",
+        "family": "B",
+        "triplet": "(CROIS + PART, AIRE-DOMAINE, simple)",
+        "dominant_processes": [
+          "CROIS"
+        ],
+        "signature": {
+          "PART": 2,
+          "CROIS": 3,
+          "POL": 0,
+          "CONFR": 1,
+          "INCL": 0,
+          "ORD": 0,
+          "GRA": 0,
+          "TRA": 0,
+          "BCL": 0,
+          "HIÉR": 0,
+          "EXC": 0
+        },
+        "textual_markers": [
+          "« selon deux axes »",
+          "« selon que... et que... »",
+          "« croisement », « grille », « matrice »",
+          "présence de 4 catégories produites par 2 critères",
+          "vocabulaire de la typologie, du quadrant, de la cartographie conceptuelle"
+        ],
+        "transformer": false,
+        "transformer_detail": "absent par défaut (état stable de typologie)",
+        "matching_expressions": [
+          "selon deux axes",
+          "selon que... et",
+          "croisement",
+          "grille",
+          "matrice",
+          "quadrants",
+          "segmentation",
+          "typologie",
+          "cartographie",
+          "deux dimensions",
+          "deux critères"
+        ]
+      }
+    },
+    {
+      "id": "choreme_b12_coexistence",
+      "name": "La Coexistence",
+      "category": "Chorème",
+      "description": "Deux entités en parallèle qui doivent coexister sans fusion.",
+      "file": "choreme_b12_coexistence.svg",
+      "slots": [
+        "regime_left_title",
+        "regime_left_subtitle",
+        "left_trait_1",
+        "left_trait_2",
+        "left_trait_3",
+        "left_trait_4",
+        "left_trait_5",
+        "tension_line1",
+        "tension_line2",
+        "tension_gloss_1",
+        "tension_gloss_2",
+        "tension_gloss_3",
+        "tension_gloss_4",
+        "regime_right_title",
+        "regime_right_subtitle",
+        "right_trait_1",
+        "right_trait_2",
+        "right_trait_3",
+        "right_trait_4",
+        "right_trait_5",
+        "caption"
+      ],
+      "best_for": "M7 — La transformation digitale (cas-type validé).",
+      "choreme": {
+        "code": "B12",
+        "family": "B",
+        "triplet": "(CONFR + EXC, AIRE-DOMAINE × 2, confrontation)",
+        "dominant_processes": [
+          "CONFR"
+        ],
+        "signature": {
+          "PART": 1,
+          "CROIS": 0,
+          "POL": 0,
+          "CONFR": 3,
+          "INCL": 0,
+          "ORD": 0,
+          "GRA": 0,
+          "TRA": 0,
+          "BCL": 0,
+          "HIÉR": 0,
+          "EXC": 2
+        },
+        "textual_markers": [
+          "« en même temps », « simultanément »",
+          "« à côté de », « parallèlement à »",
+          "« tensions productives », « anticorps », « cohabitation »",
+          "double affirmation : maintenir X et créer Y",
+          "vocabulaire de la dualité organisationnelle assumée"
+        ],
+        "transformer": false,
+        "transformer_detail": "parfois présent (la coexistence peut être un état atteint dans le temps)",
+        "matching_expressions": [
+          "en même temps",
+          "simultanément",
+          "à côté de",
+          "parallèlement",
+          "tensions productives",
+          "anticorps",
+          "cohabitation",
+          "coexister",
+          "maintenir... et créer",
+          "sans fusion"
+        ]
+      }
+    },
+    {
+      "id": "choreme_b13_convergence",
+      "name": "La Convergence",
+      "category": "Chorème",
+      "description": "Plusieurs trajectoires d'actions convergeant vers un objectif unique.",
+      "file": "choreme_b13_convergence.svg",
+      "slots": [
+        "trajectory_1",
+        "trajectory_1_gloss",
+        "trajectory_2",
+        "trajectory_2_gloss",
+        "trajectory_3",
+        "trajectory_3_gloss",
+        "target_value",
+        "target_label",
+        "prerequisites_label",
+        "prerequisite_1",
+        "prerequisite_2",
+        "prerequisite_3",
+        "caption"
+      ],
+      "best_for": "O2 — Plan d'action commercial trimestriel (cas-type validé).",
+      "choreme": {
+        "code": "B13",
+        "family": "B",
+        "triplet": "(PART + ORD, RÉSEAU orienté, convergence)",
+        "dominant_processes": [],
+        "signature": {
+          "PART": 2,
+          "CROIS": 0,
+          "POL": 1,
+          "CONFR": 0,
+          "INCL": 0,
+          "ORD": 2,
+          "GRA": 0,
+          "TRA": 0,
+          "BCL": 0,
+          "HIÉR": 0,
+          "EXC": 1
+        },
+        "textual_markers": [
+          "« pour atteindre », « afin de »",
+          "objectif chiffré + plan d'action multi-axes",
+          "responsables distincts par axe",
+          "« conditions de réussite », « prérequis », « points critiques »",
+          "vocabulaire de l'orchestration, du plan d'attaque"
+        ],
+        "transformer": true,
+        "transformer_detail": "présent (la convergence se déploie dans le temps)",
+        "matching_expressions": [
+          "pour atteindre",
+          "afin de",
+          "objectif",
+          "cible",
+          "plan d'action",
+          "conditions de réussite",
+          "prérequis",
+          "points critiques",
+          "orchestration",
+          "convergent vers",
+          "plusieurs axes"
+        ]
+      }
+    },
+    {
+      "id": "choreme_b14_chaine_encastree",
+      "name": "La Chaîne Encastrée",
+      "category": "Chorème",
+      "description": "Flux séquentiel à l'intérieur d'un contenant qui le surplombe.",
+      "file": "choreme_b14_chaine_encastree.svg",
+      "slots": [
+        "envelope_title",
+        "envelope_subtitle",
+        "envelope_item_1",
+        "envelope_item_2",
+        "envelope_item_3",
+        "envelope_item_4",
+        "chain_title",
+        "chain_subtitle",
+        "chain_step_1_line1",
+        "chain_step_1_line2",
+        "chain_step_2",
+        "chain_step_3_line1",
+        "chain_step_3_line2",
+        "chain_step_4_line1",
+        "chain_step_4_line2",
+        "chain_step_5",
+        "caption"
+      ],
+      "best_for": "M1 — La chaîne de valeur (cas-type validé).",
+      "choreme": {
+        "code": "B14",
+        "family": "B",
+        "triplet": "(ORD + PART, LIGNE-AXE + AIRE-ENVELOPPE, encastrement)",
+        "dominant_processes": [
+          "ORD"
+        ],
+        "signature": {
+          "PART": 2,
+          "CROIS": 0,
+          "POL": 0,
+          "CONFR": 0,
+          "INCL": 0,
+          "ORD": 3,
+          "GRA": 0,
+          "TRA": 0,
+          "BCL": 0,
+          "HIÉR": 1,
+          "EXC": 0
+        },
+        "textual_markers": [
+          "séquence d'étapes + dimension transversale",
+          "« au sein de », « tout au long de »",
+          "« la chaîne », « le processus », « le flux »",
+          "double structure : ordonnancement temporel + cadre stable",
+          "vocabulaire de la transformation qui se déploie dans un cadre constant"
+        ],
+        "transformer": true,
+        "transformer_detail": "présent (la chaîne est temporelle par nature)",
+        "matching_expressions": [
+          "tout au long de",
+          "au sein de",
+          "la chaîne",
+          "le flux",
+          "le processus",
+          "activités principales",
+          "activités de soutien",
+          "transverse",
+          "irriguent l'ensemble",
+          "chaîne de valeur"
+        ]
+      }
+    },
+    {
+      "id": "choreme_c1_tension_orientee",
+      "name": "La Tension Orientée",
+      "category": "Chorème",
+      "description": "Polarité avec axe directeur — opposition orientée vers une issue.",
+      "file": "choreme_c1_tension_orientee.svg",
+      "slots": [
+        "pole_left_line1",
+        "pole_left_line2",
+        "pole_left_gloss_1",
+        "pole_left_gloss_2",
+        "pole_right_line1",
+        "pole_right_line2",
+        "pole_right_gloss_1",
+        "pole_right_gloss_2",
+        "vector_label",
+        "vector_milestone_1",
+        "vector_milestone_2",
+        "caption"
+      ],
+      "best_for": "Représenter un débat avec une issue qui se dessine — controverses en cours de résolution",
+      "choreme": {
+        "code": "C1",
+        "family": "C",
+        "triplet": "(CONFR + INCL + ORD, LIGNE-AXE + VECTEUR, croisement)",
+        "dominant_processes": [
+          "CONFR",
+          "INCL"
+        ],
+        "signature": {
+          "PART": 1,
+          "CROIS": 0,
+          "POL": 1,
+          "CONFR": 3,
+          "INCL": 3,
+          "ORD": 2,
+          "GRA": 1,
+          "TRA": 0,
+          "BCL": 0,
+          "HIÉR": 0,
+          "EXC": 0
+        },
+        "textual_markers": [
+          "opposition + verbe de tendance (« penche vers », « s'oriente vers »)",
+          "« la résolution probable », « l'issue attendue »",
+          "tension nommée + résolution évoquée comme possible",
+          "vocabulaire de l'arbitrage en cours, du débat qui se résout"
+        ],
+        "transformer": true,
+        "transformer_detail": "présent (la résolution est temporelle par définition)",
+        "matching_expressions": [
+          "penche désormais",
+          "penche du côté",
+          "l'opinion bascule",
+          "résolution probable",
+          "l'issue attendue",
+          "la dynamique penche",
+          "la tension n'est plus symétrique",
+          "le débat se résout",
+          "tend à se résoudre",
+          "consensus émergent"
+        ]
+      }
+    },
+    {
+      "id": "choreme_c2_cycle_en_tension",
+      "name": "Le Cycle en Tension",
+      "category": "Chorème",
+      "description": "Boucle traversée par un axe de tension qui la divise.",
+      "file": "choreme_c2_cycle_en_tension.svg",
+      "slots": [
+        "transverse_axis_title",
+        "transverse_axis_subtitle",
+        "transverse_milestone_1",
+        "transverse_milestone_2",
+        "transverse_milestone_3",
+        "transverse_milestone_4",
+        "cycle_station_1",
+        "cycle_station_1_gloss",
+        "cycle_station_2",
+        "cycle_station_2_gloss",
+        "cycle_station_3",
+        "cycle_station_3_gloss",
+        "cycle_title",
+        "cycle_subtitle",
+        "caption"
+      ],
+      "best_for": "T5 — Récit du père au pont (cas-type validé).",
+      "choreme": {
+        "code": "C2",
+        "family": "C",
+        "triplet": "(BCL + CONFR + POL, AIRE-DOMAINE + VECTEUR, cycle traversé)",
+        "dominant_processes": [
+          "BCL"
+        ],
+        "signature": {
+          "PART": 1,
+          "CROIS": 0,
+          "POL": 2,
+          "CONFR": 2,
+          "INCL": 0,
+          "ORD": 1,
+          "GRA": 0,
+          "TRA": 0,
+          "BCL": 3,
+          "HIÉR": 0,
+          "EXC": 0
+        },
+        "textual_markers": [
+          "cycle (quotidien, saisonnier, biographique) + axe transversal (durée, identité, transformation)",
+          "« chaque jour », « chaque tour », « invariablement » + « pendant que »",
+          "co-existence d'un rituel répété et d'un changement traversant",
+          "vocabulaire du retour identique + de l'écoulement du temps"
+        ],
+        "transformer": true,
+        "transformer_detail": "présent (le cycle se déploie temporellement et l'axe le traverse)",
+        "matching_expressions": [
+          "chaque jour",
+          "chaque dimanche",
+          "chaque tour",
+          "invariablement",
+          "pendant que",
+          "pendant ce temps",
+          "tandis que",
+          "rituel",
+          "autour change",
+          "tout change autour",
+          "le rituel tient"
+        ]
+      }
+    },
+    {
+      "id": "choreme_c3_croisement_trajectoires",
+      "name": "Le Croisement de Trajectoires",
+      "category": "Chorème",
+      "description": "Deux courbes de pentes différentes qui finissent par se croiser.",
+      "file": "choreme_c3_croisement_trajectoires.svg",
+      "slots": [
+        "y_axis_label",
+        "y_axis_top",
+        "y_axis_bottom",
+        "x_axis_label",
+        "trajectory_descending_title",
+        "trajectory_descending_gloss",
+        "trajectory_ascending_title",
+        "trajectory_ascending_gloss_1",
+        "trajectory_ascending_gloss_2",
+        "crossing_label_line1",
+        "crossing_label_line2",
+        "phase_before_label",
+        "phase_after_label"
+      ],
+      "best_for": "M5 — La disruption (cas-type validé).",
+      "choreme": {
+        "code": "C3",
+        "family": "C",
+        "triplet": "(INCL + GRA + CONFR, VECTEUR × 2, croisement)",
+        "dominant_processes": [
+          "CONFR",
+          "INCL",
+          "GRA"
+        ],
+        "signature": {
+          "PART": 1,
+          "CROIS": 1,
+          "POL": 0,
+          "CONFR": 3,
+          "INCL": 3,
+          "ORD": 1,
+          "GRA": 3,
+          "TRA": 1,
+          "BCL": 0,
+          "HIÉR": 0,
+          "EXC": 0
+        },
+        "textual_markers": [
+          "deux phénomènes évolutifs avec point de bascule",
+          "« remonte vers », « rattrape », « dépasse »",
+          "« lentement d'abord, puis plus vite »",
+          "« moment où il est trop tard »",
+          "vocabulaire de la disruption, du dépassement, du rattrapage"
+        ],
+        "transformer": true,
+        "transformer_detail": "présent (les trajectoires sont temporelles)",
+        "matching_expressions": [
+          "remonte vers",
+          "rattrape",
+          "dépasse",
+          "lentement d'abord",
+          "puis plus vite",
+          "au moment où",
+          "il est trop tard",
+          "disruption",
+          "se croisent",
+          "point de croisement",
+          "pris au sérieux",
+          "ne voit pas venir"
+        ]
+      }
+    },
+    {
+      "id": "choreme_c4_arene",
+      "name": "L'Arène",
+      "category": "Chorème",
+      "description": "Deux camps internes en conflit autour d'un enjeu central.",
+      "file": "choreme_c4_arene.svg",
+      "slots": [
+        "arena_title",
+        "arena_subtitle",
+        "stake_line1",
+        "stake_line2",
+        "camp_left_actor_1",
+        "camp_left_actor_2_line1",
+        "camp_left_actor_2_line2",
+        "camp_left_actor_3",
+        "camp_left_label",
+        "camp_right_actor_1",
+        "camp_right_actor_2",
+        "camp_right_actor_3",
+        "camp_right_label",
+        "caption"
+      ],
+      "best_for": "Représenter une négociation multipartite autour d'un enjeu central",
+      "choreme": {
+        "code": "C4",
+        "family": "C",
+        "triplet": "(CONFR + PART + POL, AIRE-DOMAINE + POINT × n, couronne)",
+        "dominant_processes": [
+          "CONFR"
+        ],
+        "signature": {
+          "PART": 2,
+          "CROIS": 0,
+          "POL": 2,
+          "CONFR": 3,
+          "INCL": 0,
+          "ORD": 0,
+          "GRA": 0,
+          "TRA": 0,
+          "BCL": 0,
+          "HIÉR": 0,
+          "EXC": 0
+        },
+        "textual_markers": [
+          "champ délimité avec acteurs nommés",
+          "deux groupes en opposition autour d'un enjeu",
+          "« débat », « controverse », « négociation »",
+          "vocabulaire de la lutte d'influence, du rapport de forces",
+          "enjeu central reconnaissable (un texte, une décision, un partage)"
+        ],
+        "transformer": false,
+        "transformer_detail": "parfois présent (l'arène peut être un état provisoire)",
+        "matching_expressions": [
+          "débat",
+          "controverse",
+          "négociation",
+          "rapport de forces",
+          "lutte d'influence",
+          "camps",
+          "partisans",
+          "opposants",
+          "clivé",
+          "au centre",
+          "enjeu central",
+          "disputé"
+        ]
+      }
+    },
+    {
+      "id": "choreme_c5_nebuleuse_graduee",
+      "name": "La Nébuleuse Graduée",
+      "category": "Chorème",
+      "description": "Réseau à intensité variable centré faiblement.",
+      "file": "choreme_c5_nebuleuse_graduee.svg",
+      "slots": [
+        "center_line1",
+        "center_line2",
+        "ring_close_1",
+        "ring_close_2",
+        "ring_close_3",
+        "ring_close_4",
+        "ring_medium_1",
+        "ring_medium_2",
+        "ring_medium_3",
+        "ring_medium_4",
+        "ring_far_1",
+        "ring_far_2",
+        "ring_far_3",
+        "caption"
+      ],
+      "best_for": "Représenter un champ d'influence ou une école de pensée à intensité décroissante",
+      "choreme": {
+        "code": "C5",
+        "family": "C",
+        "triplet": "(PART + GRA + POL, RÉSEAU + POINT, couronne)",
+        "dominant_processes": [
+          "GRA"
+        ],
+        "signature": {
+          "PART": 2,
+          "CROIS": 0,
+          "POL": 2,
+          "CONFR": 0,
+          "INCL": 0,
+          "ORD": 0,
+          "GRA": 3,
+          "TRA": 0,
+          "BCL": 0,
+          "HIÉR": 1,
+          "EXC": 0
+        },
+        "textual_markers": [
+          "champ d'influence, aura, rayonnement diffus",
+          "« autour de », « dans le sillage de »",
+          "intensité décroissante avec la distance",
+          "absence de structure hiérarchique nette",
+          "vocabulaire du cercle d'amis, des disciples, de l'école de pensée"
+        ],
+        "transformer": false,
+        "transformer_detail": "facultatif (la nébuleuse peut s'étendre ou se contracter)",
+        "matching_expressions": [
+          "champ d'influence",
+          "aura",
+          "rayonnement",
+          "au plus près",
+          "à distance",
+          "plus loin",
+          "au-delà",
+          "dans le sillage",
+          "cercle d'amis",
+          "disciples",
+          "école de pensée",
+          "sphères d'influence",
+          "se dilue"
+        ]
+      }
     }
   ]
 }

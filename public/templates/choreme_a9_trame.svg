@@ -1,0 +1,44 @@
+<svg viewBox="0 0 680 380" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .label-strong { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 15px; font-weight: 600; }
+    .label { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 13px; font-weight: 500; }
+    .gloss { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 400; font-style: italic; fill: var(--muted); }
+    .gloss-strong { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 500; }
+    .caption { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 10px; font-weight: 400; font-style: italic; fill: var(--muted); }
+    .axis { stroke: var(--border); stroke-width: 0.6; fill: none; }
+  </style>
+
+  <line x1="155" y1="120" x2="270" y2="80" stroke="var(--border)" stroke-width="0.8"/>
+  <line x1="155" y1="120" x2="220" y2="180" stroke="var(--border)" stroke-width="0.8"/>
+  <line x1="155" y1="120" x2="180" y2="280" stroke="var(--border)" stroke-width="0.8"/>
+  <line x1="270" y1="80" x2="380" y2="120" stroke="var(--border)" stroke-width="0.8"/>
+  <line x1="270" y1="80" x2="220" y2="180" stroke="var(--border)" stroke-width="0.8"/>
+  <line x1="220" y1="180" x2="380" y2="120" stroke="var(--border)" stroke-width="0.8"/>
+  <line x1="220" y1="180" x2="180" y2="280" stroke="var(--border)" stroke-width="0.8"/>
+  <line x1="220" y1="180" x2="370" y2="240" stroke="var(--border)" stroke-width="0.8"/>
+  <line x1="380" y1="120" x2="510" y2="100" stroke="var(--border)" stroke-width="0.8"/>
+  <line x1="380" y1="120" x2="370" y2="240" stroke="var(--border)" stroke-width="0.8"/>
+  <line x1="180" y1="280" x2="370" y2="240" stroke="var(--border)" stroke-width="0.8"/>
+  <line x1="370" y1="240" x2="510" y2="100" stroke="var(--border)" stroke-width="0.8"/>
+  <line x1="370" y1="240" x2="510" y2="280" stroke="var(--border)" stroke-width="0.8"/>
+  <line x1="510" y1="100" x2="510" y2="280" stroke="var(--border)" stroke-width="0.8"/>
+  <line x1="180" y1="280" x2="510" y2="280" stroke="var(--border)" stroke-width="0.8"/>
+  <circle cx="155" cy="120" r="34" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
+  <text x="155" y="124" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{node_1}}</text>
+  <circle cx="270" cy="80" r="34" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
+  <text x="270" y="84" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{node_2}}</text>
+  <circle cx="220" cy="180" r="38" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
+  <text x="220" y="178" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{node_3_line1}}</text>
+  <text x="220" y="192" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{node_3_line2}}</text>
+  <circle cx="380" cy="120" r="34" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
+  <text x="380" y="124" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{node_4}}</text>
+  <circle cx="180" cy="280" r="34" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
+  <text x="180" y="284" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{node_5}}</text>
+  <circle cx="370" cy="240" r="34" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
+  <text x="370" y="244" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{node_6}}</text>
+  <circle cx="510" cy="100" r="34" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
+  <text x="510" y="104" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{node_7}}</text>
+  <circle cx="510" cy="280" r="34" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
+  <text x="510" y="284" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{node_8}}</text>
+  <text x="40" y="350" class="caption">{{caption}}</text>
+</svg>

@@ -1,0 +1,37 @@
+<svg viewBox="0 0 680 420" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .label-strong { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 15px; font-weight: 600; }
+    .label { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 13px; font-weight: 500; }
+    .gloss { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 400; font-style: italic; fill: var(--muted); }
+    .gloss-strong { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 500; }
+    .caption { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 10px; font-weight: 400; font-style: italic; fill: var(--muted); }
+    .axis { stroke: var(--border); stroke-width: 0.6; fill: none; }
+  </style>
+
+  <defs>
+    <marker id="arrowa8" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect x="80" y="40" width="380" height="60" rx="4" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.8"/>
+  <text x="100" y="70" class="label-strong" dominant-baseline="central" fill="var(--primary)">{{layer_1}}</text>
+  <text x="100" y="88" class="gloss" dominant-baseline="central">{{layer_1_gloss}}</text>
+  <rect x="80" y="120" width="380" height="60" rx="4" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.8"/>
+  <text x="100" y="150" class="label-strong" dominant-baseline="central" fill="var(--primary)">{{layer_2}}</text>
+  <text x="100" y="168" class="gloss" dominant-baseline="central">{{layer_2_gloss}}</text>
+  <rect x="80" y="200" width="380" height="60" rx="4" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.8"/>
+  <text x="100" y="230" class="label-strong" dominant-baseline="central" fill="var(--primary)">{{layer_3}}</text>
+  <text x="100" y="248" class="gloss" dominant-baseline="central">{{layer_3_gloss}}</text>
+  <rect x="80" y="280" width="380" height="60" rx="4" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.8"/>
+  <text x="100" y="310" class="label-strong" dominant-baseline="central" fill="var(--primary)">{{layer_4}}</text>
+  <text x="100" y="328" class="gloss" dominant-baseline="central">{{layer_4_gloss}}</text>
+  <line x1="500" y1="70" x2="500" y2="310" stroke="var(--muted)" stroke-width="0.8" marker-end="url(#arrowa8)"/>
+  <text x="520" y="74" class="gloss" dominant-baseline="central">{{time_label_1}}</text>
+  <text x="520" y="150" class="gloss" dominant-baseline="central">{{time_label_2}}</text>
+  <text x="520" y="230" class="gloss" dominant-baseline="central">{{time_label_3}}</text>
+  <text x="520" y="310" class="gloss" dominant-baseline="central">{{time_label_4}}</text>
+  <text x="520" y="340" class="caption">{{time_axis_label}}</text>
+  <text x="60" y="180" class="gloss" text-anchor="end" dominant-baseline="central">{{depth_top}}</text>
+  <text x="60" y="280" class="gloss" text-anchor="end" dominant-baseline="central">{{depth_bottom}}</text>
+  <line x1="60" y1="200" x2="60" y2="260" stroke="var(--muted)" stroke-width="0.6"/>
+</svg>
