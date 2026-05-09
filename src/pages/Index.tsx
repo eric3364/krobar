@@ -1668,6 +1668,22 @@ const Index = () => {
           placeholder="Collez votre texte ici (extrait de cours, paragraphe, idée)…"
           value={text}
           onChange={(e) => setText(e.target.value)}
+          onPaste={() => {
+            // Reset preview state when a new text is pasted, so the previous
+            // production is not retained.
+            setSuggestions([]);
+            setSelectedIdx(null);
+            setSlotOverrides({});
+            setSlotTransforms({});
+            setSlotTextStyles({});
+            setSelectedSlotKey(null);
+            setSelectedRect(null);
+            setExtraSelectedKeys([]);
+            setExtraSelectedRects({});
+            setEdit(null);
+            historyRef.current = [];
+            if (previewRef.current) previewRef.current.innerHTML = "";
+          }}
           className="flex-1 resize-none min-h-[260px] font-mono text-sm"
         />
         <div className="space-y-2">
