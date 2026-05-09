@@ -1682,7 +1682,6 @@ const Index = () => {
             setExtraSelectedRects({});
             setEdit(null);
             historyRef.current = [];
-            if (previewRef.current) previewRef.current.innerHTML = "";
           }}
           className="flex-1 resize-none min-h-[260px] font-mono text-sm"
         />
