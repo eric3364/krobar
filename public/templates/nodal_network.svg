@@ -2,84 +2,80 @@
   <rect width="1400" height="900" fill="var(--bg)"/>
   <text x="105" y="72" font-size="13" font-weight="600" fill="var(--text)" opacity="0.55" style="text-transform: uppercase;">Réseau Nodal</text>
   <foreignObject x="60" y="90" width="1280" height="56">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="title" style="width:100%;height:100%;display:flex;align-items:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:36px;color:var(--text);box-sizing:border-box;">Écosystème d'intégrations et connexions</div>
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="title" style="width:100%;height:100%;display:flex;align-items:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:36px;color:var(--text);box-sizing:border-box;word-wrap:break-word;overflow-wrap:anywhere;line-height:1.1;">Écosystème d'intégrations et connexions</div>
   </foreignObject>
 
   <!-- Central hub : pivot, hors slot-groups -->
   <rect x="600" y="400" width="200" height="100" rx="12" fill="var(--primary)" fill-opacity="0.3" stroke="var(--primary)" stroke-width="4"/>
-  <foreignObject x="610" y="435" width="180" height="30">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="central_hub" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:18px;color:var(--primary);box-sizing:border-box;">Plateforme Centrale</div>
+  <foreignObject x="600" y="400" width="200" height="100">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="central_hub" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;word-wrap:break-word;overflow-wrap:anywhere;line-height:1.2;padding:4px 12px;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:18px;color:var(--primary);box-sizing:border-box;">Plateforme Centrale</div>
   </foreignObject>
 
   <g class="slot-group" data-slot-key="node_1">
     <rect x="200" y="200" width="140" height="60" rx="8" fill="#3b82f6" fill-opacity="0.2" stroke="#3b82f6" stroke-width="2"/>
-    <foreignObject x="210" y="220" width="180" height="20">
-      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="node_1" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">CRM System</div>
+    <foreignObject x="200" y="200" width="140" height="60">
+      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="node_1" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;word-wrap:break-word;overflow-wrap:anywhere;line-height:1.2;padding:4px 8px;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:14px;color:var(--text);box-sizing:border-box;">CRM System</div>
     </foreignObject>
     <line x1="340" y1="240" x2="580" y2="420" stroke="#3b82f6" stroke-width="3" opacity="0.7"/>
   </g>
 
   <g class="slot-group" data-slot-key="node_2">
     <rect x="500" y="180" width="140" height="60" rx="8" fill="#10b981" fill-opacity="0.2" stroke="#10b981" stroke-width="2"/>
-    <foreignObject x="510" y="200" width="180" height="20">
-      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="node_2" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Analytics</div>
+    <foreignObject x="500" y="180" width="140" height="60">
+      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="node_2" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;word-wrap:break-word;overflow-wrap:anywhere;line-height:1.2;padding:4px 8px;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:14px;color:var(--text);box-sizing:border-box;">Analytics</div>
     </foreignObject>
     <line x1="570" y1="240" x2="650" y2="400" stroke="#10b981" stroke-width="3" opacity="0.7"/>
-    <!-- Inter-node : node_1 ↔ node_2 (associée à node_2, index max) -->
     <line x1="340" y1="230" x2="500" y2="210" stroke="var(--text)" stroke-width="2" opacity="0.3" stroke-dasharray="5,5"/>
   </g>
 
   <g class="slot-group" data-slot-key="node_3">
     <rect x="800" y="200" width="140" height="60" rx="8" fill="#f59e0b" fill-opacity="0.2" stroke="#f59e0b" stroke-width="2"/>
-    <foreignObject x="810" y="220" width="180" height="20">
-      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="node_3" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">E-Commerce</div>
+    <foreignObject x="800" y="200" width="140" height="60">
+      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="node_3" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;word-wrap:break-word;overflow-wrap:anywhere;line-height:1.2;padding:4px 8px;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:14px;color:var(--text);box-sizing:border-box;">E-Commerce</div>
     </foreignObject>
     <line x1="820" y1="260" x2="720" y2="420" stroke="#f59e0b" stroke-width="3" opacity="0.7"/>
-    <!-- Inter-node : node_2 ↔ node_3 (associée à node_3, index max) -->
     <line x1="640" y1="200" x2="800" y2="230" stroke="var(--text)" stroke-width="2" opacity="0.3" stroke-dasharray="5,5"/>
   </g>
 
   <g class="slot-group" data-slot-key="node_4">
     <rect x="1000" y="400" width="140" height="60" rx="8" fill="#ef4444" fill-opacity="0.2" stroke="#ef4444" stroke-width="2"/>
-    <foreignObject x="1010" y="420" width="180" height="20">
-      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="node_4" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">ERP</div>
+    <foreignObject x="1000" y="400" width="140" height="60">
+      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="node_4" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;word-wrap:break-word;overflow-wrap:anywhere;line-height:1.2;padding:4px 8px;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:14px;color:var(--text);box-sizing:border-box;">ERP</div>
     </foreignObject>
     <line x1="1000" y1="440" x2="800" y2="450" stroke="#ef4444" stroke-width="3" opacity="0.7"/>
   </g>
 
   <g class="slot-group" data-slot-key="node_5">
     <rect x="800" y="600" width="140" height="60" rx="8" fill="#8b5cf6" fill-opacity="0.2" stroke="#8b5cf6" stroke-width="2"/>
-    <foreignObject x="810" y="620" width="180" height="20">
-      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="node_5" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Support</div>
+    <foreignObject x="800" y="600" width="140" height="60">
+      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="node_5" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;word-wrap:break-word;overflow-wrap:anywhere;line-height:1.2;padding:4px 8px;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:14px;color:var(--text);box-sizing:border-box;">Support</div>
     </foreignObject>
     <line x1="820" y1="600" x2="720" y2="500" stroke="#8b5cf6" stroke-width="3" opacity="0.7"/>
-    <!-- Inter-node : node_4 ↔ node_5 (associée à node_5, index max) -->
     <line x1="940" y1="430" x2="870" y2="620" stroke="var(--text)" stroke-width="2" opacity="0.3" stroke-dasharray="5,5"/>
   </g>
 
   <g class="slot-group" data-slot-key="node_6">
     <rect x="500" y="650" width="140" height="60" rx="8" fill="#06b6d4" fill-opacity="0.2" stroke="#06b6d4" stroke-width="2"/>
-    <foreignObject x="510" y="670" width="180" height="20">
-      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="node_6" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Database</div>
+    <foreignObject x="500" y="650" width="140" height="60">
+      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="node_6" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;word-wrap:break-word;overflow-wrap:anywhere;line-height:1.2;padding:4px 8px;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:14px;color:var(--text);box-sizing:border-box;">Database</div>
     </foreignObject>
     <line x1="570" y1="650" x2="650" y2="500" stroke="#06b6d4" stroke-width="3" opacity="0.7"/>
   </g>
 
   <g class="slot-group" data-slot-key="node_7">
     <rect x="200" y="600" width="140" height="60" rx="8" fill="#84cc16" fill-opacity="0.2" stroke="#84cc16" stroke-width="2"/>
-    <foreignObject x="210" y="620" width="180" height="20">
-      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="node_7" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Marketing</div>
+    <foreignObject x="200" y="600" width="140" height="60">
+      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="node_7" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;word-wrap:break-word;overflow-wrap:anywhere;line-height:1.2;padding:4px 8px;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:14px;color:var(--text);box-sizing:border-box;">Marketing</div>
     </foreignObject>
     <line x1="340" y1="620" x2="580" y2="480" stroke="#84cc16" stroke-width="3" opacity="0.7"/>
   </g>
 
   <g class="slot-group" data-slot-key="node_8">
     <rect x="100" y="400" width="140" height="60" rx="8" fill="#f97316" fill-opacity="0.2" stroke="#f97316" stroke-width="2"/>
-    <foreignObject x="110" y="420" width="180" height="20">
-      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="node_8" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Finance</div>
+    <foreignObject x="100" y="400" width="140" height="60">
+      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="node_8" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;word-wrap:break-word;overflow-wrap:anywhere;line-height:1.2;padding:4px 8px;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:14px;color:var(--text);box-sizing:border-box;">Finance</div>
     </foreignObject>
     <line x1="240" y1="440" x2="600" y2="450" stroke="#f97316" stroke-width="3" opacity="0.7"/>
-    <!-- Inter-node : node_7 ↔ node_8 (associée à node_8, index max) -->
     <line x1="240" y1="430" x2="340" y2="630" stroke="var(--text)" stroke-width="2" opacity="0.3" stroke-dasharray="5,5"/>
   </g>
 
