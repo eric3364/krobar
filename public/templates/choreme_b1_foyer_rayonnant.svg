@@ -7,29 +7,38 @@
     .caption { font-family: Poppins, 'Helvetica Neue', Arial, sans-serif; font-size: 10px; font-weight: 400; font-style: italic; fill: var(--muted); }
     .axis { stroke: var(--border); stroke-width: 0.6; fill: none; }
   </style>
-
-  <line x1="340" y1="155" x2="340" y2="195" stroke="var(--border)" stroke-width="0.8"/>
-  <line x1="510" y1="240" x2="475" y2="220" stroke="var(--border)" stroke-width="0.8"/>
-  <line x1="510" y1="320" x2="475" y2="300" stroke="var(--border)" stroke-width="0.8"/>
-  <line x1="170" y1="320" x2="205" y2="300" stroke="var(--border)" stroke-width="0.8"/>
-  <line x1="170" y1="240" x2="205" y2="220" stroke="var(--border)" stroke-width="0.8"/>
   <circle cx="340" cy="260" r="65" fill="var(--bg)" stroke="var(--primary)" stroke-width="2.5"/>
   <text x="340" y="252" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="core_line1">core_line1</text>
   <text x="340" y="270" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="core_line2">core_line2</text>
-  <circle cx="340" cy="115" r="40" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
-  <text x="340" y="113" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="satellite_1">satellite_1</text>
-  <text x="340" y="65" class="gloss" text-anchor="middle" data-slot="satellite_1_gloss">satellite_1_gloss</text>
-  <circle cx="540" cy="220" r="40" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
-  <text x="540" y="218" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="satellite_2">satellite_2</text>
-  <text x="540" y="170" class="gloss" text-anchor="middle" data-slot="satellite_2_gloss">satellite_2_gloss</text>
-  <circle cx="540" cy="340" r="40" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
-  <text x="540" y="338" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="satellite_3">satellite_3</text>
-  <text x="540" y="395" class="gloss" text-anchor="middle" data-slot="satellite_3_gloss">satellite_3_gloss</text>
-  <circle cx="140" cy="340" r="40" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
-  <text x="140" y="338" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="satellite_4">satellite_4</text>
-  <text x="140" y="395" class="gloss" text-anchor="middle" data-slot="satellite_4_gloss">satellite_4_gloss</text>
-  <circle cx="140" cy="220" r="40" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
-  <text x="140" y="218" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="satellite_5">satellite_5</text>
-  <text x="140" y="170" class="gloss" text-anchor="middle" data-slot="satellite_5_gloss">satellite_5_gloss</text>
+  <g class="slot-group" data-slot-key="satellite_1">
+    <line x1="340" y1="155" x2="340" y2="195" stroke="var(--border)" stroke-width="0.8"/>
+    <circle cx="340" cy="115" r="40" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
+    <text x="340" y="113" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="satellite_1">satellite_1</text>
+    <text x="340" y="65" class="gloss" text-anchor="middle" data-slot="satellite_1_gloss">satellite_1_gloss</text>
+  </g>
+  <g class="slot-group" data-slot-key="satellite_2">
+    <line x1="510" y1="240" x2="475" y2="220" stroke="var(--border)" stroke-width="0.8"/>
+    <circle cx="540" cy="220" r="40" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
+    <text x="540" y="218" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="satellite_2">satellite_2</text>
+    <text x="540" y="170" class="gloss" text-anchor="middle" data-slot="satellite_2_gloss">satellite_2_gloss</text>
+  </g>
+  <g class="slot-group" data-slot-key="satellite_3">
+    <line x1="510" y1="320" x2="475" y2="300" stroke="var(--border)" stroke-width="0.8"/>
+    <circle cx="540" cy="340" r="40" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
+    <text x="540" y="338" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="satellite_3">satellite_3</text>
+    <text x="540" y="395" class="gloss" text-anchor="middle" data-slot="satellite_3_gloss">satellite_3_gloss</text>
+  </g>
+  <g class="slot-group" data-slot-key="satellite_4">
+    <line x1="170" y1="320" x2="205" y2="300" stroke="var(--border)" stroke-width="0.8"/>
+    <circle cx="140" cy="340" r="40" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
+    <text x="140" y="338" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="satellite_4">satellite_4</text>
+    <text x="140" y="395" class="gloss" text-anchor="middle" data-slot="satellite_4_gloss">satellite_4_gloss</text>
+  </g>
+  <g class="slot-group" data-slot-key="satellite_5">
+    <line x1="170" y1="240" x2="205" y2="220" stroke="var(--border)" stroke-width="0.8"/>
+    <circle cx="140" cy="220" r="40" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
+    <text x="140" y="218" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="satellite_5">satellite_5</text>
+    <text x="140" y="170" class="gloss" text-anchor="middle" data-slot="satellite_5_gloss">satellite_5_gloss</text>
+  </g>
   <text x="40" y="440" class="caption" data-slot="caption">caption</text>
 </svg>

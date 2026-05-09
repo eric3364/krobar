@@ -4,54 +4,60 @@
   <foreignObject x="60" y="90" width="920" height="56">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="title" style="width:100%;height:100%;display:flex;align-items:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:36px;color:var(--text);box-sizing:border-box;">Stratégie d'entreprise</div>
   </foreignObject>
-  
+
   <!-- Central node -->
   <circle cx="520" cy="320" r="80" fill="var(--primary)" fill-opacity="0.2" stroke="var(--primary)" stroke-width="3"/>
   <foreignObject x="440" y="300" width="180" height="40">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="central_topic" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:18px;color:var(--primary);box-sizing:border-box;">Sujet central</div>
   </foreignObject>
-  
-  <!-- Branch 1 - Top -->
-  <line x1="520" y1="240" x2="520" y2="180" stroke="var(--accent)" stroke-width="3"/>
-  <circle cx="520" cy="160" r="40" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
-  <foreignObject x="440" y="140" width="180" height="40">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_1" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Marketing</div>
-  </foreignObject>
-  
-  <!-- Branch 2 - Top Right -->
-  <line x1="580" y1="260" x2="680" y2="200" stroke="var(--accent)" stroke-width="3"/>
-  <circle cx="700" cy="180" r="40" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
-  <foreignObject x="620" y="160" width="180" height="40">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_2" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Innovation</div>
-  </foreignObject>
-  
-  <!-- Branch 3 - Right -->
-  <line x1="600" y1="320" x2="720" y2="320" stroke="var(--accent)" stroke-width="3"/>
-  <circle cx="740" cy="320" r="40" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
-  <foreignObject x="660" y="300" width="180" height="40">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_3" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Opérations</div>
-  </foreignObject>
-  
-  <!-- Branch 4 - Bottom Right -->
-  <line x1="580" y1="380" x2="680" y2="440" stroke="var(--accent)" stroke-width="3"/>
-  <circle cx="700" cy="460" r="40" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
-  <foreignObject x="620" y="440" width="180" height="40">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_4" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Finances</div>
-  </foreignObject>
-  
-  <!-- Branch 5 - Bottom Left -->
-  <line x1="460" y1="380" x2="360" y2="440" stroke="var(--accent)" stroke-width="3"/>
-  <circle cx="340" cy="460" r="40" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
-  <foreignObject x="260" y="440" width="180" height="40">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_5" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Ressources humaines</div>
-  </foreignObject>
-  
-  <!-- Branch 6 - Left -->
-  <line x1="440" y1="320" x2="320" y2="320" stroke="var(--accent)" stroke-width="3"/>
-  <circle cx="300" cy="320" r="40" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
-  <foreignObject x="220" y="300" width="180" height="40">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_6" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Technologies</div>
-  </foreignObject>
-  
+
+  <g class="slot-group" data-slot-key="branch_1">
+    <line x1="520" y1="240" x2="520" y2="180" stroke="var(--accent)" stroke-width="3"/>
+    <circle cx="520" cy="160" r="40" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
+    <foreignObject x="440" y="140" width="180" height="40">
+      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_1" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Marketing</div>
+    </foreignObject>
+  </g>
+
+  <g class="slot-group" data-slot-key="branch_2">
+    <line x1="580" y1="260" x2="680" y2="200" stroke="var(--accent)" stroke-width="3"/>
+    <circle cx="700" cy="180" r="40" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
+    <foreignObject x="620" y="160" width="180" height="40">
+      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_2" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Innovation</div>
+    </foreignObject>
+  </g>
+
+  <g class="slot-group" data-slot-key="branch_3">
+    <line x1="600" y1="320" x2="720" y2="320" stroke="var(--accent)" stroke-width="3"/>
+    <circle cx="740" cy="320" r="40" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
+    <foreignObject x="660" y="300" width="180" height="40">
+      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_3" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Opérations</div>
+    </foreignObject>
+  </g>
+
+  <g class="slot-group" data-slot-key="branch_4">
+    <line x1="580" y1="380" x2="680" y2="440" stroke="var(--accent)" stroke-width="3"/>
+    <circle cx="700" cy="460" r="40" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
+    <foreignObject x="620" y="440" width="180" height="40">
+      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_4" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Finances</div>
+    </foreignObject>
+  </g>
+
+  <g class="slot-group" data-slot-key="branch_5">
+    <line x1="460" y1="380" x2="360" y2="440" stroke="var(--accent)" stroke-width="3"/>
+    <circle cx="340" cy="460" r="40" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
+    <foreignObject x="260" y="440" width="180" height="40">
+      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_5" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Ressources humaines</div>
+    </foreignObject>
+  </g>
+
+  <g class="slot-group" data-slot-key="branch_6">
+    <line x1="440" y1="320" x2="320" y2="320" stroke="var(--accent)" stroke-width="3"/>
+    <circle cx="300" cy="320" r="40" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
+    <foreignObject x="220" y="300" width="180" height="40">
+      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_6" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Technologies</div>
+    </foreignObject>
+  </g>
+
   <text x="60" y="580" font-size="11" font-weight="600" fill="var(--text)" opacity="0.5" style="text-transform: uppercase;">Krobar · Mindmap</text>
 </svg>

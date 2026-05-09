@@ -4,47 +4,52 @@
   <foreignObject x="60" y="90" width="920" height="56">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="title" style="width:100%;height:100%;display:flex;align-items:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:36px;color:var(--text);box-sizing:border-box;">Brainstorming créatif</div>
   </foreignObject>
-  
-  <!-- Central idea -->
+
+  <!-- Idée centrale : pivot, hors slot-groups -->
   <circle cx="520" cy="320" r="70" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2"/>
   <foreignObject x="440" y="300" width="180" height="40">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="central_idea" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:18px;color:var(--primary);box-sizing:border-box;">Idée centrale</div>
   </foreignObject>
-  
-  <!-- Idea 1 - Top Left -->
-  <circle cx="300" cy="220" r="45" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
-  <line x1="345" y1="235" x2="450" y2="285" stroke="var(--accent)" stroke-width="1" opacity="0.4"/>
-  <foreignObject x="220" y="200" width="180" height="40">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="idea_1" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Innovation</div>
-  </foreignObject>
-  
-  <!-- Idea 2 - Top Right -->
-  <circle cx="740" cy="220" r="45" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
-  <line x1="695" y1="235" x2="590" y2="285" stroke="var(--accent)" stroke-width="1" opacity="0.4"/>
-  <foreignObject x="660" y="200" width="180" height="40">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="idea_2" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Collaboration</div>
-  </foreignObject>
-  
-  <!-- Idea 3 - Bottom Left -->
-  <circle cx="300" cy="420" r="45" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
-  <line x1="345" y1="405" x2="450" y2="355" stroke="var(--accent)" stroke-width="1" opacity="0.4"/>
-  <foreignObject x="220" y="400" width="180" height="40">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="idea_3" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Efficacité</div>
-  </foreignObject>
-  
-  <!-- Idea 4 - Bottom Right -->
-  <circle cx="740" cy="420" r="45" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
-  <line x1="695" y1="405" x2="590" y2="355" stroke="var(--accent)" stroke-width="1" opacity="0.4"/>
-  <foreignObject x="660" y="400" width="180" height="40">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="idea_4" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Durabilité</div>
-  </foreignObject>
-  
-  <!-- Idea 5 - Right -->
-  <circle cx="800" cy="320" r="35" fill="var(--primary)" fill-opacity="0.2" stroke="var(--primary)" stroke-width="2"/>
-  <line x1="765" y1="320" x2="590" y2="320" stroke="var(--accent)" stroke-width="1" opacity="0.4"/>
-  <foreignObject x="720" y="300" width="180" height="40">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="idea_5" style="width:100%;height:100%;display:flex;align-items:center;justify-content:flex-start;text-align:left;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Croissance</div>
-  </foreignObject>
-  
+
+  <g class="slot-group" data-slot-key="idea_1">
+    <circle cx="300" cy="220" r="45" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
+    <line x1="345" y1="235" x2="450" y2="285" stroke="var(--accent)" stroke-width="1" opacity="0.4"/>
+    <foreignObject x="220" y="200" width="180" height="40">
+      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="idea_1" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Innovation</div>
+    </foreignObject>
+  </g>
+
+  <g class="slot-group" data-slot-key="idea_2">
+    <circle cx="740" cy="220" r="45" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
+    <line x1="695" y1="235" x2="590" y2="285" stroke="var(--accent)" stroke-width="1" opacity="0.4"/>
+    <foreignObject x="660" y="200" width="180" height="40">
+      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="idea_2" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Collaboration</div>
+    </foreignObject>
+  </g>
+
+  <g class="slot-group" data-slot-key="idea_3">
+    <circle cx="300" cy="420" r="45" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
+    <line x1="345" y1="405" x2="450" y2="355" stroke="var(--accent)" stroke-width="1" opacity="0.4"/>
+    <foreignObject x="220" y="400" width="180" height="40">
+      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="idea_3" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Efficacité</div>
+    </foreignObject>
+  </g>
+
+  <g class="slot-group" data-slot-key="idea_4">
+    <circle cx="740" cy="420" r="45" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
+    <line x1="695" y1="405" x2="590" y2="355" stroke="var(--accent)" stroke-width="1" opacity="0.4"/>
+    <foreignObject x="660" y="400" width="180" height="40">
+      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="idea_4" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Durabilité</div>
+    </foreignObject>
+  </g>
+
+  <g class="slot-group" data-slot-key="idea_5">
+    <circle cx="800" cy="320" r="35" fill="var(--primary)" fill-opacity="0.2" stroke="var(--primary)" stroke-width="2"/>
+    <line x1="765" y1="320" x2="590" y2="320" stroke="var(--accent)" stroke-width="1" opacity="0.4"/>
+    <foreignObject x="720" y="300" width="180" height="40">
+      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="idea_5" style="width:100%;height:100%;display:flex;align-items:center;justify-content:flex-start;text-align:left;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Croissance</div>
+    </foreignObject>
+  </g>
+
   <text x="60" y="580" font-size="11" font-weight="600" fill="var(--text)" opacity="0.5" style="text-transform: uppercase;">Krobar · Creativity</text>
 </svg>
