@@ -40,6 +40,11 @@
             "top_branch"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 3,
+        "min": 2,
+        "max": 4
       }
     },
     {
@@ -80,6 +85,11 @@
             "bar_4_value"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 5
       }
     },
     {
@@ -112,7 +122,9 @@
             "stars_title"
           ]
         }
-      }
+      },
+      "canonical": true,
+      "cardinality": 4
     },
     {
       "id": "bridge_problem_solution",
@@ -152,6 +164,11 @@
             "solution_label"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 2,
+        "min": 1,
+        "max": 3
       }
     },
     {
@@ -188,6 +205,11 @@
             "ring_4_title"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 5
       }
     },
     {
@@ -230,7 +252,9 @@
             "value_proposition"
           ]
         }
-      }
+      },
+      "canonical": true,
+      "cardinality": 9
     },
     {
       "id": "butterfly_metamorphosis",
@@ -266,6 +290,11 @@
             "stage_6_title"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 6,
+        "min": 5,
+        "max": 7
       }
     },
     {
@@ -300,6 +329,11 @@
             "problem"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 3,
+        "min": 2,
+        "max": 4
       }
     },
     {
@@ -329,6 +363,11 @@
             "title"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 5,
+        "min": 4,
+        "max": 6
       }
     },
     {
@@ -361,6 +400,11 @@
             "column_2_title"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 2,
+        "min": 1,
+        "max": 3
       }
     },
     {
@@ -397,6 +441,11 @@
             "column_3_title"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 3,
+        "min": 2,
+        "max": 4
       }
     },
     {
@@ -433,6 +482,11 @@
             "source_5"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 5,
+        "min": 4,
+        "max": 6
       }
     },
     {
@@ -461,6 +515,11 @@
             "y_mid"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 3,
+        "min": 2,
+        "max": 4
       }
     },
     {
@@ -488,6 +547,11 @@
             "title"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 5
       }
     },
     {
@@ -519,6 +583,11 @@
             "title"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 6,
+        "min": 5,
+        "max": 7
       }
     },
     {
@@ -567,6 +636,11 @@
             "percent_4"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 5
       }
     },
     {
@@ -617,6 +691,11 @@
             "effect"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 5
       }
     },
     {
@@ -651,7 +730,9 @@
             "top_force"
           ]
         }
-      }
+      },
+      "canonical": true,
+      "cardinality": 5
     },
     {
       "id": "flowchart_decision",
@@ -679,6 +760,11 @@
             "start_step"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 2,
+        "min": 2,
+        "max": 3
       }
     },
     {
@@ -713,6 +799,11 @@
             "flow_transform"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 5
       }
     },
     {
@@ -743,6 +834,11 @@
             "top_label"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 3,
+        "min": 3,
+        "max": 4
       }
     },
     {
@@ -775,6 +871,11 @@
             "visible_title"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 2,
+        "min": 2,
+        "max": 3
       }
     },
     {
@@ -811,6 +912,11 @@
             "idea_5"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 6,
+        "min": 4,
+        "max": 8
       }
     },
     {
@@ -847,6 +953,11 @@
             "point_6"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 6,
+        "min": 5,
+        "max": 7
       }
     },
     {
@@ -881,6 +992,11 @@
             "arrival_phase"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 5,
+        "min": 4,
+        "max": 6
       }
     },
     {
@@ -919,6 +1035,11 @@
             "central_topic"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 6,
+        "min": 3,
+        "max": 6
       }
     },
     {
@@ -953,6 +1074,11 @@
             "phase_5_title"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 5,
+        "min": 4,
+        "max": 6
       }
     },
     {
@@ -999,6 +1125,11 @@
             "sub_sub_branch_3_2_2_1"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 3,
+        "min": 2,
+        "max": 4
       }
     },
     {
@@ -1029,6 +1160,11 @@
             "kpi_3_title"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 3,
+        "min": 2,
+        "max": 4
       }
     },
     {
@@ -1071,6 +1207,11 @@
             "central_hub"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 8,
+        "min": 7,
+        "max": 9
       }
     },
     {
@@ -1103,6 +1244,11 @@
             "dept_3_title"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 3,
+        "min": 2,
+        "max": 4
       }
     },
     {
@@ -1145,6 +1291,11 @@
             "segment_4_value"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 5
       }
     },
     {
@@ -1177,6 +1328,11 @@
             "stage_4_title"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 5
       }
     },
     {
@@ -1211,6 +1367,11 @@
             "component_4"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 5
       }
     },
     {
@@ -1236,6 +1397,11 @@
             "title"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 3,
+        "min": 2,
+        "max": 4
       }
     },
     {
@@ -1265,6 +1431,11 @@
             "title"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 5,
+        "min": 4,
+        "max": 6
       }
     },
     {
@@ -1297,6 +1468,11 @@
             "card_3_title"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 3,
+        "min": 2,
+        "max": 4
       }
     },
     {
@@ -1337,7 +1513,9 @@
             "q4_title"
           ]
         }
-      }
+      },
+      "canonical": true,
+      "cardinality": 4
     },
     {
       "id": "rocket_innovation",
@@ -1369,6 +1547,11 @@
             "stage_4_launch"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 5
       }
     },
     {
@@ -1409,6 +1592,11 @@
             "sub_branch_3_2"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 3,
+        "min": 2,
+        "max": 4
       }
     },
     {
@@ -1443,6 +1631,11 @@
             "legend_2"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 5
       }
     },
     {
@@ -1479,6 +1672,11 @@
             "stage_6_title"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 6,
+        "min": 5,
+        "max": 7
       }
     },
     {
@@ -1513,6 +1711,11 @@
             "act_5"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 5,
+        "min": 4,
+        "max": 6
       }
     },
     {
@@ -1553,7 +1756,9 @@
             "weaknesses_title"
           ]
         }
-      }
+      },
+      "canonical": true,
+      "cardinality": 4
     },
     {
       "id": "telescope_tripod",
@@ -1585,6 +1790,11 @@
             "observation_4"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 5
       }
     },
     {
@@ -1625,6 +1835,11 @@
             "event_4"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 5
       }
     },
     {
@@ -1651,6 +1866,11 @@
             "circle_a_label"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 2,
+        "min": 1,
+        "max": 3
       }
     },
     {
@@ -1688,6 +1908,11 @@
             "synthesis"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 3,
+        "min": 2,
+        "max": 4
       }
     },
     {
@@ -1725,6 +1950,11 @@
             "synthesis"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 3,
+        "min": 2,
+        "max": 4
       }
     },
     {
@@ -1753,6 +1983,11 @@
             "right_panel"
           ]
         }
+      },
+      "cardinality": {
+        "ideal": 2,
+        "min": 2,
+        "max": 2
       }
     },
     {
@@ -1806,6 +2041,11 @@
           "condition de toute",
           "sans quoi rien"
         ]
+      },
+      "cardinality": {
+        "ideal": 0,
+        "min": 0,
+        "max": 1
       }
     },
     {
@@ -1865,6 +2105,11 @@
           "soit... soit",
           "plutôt que"
         ]
+      },
+      "cardinality": {
+        "ideal": 2,
+        "min": 2,
+        "max": 2
       }
     },
     {
@@ -1922,6 +2167,11 @@
           "union",
           "corrélation"
         ]
+      },
+      "cardinality": {
+        "ideal": 2,
+        "min": 2,
+        "max": 3
       }
     },
     {
@@ -1985,6 +2235,11 @@
           "aboutit à",
           "mène à"
         ]
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 4
       }
     },
     {
@@ -2050,6 +2305,11 @@
           "à mesure que",
           "gradient"
         ]
+      },
+      "cardinality": {
+        "ideal": 5,
+        "min": 3,
+        "max": 5
       }
     },
     {
@@ -2115,6 +2375,11 @@
           "éternel retour",
           "sans fin"
         ]
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 5
       }
     },
     {
@@ -2178,6 +2443,11 @@
           "sur une décennie",
           "sur la durée"
         ]
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 5
       }
     },
     {
@@ -2246,6 +2516,11 @@
           "strates",
           "couches"
         ]
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 4
       }
     },
     {
@@ -2306,6 +2581,11 @@
           "chaque élément dépend",
           "multiples chemins"
         ]
+      },
+      "cardinality": {
+        "ideal": 5,
+        "min": 3,
+        "max": 6
       }
     },
     {
@@ -2370,6 +2650,11 @@
           "défini par ses refus",
           "ce qui n'est pas"
         ]
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 5
       }
     },
     {
@@ -2435,6 +2720,11 @@
           "engagements",
           "autour de cette idée"
         ]
+      },
+      "cardinality": {
+        "ideal": 5,
+        "min": 2,
+        "max": 5
       }
     },
     {
@@ -2498,6 +2788,11 @@
           "étau",
           "subit"
         ]
+      },
+      "cardinality": {
+        "ideal": 5,
+        "min": 5,
+        "max": 5
       }
     },
     {
@@ -2560,6 +2855,11 @@
           "voie médiane",
           "troisième voie"
         ]
+      },
+      "cardinality": {
+        "ideal": 3,
+        "min": 3,
+        "max": 3
       }
     },
     {
@@ -2629,6 +2929,11 @@
           "ne se voit plus",
           "a fait place à"
         ]
+      },
+      "cardinality": {
+        "ideal": 2,
+        "min": 2,
+        "max": 2
       }
     },
     {
@@ -2703,6 +3008,11 @@
           "sens inverse",
           "flux inversé"
         ]
+      },
+      "cardinality": {
+        "ideal": 2,
+        "min": 2,
+        "max": 2
       }
     },
     {
@@ -2764,6 +3074,11 @@
           "s'aggrave",
           "positions se durcissent"
         ]
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 5
       }
     },
     {
@@ -2829,6 +3144,11 @@
           "à mesure qu'on dépasse",
           "régime change"
         ]
+      },
+      "cardinality": {
+        "ideal": 5,
+        "min": 3,
+        "max": 5
       }
     },
     {
@@ -2896,6 +3216,11 @@
           "classification",
           "plusieurs niveaux"
         ]
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 5
       }
     },
     {
@@ -2961,6 +3286,11 @@
           "nombreux",
           "autant de"
         ]
+      },
+      "cardinality": {
+        "ideal": 5,
+        "min": 3,
+        "max": 6
       }
     },
     {
@@ -3025,6 +3355,11 @@
           "va de soi",
           "tacite"
         ]
+      },
+      "cardinality": {
+        "ideal": 2,
+        "min": 2,
+        "max": 2
       }
     },
     {
@@ -3099,6 +3434,11 @@
           "deux dimensions",
           "deux critères"
         ]
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 4,
+        "max": 4
       }
     },
     {
@@ -3172,6 +3512,11 @@
           "maintenir... et créer",
           "sans fusion"
         ]
+      },
+      "cardinality": {
+        "ideal": 3,
+        "min": 2,
+        "max": 4
       }
     },
     {
@@ -3236,6 +3581,11 @@
           "convergent vers",
           "plusieurs axes"
         ]
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 5
       }
     },
     {
@@ -3305,6 +3655,11 @@
           "irriguent l'ensemble",
           "chaîne de valeur"
         ]
+      },
+      "cardinality": {
+        "ideal": 5,
+        "min": 4,
+        "max": 5
       }
     },
     {
@@ -3369,6 +3724,11 @@
           "tend à se résoudre",
           "consensus émergent"
         ]
+      },
+      "cardinality": {
+        "ideal": 2,
+        "min": 2,
+        "max": 2
       }
     },
     {
@@ -3436,6 +3796,11 @@
           "tout change autour",
           "le rituel tient"
         ]
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 5
       }
     },
     {
@@ -3505,6 +3870,11 @@
           "pris au sérieux",
           "ne voit pas venir"
         ]
+      },
+      "cardinality": {
+        "ideal": 2,
+        "min": 2,
+        "max": 2
       }
     },
     {
@@ -3573,6 +3943,11 @@
           "enjeu central",
           "disputé"
         ]
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 5
       }
     },
     {
@@ -3642,6 +4017,11 @@
           "sphères d'influence",
           "se dilue"
         ]
+      },
+      "cardinality": {
+        "ideal": 5,
+        "min": 3,
+        "max": 6
       }
     }
   ]
