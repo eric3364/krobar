@@ -8,13 +8,6 @@
     .axis { stroke: var(--border); stroke-width: 0.6; fill: none; }
   </style>
 
-  <!-- Lignes interpériphériques : restent hors des slot-groups (réseau partagé) -->
-  <line x1="180" y1="110" x2="340" y2="65" stroke="var(--border)" stroke-width="0.5"/>
-  <line x1="340" y1="65" x2="500" y2="110" stroke="var(--border)" stroke-width="0.5"/>
-  <line x1="500" y1="110" x2="480" y2="290" stroke="var(--border)" stroke-width="0.5"/>
-  <line x1="200" y1="290" x2="480" y2="290" stroke="var(--border)" stroke-width="0.5"/>
-  <line x1="180" y1="110" x2="200" y2="290" stroke="var(--border)" stroke-width="0.5"/>
-
   <!-- Centre : pivot, hors slot-groups -->
   <circle cx="340" cy="220" r="35" fill="var(--bg)" stroke="var(--tertiary)" stroke-width="1" stroke-dasharray="3 2"/>
   <text x="340" y="218" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--tertiary)" font-style="italic" data-slot="center_line1">center_line1</text>
@@ -31,6 +24,8 @@
     <line x1="340" y1="65" x2="340" y2="200" stroke="var(--border)" stroke-width="0.7"/>
     <circle cx="340" cy="65" r="42" fill="var(--bg)" stroke="var(--warm)" stroke-width="1.6"/>
     <text x="340" y="63" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)" data-slot="periphery_2">periphery_2</text>
+    <!-- Inter-péri : p1 ↔ p2 (associée à p2, index max) -->
+    <line x1="180" y1="110" x2="340" y2="65" stroke="var(--border)" stroke-width="0.5"/>
   </g>
 
   <g class="slot-group" data-slot-key="periphery_3">
@@ -38,6 +33,8 @@
     <circle cx="500" cy="110" r="42" fill="var(--bg)" stroke="var(--warm)" stroke-width="1.6"/>
     <text x="500" y="108" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)" data-slot="periphery_3">periphery_3</text>
     <text x="500" y="56" class="gloss" text-anchor="middle" data-slot="periphery_3_gloss">periphery_3_gloss</text>
+    <!-- Inter-péri : p2 ↔ p3 (associée à p3, index max) -->
+    <line x1="340" y1="65" x2="500" y2="110" stroke="var(--border)" stroke-width="0.5"/>
   </g>
 
   <g class="slot-group" data-slot-key="periphery_4_line1">
@@ -45,6 +42,8 @@
     <circle cx="200" cy="290" r="42" fill="var(--bg)" stroke="var(--warm)" stroke-width="1.6"/>
     <text x="200" y="288" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)" data-slot="periphery_4_line1">periphery_4_line1</text>
     <text x="200" y="304" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)" data-slot="periphery_4_line2">periphery_4_line2</text>
+    <!-- Inter-péri : p1 ↔ p4 (associée à p4, index max) -->
+    <line x1="180" y1="110" x2="200" y2="290" stroke="var(--border)" stroke-width="0.5"/>
   </g>
 
   <g class="slot-group" data-slot-key="periphery_5_line1">
@@ -52,6 +51,10 @@
     <circle cx="480" cy="290" r="42" fill="var(--bg)" stroke="var(--warm)" stroke-width="1.6"/>
     <text x="480" y="288" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)" data-slot="periphery_5_line1">periphery_5_line1</text>
     <text x="480" y="304" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)" data-slot="periphery_5_line2">periphery_5_line2</text>
+    <!-- Inter-péri : p3 ↔ p5 (associée à p5, index max) -->
+    <line x1="500" y1="110" x2="480" y2="290" stroke="var(--border)" stroke-width="0.5"/>
+    <!-- Inter-péri : p4 ↔ p5 (associée à p5, index max) -->
+    <line x1="200" y1="290" x2="480" y2="290" stroke="var(--border)" stroke-width="0.5"/>
   </g>
 
   <text x="40" y="430" class="caption" data-slot="caption">caption</text>
