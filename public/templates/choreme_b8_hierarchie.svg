@@ -9,44 +9,44 @@
   </style>
 
   <rect x="340" y="55" width="120" height="50" rx="6" fill="var(--bg)" stroke="var(--primary)" stroke-width="2"/>
-  <text x="400" y="80" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{root_label}}</text>
+  <text x="400" y="80" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="root_label">root_label</text>
   <line x1="400" y1="105" x2="400" y2="125" stroke="var(--muted)" stroke-width="0.8"/>
   <line x1="180" y1="125" x2="620" y2="125" stroke="var(--muted)" stroke-width="0.8"/>
   <line x1="180" y1="125" x2="180" y2="160" stroke="var(--muted)" stroke-width="0.8"/>
   <line x1="400" y1="125" x2="400" y2="160" stroke="var(--muted)" stroke-width="0.8"/>
   <line x1="620" y1="125" x2="620" y2="160" stroke="var(--muted)" stroke-width="0.8"/>
   <rect x="120" y="160" width="120" height="50" rx="6" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
-  <text x="180" y="185" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{level2_node_1}}</text>
+  <text x="180" y="185" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="level2_node_1">level2_node_1</text>
   <rect x="340" y="160" width="120" height="50" rx="6" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
-  <text x="400" y="185" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{level2_node_2}}</text>
+  <text x="400" y="185" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="level2_node_2">level2_node_2</text>
   <rect x="560" y="160" width="120" height="50" rx="6" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
-  <text x="620" y="185" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{level2_node_3}}</text>
+  <text x="620" y="185" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="level2_node_3">level2_node_3</text>
   <line x1="180" y1="210" x2="180" y2="240" stroke="var(--muted)" stroke-width="0.8"/>
   <line x1="135" y1="240" x2="225" y2="240" stroke="var(--muted)" stroke-width="0.8"/>
   <line x1="135" y1="240" x2="135" y2="270" stroke="var(--muted)" stroke-width="0.8"/>
   <line x1="225" y1="240" x2="225" y2="270" stroke="var(--muted)" stroke-width="0.8"/>
   <rect x="95" y="270" width="80" height="40" rx="4" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.2"/>
-  <text x="135" y="290" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{level3_node_1}}</text>
+  <text x="135" y="290" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="level3_node_1">level3_node_1</text>
   <rect x="185" y="270" width="80" height="40" rx="4" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.2"/>
-  <text x="225" y="290" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{level3_node_2}}</text>
+  <text x="225" y="290" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="level3_node_2">level3_node_2</text>
   <line x1="400" y1="210" x2="400" y2="240" stroke="var(--muted)" stroke-width="0.8"/>
   <line x1="355" y1="240" x2="445" y2="240" stroke="var(--muted)" stroke-width="0.8"/>
   <line x1="355" y1="240" x2="355" y2="270" stroke="var(--muted)" stroke-width="0.8"/>
   <line x1="445" y1="240" x2="445" y2="270" stroke="var(--muted)" stroke-width="0.8"/>
   <rect x="315" y="270" width="80" height="40" rx="4" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.2"/>
-  <text x="355" y="290" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{level3_node_3}}</text>
+  <text x="355" y="290" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="level3_node_3">level3_node_3</text>
   <rect x="405" y="270" width="80" height="40" rx="4" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.2"/>
-  <text x="445" y="290" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{level3_node_4}}</text>
+  <text x="445" y="290" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="level3_node_4">level3_node_4</text>
   <line x1="620" y1="210" x2="620" y2="240" stroke="var(--muted)" stroke-width="0.8"/>
   <line x1="575" y1="240" x2="665" y2="240" stroke="var(--muted)" stroke-width="0.8"/>
   <line x1="575" y1="240" x2="575" y2="270" stroke="var(--muted)" stroke-width="0.8"/>
   <line x1="665" y1="240" x2="665" y2="270" stroke="var(--muted)" stroke-width="0.8"/>
   <rect x="535" y="270" width="80" height="40" rx="4" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.2"/>
-  <text x="575" y="290" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{level3_node_5}}</text>
+  <text x="575" y="290" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="level3_node_5">level3_node_5</text>
   <rect x="625" y="270" width="80" height="40" rx="4" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.2"/>
-  <text x="665" y="290" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{level3_node_6}}</text>
-  <text x="20" y="365" class="gloss" dominant-baseline="central">{{level1_label}}</text>
-  <text x="20" y="385" class="gloss" dominant-baseline="central">{{level2_label}}</text>
-  <text x="20" y="405" class="gloss" dominant-baseline="central">{{level3_label}}</text>
-  <text x="20" y="440" class="caption">{{caption}}</text>
+  <text x="665" y="290" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="level3_node_6">level3_node_6</text>
+  <text x="20" y="365" class="gloss" dominant-baseline="central" data-slot="level1_label">level1_label</text>
+  <text x="20" y="385" class="gloss" dominant-baseline="central" data-slot="level2_label">level2_label</text>
+  <text x="20" y="405" class="gloss" dominant-baseline="central" data-slot="level3_label">level3_label</text>
+  <text x="20" y="440" class="caption" data-slot="caption">caption</text>
 </svg>

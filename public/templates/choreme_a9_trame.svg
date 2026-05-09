@@ -24,21 +24,21 @@
   <line x1="510" y1="100" x2="510" y2="280" stroke="var(--border)" stroke-width="0.8"/>
   <line x1="180" y1="280" x2="510" y2="280" stroke="var(--border)" stroke-width="0.8"/>
   <circle cx="155" cy="120" r="34" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
-  <text x="155" y="124" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{node_1}}</text>
+  <text x="155" y="124" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="node_1">node_1</text>
   <circle cx="270" cy="80" r="34" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
-  <text x="270" y="84" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{node_2}}</text>
+  <text x="270" y="84" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="node_2">node_2</text>
   <circle cx="220" cy="180" r="38" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
-  <text x="220" y="178" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{node_3_line1}}</text>
-  <text x="220" y="192" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{node_3_line2}}</text>
+  <text x="220" y="178" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="node_3_line1">node_3_line1</text>
+  <text x="220" y="192" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="node_3_line2">node_3_line2</text>
   <circle cx="380" cy="120" r="34" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
-  <text x="380" y="124" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{node_4}}</text>
+  <text x="380" y="124" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="node_4">node_4</text>
   <circle cx="180" cy="280" r="34" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
-  <text x="180" y="284" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{node_5}}</text>
+  <text x="180" y="284" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="node_5">node_5</text>
   <circle cx="370" cy="240" r="34" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
-  <text x="370" y="244" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{node_6}}</text>
+  <text x="370" y="244" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="node_6">node_6</text>
   <circle cx="510" cy="100" r="34" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
-  <text x="510" y="104" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{node_7}}</text>
+  <text x="510" y="104" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="node_7">node_7</text>
   <circle cx="510" cy="280" r="34" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
-  <text x="510" y="284" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{node_8}}</text>
-  <text x="40" y="350" class="caption">{{caption}}</text>
+  <text x="510" y="284" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="node_8">node_8</text>
+  <text x="40" y="350" class="caption" data-slot="caption">caption</text>
 </svg>

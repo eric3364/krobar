@@ -11,7 +11,7 @@
   <circle cx="340" cy="160" r="200" fill="none" stroke="var(--border)" stroke-width="0.6" stroke-dasharray="2 8"/>
   <circle cx="340" cy="160" r="145" fill="none" stroke="var(--border)" stroke-width="0.6" stroke-dasharray="2 8"/>
   <circle cx="340" cy="160" r="90" fill="var(--bg)" stroke="var(--primary)" stroke-width="2.5"/>
-  <text x="340" y="155" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" style="font-size:18px;">{{title}}</text>
-  <text x="340" y="180" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{subtitle}}</text>
-  <text x="40" y="300" class="caption">{{caption}}</text>
+  <text x="340" y="155" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" style="font-size:18px;" data-slot="title">title</text>
+  <text x="340" y="180" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="subtitle">subtitle</text>
+  <text x="40" y="300" class="caption" data-slot="caption">caption</text>
 </svg>

@@ -17,17 +17,17 @@
   <line x1="460" y1="184" x2="460" y2="220" stroke="var(--warm)" stroke-width="1.4"/>
   <line x1="540" y1="184" x2="540" y2="220" stroke="var(--warm)" stroke-width="1.6"/>
   <line x1="620" y1="180" x2="620" y2="225" stroke="var(--warm)" stroke-width="2.2"/>
-  <text x="60" y="170" class="label" text-anchor="middle" fill="var(--cool)">{{step_1}}</text>
-  <text x="60" y="245" class="gloss" text-anchor="middle">{{regime_before_label}}</text>
-  <text x="180" y="170" class="label" text-anchor="middle" fill="var(--cool)">{{step_2}}</text>
-  <text x="300" y="170" class="label" text-anchor="middle" fill="var(--cool)">{{step_3}}</text>
-  <text x="380" y="135" class="label-strong" text-anchor="middle" fill="var(--tertiary)">{{threshold_value}}</text>
-  <text x="380" y="120" class="gloss-strong" text-anchor="middle" fill="var(--tertiary)">{{threshold_label}}</text>
-  <text x="460" y="170" class="label" text-anchor="middle" fill="var(--warm)">{{step_4}}</text>
-  <text x="540" y="170" class="label" text-anchor="middle" fill="var(--warm)">{{step_5}}</text>
-  <text x="540" y="245" class="gloss" text-anchor="middle">{{regime_after_label}}</text>
-  <text x="620" y="170" class="label" text-anchor="middle" fill="var(--warm)">{{step_6}}</text>
-  <text x="180" y="280" class="caption" text-anchor="middle">{{regime_before_summary}}</text>
-  <text x="540" y="280" class="caption" text-anchor="middle">{{regime_after_summary}}</text>
-  <text x="40" y="40" class="caption">{{caption}}</text>
+  <text x="60" y="170" class="label" text-anchor="middle" fill="var(--cool)" data-slot="step_1">step_1</text>
+  <text x="60" y="245" class="gloss" text-anchor="middle" data-slot="regime_before_label">regime_before_label</text>
+  <text x="180" y="170" class="label" text-anchor="middle" fill="var(--cool)" data-slot="step_2">step_2</text>
+  <text x="300" y="170" class="label" text-anchor="middle" fill="var(--cool)" data-slot="step_3">step_3</text>
+  <text x="380" y="135" class="label-strong" text-anchor="middle" fill="var(--tertiary)" data-slot="threshold_value">threshold_value</text>
+  <text x="380" y="120" class="gloss-strong" text-anchor="middle" fill="var(--tertiary)" data-slot="threshold_label">threshold_label</text>
+  <text x="460" y="170" class="label" text-anchor="middle" fill="var(--warm)" data-slot="step_4">step_4</text>
+  <text x="540" y="170" class="label" text-anchor="middle" fill="var(--warm)" data-slot="step_5">step_5</text>
+  <text x="540" y="245" class="gloss" text-anchor="middle" data-slot="regime_after_label">regime_after_label</text>
+  <text x="620" y="170" class="label" text-anchor="middle" fill="var(--warm)" data-slot="step_6">step_6</text>
+  <text x="180" y="280" class="caption" text-anchor="middle" data-slot="regime_before_summary">regime_before_summary</text>
+  <text x="540" y="280" class="caption" text-anchor="middle" data-slot="regime_after_summary">regime_after_summary</text>
+  <text x="40" y="40" class="caption" data-slot="caption">caption</text>
 </svg>

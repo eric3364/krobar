@@ -24,12 +24,12 @@
   <circle cx="380" cy="200" r="4" fill="var(--warm)"/>
   <circle cx="500" cy="200" r="4" fill="var(--warm)"/>
   <circle cx="320" cy="60" r="4" fill="var(--warm)"/>
-  <text x="395" y="195" class="gloss-strong" fill="var(--warm)">{{turn_1_label}}</text>
-  <text x="515" y="195" class="gloss-strong" fill="var(--warm)">{{turn_2_label}}</text>
-  <text x="335" y="55" class="gloss-strong" fill="var(--warm)">{{turn_3_label}}</text>
-  <text x="395" y="218" class="gloss" fill="var(--muted)">{{turn_1_gloss}}</text>
-  <text x="515" y="218" class="gloss" fill="var(--muted)">{{turn_2_gloss}}</text>
-  <text x="335" y="38" class="gloss" fill="var(--muted)">{{turn_3_gloss}}</text>
-  <text x="40" y="380" class="caption">{{caption_1}}</text>
-  <text x="40" y="402" class="caption">{{caption_2}}</text>
+  <text x="395" y="195" class="gloss-strong" fill="var(--warm)" data-slot="turn_1_label">turn_1_label</text>
+  <text x="515" y="195" class="gloss-strong" fill="var(--warm)" data-slot="turn_2_label">turn_2_label</text>
+  <text x="335" y="55" class="gloss-strong" fill="var(--warm)" data-slot="turn_3_label">turn_3_label</text>
+  <text x="395" y="218" class="gloss" fill="var(--muted)" data-slot="turn_1_gloss">turn_1_gloss</text>
+  <text x="515" y="218" class="gloss" fill="var(--muted)" data-slot="turn_2_gloss">turn_2_gloss</text>
+  <text x="335" y="38" class="gloss" fill="var(--muted)" data-slot="turn_3_gloss">turn_3_gloss</text>
+  <text x="40" y="380" class="caption" data-slot="caption_1">caption_1</text>
+  <text x="40" y="402" class="caption" data-slot="caption_2">caption_2</text>
 </svg>

@@ -10,11 +10,11 @@
 
   <line x1="100" y1="140" x2="580" y2="140" class="axis"/>
   <circle cx="180" cy="140" r="55" fill="var(--bg)" stroke="var(--warm)" stroke-width="2"/>
-  <text x="180" y="143" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)">{{pole_left}}</text>
-  <text x="180" y="225" class="gloss" text-anchor="middle">{{pole_left_gloss_1}}</text>
-  <text x="180" y="243" class="gloss" text-anchor="middle">{{pole_left_gloss_2}}</text>
+  <text x="180" y="143" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)" data-slot="pole_left">pole_left</text>
+  <text x="180" y="225" class="gloss" text-anchor="middle" data-slot="pole_left_gloss_1">pole_left_gloss_1</text>
+  <text x="180" y="243" class="gloss" text-anchor="middle" data-slot="pole_left_gloss_2">pole_left_gloss_2</text>
   <circle cx="500" cy="140" r="55" fill="var(--bg)" stroke="var(--cool)" stroke-width="2"/>
-  <text x="500" y="143" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--cool)">{{pole_right}}</text>
-  <text x="500" y="225" class="gloss" text-anchor="middle">{{pole_right_gloss_1}}</text>
-  <text x="500" y="243" class="gloss" text-anchor="middle">{{pole_right_gloss_2}}</text>
+  <text x="500" y="143" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--cool)" data-slot="pole_right">pole_right</text>
+  <text x="500" y="225" class="gloss" text-anchor="middle" data-slot="pole_right_gloss_1">pole_right_gloss_1</text>
+  <text x="500" y="243" class="gloss" text-anchor="middle" data-slot="pole_right_gloss_2">pole_right_gloss_2</text>
 </svg>

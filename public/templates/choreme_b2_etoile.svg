@@ -18,19 +18,19 @@
   <line x1="160" y1="240" x2="240" y2="240" stroke="var(--muted)" stroke-width="0.9" marker-end="url(#arrowb2)"/>
   <line x1="520" y1="240" x2="440" y2="240" stroke="var(--muted)" stroke-width="0.9" marker-end="url(#arrowb2)"/>
   <circle cx="340" cy="240" r="65" fill="var(--bg)" stroke="var(--warm)" stroke-width="2.5"/>
-  <text x="340" y="234" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)">{{center_line1}}</text>
-  <text x="340" y="252" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)">{{center_line2}}</text>
+  <text x="340" y="234" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)" data-slot="center_line1">center_line1</text>
+  <text x="340" y="252" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)" data-slot="center_line2">center_line2</text>
   <rect x="270" y="55" width="140" height="50" rx="4" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
-  <text x="340" y="72" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{force_top_line1}}</text>
-  <text x="340" y="90" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{force_top_line2}}</text>
+  <text x="340" y="72" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="force_top_line1">force_top_line1</text>
+  <text x="340" y="90" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="force_top_line2">force_top_line2</text>
   <rect x="270" y="380" width="140" height="50" rx="4" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
-  <text x="340" y="397" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{force_bottom_line1}}</text>
-  <text x="340" y="415" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{force_bottom_line2}}</text>
+  <text x="340" y="397" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="force_bottom_line1">force_bottom_line1</text>
+  <text x="340" y="415" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="force_bottom_line2">force_bottom_line2</text>
   <rect x="40" y="215" width="120" height="50" rx="4" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
-  <text x="100" y="232" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{force_left_line1}}</text>
-  <text x="100" y="250" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{force_left_line2}}</text>
+  <text x="100" y="232" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="force_left_line1">force_left_line1</text>
+  <text x="100" y="250" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="force_left_line2">force_left_line2</text>
   <rect x="520" y="215" width="120" height="50" rx="4" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.6"/>
-  <text x="580" y="232" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{force_right_line1}}</text>
-  <text x="580" y="250" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{force_right_line2}}</text>
-  <text x="40" y="445" class="caption">{{caption}}</text>
+  <text x="580" y="232" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="force_right_line1">force_right_line1</text>
+  <text x="580" y="250" class="label" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="force_right_line2">force_right_line2</text>
+  <text x="40" y="445" class="caption" data-slot="caption">caption</text>
 </svg>

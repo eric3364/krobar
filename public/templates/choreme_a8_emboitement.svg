@@ -14,24 +14,24 @@
     </marker>
   </defs>
   <rect x="80" y="40" width="380" height="60" rx="4" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.8"/>
-  <text x="100" y="70" class="label-strong" dominant-baseline="central" fill="var(--primary)">{{layer_1}}</text>
-  <text x="100" y="88" class="gloss" dominant-baseline="central">{{layer_1_gloss}}</text>
+  <text x="100" y="70" class="label-strong" dominant-baseline="central" fill="var(--primary)" data-slot="layer_1">layer_1</text>
+  <text x="100" y="88" class="gloss" dominant-baseline="central" data-slot="layer_1_gloss">layer_1_gloss</text>
   <rect x="80" y="120" width="380" height="60" rx="4" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.8"/>
-  <text x="100" y="150" class="label-strong" dominant-baseline="central" fill="var(--primary)">{{layer_2}}</text>
-  <text x="100" y="168" class="gloss" dominant-baseline="central">{{layer_2_gloss}}</text>
+  <text x="100" y="150" class="label-strong" dominant-baseline="central" fill="var(--primary)" data-slot="layer_2">layer_2</text>
+  <text x="100" y="168" class="gloss" dominant-baseline="central" data-slot="layer_2_gloss">layer_2_gloss</text>
   <rect x="80" y="200" width="380" height="60" rx="4" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.8"/>
-  <text x="100" y="230" class="label-strong" dominant-baseline="central" fill="var(--primary)">{{layer_3}}</text>
-  <text x="100" y="248" class="gloss" dominant-baseline="central">{{layer_3_gloss}}</text>
+  <text x="100" y="230" class="label-strong" dominant-baseline="central" fill="var(--primary)" data-slot="layer_3">layer_3</text>
+  <text x="100" y="248" class="gloss" dominant-baseline="central" data-slot="layer_3_gloss">layer_3_gloss</text>
   <rect x="80" y="280" width="380" height="60" rx="4" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.8"/>
-  <text x="100" y="310" class="label-strong" dominant-baseline="central" fill="var(--primary)">{{layer_4}}</text>
-  <text x="100" y="328" class="gloss" dominant-baseline="central">{{layer_4_gloss}}</text>
+  <text x="100" y="310" class="label-strong" dominant-baseline="central" fill="var(--primary)" data-slot="layer_4">layer_4</text>
+  <text x="100" y="328" class="gloss" dominant-baseline="central" data-slot="layer_4_gloss">layer_4_gloss</text>
   <line x1="500" y1="70" x2="500" y2="310" stroke="var(--muted)" stroke-width="0.8" marker-end="url(#arrowa8)"/>
-  <text x="520" y="74" class="gloss" dominant-baseline="central">{{time_label_1}}</text>
-  <text x="520" y="150" class="gloss" dominant-baseline="central">{{time_label_2}}</text>
-  <text x="520" y="230" class="gloss" dominant-baseline="central">{{time_label_3}}</text>
-  <text x="520" y="310" class="gloss" dominant-baseline="central">{{time_label_4}}</text>
-  <text x="520" y="340" class="caption">{{time_axis_label}}</text>
-  <text x="60" y="180" class="gloss" text-anchor="end" dominant-baseline="central">{{depth_top}}</text>
-  <text x="60" y="280" class="gloss" text-anchor="end" dominant-baseline="central">{{depth_bottom}}</text>
+  <text x="520" y="74" class="gloss" dominant-baseline="central" data-slot="time_label_1">time_label_1</text>
+  <text x="520" y="150" class="gloss" dominant-baseline="central" data-slot="time_label_2">time_label_2</text>
+  <text x="520" y="230" class="gloss" dominant-baseline="central" data-slot="time_label_3">time_label_3</text>
+  <text x="520" y="310" class="gloss" dominant-baseline="central" data-slot="time_label_4">time_label_4</text>
+  <text x="520" y="340" class="caption" data-slot="time_axis_label">time_axis_label</text>
+  <text x="60" y="180" class="gloss" text-anchor="end" dominant-baseline="central" data-slot="depth_top">depth_top</text>
+  <text x="60" y="280" class="gloss" text-anchor="end" dominant-baseline="central" data-slot="depth_bottom">depth_bottom</text>
   <line x1="60" y1="200" x2="60" y2="260" stroke="var(--muted)" stroke-width="0.6"/>
 </svg>

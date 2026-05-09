@@ -14,27 +14,27 @@
     </pattern>
   </defs>
   <rect x="40" y="80" width="240" height="200" rx="6" fill="var(--bg)" stroke="var(--primary)" stroke-width="1.8"/>
-  <text x="160" y="110" class="label-strong" text-anchor="middle" fill="var(--primary)">{{regime_left_title}}</text>
-  <text x="160" y="128" class="gloss" text-anchor="middle">{{regime_left_subtitle}}</text>
-  <text x="60" y="165" class="gloss-strong" fill="var(--primary)">{{left_trait_1}}</text>
-  <text x="60" y="190" class="gloss-strong" fill="var(--primary)">{{left_trait_2}}</text>
-  <text x="60" y="215" class="gloss-strong" fill="var(--primary)">{{left_trait_3}}</text>
-  <text x="60" y="240" class="gloss-strong" fill="var(--primary)">{{left_trait_4}}</text>
-  <text x="60" y="265" class="gloss-strong" fill="var(--primary)">{{left_trait_5}}</text>
+  <text x="160" y="110" class="label-strong" text-anchor="middle" fill="var(--primary)" data-slot="regime_left_title">regime_left_title</text>
+  <text x="160" y="128" class="gloss" text-anchor="middle" data-slot="regime_left_subtitle">regime_left_subtitle</text>
+  <text x="60" y="165" class="gloss-strong" fill="var(--primary)" data-slot="left_trait_1">left_trait_1</text>
+  <text x="60" y="190" class="gloss-strong" fill="var(--primary)" data-slot="left_trait_2">left_trait_2</text>
+  <text x="60" y="215" class="gloss-strong" fill="var(--primary)" data-slot="left_trait_3">left_trait_3</text>
+  <text x="60" y="240" class="gloss-strong" fill="var(--primary)" data-slot="left_trait_4">left_trait_4</text>
+  <text x="60" y="265" class="gloss-strong" fill="var(--primary)" data-slot="left_trait_5">left_trait_5</text>
   <rect x="290" y="80" width="60" height="200" fill="url(#hatchb12)" stroke="var(--tertiary)" stroke-width="0.8" stroke-dasharray="3 3"/>
-  <text x="320" y="110" class="gloss-strong" text-anchor="middle" fill="var(--tertiary)">{{tension_line1}}</text>
-  <text x="320" y="128" class="gloss" text-anchor="middle" fill="var(--tertiary)">{{tension_line2}}</text>
-  <text x="320" y="170" class="gloss" text-anchor="middle">{{tension_gloss_1}}</text>
-  <text x="320" y="185" class="gloss" text-anchor="middle">{{tension_gloss_2}}</text>
-  <text x="320" y="220" class="gloss" text-anchor="middle">{{tension_gloss_3}}</text>
-  <text x="320" y="235" class="gloss" text-anchor="middle">{{tension_gloss_4}}</text>
+  <text x="320" y="110" class="gloss-strong" text-anchor="middle" fill="var(--tertiary)" data-slot="tension_line1">tension_line1</text>
+  <text x="320" y="128" class="gloss" text-anchor="middle" fill="var(--tertiary)" data-slot="tension_line2">tension_line2</text>
+  <text x="320" y="170" class="gloss" text-anchor="middle" data-slot="tension_gloss_1">tension_gloss_1</text>
+  <text x="320" y="185" class="gloss" text-anchor="middle" data-slot="tension_gloss_2">tension_gloss_2</text>
+  <text x="320" y="220" class="gloss" text-anchor="middle" data-slot="tension_gloss_3">tension_gloss_3</text>
+  <text x="320" y="235" class="gloss" text-anchor="middle" data-slot="tension_gloss_4">tension_gloss_4</text>
   <rect x="360" y="80" width="240" height="200" rx="6" fill="var(--bg)" stroke="var(--warm)" stroke-width="1.8"/>
-  <text x="480" y="110" class="label-strong" text-anchor="middle" fill="var(--warm)">{{regime_right_title}}</text>
-  <text x="480" y="128" class="gloss" text-anchor="middle">{{regime_right_subtitle}}</text>
-  <text x="380" y="165" class="gloss-strong" fill="var(--warm)">{{right_trait_1}}</text>
-  <text x="380" y="190" class="gloss-strong" fill="var(--warm)">{{right_trait_2}}</text>
-  <text x="380" y="215" class="gloss-strong" fill="var(--warm)">{{right_trait_3}}</text>
-  <text x="380" y="240" class="gloss-strong" fill="var(--warm)">{{right_trait_4}}</text>
-  <text x="380" y="265" class="gloss-strong" fill="var(--warm)">{{right_trait_5}}</text>
-  <text x="40" y="335" class="caption">{{caption}}</text>
+  <text x="480" y="110" class="label-strong" text-anchor="middle" fill="var(--warm)" data-slot="regime_right_title">regime_right_title</text>
+  <text x="480" y="128" class="gloss" text-anchor="middle" data-slot="regime_right_subtitle">regime_right_subtitle</text>
+  <text x="380" y="165" class="gloss-strong" fill="var(--warm)" data-slot="right_trait_1">right_trait_1</text>
+  <text x="380" y="190" class="gloss-strong" fill="var(--warm)" data-slot="right_trait_2">right_trait_2</text>
+  <text x="380" y="215" class="gloss-strong" fill="var(--warm)" data-slot="right_trait_3">right_trait_3</text>
+  <text x="380" y="240" class="gloss-strong" fill="var(--warm)" data-slot="right_trait_4">right_trait_4</text>
+  <text x="380" y="265" class="gloss-strong" fill="var(--warm)" data-slot="right_trait_5">right_trait_5</text>
+  <text x="40" y="335" class="caption" data-slot="caption">caption</text>
 </svg>

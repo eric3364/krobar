@@ -17,24 +17,24 @@
     </marker>
   </defs>
   <line x1="60" y1="320" x2="640" y2="320" stroke="var(--border)" stroke-width="0.6"/>
-  <text x="60" y="340" class="caption">{{time_start}}</text>
-  <text x="640" y="340" class="caption" text-anchor="end">{{time_end}}</text>
+  <text x="60" y="340" class="caption" data-slot="time_start">time_start</text>
+  <text x="640" y="340" class="caption" text-anchor="end" data-slot="time_end">time_end</text>
   <line x1="100" y1="80" x2="600" y2="280" stroke="var(--warm)" stroke-width="2.5" marker-end="url(#arrowa7)"/>
-  <text x="125" y="65" class="label-strong" fill="var(--warm)">{{vector_label}}</text>
+  <text x="125" y="65" class="label-strong" fill="var(--warm)" data-slot="vector_label">vector_label</text>
   <circle cx="180" cy="112" r="3" fill="var(--warm)"/>
   <line x1="180" y1="112" x2="180" y2="92" stroke="var(--border)" stroke-width="0.6"/>
-  <text x="180" y="85" class="gloss" text-anchor="middle">{{milestone_1}}</text>
+  <text x="180" y="85" class="gloss" text-anchor="middle" data-slot="milestone_1">milestone_1</text>
   <circle cx="280" cy="152" r="3" fill="var(--warm)"/>
   <line x1="280" y1="152" x2="280" y2="132" stroke="var(--border)" stroke-width="0.6"/>
-  <text x="280" y="125" class="gloss" text-anchor="middle">{{milestone_2}}</text>
+  <text x="280" y="125" class="gloss" text-anchor="middle" data-slot="milestone_2">milestone_2</text>
   <circle cx="380" cy="192" r="3" fill="var(--warm)"/>
   <line x1="380" y1="192" x2="380" y2="212" stroke="var(--border)" stroke-width="0.6"/>
-  <text x="380" y="227" class="gloss" text-anchor="middle">{{milestone_3}}</text>
+  <text x="380" y="227" class="gloss" text-anchor="middle" data-slot="milestone_3">milestone_3</text>
   <circle cx="480" cy="232" r="3" fill="var(--warm)"/>
   <line x1="480" y1="232" x2="480" y2="252" stroke="var(--border)" stroke-width="0.6"/>
-  <text x="480" y="267" class="gloss" text-anchor="middle">{{milestone_4}}</text>
+  <text x="480" y="267" class="gloss" text-anchor="middle" data-slot="milestone_4">milestone_4</text>
   <path d="M 600 280 Q 540 220 460 160" fill="none" stroke="var(--cool)" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#arrowa7r)"/>
-  <text x="430" y="135" class="label-strong" fill="var(--cool)">{{counter_vector_label}}</text>
-  <text x="430" y="152" class="gloss" fill="var(--cool)">{{counter_vector_gloss}}</text>
-  <text x="40" y="40" class="caption">{{caption}}</text>
+  <text x="430" y="135" class="label-strong" fill="var(--cool)" data-slot="counter_vector_label">counter_vector_label</text>
+  <text x="430" y="152" class="gloss" fill="var(--cool)" data-slot="counter_vector_gloss">counter_vector_gloss</text>
+  <text x="40" y="40" class="caption" data-slot="caption">caption</text>
 </svg>

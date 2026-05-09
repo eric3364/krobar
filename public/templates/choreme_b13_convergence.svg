@@ -26,27 +26,27 @@
   <circle cx="180" cy="144" r="3" fill="var(--primary)"/>
   <circle cx="280" cy="168" r="3" fill="var(--primary)"/>
   <circle cx="380" cy="192" r="3" fill="var(--primary)"/>
-  <text x="40" y="115" class="label" fill="var(--primary)">{{trajectory_1}}</text>
-  <text x="40" y="135" class="gloss">{{trajectory_1_gloss}}</text>
+  <text x="40" y="115" class="label" fill="var(--primary)" data-slot="trajectory_1">trajectory_1</text>
+  <text x="40" y="135" class="gloss" data-slot="trajectory_1_gloss">trajectory_1_gloss</text>
   <line x1="80" y1="220" x2="495" y2="240" stroke="var(--cool)" stroke-width="2" marker-end="url(#arrowb13b)"/>
   <circle cx="180" cy="225" r="3" fill="var(--cool)"/>
   <circle cx="280" cy="230" r="3" fill="var(--cool)"/>
   <circle cx="380" cy="234" r="3" fill="var(--cool)"/>
-  <text x="40" y="215" class="label" fill="var(--cool)">{{trajectory_2}}</text>
-  <text x="40" y="195" class="gloss">{{trajectory_2_gloss}}</text>
+  <text x="40" y="215" class="label" fill="var(--cool)" data-slot="trajectory_2">trajectory_2</text>
+  <text x="40" y="195" class="gloss" data-slot="trajectory_2_gloss">trajectory_2_gloss</text>
   <line x1="80" y1="320" x2="495" y2="265" stroke="var(--warm)" stroke-width="2" marker-end="url(#arrowb13c)"/>
   <circle cx="180" cy="307" r="3" fill="var(--warm)"/>
   <circle cx="280" cy="293" r="3" fill="var(--warm)"/>
   <circle cx="380" cy="280" r="3" fill="var(--warm)"/>
-  <text x="40" y="315" class="label" fill="var(--warm)">{{trajectory_3}}</text>
-  <text x="40" y="335" class="gloss">{{trajectory_3_gloss}}</text>
+  <text x="40" y="315" class="label" fill="var(--warm)" data-slot="trajectory_3">trajectory_3</text>
+  <text x="40" y="335" class="gloss" data-slot="trajectory_3_gloss">trajectory_3_gloss</text>
   <circle cx="540" cy="240" r="55" fill="var(--bg)" stroke="var(--accent)" stroke-width="2.5"/>
-  <text x="540" y="232" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--accent)">{{target_value}}</text>
-  <text x="540" y="252" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--accent)">{{target_label}}</text>
+  <text x="540" y="232" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--accent)" data-slot="target_value">target_value</text>
+  <text x="540" y="252" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--accent)" data-slot="target_label">target_label</text>
   <rect x="40" y="380" width="600" height="50" fill="url(#hatchb13)" stroke="var(--tertiary)" stroke-width="0.8" stroke-dasharray="3 3"/>
-  <text x="55" y="402" class="gloss-strong" fill="var(--tertiary)">{{prerequisites_label}}</text>
-  <text x="280" y="402" class="gloss" fill="var(--tertiary)">{{prerequisite_1}}</text>
-  <text x="425" y="402" class="gloss" fill="var(--tertiary)">{{prerequisite_2}}</text>
-  <text x="555" y="402" class="gloss" fill="var(--tertiary)">{{prerequisite_3}}</text>
-  <text x="40" y="445" class="caption">{{caption}}</text>
+  <text x="55" y="402" class="gloss-strong" fill="var(--tertiary)" data-slot="prerequisites_label">prerequisites_label</text>
+  <text x="280" y="402" class="gloss" fill="var(--tertiary)" data-slot="prerequisite_1">prerequisite_1</text>
+  <text x="425" y="402" class="gloss" fill="var(--tertiary)" data-slot="prerequisite_2">prerequisite_2</text>
+  <text x="555" y="402" class="gloss" fill="var(--tertiary)" data-slot="prerequisite_3">prerequisite_3</text>
+  <text x="40" y="445" class="caption" data-slot="caption">caption</text>
 </svg>

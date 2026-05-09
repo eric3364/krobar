@@ -9,22 +9,22 @@
   </style>
 
   <rect x="40" y="80" width="380" height="220" rx="4" fill="var(--bg)" stroke="var(--muted)" stroke-width="1"/>
-  <text x="230" y="115" class="label-strong" text-anchor="middle" fill="var(--text)">{{regime_before}}</text>
-  <text x="230" y="135" class="gloss" text-anchor="middle">{{regime_before_period}}</text>
-  <text x="60" y="175" class="gloss-strong" fill="var(--text)">{{before_trait_1}}</text>
-  <text x="60" y="200" class="gloss-strong" fill="var(--text)">{{before_trait_2}}</text>
-  <text x="60" y="225" class="gloss-strong" fill="var(--text)">{{before_trait_3}}</text>
-  <text x="60" y="250" class="gloss-strong" fill="var(--text)">{{before_trait_4}}</text>
-  <text x="60" y="275" class="gloss-strong" fill="var(--text)">{{before_trait_5}}</text>
+  <text x="230" y="115" class="label-strong" text-anchor="middle" fill="var(--text)" data-slot="regime_before">regime_before</text>
+  <text x="230" y="135" class="gloss" text-anchor="middle" data-slot="regime_before_period">regime_before_period</text>
+  <text x="60" y="175" class="gloss-strong" fill="var(--text)" data-slot="before_trait_1">before_trait_1</text>
+  <text x="60" y="200" class="gloss-strong" fill="var(--text)" data-slot="before_trait_2">before_trait_2</text>
+  <text x="60" y="225" class="gloss-strong" fill="var(--text)" data-slot="before_trait_3">before_trait_3</text>
+  <text x="60" y="250" class="gloss-strong" fill="var(--text)" data-slot="before_trait_4">before_trait_4</text>
+  <text x="60" y="275" class="gloss-strong" fill="var(--text)" data-slot="before_trait_5">before_trait_5</text>
   <rect x="500" y="80" width="140" height="220" rx="4" fill="var(--bg)" stroke="var(--warm)" stroke-width="1.6"/>
-  <text x="570" y="115" class="label-strong" text-anchor="middle" fill="var(--warm)">{{regime_after}}</text>
-  <text x="570" y="135" class="gloss" text-anchor="middle">{{regime_after_period}}</text>
-  <text x="520" y="175" class="gloss-strong" fill="var(--warm)">{{after_trait_1}}</text>
-  <text x="520" y="200" class="gloss-strong" fill="var(--warm)">{{after_trait_2}}</text>
-  <text x="520" y="225" class="gloss-strong" fill="var(--warm)">{{after_trait_3_line1}}</text>
-  <text x="520" y="240" class="gloss-strong" fill="var(--warm)">  {{after_trait_3_line2}}</text>
-  <text x="520" y="265" class="gloss-strong" fill="var(--warm)">{{after_trait_4}}</text>
+  <text x="570" y="115" class="label-strong" text-anchor="middle" fill="var(--warm)" data-slot="regime_after">regime_after</text>
+  <text x="570" y="135" class="gloss" text-anchor="middle" data-slot="regime_after_period">regime_after_period</text>
+  <text x="520" y="175" class="gloss-strong" fill="var(--warm)" data-slot="after_trait_1">after_trait_1</text>
+  <text x="520" y="200" class="gloss-strong" fill="var(--warm)" data-slot="after_trait_2">after_trait_2</text>
+  <text x="520" y="225" class="gloss-strong" fill="var(--warm)" data-slot="after_trait_3_line1">after_trait_3_line1</text>
+  <text x="520" y="240" class="gloss-strong" fill="var(--warm)" data-slot="after_trait_3_line2">after_trait_3_line2</text>
+  <text x="520" y="265" class="gloss-strong" fill="var(--warm)" data-slot="after_trait_4">after_trait_4</text>
   <path d="M 470 70 L 478 130 L 472 175 L 482 230 L 470 285 L 478 310" fill="none" stroke="var(--warm)" stroke-width="2" stroke-linecap="round"/>
-  <text x="475" y="50" class="caption" text-anchor="middle" fill="var(--warm)">{{rupture_label}}</text>
-  <text x="40" y="335" class="caption">{{caption}}</text>
+  <text x="475" y="50" class="caption" text-anchor="middle" fill="var(--warm)" data-slot="rupture_label">rupture_label</text>
+  <text x="40" y="335" class="caption" data-slot="caption">caption</text>
 </svg>

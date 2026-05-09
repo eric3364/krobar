@@ -10,16 +10,16 @@
 
   <line x1="80" y1="140" x2="600" y2="140" stroke="var(--border)" stroke-width="0.6"/>
   <circle cx="140" cy="140" r="55" fill="var(--bg)" stroke="var(--warm)" stroke-width="2"/>
-  <text x="140" y="143" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)">{{pole_left}}</text>
-  <text x="140" y="225" class="gloss" text-anchor="middle">{{pole_left_gloss_1}}</text>
-  <text x="140" y="243" class="gloss" text-anchor="middle">{{pole_left_gloss_2}}</text>
+  <text x="140" y="143" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)" data-slot="pole_left">pole_left</text>
+  <text x="140" y="225" class="gloss" text-anchor="middle" data-slot="pole_left_gloss_1">pole_left_gloss_1</text>
+  <text x="140" y="243" class="gloss" text-anchor="middle" data-slot="pole_left_gloss_2">pole_left_gloss_2</text>
   <polygon points="260,140 300,84 380,84 420,140 380,196 300,196" fill="var(--bg)" stroke="var(--accent)" stroke-width="2"/>
-  <text x="340" y="130" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--accent)">{{median_line1}}</text>
-  <text x="340" y="148" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--accent)">{{median_line2}}</text>
-  <text x="340" y="225" class="gloss" text-anchor="middle">{{median_gloss_1}}</text>
-  <text x="340" y="243" class="gloss" text-anchor="middle">{{median_gloss_2}}</text>
+  <text x="340" y="130" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--accent)" data-slot="median_line1">median_line1</text>
+  <text x="340" y="148" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--accent)" data-slot="median_line2">median_line2</text>
+  <text x="340" y="225" class="gloss" text-anchor="middle" data-slot="median_gloss_1">median_gloss_1</text>
+  <text x="340" y="243" class="gloss" text-anchor="middle" data-slot="median_gloss_2">median_gloss_2</text>
   <circle cx="540" cy="140" r="55" fill="var(--bg)" stroke="var(--cool)" stroke-width="2"/>
-  <text x="540" y="143" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--cool)">{{pole_right}}</text>
-  <text x="540" y="225" class="gloss" text-anchor="middle">{{pole_right_gloss_1}}</text>
-  <text x="540" y="243" class="gloss" text-anchor="middle">{{pole_right_gloss_2}}</text>
+  <text x="540" y="143" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--cool)" data-slot="pole_right">pole_right</text>
+  <text x="540" y="225" class="gloss" text-anchor="middle" data-slot="pole_right_gloss_1">pole_right_gloss_1</text>
+  <text x="540" y="243" class="gloss" text-anchor="middle" data-slot="pole_right_gloss_2">pole_right_gloss_2</text>
 </svg>

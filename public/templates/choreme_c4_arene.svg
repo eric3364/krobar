@@ -17,30 +17,30 @@
     </marker>
   </defs>
   <rect x="40" y="80" width="600" height="280" rx="6" fill="var(--bg)" stroke="var(--text)" stroke-width="1.4"/>
-  <text x="60" y="105" class="label-strong" fill="var(--text)">{{arena_title}}</text>
-  <text x="60" y="123" class="gloss">{{arena_subtitle}}</text>
+  <text x="60" y="105" class="label-strong" fill="var(--text)" data-slot="arena_title">arena_title</text>
+  <text x="60" y="123" class="gloss" data-slot="arena_subtitle">arena_subtitle</text>
   <polygon points="350,200 380,170 430,170 460,200 430,230 380,230" fill="var(--bg)" stroke="var(--accent)" stroke-width="2"/>
-  <text x="405" y="195" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--accent)">{{stake_line1}}</text>
-  <text x="405" y="213" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--accent)">{{stake_line2}}</text>
+  <text x="405" y="195" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--accent)" data-slot="stake_line1">stake_line1</text>
+  <text x="405" y="213" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--accent)" data-slot="stake_line2">stake_line2</text>
   <circle cx="120" cy="170" r="32" fill="var(--bg)" stroke="var(--warm)" stroke-width="1.6"/>
-  <text x="120" y="173" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)">{{camp_left_actor_1}}</text>
+  <text x="120" y="173" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)" data-slot="camp_left_actor_1">camp_left_actor_1</text>
   <circle cx="200" cy="220" r="32" fill="var(--bg)" stroke="var(--warm)" stroke-width="1.6"/>
-  <text x="200" y="223" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)">{{camp_left_actor_2_line1}}</text>
-  <text x="200" y="234" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)">{{camp_left_actor_2_line2}}</text>
+  <text x="200" y="223" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)" data-slot="camp_left_actor_2_line1">camp_left_actor_2_line1</text>
+  <text x="200" y="234" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)" data-slot="camp_left_actor_2_line2">camp_left_actor_2_line2</text>
   <circle cx="120" cy="290" r="32" fill="var(--bg)" stroke="var(--warm)" stroke-width="1.6"/>
-  <text x="120" y="293" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)">{{camp_left_actor_3}}</text>
-  <text x="60" y="385" class="gloss-strong" fill="var(--warm)">{{camp_left_label}}</text>
+  <text x="120" y="293" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)" data-slot="camp_left_actor_3">camp_left_actor_3</text>
+  <text x="60" y="385" class="gloss-strong" fill="var(--warm)" data-slot="camp_left_label">camp_left_label</text>
   <circle cx="560" cy="170" r="32" fill="var(--bg)" stroke="var(--cool)" stroke-width="1.6"/>
-  <text x="560" y="173" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--cool)">{{camp_right_actor_1}}</text>
+  <text x="560" y="173" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--cool)" data-slot="camp_right_actor_1">camp_right_actor_1</text>
   <circle cx="510" cy="220" r="32" fill="var(--bg)" stroke="var(--cool)" stroke-width="1.6"/>
-  <text x="510" y="223" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--cool)">{{camp_right_actor_2}}</text>
+  <text x="510" y="223" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--cool)" data-slot="camp_right_actor_2">camp_right_actor_2</text>
   <circle cx="560" cy="290" r="32" fill="var(--bg)" stroke="var(--cool)" stroke-width="1.6"/>
-  <text x="560" y="293" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--cool)">{{camp_right_actor_3}}</text>
-  <text x="540" y="385" class="gloss-strong" fill="var(--cool)">{{camp_right_label}}</text>
+  <text x="560" y="293" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--cool)" data-slot="camp_right_actor_3">camp_right_actor_3</text>
+  <text x="540" y="385" class="gloss-strong" fill="var(--cool)" data-slot="camp_right_label">camp_right_label</text>
   <line x1="232" y1="220" x2="478" y2="220" stroke="var(--border)" stroke-width="0.8" stroke-dasharray="3 3"/>
   <line x1="152" y1="170" x2="345" y2="195" stroke="var(--warm)" stroke-width="0.9" marker-end="url(#arrowc4w)"/>
   <line x1="528" y1="170" x2="465" y2="180" stroke="var(--cool)" stroke-width="0.9" marker-end="url(#arrowc4c)"/>
   <line x1="152" y1="290" x2="345" y2="220" stroke="var(--warm)" stroke-width="0.9" marker-end="url(#arrowc4w)"/>
   <line x1="528" y1="290" x2="465" y2="225" stroke="var(--cool)" stroke-width="0.9" marker-end="url(#arrowc4c)"/>
-  <text x="40" y="430" class="caption">{{caption}}</text>
+  <text x="40" y="430" class="caption" data-slot="caption">caption</text>
 </svg>

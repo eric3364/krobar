@@ -15,21 +15,21 @@
   </defs>
   <line x1="100" y1="200" x2="580" y2="200" stroke="var(--border)" stroke-width="0.8"/>
   <circle cx="180" cy="200" r="55" fill="var(--bg)" stroke="var(--warm)" stroke-width="2"/>
-  <text x="180" y="196" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)">{{pole_left_line1}}</text>
-  <text x="180" y="214" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)">{{pole_left_line2}}</text>
-  <text x="180" y="285" class="gloss" text-anchor="middle">{{pole_left_gloss_1}}</text>
-  <text x="180" y="302" class="gloss" text-anchor="middle">{{pole_left_gloss_2}}</text>
+  <text x="180" y="196" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)" data-slot="pole_left_line1">pole_left_line1</text>
+  <text x="180" y="214" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--warm)" data-slot="pole_left_line2">pole_left_line2</text>
+  <text x="180" y="285" class="gloss" text-anchor="middle" data-slot="pole_left_gloss_1">pole_left_gloss_1</text>
+  <text x="180" y="302" class="gloss" text-anchor="middle" data-slot="pole_left_gloss_2">pole_left_gloss_2</text>
   <circle cx="500" cy="200" r="55" fill="var(--bg)" stroke="var(--cool)" stroke-width="2"/>
-  <text x="500" y="196" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--cool)">{{pole_right_line1}}</text>
-  <text x="500" y="214" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--cool)">{{pole_right_line2}}</text>
-  <text x="500" y="285" class="gloss" text-anchor="middle">{{pole_right_gloss_1}}</text>
-  <text x="500" y="302" class="gloss" text-anchor="middle">{{pole_right_gloss_2}}</text>
+  <text x="500" y="196" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--cool)" data-slot="pole_right_line1">pole_right_line1</text>
+  <text x="500" y="214" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--cool)" data-slot="pole_right_line2">pole_right_line2</text>
+  <text x="500" y="285" class="gloss" text-anchor="middle" data-slot="pole_right_gloss_1">pole_right_gloss_1</text>
+  <text x="500" y="302" class="gloss" text-anchor="middle" data-slot="pole_right_gloss_2">pole_right_gloss_2</text>
   <line x1="160" y1="80" x2="560" y2="120" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#arrowc1)"/>
   <circle cx="160" cy="80" r="3" fill="var(--accent)"/>
   <circle cx="280" cy="92" r="3" fill="var(--accent)"/>
   <circle cx="400" cy="104" r="3" fill="var(--accent)"/>
-  <text x="170" y="65" class="label-strong" fill="var(--accent)">{{vector_label}}</text>
-  <text x="290" y="80" class="gloss" fill="var(--accent)">{{vector_milestone_1}}</text>
-  <text x="410" y="95" class="gloss" fill="var(--accent)">{{vector_milestone_2}}</text>
-  <text x="40" y="345" class="caption">{{caption}}</text>
+  <text x="170" y="65" class="label-strong" fill="var(--accent)" data-slot="vector_label">vector_label</text>
+  <text x="290" y="80" class="gloss" fill="var(--accent)" data-slot="vector_milestone_1">vector_milestone_1</text>
+  <text x="410" y="95" class="gloss" fill="var(--accent)" data-slot="vector_milestone_2">vector_milestone_2</text>
+  <text x="40" y="345" class="caption" data-slot="caption">caption</text>
 </svg>

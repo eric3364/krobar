@@ -16,26 +16,26 @@
       <path d="M2 1L8 5L2 9" fill="none" stroke="var(--warm)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
     </marker>
   </defs>
-  <text x="60" y="50" class="label-strong" fill="var(--warm)">{{transverse_axis_title}}</text>
-  <text x="60" y="68" class="gloss" fill="var(--warm)">{{transverse_axis_subtitle}}</text>
+  <text x="60" y="50" class="label-strong" fill="var(--warm)" data-slot="transverse_axis_title">transverse_axis_title</text>
+  <text x="60" y="68" class="gloss" fill="var(--warm)" data-slot="transverse_axis_subtitle">transverse_axis_subtitle</text>
   <line x1="40" y1="120" x2="640" y2="120" stroke="var(--warm)" stroke-width="2.2" stroke-dasharray="5 4" marker-end="url(#arrowc2axis)"/>
-  <text x="60" y="105" class="gloss-strong" fill="var(--warm)">{{transverse_milestone_1}}</text>
-  <text x="220" y="105" class="gloss-strong" fill="var(--warm)">{{transverse_milestone_2}}</text>
-  <text x="380" y="105" class="gloss-strong" fill="var(--warm)">{{transverse_milestone_3}}</text>
-  <text x="555" y="105" class="gloss-strong" fill="var(--warm)">{{transverse_milestone_4}}</text>
+  <text x="60" y="105" class="gloss-strong" fill="var(--warm)" data-slot="transverse_milestone_1">transverse_milestone_1</text>
+  <text x="220" y="105" class="gloss-strong" fill="var(--warm)" data-slot="transverse_milestone_2">transverse_milestone_2</text>
+  <text x="380" y="105" class="gloss-strong" fill="var(--warm)" data-slot="transverse_milestone_3">transverse_milestone_3</text>
+  <text x="555" y="105" class="gloss-strong" fill="var(--warm)" data-slot="transverse_milestone_4">transverse_milestone_4</text>
   <circle cx="340" cy="240" r="55" fill="var(--bg)" stroke="var(--primary)" stroke-width="2"/>
-  <text x="340" y="234" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{cycle_station_1}}</text>
-  <text x="340" y="252" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{cycle_station_1_gloss}}</text>
+  <text x="340" y="234" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="cycle_station_1">cycle_station_1</text>
+  <text x="340" y="252" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="cycle_station_1_gloss">cycle_station_1_gloss</text>
   <circle cx="490" cy="240" r="55" fill="var(--bg)" stroke="var(--primary)" stroke-width="2"/>
-  <text x="490" y="234" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{cycle_station_2}}</text>
-  <text x="490" y="252" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{cycle_station_2_gloss}}</text>
+  <text x="490" y="234" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="cycle_station_2">cycle_station_2</text>
+  <text x="490" y="252" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="cycle_station_2_gloss">cycle_station_2_gloss</text>
   <circle cx="190" cy="240" r="55" fill="var(--bg)" stroke="var(--primary)" stroke-width="2"/>
-  <text x="190" y="234" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{cycle_station_3}}</text>
-  <text x="190" y="252" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)">{{cycle_station_3_gloss}}</text>
+  <text x="190" y="234" class="label-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="cycle_station_3">cycle_station_3</text>
+  <text x="190" y="252" class="gloss-strong" text-anchor="middle" dominant-baseline="central" fill="var(--primary)" data-slot="cycle_station_3_gloss">cycle_station_3_gloss</text>
   <path d="M 395 220 Q 420 180 435 200" fill="none" stroke="var(--primary)" stroke-width="1.2" marker-end="url(#arrowc2cycle)"/>
   <path d="M 470 295 Q 350 360 250 290" fill="none" stroke="var(--primary)" stroke-width="1.2" marker-end="url(#arrowc2cycle)"/>
   <path d="M 230 195 Q 280 165 290 220" fill="none" stroke="var(--primary)" stroke-width="1.2" marker-end="url(#arrowc2cycle)"/>
-  <text x="40" y="400" class="label-strong" fill="var(--primary)">{{cycle_title}}</text>
-  <text x="40" y="418" class="gloss" fill="var(--primary)">{{cycle_subtitle}}</text>
-  <text x="40" y="445" class="caption">{{caption}}</text>
+  <text x="40" y="400" class="label-strong" fill="var(--primary)" data-slot="cycle_title">cycle_title</text>
+  <text x="40" y="418" class="gloss" fill="var(--primary)" data-slot="cycle_subtitle">cycle_subtitle</text>
+  <text x="40" y="445" class="caption" data-slot="caption">caption</text>
 </svg>
