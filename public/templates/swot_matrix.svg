@@ -11,38 +11,38 @@
   <line x1="200" y1="340" x2="840" y2="340" stroke="var(--text)" stroke-width="2" opacity="0.3"/>
   
   <!-- Strengths (top-left) -->
-  <rect x="200" y="180" width="320" height="160" fill="var(--primary)" fill-opacity="0.05"/>
-  <foreignObject x="220" y="200" width="180" height="30">
+  <rect x="200" y="180" width="320" height="160" fill="var(--primary)" fill-opacity="0.05" id="strengths_title">
+  <foreignObject x="220" y="200" width="180" height="30" data-shape="strengths_title">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="strengths_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:flex-start;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:18px;color:var(--primary);box-sizing:border-box;">Forces</div>
   </foreignObject>
-  <foreignObject x="220" y="240" width="180" height="80">
+  <foreignObject x="220" y="240" width="180" height="80" data-shape="strengths_title">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="strengths_content" style="width:100%;height:100%;display:flex;align-items:flex-start;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:400;font-size:15px;color:var(--text);line-height:1.4;box-sizing:border-box;">• Expertise technique<br/>• Équipe expérimentée<br/>• Marque reconnue</div>
   </foreignObject>
   
   <!-- Weaknesses (top-right) -->
-  <rect x="520" y="180" width="320" height="160" fill="var(--accent)" fill-opacity="0.05"/>
-  <foreignObject x="540" y="200" width="180" height="30">
+  <rect x="520" y="180" width="320" height="160" fill="var(--accent)" fill-opacity="0.05" id="weaknesses_title">
+  <foreignObject x="540" y="200" width="180" height="30" data-shape="weaknesses_title">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="weaknesses_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:flex-start;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:18px;color:var(--accent);box-sizing:border-box;">Faiblesses</div>
   </foreignObject>
-  <foreignObject x="540" y="240" width="180" height="80">
+  <foreignObject x="540" y="240" width="180" height="80" data-shape="weaknesses_title">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="weaknesses_content" style="width:100%;height:100%;display:flex;align-items:flex-start;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:400;font-size:15px;color:var(--text);line-height:1.4;box-sizing:border-box;">• Ressources limitées<br/>• Processus lents<br/>• Dépendance externe</div>
   </foreignObject>
   
   <!-- Opportunities (bottom-left) -->
-  <rect x="200" y="340" width="320" height="160" fill="var(--primary)" fill-opacity="0.1"/>
-  <foreignObject x="220" y="360" width="180" height="30">
+  <rect x="200" y="340" width="320" height="160" fill="var(--primary)" fill-opacity="0.1" id="opportunities_title">
+  <foreignObject x="220" y="360" width="180" height="30" data-shape="opportunities_title">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="opportunities_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:flex-start;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:18px;color:var(--primary);box-sizing:border-box;">Opportunités</div>
   </foreignObject>
-  <foreignObject x="220" y="400" width="180" height="80">
+  <foreignObject x="220" y="400" width="180" height="80" data-shape="opportunities_title">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="opportunities_content" style="width:100%;height:100%;display:flex;align-items:flex-start;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:400;font-size:15px;color:var(--text);line-height:1.4;box-sizing:border-box;">• Marché émergent<br/>• Nouvelles technologies<br/>• Partenariats possibles</div>
   </foreignObject>
   
   <!-- Threats (bottom-right) -->
-  <rect x="520" y="340" width="320" height="160" fill="var(--accent)" fill-opacity="0.1"/>
-  <foreignObject x="540" y="360" width="180" height="30">
+  <rect x="520" y="340" width="320" height="160" fill="var(--accent)" fill-opacity="0.1" id="threats_title">
+  <foreignObject x="540" y="360" width="180" height="30" data-shape="threats_title">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="threats_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:flex-start;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:18px;color:var(--accent);box-sizing:border-box;">Menaces</div>
   </foreignObject>
-  <foreignObject x="540" y="400" width="180" height="80">
+  <foreignObject x="540" y="400" width="180" height="80" data-shape="threats_title">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="threats_content" style="width:100%;height:100%;display:flex;align-items:flex-start;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:400;font-size:15px;color:var(--text);line-height:1.4;box-sizing:border-box;">• Concurrence accrue<br/>• Réglementation<br/>• Crise économique</div>
   </foreignObject>
   

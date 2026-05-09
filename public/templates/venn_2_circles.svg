@@ -4,9 +4,9 @@
   <foreignObject x="60" y="90" width="920" height="56">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="title" style="width:100%;height:100%;display:flex;align-items:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:36px;color:var(--text);box-sizing:border-box;">Intersection de concepts</div>
   </foreignObject>
-  <circle cx="320" cy="350" r="120" fill="var(--accent)" fill-opacity="0.15" stroke="var(--accent)" stroke-width="2"/>
+  <circle cx="320" cy="350" r="120" fill="var(--accent)" fill-opacity="0.15" stroke="var(--accent)" stroke-width="2" id="circle_a_label">
   <circle cx="480" cy="350" r="120" fill="var(--primary)" fill-opacity="0.15" stroke="var(--primary)" stroke-width="2"/>
-  <foreignObject x="180" y="310" width="120" height="80">
+  <foreignObject x="180" y="310" width="120" height="80" data-shape="circle_a_label">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="circle_a_label" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:18px;color:var(--text);box-sizing:border-box;">Marketing digital</div>
   </foreignObject>
   <text x="60" y="580" font-size="11" font-weight="600" fill="var(--text)" opacity="0.5" style="text-transform: uppercase;">Krobar · Comparaisons</text>

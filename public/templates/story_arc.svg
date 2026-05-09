@@ -21,14 +21,14 @@
   <line x1="60" y1="160" x2="148" y2="160" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/>
 
   <g filter="url(#editorialShadow)">
-    <rect x="60" y="200" width="920" height="360" rx="12" fill="#FFFFFF" stroke="var(--text)" stroke-opacity="0.12" stroke-width="1"/>
+    <rect x="60" y="200" width="920" height="360" rx="12" fill="#FFFFFF" stroke="var(--text)" stroke-opacity="0.12" stroke-width="1" id="act_1">
   </g>
 
   <path d="M 140,470 C 220,460 270,420 320,375 C 380,325 460,295 520,295 C 580,295 660,325 720,375 C 770,420 820,460 900,470" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-opacity="0.6"/>
 
   <g>
     <text x="60" y="510" font-size="10" font-weight="700" fill="var(--accent)" style="text-transform: uppercase; letter-spacing: 0.08em;">Acte 1</text>
-    <foreignObject x="60" y="515" width="180" height="40">
+    <foreignObject x="60" y="515" width="180" height="40" data-shape="act_1">
       <div xmlns="http://www.w3.org/1999/xhtml" data-slot="act_1" style="width:100%;height:100%;display:flex;align-items:flex-start;justify-content:flex-start;text-align:left;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:500;font-size:12px;line-height:1.4;color:var(--text);box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Situation initiale</div>
     </foreignObject>
     <circle cx="140" cy="470" r="20" fill="var(--accent)" stroke="#FFFFFF" stroke-width="3"/>
@@ -37,7 +37,7 @@
 
   <g>
     <text x="245" y="328" font-size="10" font-weight="700" fill="var(--accent)" style="text-transform: uppercase; letter-spacing: 0.08em;">Acte 2</text>
-    <foreignObject x="245" y="332" width="180" height="40">
+    <foreignObject x="245" y="332" width="180" height="40" data-shape="act_1">
       <div xmlns="http://www.w3.org/1999/xhtml" data-slot="act_2" style="width:100%;height:100%;display:flex;align-items:flex-start;justify-content:flex-start;text-align:left;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:500;font-size:12px;line-height:1.4;color:var(--text);box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Élément déclencheur</div>
     </foreignObject>
     <circle cx="320" cy="375" r="20" fill="var(--accent)" stroke="#FFFFFF" stroke-width="3"/>
@@ -46,7 +46,7 @@
 
   <g>
     <text x="430" y="248" font-size="10" font-weight="700" fill="var(--accent)" style="text-transform: uppercase; letter-spacing: 0.08em;">Acte 3 · Climax</text>
-    <foreignObject x="430" y="252" width="180" height="40">
+    <foreignObject x="430" y="252" width="180" height="40" data-shape="act_1">
       <div xmlns="http://www.w3.org/1999/xhtml" data-slot="act_3" style="width:100%;height:100%;display:flex;align-items:flex-start;justify-content:flex-start;text-align:left;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:12px;line-height:1.4;color:var(--text);box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Apogée du récit</div>
     </foreignObject>
     <circle cx="520" cy="295" r="22" fill="var(--accent)" stroke="#FFFFFF" stroke-width="3"/>
@@ -55,7 +55,7 @@
 
   <g>
     <text x="640" y="328" font-size="10" font-weight="700" fill="var(--accent)" style="text-transform: uppercase; letter-spacing: 0.08em;">Acte 4</text>
-    <foreignObject x="640" y="332" width="180" height="40">
+    <foreignObject x="640" y="332" width="180" height="40" data-shape="act_1">
       <div xmlns="http://www.w3.org/1999/xhtml" data-slot="act_4" style="width:100%;height:100%;display:flex;align-items:flex-start;justify-content:flex-start;text-align:left;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:500;font-size:12px;line-height:1.4;color:var(--text);box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Résolution</div>
     </foreignObject>
     <circle cx="720" cy="375" r="20" fill="var(--accent)" stroke="#FFFFFF" stroke-width="3"/>
@@ -64,7 +64,7 @@
 
   <g>
     <text x="800" y="510" font-size="10" font-weight="700" fill="var(--accent)" style="text-transform: uppercase; letter-spacing: 0.08em;">Acte 5</text>
-    <foreignObject x="800" y="515" width="180" height="40">
+    <foreignObject x="800" y="515" width="180" height="40" data-shape="act_1">
       <div xmlns="http://www.w3.org/1999/xhtml" data-slot="act_5" style="width:100%;height:100%;display:flex;align-items:flex-start;justify-content:flex-start;text-align:left;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:500;font-size:12px;line-height:1.4;color:var(--text);box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Situation finale</div>
     </foreignObject>
     <circle cx="900" cy="470" r="20" fill="var(--accent)" stroke="#FFFFFF" stroke-width="3"/>

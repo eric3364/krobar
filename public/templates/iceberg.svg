@@ -26,15 +26,15 @@
   <rect width="1040" height="600" fill="var(--bg)"/>
 
   <!-- DÉCORATIF : fonds ciel et mer (visibles uniquement en mode magazine) -->
-  <rect width="1040" height="335" fill="url(#skyGradient)" opacity="var(--decoration-opacity, 0)"/>
-  <rect y="335" width="1040" height="265" fill="url(#seaGradient)" opacity="var(--decoration-opacity, 0)"/>
+  <rect width="1040" height="335" fill="url(#skyGradient)" opacity="var(--decoration-opacity, 0)" id="title">
+  <rect y="335" width="1040" height="265" fill="url(#seaGradient)" opacity="var(--decoration-opacity, 0)" id="hidden_content">
 
   <!-- Header label (essentiel) -->
   <text x="60" y="72" font-size="13" font-weight="600" fill="var(--text)" opacity="0.55"
         style="text-transform: uppercase; letter-spacing: 0.5px;">Modèle Iceberg</text>
 
   <!-- Titre principal (essentiel) -->
-  <foreignObject x="60" y="90" width="920" height="56">
+  <foreignObject x="60" y="90" width="920" height="56" data-shape="title">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="title"
          style="width:100%;height:100%;display:flex;align-items:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:36px;color:var(--text);box-sizing:border-box;">
       Analyse visible vs invisible
@@ -144,15 +144,15 @@
 
   <!-- Bloc PARTIE VISIBLE -->
   <rect x="650" y="200" width="280" height="48" rx="12"
-        fill="var(--bg)" stroke="var(--primary)" stroke-width="1.5"/>
-  <foreignObject x="650" y="200" width="280" height="48">
+        fill="var(--bg)" stroke="var(--primary)" stroke-width="1.5" id="visible_title">
+  <foreignObject x="650" y="200" width="280" height="48" data-shape="visible_title">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="visible_title"
          style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:18px;color:var(--primary);box-sizing:border-box;padding:8px;line-height:1.3;">
       Partie visible
     </div>
   </foreignObject>
 
-  <foreignObject x="650" y="252" width="280" height="72">
+  <foreignObject x="650" y="252" width="280" height="72" data-shape="title">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="visible_content"
          style="width:100%;height:100%;display:flex;align-items:flex-start;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:400;font-size:14px;color:var(--text);line-height:1.4;box-sizing:border-box;padding:8px;">
       Symptômes, comportements observables, résultats apparents
@@ -163,15 +163,15 @@
 
   <!-- Bloc PARTIE CACHÉE -->
   <rect x="80" y="430" width="280" height="48" rx="12"
-        fill="var(--bg)" stroke="var(--accent)" stroke-width="1.5"/>
-  <foreignObject x="80" y="430" width="280" height="48">
+        fill="var(--bg)" stroke="var(--accent)" stroke-width="1.5" id="hidden_title">
+  <foreignObject x="80" y="430" width="280" height="48" data-shape="hidden_title">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="hidden_title"
          style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:18px;color:var(--accent);box-sizing:border-box;padding:8px;line-height:1.3;">
       Partie cachée
     </div>
   </foreignObject>
 
-  <foreignObject x="80" y="482" width="280" height="80">
+  <foreignObject x="80" y="482" width="280" height="80" data-shape="hidden_content">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="hidden_content"
          style="width:100%;height:100%;display:flex;align-items:flex-start;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:400;font-size:14px;color:var(--text);line-height:1.4;box-sizing:border-box;padding:8px;">
       Causes profondes, croyances, valeurs, systèmes sous-jacents

@@ -6,26 +6,26 @@
   </foreignObject>
 
   <!-- Ring 4 (Outermost - Low priority) -->
-  <circle cx="400" cy="400" r="180" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="3"/>
-  <foreignObject x="220" y="520" width="180" height="30">
+  <circle cx="400" cy="400" r="180" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="3" id="ring_4_title">
+  <foreignObject x="220" y="520" width="180" height="30" data-shape="ring_4_title">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="ring_4_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Impact Faible</div>
   </foreignObject>
 
   <!-- Ring 3 (Medium priority) -->
   <circle cx="400" cy="400" r="135" fill="var(--primary)" fill-opacity="0.15" stroke="var(--primary)" stroke-width="3"/>
-  <foreignObject x="320" y="480" width="180" height="30">
+  <foreignObject x="320" y="480" width="180" height="30" data-shape="ring_4_title">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="ring_3_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Impact Modéré</div>
   </foreignObject>
 
   <!-- Ring 2 (High priority) -->
   <circle cx="400" cy="400" r="90" fill="var(--accent)" fill-opacity="0.2" stroke="var(--accent)" stroke-width="3"/>
-  <foreignObject x="350" y="440" width="180" height="30">
+  <foreignObject x="350" y="440" width="180" height="30" data-shape="ring_4_title">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="ring_2_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Impact Élevé</div>
   </foreignObject>
 
   <!-- Ring 1 (Center - Critical) -->
   <circle cx="400" cy="400" r="45" fill="var(--primary)" fill-opacity="0.3" stroke="var(--primary)" stroke-width="4"/>
-  <foreignObject x="320" y="385" width="180" height="30">
+  <foreignObject x="320" y="385" width="180" height="30" data-shape="ring_4_title">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="ring_1_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:18px;color:var(--primary);box-sizing:border-box;">Impact Critique</div>
   </foreignObject>
 

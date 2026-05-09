@@ -6,64 +6,64 @@
   </foreignObject>
 
   <!-- Central node -->
-  <rect x="500" y="400" width="160" height="80" rx="12" fill="var(--primary)" fill-opacity="0.2" stroke="var(--primary)" stroke-width="3"/>
-  <foreignObject x="510" y="430" width="180" height="20">
+  <rect x="500" y="400" width="160" height="80" rx="12" fill="var(--primary)" fill-opacity="0.2" stroke="var(--primary)" stroke-width="3" id="central_topic">
+  <foreignObject x="510" y="430" width="180" height="20" data-shape="central_topic">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="central_topic" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:18px;color:var(--primary);box-sizing:border-box;">Concept Central</div>
   </foreignObject>
 
   <!-- Left branch 1 (Main) -->
-  <line x1="500" y1="420" x2="350" y2="320" stroke="var(--accent)" stroke-width="4"/>
-  <rect x="250" y="300" width="140" height="60" rx="8" fill="var(--accent)" fill-opacity="0.15" stroke="var(--accent)" stroke-width="2"/>
-  <foreignObject x="260" y="320" width="180" height="20">
+  <line x1="500" y1="420" x2="350" y2="320" stroke="var(--accent)" stroke-width="4" data-from="central_topic" data-to="left_branch_1"/>
+  <rect x="250" y="300" width="140" height="60" rx="8" fill="var(--accent)" fill-opacity="0.15" stroke="var(--accent)" stroke-width="2" id="left_branch_1">
+  <foreignObject x="260" y="320" width="180" height="20" data-shape="left_branch_1">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="left_branch_1" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Innovation</div>
   </foreignObject>
 
   <!-- Left branch 2 (Secondary) -->
-  <line x1="500" y1="460" x2="380" y2="520" stroke="var(--accent)" stroke-width="3"/>
-  <rect x="280" y="500" width="120" height="50" rx="6" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2"/>
-  <foreignObject x="290" y="515" width="180" height="20">
+  <line x1="500" y1="460" x2="380" y2="520" stroke="var(--accent)" stroke-width="3" data-from="central_topic" data-to="left_branch_2"/>
+  <rect x="280" y="500" width="120" height="50" rx="6" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2" id="left_branch_2">
+  <foreignObject x="290" y="515" width="180" height="20" data-shape="left_branch_2">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="left_branch_2" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Créativité</div>
   </foreignObject>
 
   <!-- Right branch 1 (Large) -->
-  <line x1="660" y1="420" x2="820" y2="320" stroke="var(--primary)" stroke-width="4"/>
-  <rect x="840" y="300" width="160" height="60" rx="8" fill="var(--primary)" fill-opacity="0.15" stroke="var(--primary)" stroke-width="2"/>
-  <foreignObject x="850" y="320" width="180" height="20">
+  <line x1="660" y1="420" x2="820" y2="320" stroke="var(--primary)" stroke-width="4" data-from="central_topic" data-to="right_branch_1"/>
+  <rect x="840" y="300" width="160" height="60" rx="8" fill="var(--primary)" fill-opacity="0.15" stroke="var(--primary)" stroke-width="2" id="right_branch_1">
+  <foreignObject x="850" y="320" width="180" height="20" data-shape="right_branch_1">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="right_branch_1" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Stratégie</div>
   </foreignObject>
 
   <!-- Right sub-branch 1.1 -->
-  <line x1="840" y1="330" x2="740" y2="280" stroke="var(--primary)" stroke-width="2"/>
-  <rect x="640" y="260" width="100" height="40" rx="6" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
-  <foreignObject x="650" y="270" width="180" height="20">
+  <line x1="840" y1="330" x2="740" y2="280" stroke="var(--primary)" stroke-width="2" data-from="right_branch_1" data-to="right_sub_1_1"/>
+  <rect x="640" y="260" width="100" height="40" rx="6" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2" id="right_sub_1_1">
+  <foreignObject x="650" y="270" width="180" height="20" data-shape="right_sub_1_1">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="right_sub_1_1" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:500;font-size:14px;color:var(--text);box-sizing:border-box;">Court terme</div>
   </foreignObject>
 
   <!-- Right sub-branch 1.2 -->
-  <line x1="1000" y1="330" x2="1100" y2="280" stroke="var(--primary)" stroke-width="2"/>
-  <rect x="1120" y="260" width="100" height="40" rx="6" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
-  <foreignObject x="1130" y="270" width="180" height="20">
+  <line x1="1000" y1="330" x2="1100" y2="280" stroke="var(--primary)" stroke-width="2" data-from="right_branch_1" data-to="right_sub_1_2"/>
+  <rect x="1120" y="260" width="100" height="40" rx="6" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2" id="right_sub_1_2">
+  <foreignObject x="1130" y="270" width="180" height="20" data-shape="right_sub_1_2">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="right_sub_1_2" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:500;font-size:14px;color:var(--text);box-sizing:border-box;">Long terme</div>
   </foreignObject>
 
   <!-- Right branch 2 (Medium) -->
-  <line x1="660" y1="440" x2="780" y2="480" stroke="var(--primary)" stroke-width="3"/>
-  <rect x="800" y="460" width="140" height="50" rx="6" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
-  <foreignObject x="810" y="475" width="180" height="20">
+  <line x1="660" y1="440" x2="780" y2="480" stroke="var(--primary)" stroke-width="3" data-from="central_topic" data-to="right_branch_2"/>
+  <rect x="800" y="460" width="140" height="50" rx="6" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2" id="right_branch_2">
+  <foreignObject x="810" y="475" width="180" height="20" data-shape="right_branch_2">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="right_branch_2" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Exécution</div>
   </foreignObject>
 
   <!-- Right branch 3 (Small) -->
-  <line x1="660" y1="460" x2="740" y2="540" stroke="var(--primary)" stroke-width="2"/>
-  <rect x="760" y="520" width="100" height="40" rx="6" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2"/>
-  <foreignObject x="770" y="530" width="180" height="20">
+  <line x1="660" y1="460" x2="740" y2="540" stroke="var(--primary)" stroke-width="2" data-from="central_topic" data-to="right_branch_3"/>
+  <rect x="760" y="520" width="100" height="40" rx="6" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2" id="right_branch_3">
+  <foreignObject x="770" y="530" width="180" height="20" data-shape="right_branch_3">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="right_branch_3" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:500;font-size:14px;color:var(--text);box-sizing:border-box;">Mesure</div>
   </foreignObject>
 
   <!-- Top branch (Isolated) -->
-  <line x1="580" y1="400" x2="620" y2="280" stroke="var(--accent)" stroke-width="3"/>
-  <rect x="540" y="200" width="120" height="50" rx="6" fill="var(--accent)" fill-opacity="0.15" stroke="var(--accent)" stroke-width="2"/>
-  <foreignObject x="550" y="215" width="180" height="20">
+  <line x1="580" y1="400" x2="620" y2="280" stroke="var(--accent)" stroke-width="3" data-from="central_topic" data-to="right_sub_1_1"/>
+  <rect x="540" y="200" width="120" height="50" rx="6" fill="var(--accent)" fill-opacity="0.15" stroke="var(--accent)" stroke-width="2" id="top_branch">
+  <foreignObject x="550" y="215" width="180" height="20" data-shape="top_branch">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="top_branch" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Vision</div>
   </foreignObject>
 

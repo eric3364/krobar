@@ -29,7 +29,7 @@
   <rect width="1040" height="600" fill="var(--bg)"/>
 
   <!-- DÉCORATIF : ciel + sol (mode magazine) -->
-  <rect width="1040" height="540" fill="url(#skyGradient)" opacity="var(--decoration-opacity, 0)"/>
+  <rect width="1040" height="540" fill="url(#skyGradient)" opacity="var(--decoration-opacity, 0)" id="title">
   <rect y="540" width="1040" height="20" fill="url(#groundGradient)" opacity="var(--decoration-opacity, 0)"/>
 
   <!-- Header label -->
@@ -37,7 +37,7 @@
         style="text-transform: uppercase; letter-spacing: 0.5px;">Innovation Lancement</text>
 
   <!-- Titre principal -->
-  <foreignObject x="60" y="90" width="920" height="56">
+  <foreignObject x="60" y="90" width="920" height="56" data-shape="title">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="title"
          style="width:100%;height:100%;display:flex;align-items:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:36px;color:var(--text);box-sizing:border-box;">
       De l'idée au lancement réussi
@@ -200,10 +200,10 @@
   <!-- Phase 4 : Lancement (en HAUT, mise en valeur) -->
   <rect x="430" y="170" width="540" height="70" rx="12"
         fill="var(--accent)" fill-opacity="0.1"
-        stroke="var(--accent)" stroke-width="2.5"/>
+        stroke="var(--accent)" stroke-width="2.5" id="stage_4_launch">
   <circle cx="465" cy="205" r="18" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.5"/>
   <text x="465" y="211" font-size="15" font-weight="700" fill="var(--bg)" text-anchor="middle">4</text>
-  <foreignObject x="495" y="172" width="465" height="66">
+  <foreignObject x="495" y="172" width="465" height="66" data-shape="stage_4_launch">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="stage_4_launch"
          style="width:100%;height:100%;display:flex;align-items:center;justify-content:flex-start;text-align:left;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:18px;color:var(--accent);box-sizing:border-box;padding:8px 12px;line-height:1.3;">
       Lancement
@@ -212,11 +212,11 @@
 
   <!-- Phase 3 : Développement -->
   <rect x="430" y="260" width="540" height="70" rx="12"
-        fill="var(--bg)" stroke="var(--primary)" stroke-width="2"/>
+        fill="var(--bg)" stroke="var(--primary)" stroke-width="2" id="stage_3_development">
   <circle cx="465" cy="295" r="18" fill="var(--primary)" fill-opacity="0.15"
           stroke="var(--primary)" stroke-width="1.5"/>
   <text x="465" y="301" font-size="14" font-weight="700" fill="var(--primary)" text-anchor="middle">3</text>
-  <foreignObject x="495" y="262" width="465" height="66">
+  <foreignObject x="495" y="262" width="465" height="66" data-shape="stage_3_development">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="stage_3_development"
          style="width:100%;height:100%;display:flex;align-items:center;justify-content:flex-start;text-align:left;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;padding:8px 12px;line-height:1.3;">
       Développement
@@ -225,11 +225,11 @@
 
   <!-- Phase 2 : Stratégie -->
   <rect x="430" y="350" width="540" height="70" rx="12"
-        fill="var(--bg)" stroke="var(--accent)" stroke-width="2"/>
+        fill="var(--bg)" stroke="var(--accent)" stroke-width="2" id="stage_2_strategy">
   <circle cx="465" cy="385" r="18" fill="var(--accent)" fill-opacity="0.15"
           stroke="var(--accent)" stroke-width="1.5"/>
   <text x="465" y="391" font-size="14" font-weight="700" fill="var(--accent)" text-anchor="middle">2</text>
-  <foreignObject x="495" y="352" width="465" height="66">
+  <foreignObject x="495" y="352" width="465" height="66" data-shape="stage_2_strategy">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="stage_2_strategy"
          style="width:100%;height:100%;display:flex;align-items:center;justify-content:flex-start;text-align:left;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;padding:8px 12px;line-height:1.3;">
       Stratégie
@@ -238,11 +238,11 @@
 
   <!-- Phase 1 : Idée (en BAS, point de départ) -->
   <rect x="430" y="440" width="540" height="70" rx="12"
-        fill="var(--bg)" stroke="var(--primary)" stroke-width="2"/>
+        fill="var(--bg)" stroke="var(--primary)" stroke-width="2" id="stage_1_idea">
   <circle cx="465" cy="475" r="18" fill="var(--primary)" fill-opacity="0.15"
           stroke="var(--primary)" stroke-width="1.5"/>
   <text x="465" y="481" font-size="14" font-weight="700" fill="var(--primary)" text-anchor="middle">1</text>
-  <foreignObject x="495" y="442" width="465" height="66">
+  <foreignObject x="495" y="442" width="465" height="66" data-shape="stage_1_idea">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="stage_1_idea"
          style="width:100%;height:100%;display:flex;align-items:center;justify-content:flex-start;text-align:left;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;padding:8px 12px;line-height:1.3;">
       Idée
