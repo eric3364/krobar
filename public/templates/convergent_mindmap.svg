@@ -2,58 +2,60 @@
   <rect width="1400" height="900" fill="var(--bg)"/>
   <text x="105" y="72" font-size="13" font-weight="600" fill="var(--text)" opacity="0.55" style="text-transform: uppercase;">Mindmap Convergent</text>
   <foreignObject x="60" y="90" width="1280" height="56">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="title" style="width:100%;height:100%;display:flex;align-items:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:36px;color:var(--text);box-sizing:border-box;">Convergence vers solution unique</div>
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="title" style="width:100%;height:100%;display:flex;align-items:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:36px;color:var(--text);box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;line-height:1.1;">Convergence vers solution unique</div>
   </foreignObject>
 
-  <!-- Source 1: Top Left -->
-  <rect x="100" y="200" width="140" height="60" rx="8" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2"/>
-  <foreignObject x="110" y="220" width="180" height="20">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="source_1" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Analyse marché</div>
+  <g class="slot-group" data-slot-key="source_1">
+    <rect id="source_1" x="100" y="200" width="140" height="60" rx="8" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2"/>
+    <foreignObject data-shape="source_1" x="100" y="200" width="140" height="60">
+      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="source_1" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;word-wrap:break-word;overflow-wrap:break-word;line-height:1.2;padding:4px 8px;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:14px;color:var(--text);box-sizing:border-box;">Analyse marché</div>
+    </foreignObject>
+    <line data-from="source_1" data-to="convergence_point" x1="0" y1="0" x2="0" y2="0" stroke="var(--primary)" stroke-width="3" opacity="0.7"/>
+  </g>
+
+  <g class="slot-group" data-slot-key="source_2">
+    <rect id="source_2" x="100" y="320" width="140" height="60" rx="8" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
+    <foreignObject data-shape="source_2" x="100" y="320" width="140" height="60">
+      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="source_2" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;word-wrap:break-word;overflow-wrap:break-word;line-height:1.2;padding:4px 8px;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:14px;color:var(--text);box-sizing:border-box;">Retours clients</div>
+    </foreignObject>
+    <line data-from="source_2" data-to="convergence_point" x1="0" y1="0" x2="0" y2="0" stroke="var(--accent)" stroke-width="3" opacity="0.7"/>
+  </g>
+
+  <g class="slot-group" data-slot-key="source_3">
+    <rect id="source_3" x="100" y="440" width="140" height="60" rx="8" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2"/>
+    <foreignObject data-shape="source_3" x="100" y="440" width="140" height="60">
+      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="source_3" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;word-wrap:break-word;overflow-wrap:break-word;line-height:1.2;padding:4px 8px;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:14px;color:var(--text);box-sizing:border-box;">Données techniques</div>
+    </foreignObject>
+    <line data-from="source_3" data-to="convergence_point" x1="0" y1="0" x2="0" y2="0" stroke="var(--primary)" stroke-width="3" opacity="0.7"/>
+  </g>
+
+  <g class="slot-group" data-slot-key="source_4">
+    <rect id="source_4" x="300" y="260" width="140" height="60" rx="8" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
+    <foreignObject data-shape="source_4" x="300" y="260" width="140" height="60">
+      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="source_4" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;word-wrap:break-word;overflow-wrap:break-word;line-height:1.2;padding:4px 8px;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:14px;color:var(--text);box-sizing:border-box;">Benchmarks</div>
+    </foreignObject>
+    <line data-from="source_4" data-to="convergence_point" x1="0" y1="0" x2="0" y2="0" stroke="var(--accent)" stroke-width="3" opacity="0.7"/>
+  </g>
+
+  <g class="slot-group" data-slot-key="source_5">
+    <rect id="source_5" x="300" y="400" width="140" height="60" rx="8" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2"/>
+    <foreignObject data-shape="source_5" x="300" y="400" width="140" height="60">
+      <div xmlns="http://www.w3.org/1999/xhtml" data-slot="source_5" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;word-wrap:break-word;overflow-wrap:break-word;line-height:1.2;padding:4px 8px;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:14px;color:var(--text);box-sizing:border-box;">Contraintes légales</div>
+    </foreignObject>
+    <line data-from="source_5" data-to="convergence_point" x1="0" y1="0" x2="0" y2="0" stroke="var(--primary)" stroke-width="3" opacity="0.7"/>
+  </g>
+
+  <!-- Central convergence point : id="convergence_point" -->
+  <rect id="convergence_point" x="920" y="380" width="200" height="100" rx="12" fill="var(--primary)" fill-opacity="0.2" stroke="var(--primary)" stroke-width="4"/>
+  <foreignObject data-shape="convergence_point" x="920" y="380" width="200" height="100">
+    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="convergence_point" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;word-wrap:break-word;overflow-wrap:break-word;line-height:1.2;padding:4px 12px;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:18px;color:var(--primary);box-sizing:border-box;">Solution optimale</div>
   </foreignObject>
 
-  <!-- Source 2: Middle Left -->
-  <rect x="100" y="320" width="140" height="60" rx="8" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
-  <foreignObject x="110" y="340" width="180" height="20">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="source_2" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Retours clients</div>
-  </foreignObject>
-
-  <!-- Source 3: Lower Left -->
-  <rect x="100" y="440" width="140" height="60" rx="8" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2"/>
-  <foreignObject x="110" y="460" width="180" height="20">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="source_3" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Données techniques</div>
-  </foreignObject>
-
-  <!-- Source 4: Top Center -->
-  <rect x="300" y="260" width="140" height="60" rx="8" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
-  <foreignObject x="310" y="280" width="180" height="20">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="source_4" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Benchmarks</div>
-  </foreignObject>
-
-  <!-- Source 5: Bottom Center -->
-  <rect x="300" y="400" width="140" height="60" rx="8" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2"/>
-  <foreignObject x="310" y="420" width="180" height="20">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="source_5" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Contraintes légales</div>
-  </foreignObject>
-
-  <!-- Convergence lines to central point -->
-  <line x1="240" y1="230" x2="900" y2="420" stroke="var(--primary)" stroke-width="3" opacity="0.7"/>
-  <line x1="240" y1="350" x2="900" y2="430" stroke="var(--accent)" stroke-width="3" opacity="0.7"/>
-  <line x1="240" y1="470" x2="900" y2="440" stroke="var(--primary)" stroke-width="3" opacity="0.7"/>
-  <line x1="440" y1="290" x2="900" y2="410" stroke="var(--accent)" stroke-width="3" opacity="0.7"/>
-  <line x1="440" y1="430" x2="900" y2="450" stroke="var(--primary)" stroke-width="3" opacity="0.7"/>
-
-  <!-- Central convergence point -->
-  <rect x="920" y="380" width="200" height="100" rx="12" fill="var(--primary)" fill-opacity="0.2" stroke="var(--primary)" stroke-width="4"/>
-  <foreignObject x="930" y="415" width="180" height="30">
-    <div xmlns="http://www.w3.org/1999/xhtml" data-slot="convergence_point" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:18px;color:var(--primary);box-sizing:border-box;">Solution optimale</div>
-  </foreignObject>
-
-  <!-- Integration arrows -->
+  <!-- Decorative integration markers : non migrés (juste des "+/=" symboliques) -->
   <g transform="translate(600, 350)">
     <circle cx="0" cy="0" r="25" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
     <text x="0" y="5" font-size="14" font-weight="700" fill="var(--accent)" text-anchor="middle">+</text>
   </g>
-
   <g transform="translate(700, 380)">
     <circle cx="0" cy="0" r="25" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"/>
     <text x="0" y="5" font-size="14" font-weight="700" fill="var(--accent)" text-anchor="middle">=</text>
