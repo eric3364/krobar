@@ -203,55 +203,130 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
 
   const runOne = async (test: TestCase, currentPalette: Palette): Promise<void> => {
     updateResult(test.id, { ...emptyResult(test.id), status: "running" });
+
+    const t0 = performance.now();
+    let latencyMs: number | null = null;
+    let suggestions: Suggestion[] = [];
+    let failureCategory: FailureCategory | null = null;
+    let failureDetail: string | null = null;
+
     try {
-      const { suggestions, latencyMs } = await callBackend(test.text);
+      const resp = await supabase.functions.invoke("krobar-proxy", {
+        body: { endpoint: "analyze", payload: { text: test.text, detail_level: "auto" } },
+      });
+      latencyMs = Math.round(performance.now() - t0);
+
+      if (resp.error) {
+        let body: { error?: string; detail?: string; status?: number } | null = null;
+        let httpStatus: number | null = null;
+        const ctx = (resp.error as unknown as { context?: Response }).context;
+        if (ctx instanceof Response) {
+          httpStatus = ctx.status;
+          try {
+            body = await ctx.clone().json();
+          } catch {
+            failureCategory = "parse_error";
+            failureDetail = `Réponse non-JSON (HTTP ${httpStatus})`;
+          }
+        }
+        if (!failureCategory) {
+          if (httpStatus && httpStatus >= 400 && httpStatus !== 504) {
+            failureCategory = "api_error";
+            failureDetail = `HTTP ${httpStatus} — ${body?.error || body?.detail || resp.error.message}`;
+          } else {
+            failureCategory = "network_error";
+            failureDetail = body?.error || resp.error.message || "Pas de réponse du backend";
+          }
+        }
+        console.error(`[Test ${test.expected_template}] ${failureCategory}`, resp.error, body);
+      } else {
+        const data = resp.data as { suggestions?: Suggestion[]; latency_ms?: number } | null;
+        const raw = data?.suggestions ?? [];
+        if (typeof data?.latency_ms === "number") latencyMs = data.latency_ms;
+        if (raw.length === 0) {
+          failureCategory = "empty_suggestions";
+          failureDetail = "Le backend a renvoyé un tableau vide";
+          console.error(`[Test ${test.expected_template}] empty_suggestions`, data);
+        } else {
+          try {
+            suggestions = raw.map((s) => ({ ...s, score: normalizeScore(s.score) }));
+          } catch (e) {
+            failureCategory = "frontend_exception";
+            failureDetail = e instanceof Error ? e.message : String(e);
+            console.error(`[Test ${test.expected_template}] frontend_exception`, e);
+          }
+        }
+      }
+    } catch (e) {
+      latencyMs = Math.round(performance.now() - t0);
+      failureCategory = "network_error";
+      failureDetail = e instanceof Error ? e.message : String(e);
+      console.error(`[Test ${test.expected_template}] network_error`, e);
+    }
+
+    let actualTemplate: string | null = null;
+    let matchKind: TestResult["matchKind"] = null;
+    let status: Status = "fail";
+    let svgString: string | null = null;
+    let paletteOk = false;
+    let slotsLengthOk: boolean | null = null;
+    let slotsOffenders: string[] = [];
+
+    if (suggestions.length > 0) {
       const top = suggestions[0];
+      actualTemplate = top.template_id;
       const ids = suggestions.map((s) => s.template_id);
-      let matchKind: TestResult["matchKind"] = "miss";
-      let status: Status = "fail";
-      if (top?.template_id === test.expected_template) {
+      if (top.template_id === test.expected_template) {
         matchKind = "exact";
         status = "success";
+        failureCategory = null;
+        failureDetail = null;
       } else if (ids.includes(test.expected_template)) {
         matchKind = "in_top3";
         status = "warning";
+        failureCategory = "mismatch";
+        failureDetail = `Top 1 reçu = ${top.template_id} (attendu en position ${ids.indexOf(test.expected_template) + 1}/${ids.length})`;
+      } else {
+        matchKind = "miss";
+        status = "fail";
+        failureCategory = "mismatch";
+        failureDetail = `Top 1 reçu = ${top.template_id} (attendu absent du top ${ids.length})`;
       }
 
-      // Render the SVG via the backend (supports all 49 templates).
-      let svgString: string | null = null;
-      let paletteOk = false;
       try {
         const svg = await loadRenderedSvg(top.template_id, top.slots, currentPalette);
         svg.setAttribute("width", "100%");
         svg.setAttribute("height", "100%");
         paletteOk = checkPaletteApplied(svg, currentPalette);
         svgString = svgToString(svg);
-      } catch {
-        // Render failed — downgrade status
-        if (status === "success") status = "warning";
+      } catch (e) {
+        if (matchKind === "exact") {
+          status = "warning";
+          failureCategory = "render_error";
+          failureDetail = e instanceof Error ? e.message : String(e);
+        }
+        console.error(`[Test ${test.expected_template}] render_error`, e);
       }
       const lengthCheck = checkSlotsLength(top.slots);
-
-      updateResult(test.id, {
-        status,
-        suggestions,
-        actualTemplate: top.template_id,
-        matchKind,
-        latencyMs,
-        svgString,
-        slotsLengthOk: lengthCheck.ok,
-        slotsOffenders: lengthCheck.offenders,
-        paletteOk,
-        timestamp: new Date().toISOString(),
-        errorMsg: null,
-      });
-    } catch (e) {
-      updateResult(test.id, {
-        status: "fail",
-        errorMsg: e instanceof Error ? e.message : String(e),
-        timestamp: new Date().toISOString(),
-      });
+      slotsLengthOk = lengthCheck.ok;
+      slotsOffenders = lengthCheck.offenders;
     }
+
+    updateResult(test.id, {
+      status,
+      suggestions,
+      actualTemplate,
+      matchKind,
+      latencyMs,
+      svgString,
+      slotsLengthOk,
+      slotsOffenders,
+      paletteOk,
+      timestamp: new Date().toISOString(),
+      errorMsg: failureDetail,
+      failureCategory,
+      failureDetail,
+    });
   };
 
   const playBeep = () => {
