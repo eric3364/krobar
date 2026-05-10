@@ -40,6 +40,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsAdmin(Boolean(roles?.some((r: { role: string }) => r.role === "admin")));
   };
 
+  const syncUserState = async (nextSession: Session | null) => {
+    setSession(nextSession);
+    const nextUser = nextSession?.user ?? null;
+    setUser(nextUser);
+
+    if (!nextUser) {
+      setProfile(null);
+      setIsAdmin(false);
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await fetchProfileAndRole(nextUser.id);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const refreshProfile = async () => {
     if (user) await fetchProfileAndRole(user.id);
   };
@@ -56,22 +76,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Set up listener FIRST
     const { data: sub } = supabase.auth.onAuthStateChange((_event, sess) => {
-      setSession(sess);
-      setUser(sess?.user ?? null);
-      if (sess?.user) {
-        // defer to avoid deadlock
-        setTimeout(() => fetchProfileAndRole(sess.user.id), 0);
-      } else {
-        setProfile(null);
-        setIsAdmin(false);
-      }
+      // defer to avoid deadlock
+      setTimeout(() => {
+        void syncUserState(sess);
+      }, 0);
     });
     // THEN check existing session
     supabase.auth.getSession().then(({ data: { session: s } }) => {
-      setSession(s);
-      setUser(s?.user ?? null);
-      if (s?.user) fetchProfileAndRole(s.user.id).finally(() => setLoading(false));
-      else setLoading(false);
+      void syncUserState(s);
     });
     return () => sub.subscription.unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
