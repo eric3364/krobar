@@ -18,7 +18,6 @@ import { buildFullTestSuite, type TestCase, type ChoremeFamily } from "@/data/te
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
 import {
   applyPaletteVars,
-  callBackend,
   checkPaletteApplied,
   checkSlotsLength,
   fillSlots,
@@ -28,8 +27,19 @@ import {
   type Manifest,
   type Suggestion,
 } from "@/lib/kroki";
+import { normalizeScore } from "@/lib/format";
+import { supabase } from "@/integrations/supabase/client";
 
 type Status = "idle" | "running" | "success" | "warning" | "fail";
+
+type FailureCategory =
+  | "mismatch"
+  | "empty_suggestions"
+  | "api_error"
+  | "network_error"
+  | "render_error"
+  | "parse_error"
+  | "frontend_exception";
 
 type TestResult = {
   id: number;
@@ -44,6 +54,8 @@ type TestResult = {
   slotsOffenders: string[];
   paletteOk: boolean | null;
   timestamp: string | null;
+  failureCategory: FailureCategory | null;
+  failureDetail: string | null;
 };
 
 const RESULTS_STORAGE = "kroki-last-test-run";
@@ -63,8 +75,20 @@ function emptyResult(id: number): TestResult {
     slotsOffenders: [],
     paletteOk: null,
     timestamp: null,
+    failureCategory: null,
+    failureDetail: null,
   };
 }
+
+const failureLabel: Record<FailureCategory, string> = {
+  mismatch: "Mauvais top 1",
+  empty_suggestions: "❌ Pas de suggestion",
+  api_error: "❌ Erreur API",
+  network_error: "❌ Pas de réponse",
+  render_error: "❌ Rendu échoué",
+  parse_error: "❌ Réponse non-JSON",
+  frontend_exception: "❌ Erreur frontend",
+};
 
 const statusIcon: Record<Status, string> = {
   idle: "⬜",
