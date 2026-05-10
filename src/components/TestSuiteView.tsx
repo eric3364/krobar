@@ -580,7 +580,19 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
                   </span>
                 </div>
               </div>
-              <Button onClick={exportReport} size="sm" variant="outline" disabled={!allDone}>
+              <Button
+                onClick={exportReport}
+                size="sm"
+                variant="outline"
+                disabled={completedCount === 0}
+                title={
+                  completedCount === 0
+                    ? "Aucun test exécuté"
+                    : completedCount < testSuite.length
+                      ? `Exporter les ${completedCount}/${testSuite.length} tests exécutés`
+                      : undefined
+                }
+              >
                 <Download className="w-4 h-4 mr-2" /> Exporter le rapport
               </Button>
             </div>
