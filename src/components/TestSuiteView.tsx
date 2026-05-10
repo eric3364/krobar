@@ -831,6 +831,19 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
                 </option>
               ))}
             </select>
+            <span className="font-semibold ml-2">Statut :</span>
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value as typeof filterStatus)}
+              className="text-xs rounded border bg-background px-2 py-1"
+            >
+              <option value="all">Tous</option>
+              <option value="success">Success</option>
+              <option value="mismatch">Mismatch</option>
+              <option value="fail">Fail</option>
+              <option value="warning">Warning</option>
+              <option value="errors">Erreurs</option>
+            </select>
             <span className="text-muted-foreground ml-auto">
               {filteredTests.length} affiché{filteredTests.length > 1 ? "s" : ""}
             </span>
