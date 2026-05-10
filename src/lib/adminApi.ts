@@ -1,6 +1,18 @@
 import { supabase } from "@/integrations/supabase/client";
+import { FunctionsHttpError } from "@supabase/supabase-js";
 
-type ErrorBody = { detail?: string; error?: string; message?: string };
+type ErrorBody = { detail?: string; error?: string; message?: string; status?: number; code?: string };
+
+async function readAdminInvokeError(error: unknown): Promise<string> {
+  if (error instanceof FunctionsHttpError) {
+    const payload = await error.context.json().catch(() => null) as ErrorBody | null;
+    const msg = payload?.error || payload?.detail || payload?.message;
+    if (typeof msg === "string" && msg.trim()) return msg;
+  }
+
+  if (error instanceof Error && error.message) return error.message;
+  return "Erreur de communication avec le proxy";
+}
 
 export async function adminFetch<T>(
   path: string,
@@ -17,14 +29,16 @@ export async function adminFetch<T>(
   });
 
   if (error) {
-    throw new Error(error.message || "Erreur de communication avec le proxy");
+    throw new Error(await readAdminInvokeError(error));
   }
 
   const result = data as T & ErrorBody;
 
   if ((result as any)?.error) {
     const msg = (result as any).error;
-    if (msg.includes?.("401") || msg.includes?.("Token")) throw new Error("Token invalide");
+    if ((result as any)?.code === "invalid_admin_token") {
+      throw new Error("Le token administrateur Krobar configuré côté backend est invalide ou expiré.");
+    }
     throw new Error(msg);
   }
 
