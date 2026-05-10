@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Loader2, Download, Sparkles, FlaskConical } from "lucide-react";
+import { Loader2, Download, Sparkles } from "lucide-react";
 import TestSuiteView from "@/components/TestSuiteView";
 import CustomizePanel, { loadStoredDetailLevel, type DetailLevel } from "@/components/CustomizePanel";
 import EditableSlot from "@/components/EditableSlot";
@@ -263,7 +263,7 @@ const Index = () => {
   const [loading, setLoading] = useState(false);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
-  const [testSuiteOpen, setTestSuiteOpen] = useState(false);
+  
   const [detailLevel, setDetailLevel] = useState<DetailLevel>(() => loadStoredDetailLevel());
 
   const previewRef = useRef<HTMLDivElement>(null);
@@ -1651,14 +1651,6 @@ const Index = () => {
   };
 
 
-  if (testSuiteOpen && manifest) {
-    return (
-      <TestSuiteView
-        manifest={manifest}
-        onBack={() => setTestSuiteOpen(false)}
-      />
-    );
-  }
 
   const renderInputSection = () => (
     <section className="flex flex-col gap-3 h-full">
