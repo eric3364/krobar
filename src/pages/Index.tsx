@@ -1816,6 +1816,11 @@ const Index = () => {
           </div>
           <div className="flex items-center gap-2">
             <CustomizePanel detailLevel={detailLevel} onApply={setDetailLevel} />
+            {isAdmin && (
+              <Button size="sm" variant="outline" onClick={() => navigate("/admin")}>
+                <Shield className="w-4 h-4" /> Back-office
+              </Button>
+            )}
             <AccountMenu />
           </div>
         </div>
