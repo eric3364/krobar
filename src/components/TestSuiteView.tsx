@@ -690,13 +690,13 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <Button onClick={runAll} disabled={running} size="sm">
+              <Button onClick={runAll} disabled={running || corpusLoading || testSuite.length === 0} size="sm">
                 {running ? (
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                 ) : (
                   <Play className="w-4 h-4 mr-2" />
                 )}
-                Lancer tous les tests
+                Lancer la suite
               </Button>
               {paused ? (
                 <Button onClick={resume} variant="secondary" size="sm">
@@ -712,6 +712,24 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
               </Button>
             </div>
           </div>
+
+          {corpusLoading && (
+            <div className="flex items-center gap-2 text-xs text-muted-foreground border rounded-lg px-3 py-2 bg-muted/20">
+              <Loader2 className="w-3 h-3 animate-spin" /> Chargement du corpus canonique…
+            </div>
+          )}
+          {corpusError && (
+            <div className="flex items-center justify-between gap-3 border border-destructive/40 rounded-lg px-3 py-2 bg-destructive/10 text-sm">
+              <div className="flex items-center gap-2 text-destructive">
+                <AlertCircle className="w-4 h-4" />
+                <span>Impossible de charger le corpus de tests depuis le backend.</span>
+                <span className="text-xs text-muted-foreground font-mono">({corpusError})</span>
+              </div>
+              <Button onClick={loadCorpus} size="sm" variant="outline">
+                <RotateCcw className="w-3 h-3 mr-1" /> Réessayer
+              </Button>
+            </div>
+          )}
 
           <div className="flex items-center gap-6 flex-wrap">
             <div className="flex items-center gap-2">
