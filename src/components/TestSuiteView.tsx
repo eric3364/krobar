@@ -530,13 +530,15 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
     const lines: string[] = [];
     lines.push(`# Suite de tests Krobar — Export ${human}`);
     lines.push("");
+    lines.push("**Source : corpus canonique v1.0 (79 textes)**");
+    lines.push("");
     lines.push("## Métadonnées");
     lines.push("");
     lines.push(`- **Tests exécutés** : ${resInScope.length} / ${filteredTests.length}`);
     lines.push(`- **Palette** : ${paletteLabels[paletteKey] || paletteKey}`);
     lines.push(`- **Mode rapide** : ${fastMode ? "ON" : "OFF"}`);
     lines.push(
-      `- **Filtres actifs** : Type=${filterType}, Catégorie=${filterCategory}, Groupe migration=tous`,
+      `- **Filtres actifs** : Type=${filterType}, Catégorie=${filterCategory}, Statut=${filterStatus}`,
     );
     lines.push(`- **Durée totale** : ${totalLatency} ms`);
     lines.push("");
