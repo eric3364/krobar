@@ -234,7 +234,7 @@
 
   <!-- Phase 1 : Graine -->
   <rect x="85" y="430" width="180" height="60" rx="12"
-        fill="var(--bg)" stroke="var(--primary)" stroke-width="2" id="stage_1_title">
+        fill="var(--bg)" stroke="var(--primary)" stroke-width="2" id="stage_1_title"/>
   <circle cx="110" cy="460" r="14" fill="var(--primary)" fill-opacity="0.15"
           stroke="var(--primary)" stroke-width="1.5"/>
   <text x="110" y="465" font-size="13" font-weight="700" fill="var(--primary)" text-anchor="middle">1</text>
@@ -247,7 +247,7 @@
 
   <!-- Phase 2 : Pousse -->
   <rect x="290" y="430" width="180" height="60" rx="12"
-        fill="var(--bg)" stroke="var(--accent)" stroke-width="2" id="stage_2_title">
+        fill="var(--bg)" stroke="var(--accent)" stroke-width="2" id="stage_2_title"/>
   <circle cx="315" cy="460" r="14" fill="var(--accent)" fill-opacity="0.15"
           stroke="var(--accent)" stroke-width="1.5"/>
   <text x="315" y="465" font-size="13" font-weight="700" fill="var(--accent)" text-anchor="middle">2</text>
@@ -260,7 +260,7 @@
 
   <!-- Phase 3 : Plant -->
   <rect x="495" y="430" width="180" height="60" rx="12"
-        fill="var(--bg)" stroke="var(--primary)" stroke-width="2" id="stage_3_title">
+        fill="var(--bg)" stroke="var(--primary)" stroke-width="2" id="stage_3_title"/>
   <circle cx="520" cy="460" r="14" fill="var(--primary)" fill-opacity="0.15"
           stroke="var(--primary)" stroke-width="1.5"/>
   <text x="520" y="465" font-size="13" font-weight="700" fill="var(--primary)" text-anchor="middle">3</text>
@@ -274,7 +274,7 @@
   <!-- Phase 4 : Fleur (mise en valeur) -->
   <rect x="700" y="430" width="190" height="60" rx="12"
         fill="var(--accent)" fill-opacity="0.1"
-        stroke="var(--accent)" stroke-width="2.5" id="stage_4_title">
+        stroke="var(--accent)" stroke-width="2.5" id="stage_4_title"/>
   <circle cx="725" cy="460" r="14" fill="var(--accent)"
           stroke="var(--accent)" stroke-width="1.5"/>
   <text x="725" y="465" font-size="13" font-weight="700" fill="var(--bg)" text-anchor="middle">4</text>

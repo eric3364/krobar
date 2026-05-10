@@ -22,10 +22,10 @@
   <line x1="60" y1="160" x2="148" y2="160" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/>
 
   <g filter="url(#editorialShadow)">
-    <rect x="60" y="200" width="920" height="360" rx="12" fill="#FFFFFF" stroke="var(--text)" stroke-opacity="0.12" stroke-width="1" id="label_1">
+    <rect x="60" y="200" width="920" height="360" rx="12" fill="#FFFFFF" stroke="var(--text)" stroke-opacity="0.12" stroke-width="1" id="label_1"/>
   </g>
 
-  <circle data-slot="arc_1" cx="280" cy="380" r="100" fill="none" stroke="var(--accent)" stroke-width="48" stroke-dasharray="157 471" stroke-dashoffset="0" transform="rotate(-90 280 380)" id="percent_1">
+  <circle data-slot="arc_1" cx="280" cy="380" r="100" fill="none" stroke="var(--accent)" stroke-width="48" stroke-dasharray="157 471" stroke-dashoffset="0" transform="rotate(-90 280 380)" id="percent_1"/>
   <circle data-slot="arc_2" cx="280" cy="380" r="100" fill="none" stroke="var(--primary)" stroke-width="48" stroke-dasharray="157 471" stroke-dashoffset="-157" transform="rotate(-90 280 380)"/>
   <circle data-slot="arc_3" cx="280" cy="380" r="100" fill="none" stroke="var(--accent)" stroke-width="48" stroke-dasharray="157 471" stroke-dashoffset="-314" opacity="0.55" transform="rotate(-90 280 380)"/>
   <circle data-slot="arc_4" cx="280" cy="380" r="100" fill="none" stroke="var(--text)" stroke-width="48" stroke-dasharray="157 471" stroke-dashoffset="-471" opacity="0.35" transform="rotate(-90 280 380)"/>

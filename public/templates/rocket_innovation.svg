@@ -29,7 +29,7 @@
   <rect width="1040" height="600" fill="var(--bg)"/>
 
   <!-- DÉCORATIF : ciel + sol (mode magazine) -->
-  <rect width="1040" height="540" fill="url(#skyGradient)" opacity="var(--decoration-opacity, 0)" id="title">
+  <rect width="1040" height="540" fill="url(#skyGradient)" opacity="var(--decoration-opacity, 0)" id="title"/>
   <rect y="540" width="1040" height="20" fill="url(#groundGradient)" opacity="var(--decoration-opacity, 0)"/>
 
   <!-- Header label -->
@@ -200,7 +200,7 @@
   <!-- Phase 4 : Lancement (en HAUT, mise en valeur) -->
   <rect x="430" y="170" width="540" height="70" rx="12"
         fill="var(--accent)" fill-opacity="0.1"
-        stroke="var(--accent)" stroke-width="2.5" id="stage_4_launch">
+        stroke="var(--accent)" stroke-width="2.5" id="stage_4_launch"/>
   <circle cx="465" cy="205" r="18" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.5"/>
   <text x="465" y="211" font-size="15" font-weight="700" fill="var(--bg)" text-anchor="middle">4</text>
   <foreignObject x="495" y="172" width="465" height="66" data-shape="stage_4_launch">
@@ -212,7 +212,7 @@
 
   <!-- Phase 3 : Développement -->
   <rect x="430" y="260" width="540" height="70" rx="12"
-        fill="var(--bg)" stroke="var(--primary)" stroke-width="2" id="stage_3_development">
+        fill="var(--bg)" stroke="var(--primary)" stroke-width="2" id="stage_3_development"/>
   <circle cx="465" cy="295" r="18" fill="var(--primary)" fill-opacity="0.15"
           stroke="var(--primary)" stroke-width="1.5"/>
   <text x="465" y="301" font-size="14" font-weight="700" fill="var(--primary)" text-anchor="middle">3</text>
@@ -225,7 +225,7 @@
 
   <!-- Phase 2 : Stratégie -->
   <rect x="430" y="350" width="540" height="70" rx="12"
-        fill="var(--bg)" stroke="var(--accent)" stroke-width="2" id="stage_2_strategy">
+        fill="var(--bg)" stroke="var(--accent)" stroke-width="2" id="stage_2_strategy"/>
   <circle cx="465" cy="385" r="18" fill="var(--accent)" fill-opacity="0.15"
           stroke="var(--accent)" stroke-width="1.5"/>
   <text x="465" y="391" font-size="14" font-weight="700" fill="var(--accent)" text-anchor="middle">2</text>
@@ -238,7 +238,7 @@
 
   <!-- Phase 1 : Idée (en BAS, point de départ) -->
   <rect x="430" y="440" width="540" height="70" rx="12"
-        fill="var(--bg)" stroke="var(--primary)" stroke-width="2" id="stage_1_idea">
+        fill="var(--bg)" stroke="var(--primary)" stroke-width="2" id="stage_1_idea"/>
   <circle cx="465" cy="475" r="18" fill="var(--primary)" fill-opacity="0.15"
           stroke="var(--primary)" stroke-width="1.5"/>
   <text x="465" y="481" font-size="14" font-weight="700" fill="var(--primary)" text-anchor="middle">1</text>

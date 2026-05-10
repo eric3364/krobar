@@ -35,7 +35,7 @@
   <rect width="1040" height="600" fill="var(--bg)"/>
 
   <!-- DÉCORATIF : ciel + mer dégradés (mode magazine) -->
-  <rect width="1040" height="430" fill="url(#skyGradient)" opacity="var(--decoration-opacity, 0)" id="title">
+  <rect width="1040" height="430" fill="url(#skyGradient)" opacity="var(--decoration-opacity, 0)" id="title"/>
   <rect y="430" width="1040" height="170" fill="url(#seaGradient)" opacity="var(--decoration-opacity, 0)"/>
 
   <!-- Header label (essentiel) -->
@@ -178,7 +178,7 @@
   <!-- BOX OBJECTIF PRINCIPAL (essentielle) -->
   <!-- ============================================ -->
   <rect x="700" y="220" width="280" height="130" rx="12"
-        fill="var(--bg)" stroke="var(--accent)" stroke-width="2.5" id="main_target">
+        fill="var(--bg)" stroke="var(--accent)" stroke-width="2.5" id="main_target"/>
 
   <!-- Petite indication "OBJECTIF" en label -->
   <text x="715" y="245" font-size="11" font-weight="600" fill="var(--accent)" opacity="0.7"
@@ -204,7 +204,7 @@
 
   <!-- Phase 1 : Préparation -->
   <rect x="320" y="475" width="200" height="58" rx="12"
-        fill="var(--bg)" stroke="var(--primary)" stroke-width="2" id="prep_phase">
+        fill="var(--bg)" stroke="var(--primary)" stroke-width="2" id="prep_phase"/>
   <circle cx="345" cy="504" r="14" fill="var(--primary)" fill-opacity="0.15"
           stroke="var(--primary)" stroke-width="1.5"/>
   <text x="345" y="509" font-size="13" font-weight="700" fill="var(--primary)" text-anchor="middle">1</text>
@@ -217,7 +217,7 @@
 
   <!-- Phase 2 : Passage -->
   <rect x="540" y="475" width="200" height="58" rx="12"
-        fill="var(--bg)" stroke="var(--accent)" stroke-width="2" id="passage_phase">
+        fill="var(--bg)" stroke="var(--accent)" stroke-width="2" id="passage_phase"/>
   <circle cx="565" cy="504" r="14" fill="var(--accent)" fill-opacity="0.15"
           stroke="var(--accent)" stroke-width="1.5"/>
   <text x="565" y="509" font-size="13" font-weight="700" fill="var(--accent)" text-anchor="middle">2</text>
@@ -230,7 +230,7 @@
 
   <!-- Phase 3 : Arrivée -->
   <rect x="760" y="475" width="200" height="58" rx="12"
-        fill="var(--bg)" stroke="var(--primary)" stroke-width="2" id="arrival_phase">
+        fill="var(--bg)" stroke="var(--primary)" stroke-width="2" id="arrival_phase"/>
   <circle cx="785" cy="504" r="14" fill="var(--primary)" fill-opacity="0.15"
           stroke="var(--primary)" stroke-width="1.5"/>
   <text x="785" y="509" font-size="13" font-weight="700" fill="var(--primary)" text-anchor="middle">3</text>

@@ -11,25 +11,25 @@
   <line x1="200" y1="350" x2="800" y2="350" stroke="var(--text)" stroke-width="2" opacity="0.3"/>
   
   <!-- Quadrant 1: Stars (top-right) -->
-  <rect x="500" y="200" width="300" height="150" fill="var(--primary)" fill-opacity="0.1" id="stars_title">
+  <rect x="500" y="200" width="300" height="150" fill="var(--primary)" fill-opacity="0.1" id="stars_title"/>
   <foreignObject x="520" y="220" width="180" height="30" data-shape="stars_title">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="stars_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:18px;color:var(--primary);box-sizing:border-box;">Stars</div>
   </foreignObject>
   
   <!-- Quadrant 2: Question marks (top-left) -->
-  <rect x="200" y="200" width="300" height="150" fill="var(--accent)" fill-opacity="0.1" id="questions_title">
+  <rect x="200" y="200" width="300" height="150" fill="var(--accent)" fill-opacity="0.1" id="questions_title"/>
   <foreignObject x="220" y="220" width="180" height="30" data-shape="questions_title">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="questions_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:18px;color:var(--accent);box-sizing:border-box;">Question Marks</div>
   </foreignObject>
   
   <!-- Quadrant 3: Cash cows (bottom-right) -->
-  <rect x="500" y="350" width="300" height="150" fill="var(--primary)" fill-opacity="0.2" id="cashcows_title">
+  <rect x="500" y="350" width="300" height="150" fill="var(--primary)" fill-opacity="0.2" id="cashcows_title"/>
   <foreignObject x="520" y="370" width="180" height="30" data-shape="cashcows_title">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="cashcows_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:18px;color:var(--primary);box-sizing:border-box;">Cash Cows</div>
   </foreignObject>
   
   <!-- Quadrant 4: Dogs (bottom-left) -->
-  <rect x="200" y="350" width="300" height="150" fill="var(--accent)" fill-opacity="0.2" id="dogs_title">
+  <rect x="200" y="350" width="300" height="150" fill="var(--accent)" fill-opacity="0.2" id="dogs_title"/>
   <foreignObject x="220" y="370" width="180" height="30" data-shape="dogs_title">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="dogs_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:18px;color:var(--accent);box-sizing:border-box;">Dogs</div>
   </foreignObject>

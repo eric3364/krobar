@@ -6,7 +6,7 @@
   </foreignObject>
 
   <!-- Root/Trunk (left side) -->
-  <rect x="80" y="360" width="120" height="80" rx="12" fill="var(--primary)" fill-opacity="0.2" stroke="var(--primary)" stroke-width="3" id="root_title">
+  <rect x="80" y="360" width="120" height="80" rx="12" fill="var(--primary)" fill-opacity="0.2" stroke="var(--primary)" stroke-width="3" id="root_title"/>
   <foreignObject x="90" y="385" width="180" height="30" data-shape="root_title">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="root_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:18px;color:var(--primary);box-sizing:border-box;">Direction</div>
   </foreignObject>
@@ -17,7 +17,7 @@
   <!-- Branch 1 - Top -->
   <line x1="400" y1="400" x2="400" y2="250" stroke="var(--accent)" stroke-width="3"/>
   <line x1="400" y1="250" x2="500" y2="250" stroke="var(--accent)" stroke-width="3"/>
-  <rect x="520" y="220" width="140" height="60" rx="8" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2" id="branch_1_title">
+  <rect x="520" y="220" width="140" height="60" rx="8" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2" id="branch_1_title"/>
   <foreignObject x="530" y="240" width="180" height="20" data-shape="branch_1_title">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_1_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Équipe Marketing</div>
   </foreignObject>
@@ -25,7 +25,7 @@
   <!-- Sub-branch 1.1 -->
   <line x1="500" y1="250" x2="500" y2="200" stroke="var(--accent)" stroke-width="2"/>
   <line x1="500" y1="200" x2="580" y2="200" stroke="var(--accent)" stroke-width="2"/>
-  <rect x="600" y="180" width="120" height="40" rx="6" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2" id="sub_branch_1_1">
+  <rect x="600" y="180" width="120" height="40" rx="6" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2" id="sub_branch_1_1"/>
   <foreignObject x="610" y="190" width="180" height="20" data-shape="sub_branch_1_1">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="sub_branch_1_1" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:500;font-size:14px;color:var(--text);box-sizing:border-box;">Digital</div>
   </foreignObject>
@@ -33,14 +33,14 @@
   <!-- Sub-branch 1.2 -->
   <line x1="500" y1="250" x2="500" y2="300" stroke="var(--accent)" stroke-width="2"/>
   <line x1="500" y1="300" x2="580" y2="300" stroke="var(--accent)" stroke-width="2"/>
-  <rect x="600" y="280" width="120" height="40" rx="6" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2" id="sub_branch_1_2">
+  <rect x="600" y="280" width="120" height="40" rx="6" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2" id="sub_branch_1_2"/>
   <foreignObject x="610" y="290" width="180" height="20" data-shape="sub_branch_1_2">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="sub_branch_1_2" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:500;font-size:14px;color:var(--text);box-sizing:border-box;">Contenu</div>
   </foreignObject>
 
   <!-- Branch 2 - Middle -->
   <line x1="400" y1="400" x2="500" y2="400" stroke="var(--accent)" stroke-width="3"/>
-  <rect x="520" y="370" width="140" height="60" rx="8" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2" id="branch_2_title">
+  <rect x="520" y="370" width="140" height="60" rx="8" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2" id="branch_2_title"/>
   <foreignObject x="530" y="390" width="180" height="20" data-shape="branch_2_title">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_2_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Équipe Produit</div>
   </foreignObject>
@@ -48,7 +48,7 @@
   <!-- Branch 3 - Bottom -->
   <line x1="400" y1="400" x2="400" y2="550" stroke="var(--accent)" stroke-width="3"/>
   <line x1="400" y1="550" x2="500" y2="550" stroke="var(--accent)" stroke-width="3"/>
-  <rect x="520" y="520" width="140" height="60" rx="8" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2" id="branch_3_title">
+  <rect x="520" y="520" width="140" height="60" rx="8" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="2" id="branch_3_title"/>
   <foreignObject x="530" y="540" width="180" height="20" data-shape="branch_3_title">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="branch_3_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Équipe Tech</div>
   </foreignObject>
@@ -56,7 +56,7 @@
   <!-- Sub-branch 3.1 -->
   <line x1="500" y1="550" x2="500" y2="500" stroke="var(--accent)" stroke-width="2"/>
   <line x1="500" y1="500" x2="580" y2="500" stroke="var(--accent)" stroke-width="2"/>
-  <rect x="600" y="480" width="120" height="40" rx="6" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2" id="sub_branch_3_1">
+  <rect x="600" y="480" width="120" height="40" rx="6" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2" id="sub_branch_3_1"/>
   <foreignObject x="610" y="490" width="180" height="20" data-shape="sub_branch_3_1">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="sub_branch_3_1" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:500;font-size:14px;color:var(--text);box-sizing:border-box;">Frontend</div>
   </foreignObject>
@@ -64,7 +64,7 @@
   <!-- Sub-branch 3.2 -->
   <line x1="500" y1="550" x2="500" y2="600" stroke="var(--accent)" stroke-width="2"/>
   <line x1="500" y1="600" x2="580" y2="600" stroke="var(--accent)" stroke-width="2"/>
-  <rect x="600" y="580" width="120" height="40" rx="6" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2" id="sub_branch_3_2">
+  <rect x="600" y="580" width="120" height="40" rx="6" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-width="2" id="sub_branch_3_2"/>
   <foreignObject x="610" y="590" width="180" height="20" data-shape="sub_branch_3_2">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="sub_branch_3_2" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:500;font-size:14px;color:var(--text);box-sizing:border-box;">Backend</div>
   </foreignObject>

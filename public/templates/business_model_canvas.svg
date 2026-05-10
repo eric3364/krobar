@@ -22,7 +22,7 @@
   <line x1="60" y1="160" x2="148" y2="160" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/>
 
   <g filter="url(#editorialShadow)">
-    <rect x="60" y="200" width="180" height="270" rx="12" fill="#FFFFFF" stroke="var(--text)" stroke-opacity="0.12" stroke-width="1" id="partners">
+    <rect x="60" y="200" width="180" height="270" rx="12" fill="#FFFFFF" stroke="var(--text)" stroke-opacity="0.12" stroke-width="1" id="partners"/>
   </g>
   <path d="M 60,212 A 12,12 0 0,1 72,200 L 228,200 A 12,12 0 0,1 240,212 L 240,212 L 60,212 Z" fill="var(--accent)"/>
   <text x="78" y="232" font-size="11" font-weight="700" fill="var(--text)" opacity="0.65" style="text-transform: uppercase; letter-spacing: 0.06em;">Partenaires clés</text>
@@ -31,7 +31,7 @@
   </foreignObject>
 
   <g filter="url(#editorialShadow)">
-    <rect x="250" y="200" width="180" height="130" rx="12" fill="#FFFFFF" stroke="var(--text)" stroke-opacity="0.12" stroke-width="1" id="activities">
+    <rect x="250" y="200" width="180" height="130" rx="12" fill="#FFFFFF" stroke="var(--text)" stroke-opacity="0.12" stroke-width="1" id="activities"/>
   </g>
   <path d="M 250,212 A 12,12 0 0,1 262,200 L 418,200 A 12,12 0 0,1 430,212 L 430,212 L 250,212 Z" fill="var(--accent)"/>
   <text x="268" y="232" font-size="11" font-weight="700" fill="var(--text)" opacity="0.65" style="text-transform: uppercase; letter-spacing: 0.06em;">Activités clés</text>
@@ -40,7 +40,7 @@
   </foreignObject>
 
   <g filter="url(#editorialShadow)">
-    <rect x="250" y="340" width="180" height="130" rx="12" fill="#FFFFFF" stroke="var(--text)" stroke-opacity="0.12" stroke-width="1" id="resources">
+    <rect x="250" y="340" width="180" height="130" rx="12" fill="#FFFFFF" stroke="var(--text)" stroke-opacity="0.12" stroke-width="1" id="resources"/>
   </g>
   <path d="M 250,352 A 12,12 0 0,1 262,340 L 418,340 A 12,12 0 0,1 430,352 L 430,352 L 250,352 Z" fill="var(--accent)"/>
   <text x="268" y="372" font-size="11" font-weight="700" fill="var(--text)" opacity="0.65" style="text-transform: uppercase; letter-spacing: 0.06em;">Ressources clés</text>
@@ -49,7 +49,7 @@
   </foreignObject>
 
   <g filter="url(#editorialShadow)">
-    <rect x="440" y="200" width="180" height="270" rx="12" fill="var(--accent)" id="value_proposition">
+    <rect x="440" y="200" width="180" height="270" rx="12" fill="var(--accent)" id="value_proposition"/>
   </g>
   <text x="458" y="232" font-size="11" font-weight="700" fill="var(--bg)" opacity="0.85" style="text-transform: uppercase; letter-spacing: 0.06em;">Proposition de valeur</text>
   <foreignObject x="458" y="245" width="144" height="215" data-shape="value_proposition">
@@ -57,7 +57,7 @@
   </foreignObject>
 
   <g filter="url(#editorialShadow)">
-    <rect x="630" y="200" width="180" height="130" rx="12" fill="#FFFFFF" stroke="var(--text)" stroke-opacity="0.12" stroke-width="1" id="relationships">
+    <rect x="630" y="200" width="180" height="130" rx="12" fill="#FFFFFF" stroke="var(--text)" stroke-opacity="0.12" stroke-width="1" id="relationships"/>
   </g>
   <path d="M 630,212 A 12,12 0 0,1 642,200 L 798,200 A 12,12 0 0,1 810,212 L 810,212 L 630,212 Z" fill="var(--accent)"/>
   <text x="648" y="232" font-size="11" font-weight="700" fill="var(--text)" opacity="0.65" style="text-transform: uppercase; letter-spacing: 0.06em;">Relation client</text>
@@ -66,7 +66,7 @@
   </foreignObject>
 
   <g filter="url(#editorialShadow)">
-    <rect x="630" y="340" width="180" height="130" rx="12" fill="#FFFFFF" stroke="var(--text)" stroke-opacity="0.12" stroke-width="1" id="channels">
+    <rect x="630" y="340" width="180" height="130" rx="12" fill="#FFFFFF" stroke="var(--text)" stroke-opacity="0.12" stroke-width="1" id="channels"/>
   </g>
   <path d="M 630,352 A 12,12 0 0,1 642,340 L 798,340 A 12,12 0 0,1 810,352 L 810,352 L 630,352 Z" fill="var(--accent)"/>
   <text x="648" y="372" font-size="11" font-weight="700" fill="var(--text)" opacity="0.65" style="text-transform: uppercase; letter-spacing: 0.06em;">Canaux</text>
@@ -75,7 +75,7 @@
   </foreignObject>
 
   <g filter="url(#editorialShadow)">
-    <rect x="820" y="200" width="160" height="270" rx="12" fill="#FFFFFF" stroke="var(--text)" stroke-opacity="0.12" stroke-width="1" id="segments">
+    <rect x="820" y="200" width="160" height="270" rx="12" fill="#FFFFFF" stroke="var(--text)" stroke-opacity="0.12" stroke-width="1" id="segments"/>
   </g>
   <path d="M 820,212 A 12,12 0 0,1 832,200 L 968,200 A 12,12 0 0,1 980,212 L 980,212 L 820,212 Z" fill="var(--accent)"/>
   <text x="838" y="232" font-size="11" font-weight="700" fill="var(--text)" opacity="0.65" style="text-transform: uppercase; letter-spacing: 0.06em;">Segments clients</text>
@@ -84,7 +84,7 @@
   </foreignObject>
 
   <g filter="url(#editorialShadow)">
-    <rect x="60" y="480" width="460" height="80" rx="12" fill="#FFFFFF" stroke="var(--text)" stroke-opacity="0.12" stroke-width="1" id="cost_structure">
+    <rect x="60" y="480" width="460" height="80" rx="12" fill="#FFFFFF" stroke="var(--text)" stroke-opacity="0.12" stroke-width="1" id="cost_structure"/>
   </g>
   <path d="M 60,492 A 12,12 0 0,1 72,480 L 508,480 A 12,12 0 0,1 520,492 L 520,492 L 60,492 Z" fill="var(--primary)" opacity="0.7"/>
   <text x="78" y="512" font-size="11" font-weight="700" fill="var(--primary)" opacity="0.55" style="text-transform: uppercase; letter-spacing: 0.06em;">Structure de coûts</text>
@@ -93,7 +93,7 @@
   </foreignObject>
 
   <g filter="url(#editorialShadow)">
-    <rect x="540" y="480" width="440" height="80" rx="12" fill="#FFFFFF" stroke="var(--text)" stroke-opacity="0.12" stroke-width="1" id="revenue_streams">
+    <rect x="540" y="480" width="440" height="80" rx="12" fill="#FFFFFF" stroke="var(--text)" stroke-opacity="0.12" stroke-width="1" id="revenue_streams"/>
   </g>
   <path d="M 540,492 A 12,12 0 0,1 552,480 L 968,480 A 12,12 0 0,1 980,492 L 980,492 L 540,492 Z" fill="var(--accent)"/>
   <text x="558" y="512" font-size="11" font-weight="700" fill="var(--accent)" style="text-transform: uppercase; letter-spacing: 0.06em;">Sources de revenus</text>

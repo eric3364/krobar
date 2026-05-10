@@ -6,7 +6,7 @@
   </foreignObject>
 
   <!-- Ring 4 (Outermost - Low priority) -->
-  <circle cx="400" cy="400" r="180" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="3" id="ring_4_title">
+  <circle cx="400" cy="400" r="180" fill="var(--accent)" fill-opacity="0.1" stroke="var(--accent)" stroke-width="3" id="ring_4_title"/>
   <foreignObject x="220" y="520" width="180" height="30" data-shape="ring_4_title">
     <div xmlns="http://www.w3.org/1999/xhtml" data-slot="ring_4_title" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:600;font-size:16px;color:var(--text);box-sizing:border-box;">Impact Faible</div>
   </foreignObject>

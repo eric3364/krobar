@@ -21,13 +21,13 @@
   <line x1="60" y1="160" x2="148" y2="160" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/>
 
   <g filter="url(#editorialShadow)">
-    <rect x="60" y="200" width="920" height="360" rx="12" fill="#FFFFFF" stroke="var(--text)" stroke-opacity="0.12" stroke-width="1" id="event_1">
+    <rect x="60" y="200" width="920" height="360" rx="12" fill="#FFFFFF" stroke="var(--text)" stroke-opacity="0.12" stroke-width="1" id="event_1"/>
   </g>
 
   <line x1="170" y1="380" x2="870" y2="380" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-opacity="0.3"/>
 
   <g>
-    <rect x="100" y="265" width="180" height="44" rx="22" fill="var(--accent)" id="date_1">
+    <rect x="100" y="265" width="180" height="44" rx="22" fill="var(--accent)" id="date_1"/>
     <foreignObject x="115" y="270" width="150" height="34" data-shape="date_1">
       <div xmlns="http://www.w3.org/1999/xhtml" data-slot="date_1" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:16px;color:var(--bg);box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Date 1</div>
     </foreignObject>
@@ -40,7 +40,7 @@
   </g>
 
   <g>
-    <rect x="320" y="265" width="180" height="44" rx="22" fill="var(--accent)" id="date_2">
+    <rect x="320" y="265" width="180" height="44" rx="22" fill="var(--accent)" id="date_2"/>
     <foreignObject x="335" y="270" width="150" height="34" data-shape="date_2">
       <div xmlns="http://www.w3.org/1999/xhtml" data-slot="date_2" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:16px;color:var(--bg);box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Date 2</div>
     </foreignObject>
@@ -53,7 +53,7 @@
   </g>
 
   <g>
-    <rect x="540" y="265" width="180" height="44" rx="22" fill="var(--accent)" id="date_3">
+    <rect x="540" y="265" width="180" height="44" rx="22" fill="var(--accent)" id="date_3"/>
     <foreignObject x="555" y="270" width="150" height="34" data-shape="date_3">
       <div xmlns="http://www.w3.org/1999/xhtml" data-slot="date_3" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:16px;color:var(--bg);box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Date 3</div>
     </foreignObject>
@@ -66,7 +66,7 @@
   </g>
 
   <g>
-    <rect x="760" y="265" width="180" height="44" rx="22" fill="var(--accent)" id="date_4">
+    <rect x="760" y="265" width="180" height="44" rx="22" fill="var(--accent)" id="date_4"/>
     <foreignObject x="775" y="270" width="150" height="34" data-shape="date_4">
       <div xmlns="http://www.w3.org/1999/xhtml" data-slot="date_4" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;font-weight:700;font-size:16px;color:var(--bg);box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;">Date 4</div>
     </foreignObject>
