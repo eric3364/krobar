@@ -12,6 +12,7 @@ import NotFound from "./pages/NotFound.tsx";
 import BenchmarkPage from "./pages/BenchmarkPage.tsx";
 import Admin from "./pages/Admin.tsx";
 import AdminTemplateCreatePage from "./pages/AdminTemplateCreatePage.tsx";
+import AdminTemplateAtelierPage from "./pages/AdminTemplateAtelierPage.tsx";
 import AdminDraftsPage from "./pages/AdminDraftsPage.tsx";
 import AuthPage from "./pages/Auth.tsx";
 import ResetPassword from "./pages/ResetPassword.tsx";
@@ -35,6 +36,7 @@ const App = () => (
             <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
             <Route path="/admin/benchmark" element={<AdminRoute><BenchmarkPage /></AdminRoute>} />
             <Route path="/admin/templates/new" element={<AdminRoute><AdminTemplateCreatePage /></AdminRoute>} />
+            <Route path="/admin/templates/atelier" element={<AdminRoute><AdminTemplateAtelierPage /></AdminRoute>} />
             <Route path="/admin/templates/drafts" element={<AdminRoute><AdminDraftsPage /></AdminRoute>} />
 
             <Route path="*" element={<NotFound />} />

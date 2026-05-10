@@ -233,7 +233,12 @@ export default function AdminTemplateCreatePage() {
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
-      <h1 className="text-2xl font-bold">Nouveau template</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Nouveau template</h1>
+        <Button asChild variant="outline" size="sm">
+          <Link to="/admin/templates/atelier">Atelier IA →</Link>
+        </Button>
+      </div>
 
       <Stepper current={currentStep} />
 

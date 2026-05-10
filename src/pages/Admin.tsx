@@ -79,6 +79,10 @@ export default function Admin() {
           <Button asChild variant="ghost" size="sm"><Link to="/"><ArrowLeft className="w-4 h-4" /> Retour</Link></Button>
           <h1 className="text-3xl font-bold mt-2">Back-office</h1>
         </div>
+        <div className="flex gap-2">
+          <Button asChild variant="outline" size="sm"><Link to="/admin/templates/new">Upload template</Link></Button>
+          <Button asChild size="sm"><Link to="/admin/templates/atelier">Atelier IA</Link></Button>
+        </div>
       </div>
 
       <Card className="p-6 space-y-4">
