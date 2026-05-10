@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Sparkles, Palette, Download, LogIn, LogOut } from "lucide-react";
+import { ArrowRight, Sparkles, Palette, Download, LogIn, LogOut, UserPlus, LayoutDashboard } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function Landing() {
