@@ -122,10 +122,34 @@ interface Props {
 }
 
 export default function TestSuiteView({ manifest, onBack }: Props) {
-  const testSuite = useMemo(() => buildFullTestSuite(manifest), [manifest]);
+  const [testSuite, setTestSuite] = useState<TestCase[]>([]);
+  const [corpusLoading, setCorpusLoading] = useState(true);
+  const [corpusError, setCorpusError] = useState<string | null>(null);
+
+  const loadCorpus = async () => {
+    setCorpusLoading(true);
+    setCorpusError(null);
+    try {
+      const suite = await fetchCanonicalTestSuite(manifest);
+      setTestSuite(suite);
+      setResults(suite.map((t) => emptyResult(t.id)));
+    } catch (e) {
+      setCorpusError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setCorpusLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadCorpus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   type FilterType = "all" | "procedural" | "choreme" | "A" | "B" | "C";
+  type FilterStatus = "all" | "success" | "warning" | "fail" | "mismatch" | "errors";
   const [filterType, setFilterType] = useState<FilterType>("all");
   const [filterCategory, setFilterCategory] = useState<string>("all");
+  const [filterStatus, setFilterStatus] = useState<FilterStatus>("all");
 
   const categories = useMemo(() => {
     const set = new Set<string>(testSuite.map((t) => t.category));
@@ -138,9 +162,21 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
       if (filterType === "choreme" && !t.choreme) return false;
       if ((filterType === "A" || filterType === "B" || filterType === "C") && t.choreme?.family !== filterType) return false;
       if (filterCategory !== "all" && t.category !== filterCategory) return false;
+      if (filterStatus !== "all") {
+        const r = results.find((x) => x.id === t.id);
+        if (!r) return false;
+        if (filterStatus === "success" && r.status !== "success") return false;
+        if (filterStatus === "warning" && r.status !== "warning") return false;
+        if (filterStatus === "fail" && r.status !== "fail") return false;
+        if (filterStatus === "mismatch" && r.failureCategory !== "mismatch") return false;
+        if (filterStatus === "errors") {
+          const errs: (typeof r.failureCategory)[] = ["api_error", "network_error", "parse_error", "frontend_exception", "empty_suggestions", "render_error"];
+          if (!r.failureCategory || !errs.includes(r.failureCategory)) return false;
+        }
+      }
       return true;
     });
-  }, [testSuite, filterType, filterCategory]);
+  }, [testSuite, filterType, filterCategory, filterStatus, results]);
 
   const [results, setResults] = useState<TestResult[]>(() => {
     try {
@@ -149,7 +185,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
     } catch {
       /* ignore */
     }
-    return testSuite.map((t) => emptyResult(t.id));
+    return [];
   });
   const [paletteKey, setPaletteKey] = useState<keyof typeof palettes>("ocean");
   const [fastMode, setFastMode] = useState(true);
