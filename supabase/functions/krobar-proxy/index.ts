@@ -43,6 +43,10 @@ function jsonResponse(body: unknown, status = 200) {
   });
 }
 
+function adminErrorResponse(message: string, status: number, code?: string) {
+  return jsonResponse({ error: message, status, code }, 200);
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -66,13 +70,16 @@ Deno.serve(async (req) => {
       const timer = setTimeout(() => controller.abort(), 150000);
 
       const storedToken = Deno.env.get("KROBAR_ADMIN_TOKEN");
+      if (!storedToken) {
+        console.error("Missing KROBAR_ADMIN_TOKEN for admin proxy request", { path });
+        return adminErrorResponse("Configuration admin Krobar manquante", 500, "missing_admin_token");
+      }
+
       const headers: Record<string, string> = {
         "Content-Type": "application/json",
         Accept: "application/json",
       };
-      if (storedToken) {
-        headers["X-Admin-Token"] = storedToken;
-      }
+      headers["X-Admin-Token"] = storedToken;
 
       let upstream: Response;
       try {
@@ -103,11 +110,20 @@ Deno.serve(async (req) => {
       }
 
       if (!upstream.ok) {
+        if (upstream.status === 401) {
+          console.error("Invalid Krobar admin token", { path, hasStoredToken: Boolean(storedToken) });
+          return adminErrorResponse(
+            "Le token administrateur Krobar configuré côté backend est invalide ou expiré.",
+            401,
+            "invalid_admin_token",
+          );
+        }
+
         const message =
           (typeof data?.detail === "string" && data.detail) ||
           (typeof data?.error === "string" && data.error) ||
           `Erreur Krobar (${upstream.status})`;
-        return jsonResponse({ error: message, status: upstream.status }, upstream.status);
+        return adminErrorResponse(message, upstream.status);
       }
 
       return jsonResponse(data, 200);
