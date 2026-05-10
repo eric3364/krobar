@@ -538,7 +538,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
       </header>
 
       <main className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {testSuite.map((test) => {
+        {filteredTests.map((test) => {
           const r = results.find((x) => x.id === test.id) ?? emptyResult(test.id);
           return (
             <TestCard
