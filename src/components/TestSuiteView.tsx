@@ -546,14 +546,21 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
         `- **Texte testé** (${t.text.length} car., ${countItems(t.text)} items détectés) : \`"${escapeText(t.text)}"\``,
       );
       out.push(`- **Attendu en top 1** : \`${t.expected_template}\``);
+      const top1Display = top1
+        ? `\`${top1.template_id}\` (${formatScorePct(top1.score)})`
+        : r.failureCategory && r.failureCategory !== "mismatch"
+          ? `${failureLabel[r.failureCategory]}`
+          : "—";
+      out.push(`- **Reçu en top 1** : ${top1Display}`);
+      out.push(`- **Top 3 candidats** : ${top3str || (r.failureCategory ? failureLabel[r.failureCategory as FailureCategory] : "—")}`);
+      out.push(`- **Latence** : ${r.latencyMs ?? "—"} ms${r.latencyMs == null && r.failureCategory ? ` (cause : ${r.failureCategory})` : ""}`);
       out.push(
-        `- **Reçu en top 1** : \`${top1?.template_id || "—"}\` (${top1 ? formatScorePct(top1.score) : "—"})`,
+        `- **Validation** : Longueur ${r.slotsLengthOk == null ? "—" : r.slotsLengthOk ? "OK" : "KO"} · Palette ${r.paletteOk == null ? "—" : r.paletteOk ? "OK" : "KO"}`,
       );
-      out.push(`- **Top 3 candidats** : ${top3str || "—"}`);
-      out.push(`- **Latence** : ${r.latencyMs ?? "—"} ms`);
-      out.push(
-        `- **Validation** : Longueur ${r.slotsLengthOk ? "OK" : "KO"} · Palette ${r.paletteOk ? "OK" : "KO"}`,
-      );
+      if (r.status !== "success") {
+        out.push(`- **Catégorie d'échec** : \`${r.failureCategory ?? "—"}\``);
+        out.push(`- **Détail technique** : ${r.failureDetail ? escapeText(r.failureDetail) : "—"}`);
+      }
       out.push(`- **Annotation utilisateur** : ${notes[t.id] || "(aucune)"}`);
       return out.join("\n");
     };
