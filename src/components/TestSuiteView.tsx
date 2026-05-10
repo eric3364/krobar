@@ -502,6 +502,15 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
             >
               Sélectionner les nouveaux ({newTestIds.size})
             </Button>
+            <Button
+              onClick={selectFiltered}
+              disabled={filteredTests.length === 0}
+              size="sm"
+              variant="outline"
+              className="h-7 text-xs"
+            >
+              Sélectionner le filtre actif ({filteredTests.length})
+            </Button>
             <span className="text-muted-foreground">
               {selectedIds.size} test{selectedIds.size > 1 ? "s" : ""} sélectionné
               {selectedIds.size > 1 ? "s" : ""}
