@@ -49,37 +49,89 @@ function cleanBestFor(s: string | undefined): string {
     .trim();
 }
 
-const ITEMS = [
+/**
+ * Textes de test naturels et discriminants par chorème, contextualisés au
+ * best_for du manifest et intégrant des matching_expressions naturellement.
+ * Chaque texte fait 200-450 caractères, 2-4 phrases, avec des items nommés
+ * concrètement (jamais "la conception/le développement" génériques).
+ */
+const CHOREME_TEXTS: Record<string, string> = {
+  choreme_a1_foyer:
+    "L'identité de la marque tout entière dépend de cette promesse fondatrice qui en est le pivot. Au cœur de chaque campagne, de chaque produit, de chaque prise de parole, on retrouve cette idée cardinale. Rien sans elle ne tient debout : c'est le fil conducteur qui irrigue toute la démarche.",
+  choreme_a2_polarite:
+    "Le débat sur la régulation oppose deux positions irréconciliables. D'un côté, les partisans d'un encadrement strict défendent la protection des consommateurs. De l'autre, les tenants de la liberté contractuelle invoquent l'innovation. Face à face, ces deux camps ne se rejoignent jamais sur le fond.",
+  choreme_a3_liaison:
+    "Il existe entre la confiance et la performance un lien profond que rien ne peut rompre. Ces deux dimensions sont reliées : l'une nourrit l'autre dans un rapport étroit. Entre les deux s'établit une relation d'amitié professionnelle qui unit durablement les équipes engagées.",
+  choreme_a4_sequence:
+    "Le cycle de vie d'un produit se déroule en quatre phases successives. D'abord le lancement crée l'attention, puis la croissance accélère l'adoption, ensuite la maturité stabilise les ventes, enfin le déclin réduit la demande. Cette progression mène à un renouvellement inéluctable.",
+  choreme_a5_gradient:
+    "La perte de biodiversité s'aggrave de plus en plus à mesure que les habitats se fragmentent. Au fur et à mesure de l'urbanisation, les espèces communes deviennent rares, les espèces rares disparaissent, les pollinisateurs s'effacent, les grands prédateurs reculent, et les écosystèmes basculent progressivement le long d'un continuum d'érosion.",
+  choreme_a6_cycle:
+    "La méthode lean startup repose sur quatre temps que l'on répète à chaque itération : construire un prototype, mesurer la réaction des premiers clients, apprendre des retours obtenus, pivoter si nécessaire. À chaque tour, le produit s'affine. On recommence le cycle jusqu'à trouver l'adéquation marché.",
+  choreme_a7_pente:
+    "Le débat public tend à glisser vers la défiance institutionnelle. L'opinion penche vers la méfiance envers les élites, les médias dérivent vers le sensationnalisme, les institutions s'affaiblissent, le langage politique se durcit. Cette inclination collective dessine une pente continue qui s'accentue au fil des années.",
+  choreme_a8_emboitement:
+    "La performance opérationnelle s'inscrit au sein de la performance d'équipe, elle-même contenue à l'intérieur de la performance de département, qui s'englobe dans la performance d'entreprise, laquelle se loge au plus profond de la performance économique globale. Chaque niveau inclut le précédent comme des poupées russes.",
+  choreme_a9_trame:
+    "L'écosystème open source forme un maillage interconnecté sans centre ni hiérarchie. Mainteneurs, contributeurs occasionnels, utilisateurs avancés, intégrateurs et sponsors tissent un réseau dense où chacun dépend des autres. Ce tissu collaboratif n'a pas de tête : c'est un système d'éléments reliés sans pivot dominant.",
+  choreme_a10_creux:
+    "La charte éthique se définit par ce qu'elle refuse. Ne pas tromper le client, ne pas exploiter les données personnelles, sans céder aux pressions concurrentielles déloyales, refus de toute discrimination. Pas de compromission : l'identité du collectif se dessine en creux, par les pratiques évitées.",
+  choreme_b1_foyer_rayonnant:
+    "La stratégie de marque s'organise autour d'une promesse centrale qui se décline en cinq satellites identifiés. Elle se compose d'une plateforme de marque, d'un territoire visuel, d'un ton de voix, d'un programme relationnel et d'une signature sonore. L'ensemble rassemble ces déclinaisons cohérentes autour du noyau fondateur.",
+  choreme_b2_etoile:
+    "Une entreprise est en permanence soumise à cinq forces qui pèsent sur sa rentabilité. Pris entre la pression des clients, la pression des fournisseurs, la menace des nouveaux entrants, la concurrence directe et les produits de substitution, le dirigeant doit arbitrer. Ces cinq forces convergent toutes sur le centre stratégique.",
+  choreme_b3_polarite_mediane:
+    "La régulation financière cherche un équilibre entre les deux extrêmes. Ni dérégulation totale, ni encadrement étouffant : un tiers médiateur, le régulateur indépendant, joue le rôle d'arbitrage. L'efficacité du marché et la protection des épargnants se rejoignent grâce à cette position médiane qui tempère les forces opposées.",
+  choreme_b4_basculement:
+    "Pour la première fois depuis quarante ans, le commerce mondial recule en volume. Avant, la mondialisation semblait irréversible ; désormais, le mouvement s'inverse. Le découplage stratégique entre puissances marque un tournant historique : nous vivons une rupture nette qui sépare deux ères de l'économie internationale.",
+  choreme_b5_inversion:
+    "Le management par objectifs propose une inversion radicale du modèle hiérarchique. Au lieu de prescrire les tâches, on fixe les résultats attendus. À rebours de la logique taylorienne, on inverse le mouvement : la base définit les moyens, la direction définit la cible. Renversement complet du rapport au travail.",
+  choreme_b6_spirale:
+    "Une équipe en apprentissage progresse par escalade : à chaque cycle, les compétences se cumulent. À chaque itération, les défis abordés se durcissent et les solutions s'affinent : observation initiale, expérimentation contrôlée, retour réflexif, transmission au collectif. La spirale monte, chaque tour reprenant le précédent à un niveau supérieur.",
+  choreme_b7_degrade_tranche:
+    "Un écosystème lacustre se dégrade lentement jusqu'à ce qu'un seuil critique soit franchi. Au-delà de ce point de bascule, le retour en arrière devient impossible : l'eau passe d'oligotrophe à mésotrophe, puis eutrophe, puis hypereutrophe, enfin anoxique. Le point de non-retour transforme l'équilibre antérieur en effondrement irréversible.",
+  choreme_b8_hierarchie:
+    "La taxonomie des produits se subdivise en quatre niveaux. Au sommet, la gamme principale se décompose en familles ; chaque famille rend compte au directeur de gamme et regroupe des sous-familles ; sous celles-ci, les références individuelles. Cette arborescence classificatoire structure l'ensemble du catalogue.",
+  choreme_b9_constellation:
+    "Les biais cognitifs forment une famille de phénomènes apparentés. L'inventaire en compte des dizaines, regroupés en cinq grandes catégories : biais de disponibilité, biais d'ancrage, biais de confirmation, biais d'attribution et biais de cadrage. Cette gamme de distorsions constitue un ensemble cohérent étudié par la psychologie cognitive.",
+  choreme_b10_contre_champ:
+    "Le vrai leader n'a plus besoin de hausser la voix pour être écouté. Sans avoir besoin de rappeler son autorité, sans cris ni menaces, il obtient l'engagement spontané. Sa présence se mesure à ce qui ne se passe plus : absence de conflits stériles, plus la peine de réunions de recadrage, équipes qui ne se demandent pas qui décide.",
+  choreme_b11_matrice:
+    "L'analyse des segments marketing croise deux axes structurants. Selon l'axe horizontal du potentiel de croissance et l'axe vertical de la rentabilité, on dégage quatre quadrants : segments stratégiques, segments rentables, segments à développer, segments à abandonner. Cette grille en matrice oriente l'allocation des ressources commerciales.",
+  choreme_b12_coexistence:
+    "La transformation digitale impose à l'entreprise de faire vivre simultanément trois logiques antagonistes. En même temps que le legacy doit continuer à tourner, le digital natif se déploie, et à côté de ces deux mondes les pratiques hybrides émergent. Ces tensions productives nourrissent l'innovation parallèlement aux résistances qui jouent le rôle d'anticorps.",
+  choreme_b13_convergence:
+    "Quatre initiatives commerciales convergent vers un même objectif annuel. Pour atteindre la cible de chiffre d'affaires, la refonte du site, le programme partenaires, la campagne presse et le lancement produit visent le même résultat. Toutes ces actions concourent au plan d'action validé en début d'année selon des conditions de réussite partagées.",
+  choreme_b14_chaine_encastree:
+    "La chaîne de valeur structure l'entreprise tout au long de cinq activités principales encastrées. Au sein du flux, la logistique amont alimente la production, qui transmet à la logistique aval, laquelle approvisionne le marketing-vente, jusqu'au service après-vente. Le processus se déroule comme une chaîne dont chaque maillon dépend du précédent.",
+  choreme_c1_tension_orientee:
+    "La controverse sur la fiscalité des géants numériques penche désormais d'un côté précis. Si le débat reste ouvert, l'opinion bascule progressivement vers la taxation : la dynamique penche du côté des gouvernements, l'issue attendue est une convention internationale. La résolution probable se dessine au terme d'un rapport de forces qui s'oriente.",
+  choreme_c2_cycle_en_tension:
+    "Chaque dimanche le père revient au pont attendre des nouvelles, tandis que pendant ce temps la guerre continue ailleurs. Invariablement, à chaque tour de la semaine, le rituel se répète : marche jusqu'au pont, attente silencieuse, retour au village, espoir intact. Pendant que la routine se rejoue, le monde extérieur poursuit son mouvement.",
+  choreme_c3_croisement_trajectoires:
+    "L'entrant disruptif remonte vers le marché principal lentement d'abord, puis plus vite à mesure que sa technologie mûrit. Au moment où il rattrape les performances de l'incumbent, le basculement se produit : il dépasse l'acteur historique sur son propre terrain. Deux trajectoires divergentes se croisent en un point de bascule décisif.",
+  choreme_c4_arene:
+    "La négociation climatique met en présence quatre camps autour de l'enjeu de la décarbonation. Le débat oppose les pays producteurs, les pays consommateurs, les ONG environnementales et les industriels. Chaque controverse révèle un rapport de forces, chaque session expose une nouvelle lutte d'influence dans l'arène internationale.",
+  choreme_c5_nebuleuse_graduee:
+    "L'école freudienne déploie un champ d'influence à intensité décroissante. Au plus près du noyau, les disciples directs ; à distance moyenne, les psychanalystes formés dans la tradition ; plus loin, les praticiens éclectiques inspirés ; à la périphérie lointaine, les penseurs qui empruntent quelques concepts. L'aura du fondateur rayonne en cercles dégradés.",
+};
+
+function generateChoremeText(t: ManifestEntry): string {
+  const curated = CHOREME_TEXTS[t.id];
+  if (curated) return curated;
+  // Fallback (rare) : best_for + 1 marker, 2 phrases.
+  const topic = cleanBestFor(t.best_for) || (t.name || t.id);
+  const m = (t.choreme?.matching_expressions || [])[0] || "ce motif";
+  return `${topic.charAt(0).toUpperCase() + topic.slice(1)}. Ce cas illustre ${m} de manière naturelle.`;
+}
+
+const PROC_ITEMS = [
   "la conception",
   "le développement",
   "la maturité",
   "la transformation",
   "la consolidation",
-  "l'expansion",
-  "la diffusion",
 ];
-
-function generateChoremeText(t: ManifestEntry): string {
-  const ideal = getIdeal(t.cardinality);
-  const markers = t.choreme?.matching_expressions ?? [];
-  const topic =
-    cleanBestFor(t.best_for) ||
-    `analyse de ${(t.name || t.id).toLowerCase()}`;
-  const intro = topic.charAt(0).toUpperCase() + topic.slice(1).replace(/\.$/, "") + ".";
-
-  if (ideal <= 1) {
-    const m = markers.slice(0, 3);
-    return `${intro} ${m[0] || "Tout dépend de"} ce concept central, ${
-      m[1] || "au cœur"
-    } de toute la démarche. ${m[2] || "Rien sans"} cette idée fondatrice qui irrigue l'ensemble du propos.`;
-  }
-
-  const items = Array.from({ length: ideal }, (_, i) => ITEMS[i % ITEMS.length]);
-  const m = [...markers];
-  while (m.length < ideal) m.push(["puis", "ensuite", "enfin", "également"][m.length % 4]);
-  const parts = items.map((it, i) => `${m[i]} ${it}`);
-  return `${intro} On observe ${parts.join(", ")}. Cette structure caractérise bien le motif observé.`;
-}
 
 function generateProceduralText(t: ManifestEntry): string {
   const ideal = Math.max(2, getIdeal(t.cardinality));
