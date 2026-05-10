@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Sparkles, Palette, Download, LogIn, LogOut } from "lucide-react";
+import { ArrowRight, Sparkles, Palette, Download, LogIn, LogOut, UserPlus, LayoutDashboard } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function Landing() {
@@ -21,21 +21,37 @@ export default function Landing() {
             <a href="#features" className="hover:text-foreground transition-colors">Fonctionnalités</a>
             <a href="#how" className="hover:text-foreground transition-colors">Comment ça marche</a>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             {user ? (
-              <button
-                onClick={async () => { await signOut(); }}
-                className="text-sm font-medium bg-foreground text-background px-5 h-9 hover:bg-foreground/90 transition-colors rounded-md flex items-center gap-2"
-              >
-                <LogOut className="w-4 h-4" /> Se déconnecter
-              </button>
+              <>
+                <button
+                  onClick={() => navigate("/workspace")}
+                  className="text-sm font-medium border border-border px-4 h-9 hover:bg-secondary transition-colors rounded-md flex items-center gap-2"
+                >
+                  <LayoutDashboard className="w-4 h-4" /> Accéder à l'éditeur
+                </button>
+                <button
+                  onClick={async () => { await signOut(); }}
+                  className="text-sm font-medium bg-foreground text-background px-5 h-9 hover:bg-foreground/90 transition-colors rounded-md flex items-center gap-2"
+                >
+                  <LogOut className="w-4 h-4" /> Se déconnecter
+                </button>
+              </>
             ) : (
-              <button
-                onClick={() => navigate("/auth")}
-                className="text-sm font-medium bg-foreground text-background px-5 h-9 hover:bg-foreground/90 transition-colors rounded-md flex items-center gap-2"
-              >
-                <LogIn className="w-4 h-4" /> Se connecter
-              </button>
+              <>
+                <button
+                  onClick={() => navigate("/auth")}
+                  className="text-sm font-medium border border-border px-4 h-9 hover:bg-secondary transition-colors rounded-md flex items-center gap-2"
+                >
+                  <LogIn className="w-4 h-4" /> Se connecter
+                </button>
+                <button
+                  onClick={() => navigate("/auth?mode=signup")}
+                  className="text-sm font-medium bg-foreground text-background px-5 h-9 hover:bg-foreground/90 transition-colors rounded-md flex items-center gap-2"
+                >
+                  <UserPlus className="w-4 h-4" /> S'inscrire
+                </button>
+              </>
             )}
           </div>
         </nav>
