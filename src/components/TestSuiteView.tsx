@@ -412,23 +412,74 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
 
           {hasAnyCompleted && (
             <div className="rounded-lg border bg-accent/30 px-4 py-3 flex items-center justify-between gap-3 flex-wrap">
-              <div className="flex items-center gap-4 text-sm">
+              <div className="flex flex-col gap-1 text-sm">
                 <span className="font-bold">
                   Score global : {successCount}/{completedCount} (
                   {completedCount > 0 ? Math.round((successCount / completedCount) * 100) : 0}%)
                 </span>
-                <span>✅ {successCount} réussis</span>
-                <span>⚠️ {warningCount} avertissements</span>
-                <span>❌ {failCount} échecs</span>
-                <span className="text-muted-foreground">
-                  ({completedCount}/{testSuite.length} exécutés)
+                <span className="text-xs text-muted-foreground font-mono pl-3">
+                  ├─ Procéduraux : {procSuccess}/{procDone.length}
+                  {procDone.length > 0 && ` (${Math.round((procSuccess / procDone.length) * 100)}%)`}
                 </span>
+                <span className="text-xs text-muted-foreground font-mono pl-3">
+                  └─ Chorèmes&nbsp;&nbsp;&nbsp;: {chorSuccess}/{chorDone.length}
+                  {chorDone.length > 0 && ` (${Math.round((chorSuccess / chorDone.length) * 100)}%)`}
+                </span>
+                <div className="flex gap-3 text-xs mt-1">
+                  <span>✅ {successCount}</span>
+                  <span>⚠️ {warningCount}</span>
+                  <span>❌ {failCount}</span>
+                  <span className="text-muted-foreground">
+                    ({completedCount}/{testSuite.length} exécutés)
+                  </span>
+                </div>
               </div>
               <Button onClick={exportReport} size="sm" variant="outline" disabled={!allDone}>
                 <Download className="w-4 h-4 mr-2" /> Exporter le rapport
               </Button>
             </div>
           )}
+
+          {/* Barre de filtres */}
+          <div className="flex items-center gap-3 flex-wrap text-xs border rounded-lg px-3 py-2 bg-muted/20">
+            <span className="font-semibold">Type :</span>
+            {([
+              ["all", "Tous"],
+              ["procedural", "Procéduraux"],
+              ["choreme", "Chorèmes"],
+              ["A", "Famille A"],
+              ["B", "Famille B"],
+              ["C", "Famille C"],
+            ] as const).map(([k, label]) => (
+              <button
+                key={k}
+                onClick={() => setFilterType(k)}
+                className={`px-2 py-0.5 rounded border transition ${
+                  filterType === k
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "bg-background border-border hover:bg-accent"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+            <span className="font-semibold ml-2">Catégorie :</span>
+            <select
+              value={filterCategory}
+              onChange={(e) => setFilterCategory(e.target.value)}
+              className="text-xs rounded border bg-background px-2 py-1"
+            >
+              {categories.map((c) => (
+                <option key={c} value={c}>
+                  {c === "all" ? "Toutes" : c}
+                </option>
+              ))}
+            </select>
+            <span className="text-muted-foreground ml-auto">
+              {filteredTests.length} affiché{filteredTests.length > 1 ? "s" : ""}
+            </span>
+          </div>
+
 
           <div className="flex items-center gap-3 flex-wrap text-xs border rounded-lg px-3 py-2 bg-muted/30">
             <div className="flex items-center gap-2">
