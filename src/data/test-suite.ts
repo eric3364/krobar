@@ -1,9 +1,131 @@
+export type ChoremeFamily = "A" | "B" | "C";
+
+export type ChoremeMeta = {
+  code: string; // e.g. "A4"
+  family: ChoremeFamily;
+  triplet?: string;
+  dominant_processes?: string[];
+  matching_expressions?: string[];
+};
+
 export type TestCase = {
   id: number;
   expected_template: string;
   category: string;
   text: string;
+  /** Présent si le template est un chorème. */
+  choreme?: ChoremeMeta;
 };
+
+// ----- Génération dynamique pour couvrir l'intégralité du manifest (79 templates) -----
+
+type ManifestEntry = {
+  id: string;
+  name?: string;
+  category?: string;
+  best_for?: string;
+  cardinality?: number | { ideal?: number; min?: number; max?: number };
+  choreme?: {
+    code?: string;
+    family?: ChoremeFamily;
+    triplet?: string;
+    dominant_processes?: string[];
+    matching_expressions?: string[];
+  };
+};
+
+function getIdeal(card: ManifestEntry["cardinality"]): number {
+  if (card == null) return 3;
+  if (typeof card === "number") return card;
+  return card.ideal ?? 3;
+}
+
+function cleanBestFor(s: string | undefined): string {
+  if (!s) return "";
+  return s
+    .replace(/\s*\([^)]*\)\s*/g, " ")
+    .replace(/^[A-ZÀ-Ö0-9]+\s*—\s*/, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+const ITEMS = [
+  "la conception",
+  "le développement",
+  "la maturité",
+  "la transformation",
+  "la consolidation",
+  "l'expansion",
+  "la diffusion",
+];
+
+function generateChoremeText(t: ManifestEntry): string {
+  const ideal = getIdeal(t.cardinality);
+  const markers = t.choreme?.matching_expressions ?? [];
+  const topic =
+    cleanBestFor(t.best_for) ||
+    `analyse de ${(t.name || t.id).toLowerCase()}`;
+  const intro = topic.charAt(0).toUpperCase() + topic.slice(1).replace(/\.$/, "") + ".";
+
+  if (ideal <= 1) {
+    const m = markers.slice(0, 3);
+    return `${intro} ${m[0] || "Tout dépend de"} ce concept central, ${
+      m[1] || "au cœur"
+    } de toute la démarche. ${m[2] || "Rien sans"} cette idée fondatrice qui irrigue l'ensemble du propos.`;
+  }
+
+  const items = Array.from({ length: ideal }, (_, i) => ITEMS[i % ITEMS.length]);
+  const m = [...markers];
+  while (m.length < ideal) m.push(["puis", "ensuite", "enfin", "également"][m.length % 4]);
+  const parts = items.map((it, i) => `${m[i]} ${it}`);
+  return `${intro} On observe ${parts.join(", ")}. Cette structure caractérise bien le motif observé.`;
+}
+
+function generateProceduralText(t: ManifestEntry): string {
+  const ideal = Math.max(2, getIdeal(t.cardinality));
+  const intro = cleanBestFor(t.best_for) || `Présentation de ${t.name || t.id}`;
+  const list = Array.from({ length: ideal }, (_, i) => ITEMS[i % ITEMS.length]).join(", ");
+  return `${intro}. Cette structure articule plusieurs éléments successifs : ${list}. Chaque composant joue un rôle précis dans l'ensemble du dispositif.`;
+}
+
+/**
+ * Construit la suite complète de tests : les cas existants conservés tels
+ * quels, plus un cas généré automatiquement pour chaque template du manifest
+ * non couvert (chorèmes + procéduraux manquants).
+ */
+export function buildFullTestSuite(manifest: { templates: ManifestEntry[] }): TestCase[] {
+  const result: TestCase[] = [...testSuite];
+  const covered = new Set(result.map((t) => t.expected_template));
+  let nextId = result.reduce((m, t) => Math.max(m, t.id), 0) + 1;
+
+  for (const tpl of manifest.templates) {
+    if (covered.has(tpl.id)) continue;
+    const isChoreme = tpl.id.startsWith("choreme_") || !!tpl.choreme;
+    if (isChoreme && tpl.choreme?.code && tpl.choreme?.family) {
+      result.push({
+        id: nextId++,
+        expected_template: tpl.id,
+        category: "Chorème",
+        text: generateChoremeText(tpl),
+        choreme: {
+          code: tpl.choreme.code,
+          family: tpl.choreme.family,
+          triplet: tpl.choreme.triplet,
+          dominant_processes: tpl.choreme.dominant_processes,
+          matching_expressions: tpl.choreme.matching_expressions,
+        },
+      });
+    } else {
+      result.push({
+        id: nextId++,
+        expected_template: tpl.id,
+        category: tpl.category || "Other",
+        text: generateProceduralText(tpl),
+      });
+    }
+  }
+  return result;
+}
 
 export const testSuite: TestCase[] = [
   {
