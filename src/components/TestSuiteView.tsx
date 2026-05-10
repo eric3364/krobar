@@ -11,10 +11,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { ArrowLeft, Pause, Play, Download, RotateCcw, Loader2 } from "lucide-react";
+import { ArrowLeft, Pause, Play, Download, RotateCcw, Loader2, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import { palettes, paletteLabels, type Palette } from "@/palettes";
-import { buildFullTestSuite, type TestCase, type ChoremeFamily } from "@/data/test-suite";
+import { fetchCanonicalTestSuite, type TestCase, type ChoremeFamily } from "@/data/test-suite";
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
 import {
   checkPaletteApplied,
@@ -122,10 +122,47 @@ interface Props {
 }
 
 export default function TestSuiteView({ manifest, onBack }: Props) {
-  const testSuite = useMemo(() => buildFullTestSuite(manifest), [manifest]);
+  const [testSuite, setTestSuite] = useState<TestCase[]>([]);
+  const [corpusLoading, setCorpusLoading] = useState(true);
+  const [corpusError, setCorpusError] = useState<string | null>(null);
+  const [results, setResults] = useState<TestResult[]>(() => {
+    try {
+      const cached = localStorage.getItem(RESULTS_STORAGE);
+      if (cached) return JSON.parse(cached);
+    } catch {
+      /* ignore */
+    }
+    return [];
+  });
+
+  const loadCorpus = async () => {
+    setCorpusLoading(true);
+    setCorpusError(null);
+    try {
+      const suite = await fetchCanonicalTestSuite(manifest);
+      setTestSuite(suite);
+      setResults((prev) => {
+        // Conserver les résultats persistés correspondants, initialiser le reste.
+        const byId = new Map(prev.map((r) => [r.id, r]));
+        return suite.map((t) => byId.get(t.id) ?? emptyResult(t.id));
+      });
+    } catch (e) {
+      setCorpusError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setCorpusLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadCorpus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   type FilterType = "all" | "procedural" | "choreme" | "A" | "B" | "C";
+  type FilterStatus = "all" | "success" | "warning" | "fail" | "mismatch" | "errors";
   const [filterType, setFilterType] = useState<FilterType>("all");
   const [filterCategory, setFilterCategory] = useState<string>("all");
+  const [filterStatus, setFilterStatus] = useState<FilterStatus>("all");
 
   const categories = useMemo(() => {
     const set = new Set<string>(testSuite.map((t) => t.category));
@@ -138,19 +175,22 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
       if (filterType === "choreme" && !t.choreme) return false;
       if ((filterType === "A" || filterType === "B" || filterType === "C") && t.choreme?.family !== filterType) return false;
       if (filterCategory !== "all" && t.category !== filterCategory) return false;
+      if (filterStatus !== "all") {
+        const r = results.find((x) => x.id === t.id);
+        if (!r) return false;
+        if (filterStatus === "success" && r.status !== "success") return false;
+        if (filterStatus === "warning" && r.status !== "warning") return false;
+        if (filterStatus === "fail" && r.status !== "fail") return false;
+        if (filterStatus === "mismatch" && r.failureCategory !== "mismatch") return false;
+        if (filterStatus === "errors") {
+          const errs: (typeof r.failureCategory)[] = ["api_error", "network_error", "parse_error", "frontend_exception", "empty_suggestions", "render_error"];
+          if (!r.failureCategory || !errs.includes(r.failureCategory)) return false;
+        }
+      }
       return true;
     });
-  }, [testSuite, filterType, filterCategory]);
+  }, [testSuite, filterType, filterCategory, filterStatus, results]);
 
-  const [results, setResults] = useState<TestResult[]>(() => {
-    try {
-      const cached = localStorage.getItem(RESULTS_STORAGE);
-      if (cached) return JSON.parse(cached);
-    } catch {
-      /* ignore */
-    }
-    return testSuite.map((t) => emptyResult(t.id));
-  });
   const [paletteKey, setPaletteKey] = useState<keyof typeof palettes>("ocean");
   const [fastMode, setFastMode] = useState(true);
   const [running, setRunning] = useState(false);
@@ -283,7 +323,13 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
         matchKind = "in_top3";
         status = "warning";
         failureCategory = "mismatch";
-        failureDetail = `Top 1 reçu = ${top.template_id} (attendu en position ${ids.indexOf(test.expected_template) + 1}/${ids.length})`;
+        const isChoremeExpected = !!test.choreme;
+        const top1IsProcedural = !top.template_id.startsWith("choreme_");
+        if (isChoremeExpected && top1IsProcedural) {
+          failureDetail = `Chorème attendu en position ${ids.indexOf(test.expected_template) + 1}/${ids.length} ; top 1 procédural équivalent reçu (${top.template_id})`;
+        } else {
+          failureDetail = `Top 1 reçu = ${top.template_id} (attendu en position ${ids.indexOf(test.expected_template) + 1}/${ids.length})`;
+        }
       } else {
         matchKind = "miss";
         status = "fail";
@@ -484,13 +530,15 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
     const lines: string[] = [];
     lines.push(`# Suite de tests Krobar — Export ${human}`);
     lines.push("");
+    lines.push("**Source : corpus canonique v1.0 (79 textes)**");
+    lines.push("");
     lines.push("## Métadonnées");
     lines.push("");
     lines.push(`- **Tests exécutés** : ${resInScope.length} / ${filteredTests.length}`);
     lines.push(`- **Palette** : ${paletteLabels[paletteKey] || paletteKey}`);
     lines.push(`- **Mode rapide** : ${fastMode ? "ON" : "OFF"}`);
     lines.push(
-      `- **Filtres actifs** : Type=${filterType}, Catégorie=${filterCategory}, Groupe migration=tous`,
+      `- **Filtres actifs** : Type=${filterType}, Catégorie=${filterCategory}, Statut=${filterStatus}`,
     );
     lines.push(`- **Durée totale** : ${totalLatency} ms`);
     lines.push("");
@@ -573,7 +621,17 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
     lines.push(`## Échecs (${failures.length})`);
     lines.push("");
     failures.forEach(({ t, r, position }) => {
+      const top3 = r.suggestions
+        .slice(0, 3)
+        .map((s) => `\`${s.template_id}\` (${formatScorePct(s.score)}${s.source ? `, ${s.source}` : ""})`)
+        .join(" · ");
+      const excerpt = t.text.length > 200 ? t.text.slice(0, 200) + "…" : t.text;
       lines.push(`### ❌ ${t.expected_template} · #${position}`);
+      lines.push(`- **Attendu** : \`${t.expected_template}\``);
+      lines.push(`- **Top 3 reçu** : ${top3 || "—"}`);
+      lines.push(`- **Catégorie d'erreur** : \`${r.failureCategory ?? "—"}\``);
+      lines.push(`- **Extrait du texte** : "${escapeText(excerpt)}"`);
+      lines.push("");
       lines.push(renderDetail(t, r, position));
       lines.push("");
     });
@@ -644,13 +702,13 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <Button onClick={runAll} disabled={running} size="sm">
+              <Button onClick={runAll} disabled={running || corpusLoading || testSuite.length === 0} size="sm">
                 {running ? (
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                 ) : (
                   <Play className="w-4 h-4 mr-2" />
                 )}
-                Lancer tous les tests
+                Lancer la suite
               </Button>
               {paused ? (
                 <Button onClick={resume} variant="secondary" size="sm">
@@ -666,6 +724,24 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
               </Button>
             </div>
           </div>
+
+          {corpusLoading && (
+            <div className="flex items-center gap-2 text-xs text-muted-foreground border rounded-lg px-3 py-2 bg-muted/20">
+              <Loader2 className="w-3 h-3 animate-spin" /> Chargement du corpus canonique…
+            </div>
+          )}
+          {corpusError && (
+            <div className="flex items-center justify-between gap-3 border border-destructive/40 rounded-lg px-3 py-2 bg-destructive/10 text-sm">
+              <div className="flex items-center gap-2 text-destructive">
+                <AlertCircle className="w-4 h-4" />
+                <span>Impossible de charger le corpus de tests depuis le backend.</span>
+                <span className="text-xs text-muted-foreground font-mono">({corpusError})</span>
+              </div>
+              <Button onClick={loadCorpus} size="sm" variant="outline">
+                <RotateCcw className="w-3 h-3 mr-1" /> Réessayer
+              </Button>
+            </div>
+          )}
 
           <div className="flex items-center gap-6 flex-wrap">
             <div className="flex items-center gap-2">
@@ -766,6 +842,19 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
                   {c === "all" ? "Toutes" : c}
                 </option>
               ))}
+            </select>
+            <span className="font-semibold ml-2">Statut :</span>
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value as typeof filterStatus)}
+              className="text-xs rounded border bg-background px-2 py-1"
+            >
+              <option value="all">Tous</option>
+              <option value="success">Success</option>
+              <option value="mismatch">Mismatch</option>
+              <option value="fail">Fail</option>
+              <option value="warning">Warning</option>
+              <option value="errors">Erreurs</option>
             </select>
             <span className="text-muted-foreground ml-auto">
               {filteredTests.length} affiché{filteredTests.length > 1 ? "s" : ""}
@@ -907,7 +996,7 @@ interface CardProps {
 }
 
 function TestCard({ test, result, note, selected, onToggleSelect, onReplay, onZoom, onShowFullText, onAnnotate }: CardProps) {
-  const truncated = test.text.length > 150 ? test.text.slice(0, 150) + "…" : test.text;
+  const [textOpen, setTextOpen] = useState(false);
   const matchBadge = useMemo(() => {
     if (result.matchKind === "exact")
       return <span className="text-xs text-green-700 font-medium">✅ Match attendu</span>;
@@ -951,9 +1040,15 @@ function TestCard({ test, result, note, selected, onToggleSelect, onReplay, onZo
               {test.expected_template}{" "}
               <span className="text-[10px] text-muted-foreground font-normal">· #{test.id}</span>
             </div>
+            <div className="text-[10px] text-muted-foreground truncate">{test.category}</div>
           </div>
         </div>
         <div className="flex items-center gap-1.5 shrink-0">
+          {typeof test.expected_slot_count === "number" && (
+            <span className="text-[10px] px-1.5 py-0.5 rounded border bg-muted text-foreground border-border">
+              {test.expected_slot_count} slots attendus
+            </span>
+          )}
           {test.choreme && fam && (
             <TooltipProvider>
               <Tooltip>
@@ -984,12 +1079,22 @@ function TestCard({ test, result, note, selected, onToggleSelect, onReplay, onZo
       </div>
 
 
-      <div className="text-xs text-muted-foreground">
-        {truncated}
-        {test.text.length > 150 && (
-          <button onClick={onShowFullText} className="ml-1 underline text-foreground">
-            Voir tout
-          </button>
+      <div className="text-xs">
+        <button
+          onClick={() => setTextOpen((v) => !v)}
+          className="text-[10px] underline text-muted-foreground hover:text-foreground"
+        >
+          {textOpen ? "Masquer le texte" : "Voir le texte"}
+        </button>
+        {textOpen && (
+          <p className="mt-1 text-muted-foreground whitespace-pre-wrap text-[11px]">
+            {test.text}
+            {test.text.length > 400 && (
+              <button onClick={onShowFullText} className="ml-1 underline text-foreground">
+                ouvrir
+              </button>
+            )}
+          </p>
         )}
       </div>
 
@@ -1034,7 +1139,7 @@ function TestCard({ test, result, note, selected, onToggleSelect, onReplay, onZo
           <div className="text-[10px] text-muted-foreground">
             Top 3 :{" "}
             {result.suggestions
-              .map((s) => `${s.template_id} (${formatScorePct(s.score)})`)
+              .map((s) => `${s.template_id} (${formatScorePct(s.score)}${s.source ? `, ${s.source}` : ""})`)
               .join(" · ")}
           </div>
         </div>
