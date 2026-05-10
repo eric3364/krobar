@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Loader2, Download, Sparkles } from "lucide-react";
-import TestSuiteView from "@/components/TestSuiteView";
+
 import CustomizePanel, { loadStoredDetailLevel, type DetailLevel } from "@/components/CustomizePanel";
 import EditableSlot from "@/components/EditableSlot";
 import IconPicker from "@/components/IconPicker";
