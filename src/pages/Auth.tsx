@@ -19,7 +19,7 @@ const passwordSchema = z.string().min(8, "Mot de passe : 8 caractères minimum")
 export default function AuthPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { user, loading: authLoading } = useAuth();
+  const { user, isAdmin, loading: authLoading } = useAuth();
   const initialTab = searchParams.get("tab") === "signup" ? "signup" : "signin";
   const [tab, setTab] = useState<"signin" | "signup" | "magic">(initialTab as "signin" | "signup" | "magic");
   const [email, setEmail] = useState("");
@@ -32,8 +32,8 @@ export default function AuthPage() {
     // If user just arrived from a magic link (no password set yet), send to reset-password
     const hash = window.location.hash;
     const fromMagicLink = hash.includes("type=magiclink") || hash.includes("type=signup");
-    navigate(fromMagicLink ? "/reset-password" : "/workspace", { replace: true });
-  }, [user, authLoading, navigate]);
+    navigate(fromMagicLink ? "/reset-password" : (isAdmin ? "/admin" : "/workspace"), { replace: true });
+  }, [user, isAdmin, authLoading, navigate]);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
