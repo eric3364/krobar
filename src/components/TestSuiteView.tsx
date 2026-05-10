@@ -17,19 +17,27 @@ import { palettes, paletteLabels, type Palette } from "@/palettes";
 import { buildFullTestSuite, type TestCase, type ChoremeFamily } from "@/data/test-suite";
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
 import {
-  applyPaletteVars,
-  callBackend,
   checkPaletteApplied,
   checkSlotsLength,
-  fillSlots,
   formatScorePct,
   loadRenderedSvg,
   svgToString,
   type Manifest,
   type Suggestion,
 } from "@/lib/kroki";
+import { normalizeScore } from "@/lib/format";
+import { supabase } from "@/integrations/supabase/client";
 
 type Status = "idle" | "running" | "success" | "warning" | "fail";
+
+type FailureCategory =
+  | "mismatch"
+  | "empty_suggestions"
+  | "api_error"
+  | "network_error"
+  | "render_error"
+  | "parse_error"
+  | "frontend_exception";
 
 type TestResult = {
   id: number;
@@ -44,6 +52,8 @@ type TestResult = {
   slotsOffenders: string[];
   paletteOk: boolean | null;
   timestamp: string | null;
+  failureCategory: FailureCategory | null;
+  failureDetail: string | null;
 };
 
 const RESULTS_STORAGE = "kroki-last-test-run";
@@ -63,8 +73,20 @@ function emptyResult(id: number): TestResult {
     slotsOffenders: [],
     paletteOk: null,
     timestamp: null,
+    failureCategory: null,
+    failureDetail: null,
   };
 }
+
+const failureLabel: Record<FailureCategory, string> = {
+  mismatch: "Mauvais top 1",
+  empty_suggestions: "❌ Pas de suggestion",
+  api_error: "❌ Erreur API",
+  network_error: "❌ Pas de réponse",
+  render_error: "❌ Rendu échoué",
+  parse_error: "❌ Réponse non-JSON",
+  frontend_exception: "❌ Erreur frontend",
+};
 
 const statusIcon: Record<Status, string> = {
   idle: "⬜",
@@ -179,55 +201,130 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
 
   const runOne = async (test: TestCase, currentPalette: Palette): Promise<void> => {
     updateResult(test.id, { ...emptyResult(test.id), status: "running" });
+
+    const t0 = performance.now();
+    let latencyMs: number | null = null;
+    let suggestions: Suggestion[] = [];
+    let failureCategory: FailureCategory | null = null;
+    let failureDetail: string | null = null;
+
     try {
-      const { suggestions, latencyMs } = await callBackend(test.text);
+      const resp = await supabase.functions.invoke("krobar-proxy", {
+        body: { endpoint: "analyze", payload: { text: test.text, detail_level: "auto" } },
+      });
+      latencyMs = Math.round(performance.now() - t0);
+
+      if (resp.error) {
+        let body: { error?: string; detail?: string; status?: number } | null = null;
+        let httpStatus: number | null = null;
+        const ctx = (resp.error as unknown as { context?: Response }).context;
+        if (ctx instanceof Response) {
+          httpStatus = ctx.status;
+          try {
+            body = await ctx.clone().json();
+          } catch {
+            failureCategory = "parse_error";
+            failureDetail = `Réponse non-JSON (HTTP ${httpStatus})`;
+          }
+        }
+        if (!failureCategory) {
+          if (httpStatus && httpStatus >= 400 && httpStatus !== 504) {
+            failureCategory = "api_error";
+            failureDetail = `HTTP ${httpStatus} — ${body?.error || body?.detail || resp.error.message}`;
+          } else {
+            failureCategory = "network_error";
+            failureDetail = body?.error || resp.error.message || "Pas de réponse du backend";
+          }
+        }
+        console.error(`[Test ${test.expected_template}] ${failureCategory}`, resp.error, body);
+      } else {
+        const data = resp.data as { suggestions?: Suggestion[]; latency_ms?: number } | null;
+        const raw = data?.suggestions ?? [];
+        if (typeof data?.latency_ms === "number") latencyMs = data.latency_ms;
+        if (raw.length === 0) {
+          failureCategory = "empty_suggestions";
+          failureDetail = "Le backend a renvoyé un tableau vide";
+          console.error(`[Test ${test.expected_template}] empty_suggestions`, data);
+        } else {
+          try {
+            suggestions = raw.map((s) => ({ ...s, score: normalizeScore(s.score) }));
+          } catch (e) {
+            failureCategory = "frontend_exception";
+            failureDetail = e instanceof Error ? e.message : String(e);
+            console.error(`[Test ${test.expected_template}] frontend_exception`, e);
+          }
+        }
+      }
+    } catch (e) {
+      latencyMs = Math.round(performance.now() - t0);
+      failureCategory = "network_error";
+      failureDetail = e instanceof Error ? e.message : String(e);
+      console.error(`[Test ${test.expected_template}] network_error`, e);
+    }
+
+    let actualTemplate: string | null = null;
+    let matchKind: TestResult["matchKind"] = null;
+    let status: Status = "fail";
+    let svgString: string | null = null;
+    let paletteOk = false;
+    let slotsLengthOk: boolean | null = null;
+    let slotsOffenders: string[] = [];
+
+    if (suggestions.length > 0) {
       const top = suggestions[0];
+      actualTemplate = top.template_id;
       const ids = suggestions.map((s) => s.template_id);
-      let matchKind: TestResult["matchKind"] = "miss";
-      let status: Status = "fail";
-      if (top?.template_id === test.expected_template) {
+      if (top.template_id === test.expected_template) {
         matchKind = "exact";
         status = "success";
+        failureCategory = null;
+        failureDetail = null;
       } else if (ids.includes(test.expected_template)) {
         matchKind = "in_top3";
         status = "warning";
+        failureCategory = "mismatch";
+        failureDetail = `Top 1 reçu = ${top.template_id} (attendu en position ${ids.indexOf(test.expected_template) + 1}/${ids.length})`;
+      } else {
+        matchKind = "miss";
+        status = "fail";
+        failureCategory = "mismatch";
+        failureDetail = `Top 1 reçu = ${top.template_id} (attendu absent du top ${ids.length})`;
       }
 
-      // Render the SVG via the backend (supports all 49 templates).
-      let svgString: string | null = null;
-      let paletteOk = false;
       try {
         const svg = await loadRenderedSvg(top.template_id, top.slots, currentPalette);
         svg.setAttribute("width", "100%");
         svg.setAttribute("height", "100%");
         paletteOk = checkPaletteApplied(svg, currentPalette);
         svgString = svgToString(svg);
-      } catch {
-        // Render failed — downgrade status
-        if (status === "success") status = "warning";
+      } catch (e) {
+        if (matchKind === "exact") {
+          status = "warning";
+          failureCategory = "render_error";
+          failureDetail = e instanceof Error ? e.message : String(e);
+        }
+        console.error(`[Test ${test.expected_template}] render_error`, e);
       }
       const lengthCheck = checkSlotsLength(top.slots);
-
-      updateResult(test.id, {
-        status,
-        suggestions,
-        actualTemplate: top.template_id,
-        matchKind,
-        latencyMs,
-        svgString,
-        slotsLengthOk: lengthCheck.ok,
-        slotsOffenders: lengthCheck.offenders,
-        paletteOk,
-        timestamp: new Date().toISOString(),
-        errorMsg: null,
-      });
-    } catch (e) {
-      updateResult(test.id, {
-        status: "fail",
-        errorMsg: e instanceof Error ? e.message : String(e),
-        timestamp: new Date().toISOString(),
-      });
+      slotsLengthOk = lengthCheck.ok;
+      slotsOffenders = lengthCheck.offenders;
     }
+
+    updateResult(test.id, {
+      status,
+      suggestions,
+      actualTemplate,
+      matchKind,
+      latencyMs,
+      svgString,
+      slotsLengthOk,
+      slotsOffenders,
+      paletteOk,
+      timestamp: new Date().toISOString(),
+      errorMsg: failureDetail,
+      failureCategory,
+      failureDetail,
+    });
   };
 
   const playBeep = () => {
@@ -447,14 +544,21 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
         `- **Texte testé** (${t.text.length} car., ${countItems(t.text)} items détectés) : \`"${escapeText(t.text)}"\``,
       );
       out.push(`- **Attendu en top 1** : \`${t.expected_template}\``);
+      const top1Display = top1
+        ? `\`${top1.template_id}\` (${formatScorePct(top1.score)})`
+        : r.failureCategory && r.failureCategory !== "mismatch"
+          ? `${failureLabel[r.failureCategory]}`
+          : "—";
+      out.push(`- **Reçu en top 1** : ${top1Display}`);
+      out.push(`- **Top 3 candidats** : ${top3str || (r.failureCategory ? failureLabel[r.failureCategory as FailureCategory] : "—")}`);
+      out.push(`- **Latence** : ${r.latencyMs ?? "—"} ms${r.latencyMs == null && r.failureCategory ? ` (cause : ${r.failureCategory})` : ""}`);
       out.push(
-        `- **Reçu en top 1** : \`${top1?.template_id || "—"}\` (${top1 ? formatScorePct(top1.score) : "—"})`,
+        `- **Validation** : Longueur ${r.slotsLengthOk == null ? "—" : r.slotsLengthOk ? "OK" : "KO"} · Palette ${r.paletteOk == null ? "—" : r.paletteOk ? "OK" : "KO"}`,
       );
-      out.push(`- **Top 3 candidats** : ${top3str || "—"}`);
-      out.push(`- **Latence** : ${r.latencyMs ?? "—"} ms`);
-      out.push(
-        `- **Validation** : Longueur ${r.slotsLengthOk ? "OK" : "KO"} · Palette ${r.paletteOk ? "OK" : "KO"}`,
-      );
+      if (r.status !== "success") {
+        out.push(`- **Catégorie d'échec** : \`${r.failureCategory ?? "—"}\``);
+        out.push(`- **Détail technique** : ${r.failureDetail ? escapeText(r.failureDetail) : "—"}`);
+      }
       out.push(`- **Annotation utilisateur** : ${notes[t.id] || "(aucune)"}`);
       return out.join("\n");
     };
@@ -907,13 +1011,16 @@ function TestCard({ test, result, note, selected, onToggleSelect, onReplay, onZo
         )}
       </button>
 
-      {result.errorMsg && (
-        <div className="text-[10px] text-red-600 bg-red-50 border border-red-200 rounded p-1.5">
-          {result.errorMsg}
+      {result.failureCategory && result.failureCategory !== "mismatch" && (
+        <div className="text-[10px] text-red-700 bg-red-50 border border-red-200 rounded p-1.5">
+          <div className="font-semibold">{failureLabel[result.failureCategory]}</div>
+          {result.failureDetail && (
+            <div className="text-red-600 mt-0.5 break-words">{result.failureDetail}</div>
+          )}
         </div>
       )}
 
-      {result.actualTemplate && (
+      {result.actualTemplate ? (
         <div className="text-[11px] space-y-1">
           <div className="flex items-center justify-between">
             <span className="font-mono">{result.actualTemplate}</span>
@@ -931,13 +1038,31 @@ function TestCard({ test, result, note, selected, onToggleSelect, onReplay, onZo
               .join(" · ")}
           </div>
         </div>
-      )}
+      ) : result.status !== "idle" && result.status !== "running" ? (
+        <div className="text-[11px] space-y-1 text-muted-foreground">
+          <div>Top 1 reçu : <span className="font-medium text-red-600">{result.failureCategory ? failureLabel[result.failureCategory] : "—"}</span></div>
+          <div className="text-[10px]">Top 3 : {result.failureCategory ? failureLabel[result.failureCategory] : "—"}</div>
+        </div>
+      ) : null}
 
-      {(result.status === "success" || result.status === "warning") && (
+      {result.status !== "idle" && result.status !== "running" && (
         <div className="flex flex-wrap gap-1">
-          <Pill ok={result.latencyMs !== null} label={`⏱ ${result.latencyMs ?? "?"}ms`} />
-          <Pill ok={result.slotsLengthOk} label="📏 Longueur OK" />
-          <Pill ok={result.paletteOk} label="🎨 Palette OK" />
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span>
+                  <Pill ok={result.latencyMs !== null} label={`⏱ ${result.latencyMs ?? "—"}ms`} />
+                </span>
+              </TooltipTrigger>
+              {result.latencyMs == null && result.failureCategory && (
+                <TooltipContent className="text-xs">
+                  Pas d'appel mesuré (cause : {result.failureCategory})
+                </TooltipContent>
+              )}
+            </Tooltip>
+          </TooltipProvider>
+          <Pill ok={result.slotsLengthOk} label={`📏 Longueur ${result.slotsLengthOk == null ? "—" : result.slotsLengthOk ? "OK" : "KO"}`} />
+          <Pill ok={result.paletteOk} label={`🎨 Palette ${result.paletteOk == null ? "—" : result.paletteOk ? "OK" : "KO"}`} />
         </div>
       )}
 
