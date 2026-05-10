@@ -621,7 +621,17 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
     lines.push(`## Échecs (${failures.length})`);
     lines.push("");
     failures.forEach(({ t, r, position }) => {
+      const top3 = r.suggestions
+        .slice(0, 3)
+        .map((s) => `\`${s.template_id}\` (${formatScorePct(s.score)}${s.source ? `, ${s.source}` : ""})`)
+        .join(" · ");
+      const excerpt = t.text.length > 200 ? t.text.slice(0, 200) + "…" : t.text;
       lines.push(`### ❌ ${t.expected_template} · #${position}`);
+      lines.push(`- **Attendu** : \`${t.expected_template}\``);
+      lines.push(`- **Top 3 reçu** : ${top3 || "—"}`);
+      lines.push(`- **Catégorie d'erreur** : \`${r.failureCategory ?? "—"}\``);
+      lines.push(`- **Extrait du texte** : "${escapeText(excerpt)}"`);
+      lines.push("");
       lines.push(renderDetail(t, r, position));
       lines.push("");
     });
