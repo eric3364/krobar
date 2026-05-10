@@ -11,10 +11,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { ArrowLeft, Pause, Play, Download, RotateCcw, Loader2 } from "lucide-react";
+import { ArrowLeft, Pause, Play, Download, RotateCcw, Loader2, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import { palettes, paletteLabels, type Palette } from "@/palettes";
-import { buildFullTestSuite, type TestCase, type ChoremeFamily } from "@/data/test-suite";
+import { fetchCanonicalTestSuite, type TestCase, type ChoremeFamily } from "@/data/test-suite";
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
 import {
   checkPaletteApplied,
