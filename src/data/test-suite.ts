@@ -136,7 +136,7 @@ const PROC_ITEMS = [
 function generateProceduralText(t: ManifestEntry): string {
   const ideal = Math.max(2, getIdeal(t.cardinality));
   const intro = cleanBestFor(t.best_for) || `Présentation de ${t.name || t.id}`;
-  const list = Array.from({ length: ideal }, (_, i) => ITEMS[i % ITEMS.length]).join(", ");
+  const list = Array.from({ length: ideal }, (_, i) => PROC_ITEMS[i % PROC_ITEMS.length]).join(", ");
   return `${intro}. Cette structure articule plusieurs éléments successifs : ${list}. Chaque composant joue un rôle précis dans l'ensemble du dispositif.`;
 }
 
