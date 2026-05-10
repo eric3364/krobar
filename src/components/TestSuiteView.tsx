@@ -1013,13 +1013,16 @@ function TestCard({ test, result, note, selected, onToggleSelect, onReplay, onZo
         )}
       </button>
 
-      {result.errorMsg && (
-        <div className="text-[10px] text-red-600 bg-red-50 border border-red-200 rounded p-1.5">
-          {result.errorMsg}
+      {result.failureCategory && result.failureCategory !== "mismatch" && (
+        <div className="text-[10px] text-red-700 bg-red-50 border border-red-200 rounded p-1.5">
+          <div className="font-semibold">{failureLabel[result.failureCategory]}</div>
+          {result.failureDetail && (
+            <div className="text-red-600 mt-0.5 break-words">{result.failureDetail}</div>
+          )}
         </div>
       )}
 
-      {result.actualTemplate && (
+      {result.actualTemplate ? (
         <div className="text-[11px] space-y-1">
           <div className="flex items-center justify-between">
             <span className="font-mono">{result.actualTemplate}</span>
@@ -1037,13 +1040,31 @@ function TestCard({ test, result, note, selected, onToggleSelect, onReplay, onZo
               .join(" · ")}
           </div>
         </div>
-      )}
+      ) : result.status !== "idle" && result.status !== "running" ? (
+        <div className="text-[11px] space-y-1 text-muted-foreground">
+          <div>Top 1 reçu : <span className="font-medium text-red-600">{result.failureCategory ? failureLabel[result.failureCategory] : "—"}</span></div>
+          <div className="text-[10px]">Top 3 : {result.failureCategory ? failureLabel[result.failureCategory] : "—"}</div>
+        </div>
+      ) : null}
 
-      {(result.status === "success" || result.status === "warning") && (
+      {result.status !== "idle" && result.status !== "running" && (
         <div className="flex flex-wrap gap-1">
-          <Pill ok={result.latencyMs !== null} label={`⏱ ${result.latencyMs ?? "?"}ms`} />
-          <Pill ok={result.slotsLengthOk} label="📏 Longueur OK" />
-          <Pill ok={result.paletteOk} label="🎨 Palette OK" />
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span>
+                  <Pill ok={result.latencyMs !== null} label={`⏱ ${result.latencyMs ?? "—"}ms`} />
+                </span>
+              </TooltipTrigger>
+              {result.latencyMs == null && result.failureCategory && (
+                <TooltipContent className="text-xs">
+                  Pas d'appel mesuré (cause : {result.failureCategory})
+                </TooltipContent>
+              )}
+            </Tooltip>
+          </TooltipProvider>
+          <Pill ok={result.slotsLengthOk} label={`📏 Longueur ${result.slotsLengthOk == null ? "—" : result.slotsLengthOk ? "OK" : "KO"}`} />
+          <Pill ok={result.paletteOk} label={`🎨 Palette ${result.paletteOk == null ? "—" : result.paletteOk ? "OK" : "KO"}`} />
         </div>
       )}
 
