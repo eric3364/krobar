@@ -14,7 +14,8 @@ import {
 import { ArrowLeft, Pause, Play, Download, RotateCcw, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { palettes, paletteLabels, type Palette } from "@/palettes";
-import { testSuite, type TestCase } from "@/data/test-suite";
+import { buildFullTestSuite, type TestCase, type ChoremeFamily } from "@/data/test-suite";
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
 import {
   applyPaletteVars,
   callBackend,
@@ -99,6 +100,26 @@ interface Props {
 }
 
 export default function TestSuiteView({ manifest, onBack }: Props) {
+  const testSuite = useMemo(() => buildFullTestSuite(manifest), [manifest]);
+  type FilterType = "all" | "procedural" | "choreme" | "A" | "B" | "C";
+  const [filterType, setFilterType] = useState<FilterType>("all");
+  const [filterCategory, setFilterCategory] = useState<string>("all");
+
+  const categories = useMemo(() => {
+    const set = new Set<string>(testSuite.map((t) => t.category));
+    return ["all", ...Array.from(set).sort()];
+  }, [testSuite]);
+
+  const filteredTests = useMemo(() => {
+    return testSuite.filter((t) => {
+      if (filterType === "procedural" && t.choreme) return false;
+      if (filterType === "choreme" && !t.choreme) return false;
+      if ((filterType === "A" || filterType === "B" || filterType === "C") && t.choreme?.family !== filterType) return false;
+      if (filterCategory !== "all" && t.category !== filterCategory) return false;
+      return true;
+    });
+  }, [testSuite, filterType, filterCategory]);
+
   const [results, setResults] = useState<TestResult[]>(() => {
     try {
       const cached = localStorage.getItem(RESULTS_STORAGE);
@@ -278,6 +299,17 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
   const allDone = completedCount === testSuite.length;
   const hasAnyCompleted = completedCount > 0;
 
+  // Score breakdown procéduraux vs chorèmes
+  const choremeIds = useMemo(() => new Set(testSuite.filter((t) => t.choreme).map((t) => t.id)), [testSuite]);
+  const procIds = useMemo(() => new Set(testSuite.filter((t) => !t.choreme).map((t) => t.id)), [testSuite]);
+  const procDone = results.filter((r) => procIds.has(r.id) && r.status !== "idle" && r.status !== "running");
+  const procSuccess = procDone.filter((r) => r.status === "success").length;
+  const chorDone = results.filter((r) => choremeIds.has(r.id) && r.status !== "idle" && r.status !== "running");
+  const chorSuccess = chorDone.filter((r) => r.status === "success").length;
+
+  const selectFiltered = () => setSelectedIds(new Set(filteredTests.map((t) => t.id)));
+
+
   const exportReport = () => {
     const report = {
       generated_at: new Date().toISOString(),
@@ -380,23 +412,74 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
 
           {hasAnyCompleted && (
             <div className="rounded-lg border bg-accent/30 px-4 py-3 flex items-center justify-between gap-3 flex-wrap">
-              <div className="flex items-center gap-4 text-sm">
+              <div className="flex flex-col gap-1 text-sm">
                 <span className="font-bold">
                   Score global : {successCount}/{completedCount} (
                   {completedCount > 0 ? Math.round((successCount / completedCount) * 100) : 0}%)
                 </span>
-                <span>✅ {successCount} réussis</span>
-                <span>⚠️ {warningCount} avertissements</span>
-                <span>❌ {failCount} échecs</span>
-                <span className="text-muted-foreground">
-                  ({completedCount}/{testSuite.length} exécutés)
+                <span className="text-xs text-muted-foreground font-mono pl-3">
+                  ├─ Procéduraux : {procSuccess}/{procDone.length}
+                  {procDone.length > 0 && ` (${Math.round((procSuccess / procDone.length) * 100)}%)`}
                 </span>
+                <span className="text-xs text-muted-foreground font-mono pl-3">
+                  └─ Chorèmes&nbsp;&nbsp;&nbsp;: {chorSuccess}/{chorDone.length}
+                  {chorDone.length > 0 && ` (${Math.round((chorSuccess / chorDone.length) * 100)}%)`}
+                </span>
+                <div className="flex gap-3 text-xs mt-1">
+                  <span>✅ {successCount}</span>
+                  <span>⚠️ {warningCount}</span>
+                  <span>❌ {failCount}</span>
+                  <span className="text-muted-foreground">
+                    ({completedCount}/{testSuite.length} exécutés)
+                  </span>
+                </div>
               </div>
               <Button onClick={exportReport} size="sm" variant="outline" disabled={!allDone}>
                 <Download className="w-4 h-4 mr-2" /> Exporter le rapport
               </Button>
             </div>
           )}
+
+          {/* Barre de filtres */}
+          <div className="flex items-center gap-3 flex-wrap text-xs border rounded-lg px-3 py-2 bg-muted/20">
+            <span className="font-semibold">Type :</span>
+            {([
+              ["all", "Tous"],
+              ["procedural", "Procéduraux"],
+              ["choreme", "Chorèmes"],
+              ["A", "Famille A"],
+              ["B", "Famille B"],
+              ["C", "Famille C"],
+            ] as const).map(([k, label]) => (
+              <button
+                key={k}
+                onClick={() => setFilterType(k)}
+                className={`px-2 py-0.5 rounded border transition ${
+                  filterType === k
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "bg-background border-border hover:bg-accent"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+            <span className="font-semibold ml-2">Catégorie :</span>
+            <select
+              value={filterCategory}
+              onChange={(e) => setFilterCategory(e.target.value)}
+              className="text-xs rounded border bg-background px-2 py-1"
+            >
+              {categories.map((c) => (
+                <option key={c} value={c}>
+                  {c === "all" ? "Toutes" : c}
+                </option>
+              ))}
+            </select>
+            <span className="text-muted-foreground ml-auto">
+              {filteredTests.length} affiché{filteredTests.length > 1 ? "s" : ""}
+            </span>
+          </div>
+
 
           <div className="flex items-center gap-3 flex-wrap text-xs border rounded-lg px-3 py-2 bg-muted/30">
             <div className="flex items-center gap-2">
@@ -418,6 +501,15 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
               title={newTestIds.size === 0 ? "Aucun nouveau test détecté" : undefined}
             >
               Sélectionner les nouveaux ({newTestIds.size})
+            </Button>
+            <Button
+              onClick={selectFiltered}
+              disabled={filteredTests.length === 0}
+              size="sm"
+              variant="outline"
+              className="h-7 text-xs"
+            >
+              Sélectionner le filtre actif ({filteredTests.length})
             </Button>
             <span className="text-muted-foreground">
               {selectedIds.size} test{selectedIds.size > 1 ? "s" : ""} sélectionné
@@ -446,7 +538,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
       </header>
 
       <main className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {testSuite.map((test) => {
+        {filteredTests.map((test) => {
           const r = results.find((x) => x.id === test.id) ?? emptyResult(test.id);
           return (
             <TestCard
@@ -544,22 +636,61 @@ function TestCard({ test, result, note, selected, onToggleSelect, onReplay, onZo
     return <span className={`text-[10px] px-1.5 py-0.5 rounded border ${color}`}>{label}</span>;
   };
 
+  const familyColors: Record<ChoremeFamily, { stripe: string; badge: string; dot: string }> = {
+    A: { stripe: "border-l-[#1e3a8a]", badge: "bg-[#1e3a8a]/10 text-[#1e3a8a] border-[#1e3a8a]/40", dot: "bg-[#1e3a8a]" },
+    B: { stripe: "border-l-[#166534]", badge: "bg-[#166534]/10 text-[#166534] border-[#166534]/40", dot: "bg-[#166534]" },
+    C: { stripe: "border-l-[#b45309]", badge: "bg-[#b45309]/10 text-[#b45309] border-[#b45309]/40", dot: "bg-[#b45309]" },
+  };
+  const fam = test.choreme?.family;
+  const stripeClass = fam ? `border-l-[3px] ${familyColors[fam].stripe}` : "";
+
   return (
-    <Card className="p-3 flex flex-col gap-2">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
+    <Card className={`p-3 flex flex-col gap-2 ${stripeClass}`}>
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2 min-w-0">
           <Checkbox
             checked={selected}
             onCheckedChange={onToggleSelect}
             aria-label={`Sélectionner le test ${test.id}`}
           />
           <span className="text-base">{statusIcon[result.status]}</span>
-          <div>
-            <div className="text-xs font-bold font-mono">{test.expected_template} <span className="text-[10px] text-muted-foreground font-normal">· #{test.id}</span></div>
+          <div className="min-w-0">
+            <div className="text-xs font-bold font-mono truncate">
+              {test.expected_template}{" "}
+              <span className="text-[10px] text-muted-foreground font-normal">· #{test.id}</span>
+            </div>
           </div>
         </div>
-        <span className="text-[10px] text-muted-foreground">{statusLabel[result.status]}</span>
+        <div className="flex items-center gap-1.5 shrink-0">
+          {test.choreme && fam && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    className={`flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded border ${familyColors[fam].badge}`}
+                  >
+                    <span className={`w-1.5 h-1.5 rounded-full ${familyColors[fam].dot}`} />
+                    Chorème {test.choreme.code}
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs text-xs space-y-1">
+                  <div><span className="font-semibold">Triplet :</span> {test.choreme.triplet || "—"}</div>
+                  <div>
+                    <span className="font-semibold">Processus dominants :</span>{" "}
+                    {test.choreme.dominant_processes?.join(", ") || "—"}
+                  </div>
+                  <div>
+                    <span className="font-semibold">Marqueurs :</span>{" "}
+                    {(test.choreme.matching_expressions || []).slice(0, 3).join(" · ") || "—"}
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+          <span className="text-[10px] text-muted-foreground">{statusLabel[result.status]}</span>
+        </div>
       </div>
+
 
       <div className="text-xs text-muted-foreground">
         {truncated}
