@@ -1040,9 +1040,15 @@ function TestCard({ test, result, note, selected, onToggleSelect, onReplay, onZo
               {test.expected_template}{" "}
               <span className="text-[10px] text-muted-foreground font-normal">· #{test.id}</span>
             </div>
+            <div className="text-[10px] text-muted-foreground truncate">{test.category}</div>
           </div>
         </div>
         <div className="flex items-center gap-1.5 shrink-0">
+          {typeof test.expected_slot_count === "number" && (
+            <span className="text-[10px] px-1.5 py-0.5 rounded border bg-muted text-foreground border-border">
+              {test.expected_slot_count} slots attendus
+            </span>
+          )}
           {test.choreme && fam && (
             <TooltipProvider>
               <Tooltip>
@@ -1073,12 +1079,22 @@ function TestCard({ test, result, note, selected, onToggleSelect, onReplay, onZo
       </div>
 
 
-      <div className="text-xs text-muted-foreground">
-        {truncated}
-        {test.text.length > 150 && (
-          <button onClick={onShowFullText} className="ml-1 underline text-foreground">
-            Voir tout
-          </button>
+      <div className="text-xs">
+        <button
+          onClick={() => setTextOpen((v) => !v)}
+          className="text-[10px] underline text-muted-foreground hover:text-foreground"
+        >
+          {textOpen ? "Masquer le texte" : "Voir le texte"}
+        </button>
+        {textOpen && (
+          <p className="mt-1 text-muted-foreground whitespace-pre-wrap text-[11px]">
+            {test.text}
+            {test.text.length > 400 && (
+              <button onClick={onShowFullText} className="ml-1 underline text-foreground">
+                ouvrir
+              </button>
+            )}
+          </p>
         )}
       </div>
 
