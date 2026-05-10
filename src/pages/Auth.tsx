@@ -52,7 +52,7 @@ export default function AuthPage() {
       return;
     }
     toast.success("Connecté");
-    navigate("/workspace", { replace: true });
+    // Redirection gérée par useEffect (admin → /admin, sinon → /workspace)
   };
 
   const handleSignUp = async (e: React.FormEvent) => {
@@ -79,7 +79,7 @@ export default function AuthPage() {
       return;
     }
     toast.success("Compte créé");
-    navigate("/workspace", { replace: true });
+    // Redirection gérée par useEffect
   };
 
   const handleMagic = async (e: React.FormEvent) => {
@@ -109,8 +109,8 @@ export default function AuthPage() {
       toast.error(`Échec connexion ${provider}`);
       return;
     }
-    if (result.redirected) return; // browser redirect
-    navigate("/workspace", { replace: true });
+    if (result.redirected) return;
+    // Redirection gérée par useEffect
   };
 
   return (
