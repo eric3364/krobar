@@ -80,6 +80,7 @@ export default function Admin() {
           <h1 className="text-3xl font-bold mt-2">Back-office</h1>
         </div>
         <div className="flex gap-2">
+          <Button asChild variant="outline" size="sm"><Link to="/admin/test-suite">Suite de tests</Link></Button>
           <Button asChild variant="outline" size="sm"><Link to="/admin/templates/new">Upload template</Link></Button>
           <Button asChild size="sm"><Link to="/admin/templates/atelier">Atelier IA</Link></Button>
         </div>
