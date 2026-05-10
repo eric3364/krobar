@@ -311,40 +311,186 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
 
 
   const exportReport = () => {
-    const report = {
-      generated_at: new Date().toISOString(),
-      palette: paletteKey,
-      score: { success: successCount, warning: warningCount, fail: failCount, total: testSuite.length },
-      results: results.map((r) => {
-        const test = testSuite.find((t) => t.id === r.id)!;
-        return {
-          id: r.id,
-          expected_template: test.expected_template,
-          actual_template: r.actualTemplate,
-          match_kind: r.matchKind,
-          status: r.status,
-          score: r.suggestions[0]?.score ?? null,
-          suggestions: r.suggestions.map((s) => ({
-            template_id: s.template_id,
-            score: s.score,
-          })),
-          latency_ms: r.latencyMs,
-          slots_length_ok: r.slotsLengthOk,
-          slots_offenders: r.slotsOffenders,
-          palette_ok: r.paletteOk,
-          error: r.errorMsg,
-          timestamp: r.timestamp,
-        };
-      }),
+    const now = new Date();
+    const pad = (n: number) => String(n).padStart(2, "0");
+    const stamp = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}`;
+    const human = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} à ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+    const filename = `krobar-tests-${stamp}.md`;
+
+    const escapeText = (s: string) => s.replace(/\\/g, "\\\\").replace(/`/g, "\\`").replace(/"/g, '\\"');
+    const countItems = (s: string) =>
+      (s.match(/[,;]/g) || []).length + (s.match(/\n/g) || []).length + 1;
+
+    const typeLabel = (t: TestCase) =>
+      t.choreme ? `Chorème ${t.choreme.family}/${t.choreme.code}` : "Procédural";
+    const migrationGroup = (t: TestCase) => (t.choreme ? "chorème" : "v1 legacy");
+
+    const executed = results.filter((r) => r.status !== "idle" && r.status !== "running");
+    const executedSet = new Set(executed.map((r) => r.id));
+    const totalLatency = executed.reduce((acc, r) => acc + (r.latencyMs ?? 0), 0);
+
+    // Tests à exporter : respecter le filtre actif
+    const inScope = filteredTests.filter((t) => executedSet.has(t.id));
+    const inScopeIds = new Set(inScope.map((t) => t.id));
+    const resInScope = executed.filter((r) => inScopeIds.has(r.id));
+    const inScopeSuccess = resInScope.filter((r) => r.status === "success").length;
+    const inScopeWarn = resInScope.filter((r) => r.status === "warning").length;
+    const inScopeFail = resInScope.filter((r) => r.status === "fail").length;
+
+    const procInScope = resInScope.filter((r) => procIds.has(r.id));
+    const chorInScope = resInScope.filter((r) => choremeIds.has(r.id));
+    const pct = (a: number, b: number) => (b > 0 ? Math.round((a / b) * 100) : 0);
+
+    // Synthèse par catégorie
+    const byCat = new Map<string, { total: number; ok: number; warn: number; fail: number }>();
+    inScope.forEach((t) => {
+      const r = executed.find((x) => x.id === t.id)!;
+      const c = t.category;
+      const e = byCat.get(c) || { total: 0, ok: 0, warn: 0, fail: 0 };
+      e.total++;
+      if (r.status === "success") e.ok++;
+      else if (r.status === "warning") e.warn++;
+      else if (r.status === "fail") e.fail++;
+      byCat.set(c, e);
+    });
+
+    const lines: string[] = [];
+    lines.push(`# Suite de tests Krobar — Export ${human}`);
+    lines.push("");
+    lines.push("## Métadonnées");
+    lines.push("");
+    lines.push(`- **Tests exécutés** : ${resInScope.length} / ${filteredTests.length}`);
+    lines.push(`- **Palette** : ${paletteLabels[paletteKey] || paletteKey}`);
+    lines.push(`- **Mode rapide** : ${fastMode ? "ON" : "OFF"}`);
+    lines.push(
+      `- **Filtres actifs** : Type=${filterType}, Catégorie=${filterCategory}, Groupe migration=tous`,
+    );
+    lines.push(`- **Durée totale** : ${totalLatency} ms`);
+    lines.push("");
+    lines.push("## Score global");
+    lines.push("");
+    lines.push(
+      `- **Tous** : ${inScopeSuccess}/${resInScope.length} (${pct(inScopeSuccess, resInScope.length)}%)`,
+    );
+    const procOk = procInScope.filter((r) => r.status === "success").length;
+    const chorOk = chorInScope.filter((r) => r.status === "success").length;
+    lines.push(
+      `- **Procéduraux** : ${procOk}/${procInScope.length} (${pct(procOk, procInScope.length)}%)`,
+    );
+    lines.push(
+      `- **Chorèmes** : ${chorOk}/${chorInScope.length} (${pct(chorOk, chorInScope.length)}%)`,
+    );
+    lines.push("");
+    lines.push("## Synthèse par catégorie");
+    lines.push("");
+    lines.push("| Catégorie | Total | ✅ Réussis | ⚠️ Avertissements | ❌ Échecs |");
+    lines.push("|---|---|---|---|---|");
+    Array.from(byCat.entries())
+      .sort((a, b) => a[0].localeCompare(b[0]))
+      .forEach(([cat, v]) => {
+        lines.push(`| ${cat} | ${v.total} | ${v.ok} | ${v.warn} | ${v.fail} |`);
+      });
+    lines.push("");
+
+    const renderDetail = (t: TestCase, r: TestResult, position: number, withMeta = false) => {
+      const out: string[] = [];
+      const top1 = r.suggestions[0];
+      const top3str = r.suggestions
+        .slice(0, 3)
+        .map((s) => `\`${s.template_id}\` (${formatScorePct(s.score)})`)
+        .join(" · ");
+      const card = manifest.templates.find((m) => m.id === t.expected_template) as
+        | { cardinality?: number | { ideal?: number; min?: number; max?: number } }
+        | undefined;
+      const cardObj = typeof card?.cardinality === "object" ? card?.cardinality : null;
+      const ideal = cardObj?.ideal ?? (typeof card?.cardinality === "number" ? card?.cardinality : "?");
+      const minC = cardObj?.min ?? "?";
+      const maxC = cardObj?.max ?? "?";
+      const typeStr = t.choreme
+        ? `Chorème ${t.choreme.family}/${t.choreme.code}, triplet : \`${t.choreme.triplet || "—"}\`, processus dominants : \`${(t.choreme.dominant_processes || []).join(", ") || "—"}\``
+        : "Procédural";
+      out.push(`- **Type** : ${typeStr}`);
+      out.push(`- **Catégorie** : ${t.category}`);
+      out.push(`- **Groupe migration** : ${migrationGroup(t)}`);
+      if (withMeta) out.push(`- **Cardinality** : ideal=${ideal}, min=${minC}, max=${maxC}`);
+      out.push(
+        `- **Texte testé** (${t.text.length} car., ${countItems(t.text)} items détectés) : \`"${escapeText(t.text)}"\``,
+      );
+      out.push(`- **Attendu en top 1** : \`${t.expected_template}\``);
+      out.push(
+        `- **Reçu en top 1** : \`${top1?.template_id || "—"}\` (${top1 ? formatScorePct(top1.score) : "—"})`,
+      );
+      out.push(`- **Top 3 candidats** : ${top3str || "—"}`);
+      out.push(`- **Latence** : ${r.latencyMs ?? "—"} ms`);
+      out.push(
+        `- **Validation** : Longueur ${r.slotsLengthOk ? "OK" : "KO"} · Palette ${r.paletteOk ? "OK" : "KO"}`,
+      );
+      out.push(`- **Annotation utilisateur** : ${notes[t.id] || "(aucune)"}`);
+      return out.join("\n");
     };
-    const blob = new Blob([JSON.stringify(report, null, 2)], { type: "application/json" });
+
+    const failures = inScope
+      .map((t, i) => ({ t, r: executed.find((x) => x.id === t.id)!, position: i + 1 }))
+      .filter((x) => x.r.status === "fail");
+    const warnings = inScope
+      .map((t, i) => ({ t, r: executed.find((x) => x.id === t.id)!, position: i + 1 }))
+      .filter((x) => x.r.status === "warning");
+
+    lines.push(`## Échecs (${failures.length})`);
+    lines.push("");
+    failures.forEach(({ t, r, position }) => {
+      lines.push(`### ❌ ${t.expected_template} · #${position}`);
+      lines.push(renderDetail(t, r, position));
+      lines.push("");
+    });
+    if (failures.length === 0) {
+      lines.push("_Aucun échec._");
+      lines.push("");
+    }
+
+    lines.push(`## Avertissements (${warnings.length})`);
+    lines.push("");
+    warnings.forEach(({ t, r, position }) => {
+      lines.push(`### ⚠️ ${t.expected_template} · #${position}`);
+      lines.push(renderDetail(t, r, position));
+      lines.push("");
+    });
+    if (warnings.length === 0) {
+      lines.push("_Aucun avertissement._");
+      lines.push("");
+    }
+
+    lines.push("## Détail complet de tous les tests exécutés");
+    lines.push("");
+    inScope.forEach((t, i) => {
+      const r = executed.find((x) => x.id === t.id)!;
+      const icon = r.status === "success" ? "✅" : r.status === "warning" ? "⚠️" : "❌";
+      lines.push(`### ${icon} ${t.expected_template} · #${i + 1}`);
+      lines.push(renderDetail(t, r, i + 1, true));
+      lines.push("");
+    });
+
+    const pending = filteredTests.filter((t) => !executedSet.has(t.id));
+    lines.push(`## Tests non exécutés (${pending.length})`);
+    lines.push("");
+    pending.forEach((t) => {
+      lines.push(`- \`${t.expected_template}\` · ${t.category} · ${t.choreme ? "Chorème" : "Procédural"}`);
+    });
+    lines.push("");
+    lines.push("---");
+    lines.push("");
+    lines.push("*Export généré automatiquement par la Suite de tests Krobar.*");
+
+    const blob = new Blob([lines.join("\n")], { type: "text/markdown;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `krobar-test-report-${Date.now()}.json`;
+    a.download = filename;
     a.click();
     URL.revokeObjectURL(url);
+    toast.success(`Rapport exporté : ${filename}`);
   };
+
 
   const updateNote = (id: number, text: string) => {
     const next = { ...notes, [id]: text };
@@ -434,7 +580,19 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
                   </span>
                 </div>
               </div>
-              <Button onClick={exportReport} size="sm" variant="outline" disabled={!allDone}>
+              <Button
+                onClick={exportReport}
+                size="sm"
+                variant="outline"
+                disabled={completedCount === 0}
+                title={
+                  completedCount === 0
+                    ? "Aucun test exécuté"
+                    : completedCount < testSuite.length
+                      ? `Exporter les ${completedCount}/${testSuite.length} tests exécutés`
+                      : undefined
+                }
+              >
                 <Download className="w-4 h-4 mr-2" /> Exporter le rapport
               </Button>
             </div>
