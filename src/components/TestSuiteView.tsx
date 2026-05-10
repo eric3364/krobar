@@ -125,6 +125,15 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
   const [testSuite, setTestSuite] = useState<TestCase[]>([]);
   const [corpusLoading, setCorpusLoading] = useState(true);
   const [corpusError, setCorpusError] = useState<string | null>(null);
+  const [results, setResults] = useState<TestResult[]>(() => {
+    try {
+      const cached = localStorage.getItem(RESULTS_STORAGE);
+      if (cached) return JSON.parse(cached);
+    } catch {
+      /* ignore */
+    }
+    return [];
+  });
 
   const loadCorpus = async () => {
     setCorpusLoading(true);
@@ -132,7 +141,11 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
     try {
       const suite = await fetchCanonicalTestSuite(manifest);
       setTestSuite(suite);
-      setResults(suite.map((t) => emptyResult(t.id)));
+      setResults((prev) => {
+        // Conserver les résultats persistés correspondants, initialiser le reste.
+        const byId = new Map(prev.map((r) => [r.id, r]));
+        return suite.map((t) => byId.get(t.id) ?? emptyResult(t.id));
+      });
     } catch (e) {
       setCorpusError(e instanceof Error ? e.message : String(e));
     } finally {
@@ -178,15 +191,6 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
     });
   }, [testSuite, filterType, filterCategory, filterStatus, results]);
 
-  const [results, setResults] = useState<TestResult[]>(() => {
-    try {
-      const cached = localStorage.getItem(RESULTS_STORAGE);
-      if (cached) return JSON.parse(cached);
-    } catch {
-      /* ignore */
-    }
-    return [];
-  });
   const [paletteKey, setPaletteKey] = useState<keyof typeof palettes>("ocean");
   const [fastMode, setFastMode] = useState(true);
   const [running, setRunning] = useState(false);
