@@ -18,6 +18,7 @@ export type Suggestion = {
   score: number;
   reasoning: string;
   slots: Record<string, string>;
+  source?: string;
 };
 
 // Re-export pour compatibilité — la source unique est /src/lib/format.ts
