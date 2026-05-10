@@ -996,7 +996,7 @@ interface CardProps {
 }
 
 function TestCard({ test, result, note, selected, onToggleSelect, onReplay, onZoom, onShowFullText, onAnnotate }: CardProps) {
-  const truncated = test.text.length > 150 ? test.text.slice(0, 150) + "…" : test.text;
+  const [textOpen, setTextOpen] = useState(false);
   const matchBadge = useMemo(() => {
     if (result.matchKind === "exact")
       return <span className="text-xs text-green-700 font-medium">✅ Match attendu</span>;
