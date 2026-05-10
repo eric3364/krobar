@@ -1824,9 +1824,6 @@ const Index = () => {
           </div>
           <div className="flex items-center gap-2">
             <CustomizePanel detailLevel={detailLevel} onApply={setDetailLevel} />
-            <Button variant="outline" size="sm" onClick={() => setTestSuiteOpen(true)}>
-              <FlaskConical className="w-4 h-4 mr-2" /> Lancer la suite de tests
-            </Button>
             <AccountMenu />
           </div>
         </div>
