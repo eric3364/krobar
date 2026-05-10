@@ -1139,7 +1139,7 @@ function TestCard({ test, result, note, selected, onToggleSelect, onReplay, onZo
           <div className="text-[10px] text-muted-foreground">
             Top 3 :{" "}
             {result.suggestions
-              .map((s) => `${s.template_id} (${formatScorePct(s.score)})`)
+              .map((s) => `${s.template_id} (${formatScorePct(s.score)}${s.source ? `, ${s.source}` : ""})`)
               .join(" · ")}
           </div>
         </div>
