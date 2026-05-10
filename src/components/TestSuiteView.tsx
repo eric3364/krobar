@@ -100,6 +100,26 @@ interface Props {
 }
 
 export default function TestSuiteView({ manifest, onBack }: Props) {
+  const testSuite = useMemo(() => buildFullTestSuite(manifest), [manifest]);
+  type FilterType = "all" | "procedural" | "choreme" | "A" | "B" | "C";
+  const [filterType, setFilterType] = useState<FilterType>("all");
+  const [filterCategory, setFilterCategory] = useState<string>("all");
+
+  const categories = useMemo(() => {
+    const set = new Set<string>(testSuite.map((t) => t.category));
+    return ["all", ...Array.from(set).sort()];
+  }, [testSuite]);
+
+  const filteredTests = useMemo(() => {
+    return testSuite.filter((t) => {
+      if (filterType === "procedural" && t.choreme) return false;
+      if (filterType === "choreme" && !t.choreme) return false;
+      if ((filterType === "A" || filterType === "B" || filterType === "C") && t.choreme?.family !== filterType) return false;
+      if (filterCategory !== "all" && t.category !== filterCategory) return false;
+      return true;
+    });
+  }, [testSuite, filterType, filterCategory]);
+
   const [results, setResults] = useState<TestResult[]>(() => {
     try {
       const cached = localStorage.getItem(RESULTS_STORAGE);
