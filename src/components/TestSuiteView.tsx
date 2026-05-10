@@ -230,6 +230,32 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
     }
   };
 
+  const playBeep = () => {
+    try {
+      const Ctx = (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext);
+      const ctx = new Ctx();
+      const beep = (freq: number, start: number, dur: number) => {
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = "sine";
+        o.frequency.value = freq;
+        o.connect(g);
+        g.connect(ctx.destination);
+        const t0 = ctx.currentTime + start;
+        g.gain.setValueAtTime(0, t0);
+        g.gain.linearRampToValueAtTime(0.25, t0 + 0.01);
+        g.gain.linearRampToValueAtTime(0, t0 + dur);
+        o.start(t0);
+        o.stop(t0 + dur + 0.05);
+      };
+      beep(880, 0, 0.18);
+      beep(1320, 0.22, 0.22);
+      setTimeout(() => ctx.close(), 800);
+    } catch {
+      /* audio not available — silent fallback */
+    }
+  };
+
   const runAll = async () => {
     setRunning(true);
     pauseRef.current = false;
@@ -248,6 +274,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
       }
     }
     setRunning(false);
+    playBeep();
   };
 
   const runSelection = async () => {
@@ -265,6 +292,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
       await new Promise((r) => setTimeout(r, 1000));
     }
     setRunning(false);
+    playBeep();
   };
 
   const pause = () => {
@@ -286,10 +314,12 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
       await new Promise((r) => setTimeout(r, 1000));
     }
     setRunning(false);
+    playBeep();
   };
 
   const replayOne = async (test: TestCase) => {
     await runOne(test, palette);
+    playBeep();
   };
 
   const completedCount = results.filter((r) => r.status !== "idle" && r.status !== "running").length;
