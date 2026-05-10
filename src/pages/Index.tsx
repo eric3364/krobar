@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Loader2, Download, Sparkles } from "lucide-react";
+import { Loader2, Download, Sparkles, Shield } from "lucide-react";
 
 import CustomizePanel, { loadStoredDetailLevel, type DetailLevel } from "@/components/CustomizePanel";
 import EditableSlot from "@/components/EditableSlot";
@@ -22,6 +22,8 @@ import { formatScorePct, normalizeScore } from "@/lib/kroki";
 import { analyzeText, renderTemplate, getTemplates } from "@/lib/api";
 import AccountMenu from "@/components/AccountMenu";
 import { useQuota } from "@/hooks/useQuota";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 type ManifestTemplate = {
   id: string;
@@ -256,6 +258,8 @@ function downloadBlob(blob: Blob, filename: string) {
 
 const Index = () => {
   const quota = useQuota();
+  const { isAdmin } = useAuth();
+  const navigate = useNavigate();
   const [manifest, setManifest] = useState<Manifest | null>(null);
   const [text, setText] = useState("");
   const [paletteKey, setPaletteKey] = useState<keyof typeof palettes>("ocean");
