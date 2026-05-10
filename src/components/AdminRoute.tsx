@@ -43,8 +43,8 @@ function AdminLayoutInner({ children }: { children: ReactNode }) {
             })}
           </nav>
           <div className="p-3 border-t border-border space-y-2">
-            <Link to="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
-              <LogOut className="h-4 w-4" /> Quitter l'admin
+            <Link to="/workspace" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
+              <LogOut className="h-4 w-4" /> Retour à l'éditeur
             </Link>
           </div>
         </aside>
