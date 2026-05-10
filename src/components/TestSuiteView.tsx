@@ -636,22 +636,61 @@ function TestCard({ test, result, note, selected, onToggleSelect, onReplay, onZo
     return <span className={`text-[10px] px-1.5 py-0.5 rounded border ${color}`}>{label}</span>;
   };
 
+  const familyColors: Record<ChoremeFamily, { stripe: string; badge: string; dot: string }> = {
+    A: { stripe: "border-l-[#1e3a8a]", badge: "bg-[#1e3a8a]/10 text-[#1e3a8a] border-[#1e3a8a]/40", dot: "bg-[#1e3a8a]" },
+    B: { stripe: "border-l-[#166534]", badge: "bg-[#166534]/10 text-[#166534] border-[#166534]/40", dot: "bg-[#166534]" },
+    C: { stripe: "border-l-[#b45309]", badge: "bg-[#b45309]/10 text-[#b45309] border-[#b45309]/40", dot: "bg-[#b45309]" },
+  };
+  const fam = test.choreme?.family;
+  const stripeClass = fam ? `border-l-[3px] ${familyColors[fam].stripe}` : "";
+
   return (
-    <Card className="p-3 flex flex-col gap-2">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
+    <Card className={`p-3 flex flex-col gap-2 ${stripeClass}`}>
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2 min-w-0">
           <Checkbox
             checked={selected}
             onCheckedChange={onToggleSelect}
             aria-label={`Sélectionner le test ${test.id}`}
           />
           <span className="text-base">{statusIcon[result.status]}</span>
-          <div>
-            <div className="text-xs font-bold font-mono">{test.expected_template} <span className="text-[10px] text-muted-foreground font-normal">· #{test.id}</span></div>
+          <div className="min-w-0">
+            <div className="text-xs font-bold font-mono truncate">
+              {test.expected_template}{" "}
+              <span className="text-[10px] text-muted-foreground font-normal">· #{test.id}</span>
+            </div>
           </div>
         </div>
-        <span className="text-[10px] text-muted-foreground">{statusLabel[result.status]}</span>
+        <div className="flex items-center gap-1.5 shrink-0">
+          {test.choreme && fam && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    className={`flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded border ${familyColors[fam].badge}`}
+                  >
+                    <span className={`w-1.5 h-1.5 rounded-full ${familyColors[fam].dot}`} />
+                    Chorème {test.choreme.code}
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs text-xs space-y-1">
+                  <div><span className="font-semibold">Triplet :</span> {test.choreme.triplet || "—"}</div>
+                  <div>
+                    <span className="font-semibold">Processus dominants :</span>{" "}
+                    {test.choreme.dominant_processes?.join(", ") || "—"}
+                  </div>
+                  <div>
+                    <span className="font-semibold">Marqueurs :</span>{" "}
+                    {(test.choreme.matching_expressions || []).slice(0, 3).join(" · ") || "—"}
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+          <span className="text-[10px] text-muted-foreground">{statusLabel[result.status]}</span>
+        </div>
       </div>
+
 
       <div className="text-xs text-muted-foreground">
         {truncated}
