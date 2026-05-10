@@ -17,10 +17,8 @@ import { palettes, paletteLabels, type Palette } from "@/palettes";
 import { buildFullTestSuite, type TestCase, type ChoremeFamily } from "@/data/test-suite";
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
 import {
-  applyPaletteVars,
   checkPaletteApplied,
   checkSlotsLength,
-  fillSlots,
   formatScorePct,
   loadRenderedSvg,
   svgToString,
