@@ -323,7 +323,13 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
         matchKind = "in_top3";
         status = "warning";
         failureCategory = "mismatch";
-        failureDetail = `Top 1 reçu = ${top.template_id} (attendu en position ${ids.indexOf(test.expected_template) + 1}/${ids.length})`;
+        const isChoremeExpected = !!test.choreme;
+        const top1IsProcedural = !top.template_id.startsWith("choreme_");
+        if (isChoremeExpected && top1IsProcedural) {
+          failureDetail = `Chorème attendu en position ${ids.indexOf(test.expected_template) + 1}/${ids.length} ; top 1 procédural équivalent reçu (${top.template_id})`;
+        } else {
+          failureDetail = `Top 1 reçu = ${top.template_id} (attendu en position ${ids.indexOf(test.expected_template) + 1}/${ids.length})`;
+        }
       } else {
         matchKind = "miss";
         status = "fail";
