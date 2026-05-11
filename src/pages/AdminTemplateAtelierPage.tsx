@@ -1,4 +1,5 @@
 import { useEffect, useReducer, useState, useCallback, useMemo } from "react";
+import KrobarSvg from "@/components/KrobarSvg";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Plus, Trash2, Loader2, Upload, X, Sparkles, Image as ImageIcon, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";

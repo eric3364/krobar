@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from "react";
+import KrobarSvg from "@/components/KrobarSvg";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";

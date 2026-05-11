@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useRef } from "react";
+import KrobarSvg from "@/components/KrobarSvg";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
