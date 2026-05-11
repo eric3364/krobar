@@ -280,6 +280,11 @@ export default function AdminStudioPage() {
       setTplName(tpl.name || tpl.id);
       setTplDescription(tpl.description || "");
       setTplMarkers(sp.textual_markers ?? []);
+      // La palette du template historique n'est pas connue : on la repart vierge
+      // pour qu'elle soit auto-analysée à l'entrée de la Phase 3 « Palette ».
+      setDetectedColors([]);
+      setPaletteMapping({});
+      setAutoPaletteMapping({});
       setSelectedId(null);
       setPhase(2);
 
