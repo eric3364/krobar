@@ -89,6 +89,7 @@ export default function AdminStudioPage() {
   const [tplDescription, setTplDescription] = useState("");
   const [tplMarkers, setTplMarkers] = useState<string[]>([]);
   const [newMarker, setNewMarker] = useState("");
+  const [tplTestText, setTplTestText] = useState("");
   const [deployOpen, setDeployOpen] = useState(false);
   const [deploying, setDeploying] = useState(false);
 
@@ -345,7 +346,7 @@ export default function AdminStudioPage() {
     setMatchingIds([]);
     setOtherChecked(false);
     setOtherText("");
-    setTplId(""); setTplName(""); setTplDescription(""); setTplMarkers([]);
+    setTplId(""); setTplName(""); setTplDescription(""); setTplMarkers([]); setTplTestText("");
     setResetOpen(false);
   };
 
@@ -376,6 +377,8 @@ export default function AdminStudioPage() {
       })),
       textual_markers: tplMarkers,
       matching_types: matchingLabels,
+      test_text: tplTestText.trim(),
+      add_to_test_suite: tplTestText.trim().length > 0,
       approved_by: "admin",
     };
   };
@@ -393,6 +396,8 @@ export default function AdminStudioPage() {
     if (!TPL_ID_RX.test(tplId)) return "Nom interne invalide (snake_case, 3-51 caractères).";
     if (!tplName.trim()) return "Nom affiché requis.";
     if (tplDescription.length > 250) return "Description trop longue (max 250 caractères).";
+    if (tplTestText.trim().length < 20) return "Texte de test requis (min 20 caractères) pour ajout à la suite de test.";
+    if (tplTestText.trim().length > 1000) return "Texte de test trop long (max 1000 caractères).";
     return null;
   };
   const onDeployClick = () => {
@@ -809,7 +814,26 @@ export default function AdminStudioPage() {
                     }}
                     placeholder="+ Ajouter un marqueur"
                   />
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="tpl-test-text">
+                  Texte de test <span className="text-destructive">*</span>
+                </Label>
+                <Textarea
+                  id="tpl-test-text"
+                  value={tplTestText}
+                  onChange={(e) => setTplTestText(e.target.value.slice(0, 1000))}
+                  rows={4}
+                  placeholder="Texte représentatif qui doit matcher ce template (utilisé dans la suite de test canonique)…"
+                />
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>Sera ajouté au corpus /admin/test-suite après déploiement.</span>
+                  <span>{tplTestText.length}/1000</span>
                 </div>
+                {tplTestText.trim().length > 0 && tplTestText.trim().length < 20 && (
+                  <p className="text-xs text-destructive">Min 20 caractères</p>
+                )}
+              </div>
               </div>
               <div className="space-y-1">
                 <Label>Slots</Label>
