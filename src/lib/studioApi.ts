@@ -11,7 +11,9 @@ import {
   type UploadResponse,
 } from "@/mocks/studio";
 
-const USE_MOCKS = (import.meta.env.VITE_USE_STUDIO_MOCKS ?? "true") !== "false";
+// Défaut : backend réel (krobar-proxy → /api/admin/studio/*).
+// Pour repasser en mocks localement : VITE_USE_STUDIO_MOCKS=true
+const USE_MOCKS = (import.meta.env.VITE_USE_STUDIO_MOCKS ?? "false") === "true";
 
 export type { MatchingType, UploadResponse } from "@/mocks/studio";
 
