@@ -992,6 +992,11 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
               onAnnotate={() => setAnnotateId(test.id)}
               onUpdateText={(text) => updateTestText(test.id, test.expected_template, text)}
               onResetText={() => resetTestText(test.id, test.expected_template)}
+              onEditTemplate={
+                hasSnapshot(test.expected_template)
+                  ? () => navigate(`/admin/studio?edit=${encodeURIComponent(test.expected_template)}`)
+                  : undefined
+              }
             />
           );
         })}
