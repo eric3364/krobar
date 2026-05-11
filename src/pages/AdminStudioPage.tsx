@@ -713,6 +713,17 @@ export default function AdminStudioPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-8">
+        {reconstructedBanner && (
+          <Card className="mb-6 p-4 border-amber-500/50 bg-amber-500/5 flex items-start justify-between gap-3">
+            <div className="text-sm">
+              <p className="font-medium text-amber-700 dark:text-amber-400">Paramètres reconstitués depuis le SVG déployé</p>
+              <p className="text-muted-foreground">{reconstructedBanner}</p>
+            </div>
+            <Button size="sm" variant="ghost" onClick={() => setReconstructedBanner(null)}>
+              <X className="w-4 h-4" />
+            </Button>
+          </Card>
+        )}
         {/* PHASE 1 */}
         {phase === 1 && (
           <div className="max-w-2xl mx-auto space-y-6">
