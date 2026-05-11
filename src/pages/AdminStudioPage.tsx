@@ -37,7 +37,7 @@ import {
   type StudioSnapshot,
 } from "@/lib/studioSnapshots";
 import { palettes, defaultPalette, type PaletteKey } from "@/palettes";
-import { applyPaletteToSvg, PALETTE_ROLES } from "@/lib/paletteRemap";
+import { applyPaletteToSvg, PALETTE_ROLES, detectColorsInSvg, autoMapDetectedColors } from "@/lib/paletteRemap";
 
 type Phase = 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -535,15 +535,30 @@ export default function AdminStudioPage() {
     if (detectedColors.length > 0) return; // déjà analysé (snapshot ou précédent)
     let cancelled = false;
     setPaletteLoading(true);
+    const applyLocal = () => {
+      const local = detectColorsInSvg(upload.cleaned_svg);
+      const auto = autoMapDetectedColors(local);
+      setDetectedColors(local);
+      setAutoPaletteMapping(auto);
+      setPaletteMapping((prev) => Object.keys(prev).length > 0 ? prev : auto);
+    };
     studioApi.analyzePalette(upload.cleaned_svg)
       .then((res) => {
         if (cancelled) return;
-        setDetectedColors(res.detected_colors ?? []);
+        const colors = res.detected_colors ?? [];
+        if (colors.length === 0) {
+          applyLocal();
+          return;
+        }
+        setDetectedColors(colors);
         setAutoPaletteMapping(res.auto_mapping ?? {});
-        // Ne pas écraser un mapping déjà saisi (cas snapshot vide mais user a touché)
         setPaletteMapping((prev) => Object.keys(prev).length > 0 ? prev : (res.auto_mapping ?? {}));
       })
-      .catch((e) => toast.error(e?.message ?? "Échec de l'analyse de palette"))
+      .catch(() => {
+        if (cancelled) return;
+        // Fallback silencieux client-side si le backend n'expose pas l'endpoint
+        applyLocal();
+      })
       .finally(() => { if (!cancelled) setPaletteLoading(false); });
     return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
