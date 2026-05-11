@@ -126,5 +126,25 @@ export const studioApi = {
     if (USE_MOCKS) return mockDeploy(payload);
     return adminFetch<{ deployed: boolean; template_id: string }>("/admin/studio/deploy", { body: payload });
   },
+  // Reconstitue les paramètres Studio d'un template déjà déployé (utilisé pour
+  // « Reconnecter » les templates Premium historiques sans snapshot Supabase).
+  getStudioParams(template_id: string) {
+    return adminFetch<{
+      template_id: string;
+      source: "snapshot" | "reconstructed_from_svg";
+      studio_params: {
+        session_id?: string;
+        image_width: number;
+        image_height: number;
+        source_format: "svg" | "eps" | "ai" | "pdf";
+        cleaned_svg: string;
+        anchors: Array<{ slot_name: string; x: number; y: number; w: number; h: number }>;
+        cardinality_configs?: Array<{ slot_name: string; mode: "optional_groups" | "variants"; min: number; max: number }>;
+        textual_markers?: string[];
+        matching_types?: string[];
+        saved_at?: string;
+      };
+    }>(`/admin/templates/${encodeURIComponent(template_id)}/studio-params`, { method: "GET" });
+  },
   isMockMode: () => USE_MOCKS,
 };
