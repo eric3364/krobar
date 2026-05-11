@@ -992,11 +992,8 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
               onAnnotate={() => setAnnotateId(test.id)}
               onUpdateText={(text) => updateTestText(test.id, test.expected_template, text)}
               onResetText={() => resetTestText(test.id, test.expected_template)}
-              onEditTemplate={
-                hasSnapshot(test.expected_template)
-                  ? () => navigate(`/admin/studio?edit=${encodeURIComponent(test.expected_template)}`)
-                  : undefined
-              }
+              canEditTemplate={test.premium}
+              onEditTemplate={() => navigate(`/admin/studio?edit=${encodeURIComponent(test.expected_template)}`)}
             />
           );
         })}
@@ -1060,10 +1057,11 @@ interface CardProps {
   onAnnotate: () => void;
   onUpdateText: (text: string) => void;
   onResetText: () => void;
+  canEditTemplate?: boolean;
   onEditTemplate?: () => void;
 }
 
-function TestCard({ test, result, note, selected, isTextOverridden, onToggleSelect, onReplay, onZoom, onShowFullText, onAnnotate, onUpdateText, onResetText, onEditTemplate }: CardProps) {
+function TestCard({ test, result, note, selected, isTextOverridden, onToggleSelect, onReplay, onZoom, onShowFullText, onAnnotate, onUpdateText, onResetText, canEditTemplate = false, onEditTemplate }: CardProps) {
   const [textOpen, setTextOpen] = useState(false);
   const [editing, setEditing] = useState(false);
   const [draftText, setDraftText] = useState(test.text);
