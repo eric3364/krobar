@@ -286,6 +286,8 @@ export default function AdminStudioPage() {
     } finally {
       setReconnecting(null);
     }
+  };
+
 
   const restoredEditRef = useRef<string | null>(null);
   useEffect(() => {
