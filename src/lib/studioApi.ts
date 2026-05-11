@@ -24,19 +24,54 @@ async function fileToBase64(file: File): Promise<string> {
   });
 }
 
+// Backend renvoie { groups: [{ label, matching_types: [{id,label,primary_intent,suggested_markers}] }] }
+type BackendMatchingTypesResponse = {
+  groups?: Array<{
+    label: string;
+    matching_types: Array<{
+      id: string;
+      label: string;
+      primary_intent: MatchingType["primary_intent"];
+      suggested_markers?: string[];
+      textual_markers?: string[];
+    }>;
+  }>;
+  matching_types?: MatchingType[];
+};
+
+function flattenMatchingTypes(r: BackendMatchingTypesResponse): MatchingType[] {
+  if (Array.isArray(r.groups)) {
+    const out: MatchingType[] = [];
+    for (const g of r.groups) {
+      for (const t of g.matching_types ?? []) {
+        out.push({
+          id: t.id,
+          label: t.label,
+          category: g.label,
+          primary_intent: t.primary_intent,
+          textual_markers: t.textual_markers ?? t.suggested_markers ?? [],
+        });
+      }
+    }
+    return out;
+  }
+  return r.matching_types ?? [];
+}
+
 export const studioApi = {
   async upload(file: File): Promise<UploadResponse> {
     if (USE_MOCKS) return mockUpload(file);
     const base64 = await fileToBase64(file);
     return adminFetch<UploadResponse>("/admin/studio/upload", {
-      body: { filename: file.name, mime_type: file.type, content_base64: base64 },
+      body: { filename: file.name, content_base64: base64 },
     });
   },
   async matchingTypes(): Promise<MatchingType[]> {
     if (USE_MOCKS) return (await mockMatchingTypes()).matching_types;
     try {
-      const r = await adminFetch<{ matching_types: MatchingType[] }>("/admin/studio/matching-types", { method: "GET" });
-      return r.matching_types ?? MATCHING_TYPES_FALLBACK;
+      const r = await adminFetch<BackendMatchingTypesResponse>("/admin/studio/matching-types", { method: "GET" });
+      const flat = flattenMatchingTypes(r);
+      return flat.length > 0 ? flat : MATCHING_TYPES_FALLBACK;
     } catch {
       return MATCHING_TYPES_FALLBACK;
     }
