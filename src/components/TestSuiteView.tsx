@@ -973,6 +973,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
       <main className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredTests.map((test) => {
           const r = results.find((x) => x.id === test.id) ?? emptyResult(test.id);
+          const isOverridden = textOverrides[test.expected_template] != null;
           return (
             <TestCard
               key={test.id}
@@ -980,11 +981,14 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
               result={r}
               note={notes[test.id] || ""}
               selected={selectedIds.has(test.id)}
+              isTextOverridden={isOverridden}
               onToggleSelect={() => toggleSelected(test.id)}
               onReplay={() => replayOne(test)}
               onZoom={(svg) => setZoom({ id: test.id, svg })}
               onShowFullText={() => setFullText(test)}
               onAnnotate={() => setAnnotateId(test.id)}
+              onUpdateText={(text) => updateTestText(test.id, test.expected_template, text)}
+              onResetText={() => resetTestText(test.id, test.expected_template)}
             />
           );
         })}
