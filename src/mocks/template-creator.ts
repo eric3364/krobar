@@ -26,6 +26,40 @@ export type GeneratePayload = {
   cardinality_mode: "variants" | "optional_groups" | "fixed_decor_pool";
 };
 
+export type OcrRegion = {
+  bbox: [number, number, number, number];
+  text: string;
+  confidence: number;
+};
+
+export type AnnotatorInstance = {
+  slot_id: string;
+  bbox: [number, number, number, number];
+  priority?: number;
+  rationale?: string;
+};
+
+export type IntermediateSteps = {
+  source_image: { base64: string; mime_type: string; width?: number; height?: number };
+  cleaned_image: { base64: string; mime_type: string; width?: number; height?: number };
+  vectorized_svg: string;
+  annotated_svg: string;
+  metadata: {
+    ocr: { regions_detected: number; elapsed_ms: number; engine: string; regions: OcrRegion[] };
+    vectorizer: { engine: string; detected_type?: string; elapsed_ms: number; svg_size_bytes: number };
+    annotator: {
+      model: string;
+      input_tokens: number;
+      output_tokens: number;
+      cost_usd: number;
+      elapsed_ms: number;
+      instances: AnnotatorInstance[];
+      overall_rationale?: string;
+    };
+    normalizer: { color_replacements: number; post_processor_changes: number; elapsed_ms: number };
+  };
+};
+
 export type GenerateResponse = {
   draft_id: string;
   svg: string;
@@ -33,7 +67,62 @@ export type GenerateResponse = {
   suggested_markers: string[];
   variants?: { cardinality: number; svg: string }[];
   warnings?: string[];
+  intermediate_steps?: IntermediateSteps;
 };
+
+const MOCK_PNG_SOURCE =
+  "iVBORw0KGgoAAAANSUhEUgAAAPAAAACMCAIAAADN17N/AAABkUlEQVR4nO3SsQkAIBDAwN9/Rmsbl3AJQQgHN0CKzNkLMuZ7ATxkaFIMTYqhSTE0KYYmxdCkGJoUQ5NiaFIMTYqhSTE0KYYmxdCkGJoUQ5NiaFIMTYqhSTE0KYYmxdCkGJoUQ5NiaFIMTYqhSTE0KYYmxdCkGJoUQ5NiaFIMTYqhSTE0KYYmxdCkGJoUQ5NiaFIMTYqhSTE0KYYmxdCkGJoUQ5NiaFIMTYqhSTE0KYYmxdCkGJoUQ5NiaFIMTYqhSTE0KYYmxdCkGJoUQ5NiaFIMTYqhSTE0KYYmxdCkGJoUQ5NiaFIMTYqhSTE0KYYmxdCkGJoUQ5NiaFIMTYqhSTE0KYYmxdCkGJoUQ5NiaFIMTYqhSTE0KYYmxdCkGJoUQ5NiaFIMTYqhSTE0KYYmxdCkGJoUQ5NiaFIMTYqhSTE0KYYmxdCkGJoUQ5NiaFIMTYqhSTE0KYYmxdCkGJoUQ5NiaFIMTYqhSTE0KYYmxdCkGJoUQ5NiaFIMTcoFxc1G0qJvrGMAAAAASUVORK5CYII=";
+const MOCK_PNG_CLEANED =
+  "iVBORw0KGgoAAAANSUhEUgAAAPAAAACMCAIAAADN17N/AAABj0lEQVR4nO3SsQkAMAzAsPx/ccnUJwoFI9ABHjy7BzLmewE8ZGhSDE2KoUkxNCmGJsXQpBiaFEOTYmhSDE2KoUkxNCmGJsXQpBiaFEOTYmhSDE2KoUkxNCmGJsXQpBiaFEOTYmhSDE2KoUkxNCmGJsXQpBiaFEOTYmhSDE2KoUkxNCmGJsXQpBiaFEOTYmhSDE2KoUkxNCmGJsXQpBiaFEOTYmhSDE2KoUkxNCmGJsXQpBiaFEOTYmhSDE2KoUkxNCmGJsXQpBiaFEOTYmhSDE2KoUkxNCmGJsXQpBiaFEOTYmhSDE2KoUkxNCmGJsXQpBiaFEOTYmhSDE2KoUkxNCmGJsXQpBiaFEOTYmhSDE2KoUkxNCmGJsXQpBiaFEOTYmhSDE2KoUkxNCmGJsXQpBiaFEOTYmhSDE2KoUkxNCmGJsXQpBiaFEOTYmhSDE2KoUkxNCmGJsXQpBiaFEOTYmhSDE3KBXNjlXLtLLucAAAAAElFTkSuQmCC";
+
+function buildMockIntermediateSteps(payload: GeneratePayload, baseSvg: string): IntermediateSteps {
+  const instances: AnnotatorInstance[] = payload.slots.map((s, i) => ({
+    slot_id: s.id,
+    bbox: [80 + i * 90, 60 + (i % 2) * 120, 140, 36] as [number, number, number, number],
+    priority: i + 1,
+    rationale:
+      s.type === "unique"
+        ? "Espace blanc central, bonne lisibilité du titre."
+        : `Position régulière dans la composition (occurrence ${i}).`,
+  }));
+  return {
+    source_image: { base64: MOCK_PNG_SOURCE, mime_type: "image/png", width: 1200, height: 700 },
+    cleaned_image: { base64: MOCK_PNG_CLEANED, mime_type: "image/png", width: 1200, height: 700 },
+    vectorized_svg: baseSvg,
+    annotated_svg: baseSvg,
+    metadata: {
+      ocr: {
+        regions_detected: 9,
+        elapsed_ms: 478,
+        engine: "tesseract",
+        regions: [
+          { bbox: [403, 65, 33, 20], text: "Le", confidence: 95 },
+          { bbox: [449, 65, 73, 27], text: "petit", confidence: 92 },
+          { bbox: [528, 70, 84, 24], text: "titre", confidence: 88 },
+          { bbox: [120, 200, 60, 22], text: "facette", confidence: 86 },
+        ],
+      },
+      vectorizer: {
+        engine: "potrace",
+        detected_type: "monochrome",
+        elapsed_ms: 159,
+        svg_size_bytes: baseSvg.length,
+      },
+      annotator: {
+        model: "claude-opus-4-7",
+        input_tokens: 1500,
+        output_tokens: 400,
+        cost_usd: 0.0525,
+        elapsed_ms: 30000,
+        instances,
+        overall_rationale: `Composition « ${payload.display_name} » : un slot unique central et ${
+          instances.length - 1
+        } slots répétés équidistants.`,
+      },
+      normalizer: { color_replacements: 12, post_processor_changes: 4, elapsed_ms: 8 },
+    },
+  };
+}
 
 function delay(ms: number) {
   return new Promise((r) => setTimeout(r, ms));
@@ -129,6 +218,7 @@ export async function mockGenerate(payload: GeneratePayload): Promise<GenerateRe
       payload.cardinality_mode === "optional_groups" && repeated && (repeated.max ?? 0) - (repeated.min ?? 0) > 4
         ? ["Plage de cardinalité large : risque de trous visuels avec slot-groups optionnels."]
         : undefined,
+    intermediate_steps: buildMockIntermediateSteps(payload, baseSvg),
   };
 }
 
