@@ -58,6 +58,19 @@ type TestResult = {
 
 const RESULTS_STORAGE = "kroki-last-test-run";
 const NOTES_STORAGE = "kroki-test-notes";
+const TEXT_OVERRIDES_STORAGE = "kroki-test-text-overrides";
+
+function loadTextOverrides(): Record<string, string> {
+  try {
+    return JSON.parse(localStorage.getItem(TEXT_OVERRIDES_STORAGE) || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function saveTextOverrides(o: Record<string, string>) {
+  localStorage.setItem(TEXT_OVERRIDES_STORAGE, JSON.stringify(o));
+}
 
 function emptyResult(id: number): TestResult {
   return {
