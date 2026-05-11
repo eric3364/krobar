@@ -203,19 +203,24 @@ export default function AdminStudioPage() {
   useEffect(() => {
     const editId = searchParams.get("edit");
     if (!editId || restoredEditRef.current === editId) return;
-    const snap = loadSnapshot(editId);
-    if (snap) {
-      restoredEditRef.current = editId;
-      restoreSnapshot(snap, 5);
-    } else {
-      toast.error(
-        `Aucun snapshot local pour « ${editId} ». Les paramètres ne peuvent être réouverts que pour les templates créés depuis ce navigateur.`,
-      );
-    }
-    // Nettoie l'URL pour ne pas re-déclencher au prochain render.
-    const next = new URLSearchParams(searchParams);
-    next.delete("edit");
-    setSearchParams(next, { replace: true });
+    let cancelled = false;
+    (async () => {
+      await hydrateSnapshots();
+      if (cancelled) return;
+      const snap = loadSnapshot(editId);
+      if (snap) {
+        restoredEditRef.current = editId;
+        restoreSnapshot(snap, 5);
+      } else {
+        toast.error(
+          `Aucun snapshot trouvé pour « ${editId} ». Re-saisis ses paramètres une fois pour le rendre éditable.`,
+        );
+      }
+      const next = new URLSearchParams(searchParams);
+      next.delete("edit");
+      setSearchParams(next, { replace: true });
+    })();
+    return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
