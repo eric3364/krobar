@@ -17,10 +17,25 @@ const USE_MOCKS = (import.meta.env.VITE_USE_STUDIO_MOCKS ?? "false") === "true";
 
 export type { MatchingType, UploadResponse } from "@/mocks/studio";
 
-// Le backend Studio reçoit aujourd'hui l'upload via JSON + base64.
-// Au-delà d'environ 1 Mo de corps HTTP côté reverse proxy, Krobar renvoie 413.
-// On garde une marge pour éviter le 502 côté edge function.
-const REAL_UPLOAD_MAX_BODY_BYTES = 900_000;
+export const MAX_STUDIO_FILE_SIZE_BYTES = 3 * 1024 * 1024;
+
+export function validateStudioUploadFile(file: File): { ok: true } | { ok: false; error: string } {
+  if (file.size <= MAX_STUDIO_FILE_SIZE_BYTES) {
+    return { ok: true };
+  }
+
+  const sizeMb = (file.size / 1024 / 1024).toFixed(2);
+  return {
+    ok: false,
+    error:
+      `Fichier trop volumineux (${sizeMb} Mo). La limite est de 3 Mo en raison du transport via Supabase Edge Functions.\n\n` +
+      "Pistes pour réduire :\n" +
+      "• Simplifie ton SVG dans Illustrator (Object > Path > Simplify)\n" +
+      "• Exporte en SVG plutôt qu'EPS si possible\n" +
+      "• Aplatis les calques inutiles\n" +
+      "• Supprime la preview TIFF intégrée dans les EPS (l'augmentation peut être 5-10×)",
+  };
+}
 
 async function fileToBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -29,12 +44,6 @@ async function fileToBase64(file: File): Promise<string> {
     r.onerror = () => reject(r.error);
     r.readAsDataURL(file);
   });
-}
-
-function estimateBase64JsonBodySize(file: File): number {
-  const base64Bytes = Math.ceil(file.size / 3) * 4;
-  const jsonOverhead = 256;
-  return base64Bytes + jsonOverhead;
 }
 
 // Backend renvoie { groups: [{ label, matching_types: [{id,label,primary_intent,suggested_markers}] }] }
@@ -75,10 +84,9 @@ export const studioApi = {
   async upload(file: File): Promise<UploadResponse> {
     if (USE_MOCKS) return mockUpload(file);
 
-    if (estimateBase64JsonBodySize(file) > REAL_UPLOAD_MAX_BODY_BYTES) {
-      throw new Error(
-        "Ce fichier dépasse la limite d'upload actuelle du backend Studio en base64. Réduisez son poids ou exportez-le en SVG avant import.",
-      );
+    const validation = validateStudioUploadFile(file);
+    if (validation.ok === false) {
+      throw new Error(validation.error);
     }
 
     const base64 = await fileToBase64(file);

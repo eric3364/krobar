@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type DragEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, ArrowLeftCircle, Copy, Loader2, RotateCcw, Save, Trash2, Upload, X, Rocket, MousePointer2, Square as SquareIcon, Plus } from "lucide-react";
 import { toast } from "sonner";
@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/alert-dialog";
 
 import StudioCanvas, { type Anchor, colorForSlot, type Tool } from "@/components/studio/StudioCanvas";
-import { studioApi, type MatchingType, type UploadResponse } from "@/lib/studioApi";
+import { studioApi, type MatchingType, type UploadResponse, validateStudioUploadFile } from "@/lib/studioApi";
 
 type Phase = 1 | 2 | 3 | 4 | 5;
 
@@ -94,6 +94,8 @@ export default function AdminStudioPage() {
 
   // UI
   const [resetOpen, setResetOpen] = useState(false);
+  const [dragState, setDragState] = useState<"idle" | "accept" | "reject">("idle");
+  const [dragMessage, setDragMessage] = useState<string | null>(null);
 
   // ─── Phase 1: upload ──────────────────────────────────────────────────
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -102,10 +104,13 @@ export default function AdminStudioPage() {
       toast.error("Format non supporté. Utilisez SVG, EPS, AI ou PDF.");
       return;
     }
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error("Fichier trop lourd (max 5 Mo).");
+
+    const validation = validateStudioUploadFile(file);
+    if (validation.ok === false) {
+      toast.error(validation.error, { duration: 8000 });
       return;
     }
+
     setUploading(true);
     try {
       const res = await studioApi.upload(file);
@@ -116,6 +121,36 @@ export default function AdminStudioPage() {
     } finally {
       setUploading(false);
     }
+  };
+
+  const updateDragState = (file: File | null) => {
+    if (!file) {
+      setDragState("idle");
+      setDragMessage(null);
+      return;
+    }
+
+    if (!/\.(svg|eps|ai|pdf)$/i.test(file.name)) {
+      setDragState("reject");
+      setDragMessage("Format non supporté");
+      return;
+    }
+
+    const validation = validateStudioUploadFile(file);
+    if (validation.ok === false) {
+      setDragState("reject");
+      setDragMessage("Fichier trop volumineux");
+      return;
+    }
+
+    setDragState("accept");
+    setDragMessage("Fichier accepté");
+  };
+
+  const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
+    if (e.currentTarget.contains(e.relatedTarget as Node | null)) return;
+    setDragState("idle");
+    setDragMessage(null);
   };
 
   // ─── Phase 2 helpers ──────────────────────────────────────────────────
@@ -421,20 +456,46 @@ export default function AdminStudioPage() {
         {phase === 1 && (
           <div className="max-w-2xl mx-auto space-y-6">
             <Card
-              className="p-12 border-2 border-dashed cursor-pointer hover:bg-muted/40 transition-colors"
+              className={`p-12 border-2 border-dashed cursor-pointer transition-colors ${
+                dragState === "reject"
+                  ? "border-destructive bg-destructive/5"
+                  : dragState === "accept"
+                    ? "border-primary bg-primary/5"
+                    : "hover:bg-muted/40"
+              }`}
               onClick={() => fileInputRef.current?.click()}
-              onDragOver={(e) => e.preventDefault()}
+              onDragEnter={(e) => {
+                e.preventDefault();
+                updateDragState(e.dataTransfer.items?.[0]?.kind === "file" ? e.dataTransfer.files?.[0] ?? null : null);
+              }}
+              onDragOver={(e) => {
+                e.preventDefault();
+                updateDragState(e.dataTransfer.items?.[0]?.kind === "file" ? e.dataTransfer.files?.[0] ?? null : null);
+              }}
+              onDragLeave={handleDragLeave}
               onDrop={(e) => {
                 e.preventDefault();
+                setDragState("idle");
+                setDragMessage(null);
                 const f = e.dataTransfer.files?.[0];
                 if (f) void handleFile(f);
               }}
             >
               <div className="text-center space-y-3">
                 <Upload className="w-10 h-10 mx-auto text-muted-foreground" />
-                <p className="font-medium">Glissez votre fichier ici ou cliquez pour choisir</p>
+                <p className="font-medium">Glissez votre fichier vectoriel ici ou cliquez pour le choisir</p>
                 <p className="text-sm text-muted-foreground">SVG · EPS · AI · PDF</p>
-                <p className="text-xs text-muted-foreground">Taille maximale : 5 Mo</p>
+                <p className="text-xs text-muted-foreground">Taille maximale : 3 Mo</p>
+                <p className="text-xs italic text-muted-foreground">
+                  ⓘ Limite imposée par le transport via Supabase Edge Functions.
+                  <br />
+                  Pour les fichiers plus volumineux, utilise un outil de simplification SVG.
+                </p>
+                {dragMessage && (
+                  <p className={`text-xs font-medium ${dragState === "reject" ? "text-destructive" : "text-primary"}`}>
+                    {dragMessage}
+                  </p>
+                )}
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -443,6 +504,7 @@ export default function AdminStudioPage() {
                   onChange={(e) => {
                     const f = e.target.files?.[0];
                     if (f) void handleFile(f);
+                    e.currentTarget.value = "";
                   }}
                 />
               </div>
