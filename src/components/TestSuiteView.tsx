@@ -441,11 +441,11 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
         } else {
           try {
             const normalized = raw.map((s) => ({ ...s, score: normalizeScore(s.score) }));
-            const reranked = rerankPremiumSuggestions(normalized, test);
+            const reranked = await rerankPremiumSuggestions(normalized, test);
             suggestions = reranked.suggestions;
             if (reranked.promoted) {
               console.info(
-                `[Test ${test.expected_template}] premium re-rank : ${reranked.hits} marqueur(s) détecté(s) → top 1 forcé`,
+                `[Test ${test.expected_template}] premium re-rank : ${reranked.hits} marqueur(s) → top 1 forcé${reranked.forcedError ? ` (force_template_id KO: ${reranked.forcedError}, slots vides)` : " (slots remplis via force_template_id)"}`,
               );
             }
           } catch (e) {
