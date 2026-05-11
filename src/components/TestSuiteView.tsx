@@ -475,11 +475,14 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
 
   // Score breakdown procéduraux vs chorèmes
   const choremeIds = useMemo(() => new Set(testSuite.filter((t) => t.choreme).map((t) => t.id)), [testSuite]);
-  const procIds = useMemo(() => new Set(testSuite.filter((t) => !t.choreme).map((t) => t.id)), [testSuite]);
+  const premiumIds = useMemo(() => new Set(testSuite.filter((t) => t.premium).map((t) => t.id)), [testSuite]);
+  const procIds = useMemo(() => new Set(testSuite.filter((t) => !t.choreme && !t.premium).map((t) => t.id)), [testSuite]);
   const procDone = results.filter((r) => procIds.has(r.id) && r.status !== "idle" && r.status !== "running");
   const procSuccess = procDone.filter((r) => r.status === "success").length;
   const chorDone = results.filter((r) => choremeIds.has(r.id) && r.status !== "idle" && r.status !== "running");
   const chorSuccess = chorDone.filter((r) => r.status === "success").length;
+  const premDone = results.filter((r) => premiumIds.has(r.id) && r.status !== "idle" && r.status !== "running");
+  const premSuccess = premDone.filter((r) => r.status === "success").length;
 
   const selectFiltered = () => setSelectedIds(new Set(filteredTests.map((t) => t.id)));
 
