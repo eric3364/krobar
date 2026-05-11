@@ -27,6 +27,9 @@ export const STUDIO_RECENT_DEPLOYS_STORAGE = "krobar-studio-recent-deploys";
 
 type ManifestEntry = {
   id: string;
+  name?: string;
+  description?: string;
+  best_for?: string;
   family?: string;
   source?: string;
   premium?: boolean;
