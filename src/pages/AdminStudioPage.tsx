@@ -396,6 +396,8 @@ export default function AdminStudioPage() {
     if (!TPL_ID_RX.test(tplId)) return "Nom interne invalide (snake_case, 3-51 caractères).";
     if (!tplName.trim()) return "Nom affiché requis.";
     if (tplDescription.length > 250) return "Description trop longue (max 250 caractères).";
+    if (tplTestText.trim().length < 20) return "Texte de test requis (min 20 caractères) pour ajout à la suite de test.";
+    if (tplTestText.trim().length > 1000) return "Texte de test trop long (max 1000 caractères).";
     return null;
   };
   const onDeployClick = () => {
