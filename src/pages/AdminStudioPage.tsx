@@ -93,6 +93,34 @@ export default function AdminStudioPage() {
   const [tplTestText, setTplTestText] = useState("");
   const [deployOpen, setDeployOpen] = useState(false);
   const [deploying, setDeploying] = useState(false);
+  const [existingIds, setExistingIds] = useState<Set<string>>(new Set());
+
+  // Charge l'ensemble des IDs déjà utilisés (manifest statique + corpus backend)
+  // pour prévenir l'utilisateur en amont du déploiement.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const ids = new Set<string>();
+      try {
+        const r = await fetch("/templates/manifest.json");
+        if (r.ok) {
+          const m = await r.json();
+          for (const t of m?.templates ?? []) if (t?.id) ids.add(String(t.id));
+        }
+      } catch { /* ignore */ }
+      try {
+        const resp = await supabase.functions.invoke("krobar-proxy", {
+          body: { endpoint: "test-texts" },
+        });
+        const tests = (resp.data as { tests?: { template_id?: string }[] } | null)?.tests ?? [];
+        for (const t of tests) if (t.template_id) ids.add(String(t.template_id));
+      } catch { /* ignore */ }
+      if (!cancelled) setExistingIds(ids);
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
+  const idTaken = tplId.length > 0 && existingIds.has(tplId);
 
   // UI
   const [resetOpen, setResetOpen] = useState(false);
