@@ -117,6 +117,9 @@ export default function AdminStudioPage() {
   const [existingIds, setExistingIds] = useState<Set<string>>(new Set());
   const [reconnecting, setReconnecting] = useState<string | null>(null);
   const [reconstructedBanner, setReconstructedBanner] = useState<string | null>(null);
+  // ID du template existant en cours d'édition (snapshot ou reconnect).
+  // Permet d'autoriser le redéploiement sous le même ID sans déclencher "ID déjà utilisé".
+  const [editingExistingId, setEditingExistingId] = useState<string | null>(null);
 
   // Charge l'ensemble des IDs déjà utilisés (manifest statique + corpus backend)
   // pour prévenir l'utilisateur en amont du déploiement.
