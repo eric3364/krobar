@@ -1044,15 +1044,23 @@ interface CardProps {
   result: TestResult;
   note: string;
   selected: boolean;
+  isTextOverridden: boolean;
   onToggleSelect: () => void;
   onReplay: () => void;
   onZoom: (svg: string) => void;
   onShowFullText: () => void;
   onAnnotate: () => void;
+  onUpdateText: (text: string) => void;
+  onResetText: () => void;
 }
 
-function TestCard({ test, result, note, selected, onToggleSelect, onReplay, onZoom, onShowFullText, onAnnotate }: CardProps) {
+function TestCard({ test, result, note, selected, isTextOverridden, onToggleSelect, onReplay, onZoom, onShowFullText, onAnnotate, onUpdateText, onResetText }: CardProps) {
   const [textOpen, setTextOpen] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [draftText, setDraftText] = useState(test.text);
+  useEffect(() => {
+    if (!editing) setDraftText(test.text);
+  }, [test.text, editing]);
   const matchBadge = useMemo(() => {
     if (result.matchKind === "exact")
       return <span className="text-xs text-green-700 font-medium">✅ Match attendu</span>;
