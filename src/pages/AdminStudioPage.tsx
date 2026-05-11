@@ -323,7 +323,7 @@ export default function AdminStudioPage() {
       const snap = loadSnapshot(editId);
       if (snap) {
         restoredEditRef.current = editId;
-        restoreSnapshot(snap, 5);
+        restoreSnapshot(snap, 6);
       } else {
         toast.error(
           `Aucun snapshot trouvé pour « ${editId} ». Re-saisis ses paramètres une fois pour le rendre éditable.`,
