@@ -34,6 +34,8 @@ export type StudioSnapshot = {
   otherChecked: boolean;
   otherText: string;
   upload: UploadResponse | null;
+  paletteMapping?: Record<string, string | null>;
+  detectedColors?: Array<{ hex_value: string; occurrences: number; is_neutral: boolean }>;
   saved_at: string;
 };
 

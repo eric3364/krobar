@@ -36,8 +36,10 @@ import {
   subscribeSnapshots,
   type StudioSnapshot,
 } from "@/lib/studioSnapshots";
+import { palettes, defaultPalette, type PaletteKey } from "@/palettes";
+import { applyPaletteToSvg, PALETTE_ROLES } from "@/lib/paletteRemap";
 
-type Phase = 1 | 2 | 3 | 4 | 5;
+type Phase = 1 | 2 | 3 | 4 | 5 | 6;
 
 type CardinalityConfig = {
   slotName: string;
@@ -57,7 +59,7 @@ const CATEGORIES = [
 ] as const;
 
 const PHASE_LABELS: Record<Phase, string> = {
-  1: "Upload", 2: "Ancres", 3: "Cardinalité", 4: "Matching", 5: "Méta + go",
+  1: "Upload", 2: "Ancres", 3: "Palette", 4: "Cardinalité", 5: "Matching", 6: "Méta + go",
 };
 
 const SLOT_NAME_RX = /^[a-z][a-z0-9_]{0,30}$/;
@@ -94,17 +96,24 @@ export default function AdminStudioPage() {
   const [renameTarget, setRenameTarget] = useState<string | null>(null);
   const [renameValue, setRenameValue] = useState("");
 
-  // Phase 3
+  // Phase 3 — Palette
+  const [detectedColors, setDetectedColors] = useState<Array<{ hex_value: string; occurrences: number; is_neutral: boolean }>>([]);
+  const [paletteMapping, setPaletteMapping] = useState<Record<string, string | null>>({});
+  const [autoPaletteMapping, setAutoPaletteMapping] = useState<Record<string, string | null>>({});
+  const [paletteLoading, setPaletteLoading] = useState(false);
+  const [previewPaletteKey, setPreviewPaletteKey] = useState<PaletteKey>(defaultPalette);
+
+  // Phase 4 — Cardinalité (ex-Phase 3)
   const [cardinality, setCardinality] = useState<CardinalityConfig[]>([]);
 
-  // Phase 4
+  // Phase 5 — Matching (ex-Phase 4)
   const [matchingTypes, setMatchingTypes] = useState<MatchingType[]>([]);
   const [matchingIds, setMatchingIds] = useState<string[]>([]);
   const [otherChecked, setOtherChecked] = useState(false);
   const [otherText, setOtherText] = useState("");
   const [matchingLoading, setMatchingLoading] = useState(false);
 
-  // Phase 5
+  // Phase 6 — Méta + go (ex-Phase 5)
   const [tplId, setTplId] = useState("");
   const [tplName, setTplName] = useState("");
   const [tplCategory, setTplCategory] = useState<typeof CATEGORIES[number]["value"]>("network");
@@ -185,7 +194,7 @@ export default function AdminStudioPage() {
   const [dragMessage, setDragMessage] = useState<string | null>(null);
 
   // ─── Restauration d'un template existant ──────────────────────────────
-  const restoreSnapshot = (snap: StudioSnapshot, jumpTo: Phase = 5) => {
+  const restoreSnapshot = (snap: StudioSnapshot, jumpTo: Phase = 6) => {
     setUpload(snap.upload);
     setAnchors(snap.anchors ?? []);
     setCardinality(snap.cardinality ?? []);
@@ -199,6 +208,9 @@ export default function AdminStudioPage() {
     setTplDescription(snap.tplDescription ?? "");
     setTplMarkers(snap.tplMarkers ?? []);
     setTplTestText(snap.tplTestText ?? "");
+    setDetectedColors(snap.detectedColors ?? []);
+    setPaletteMapping(snap.paletteMapping ?? {});
+    setAutoPaletteMapping(snap.paletteMapping ?? {});
     setSelectedId(null);
     setPhase(snap.upload ? jumpTo : 1);
     toast.success(`Template « ${snap.tplName || snap.template_id} » chargé pour modification`);
@@ -268,6 +280,11 @@ export default function AdminStudioPage() {
       setTplName(tpl.name || tpl.id);
       setTplDescription(tpl.description || "");
       setTplMarkers(sp.textual_markers ?? []);
+      // La palette du template historique n'est pas connue : on la repart vierge
+      // pour qu'elle soit auto-analysée à l'entrée de la Phase 3 « Palette ».
+      setDetectedColors([]);
+      setPaletteMapping({});
+      setAutoPaletteMapping({});
       setSelectedId(null);
       setPhase(2);
 
@@ -306,7 +323,7 @@ export default function AdminStudioPage() {
       const snap = loadSnapshot(editId);
       if (snap) {
         restoredEditRef.current = editId;
-        restoreSnapshot(snap, 5);
+        restoreSnapshot(snap, 6);
       } else {
         toast.error(
           `Aucun snapshot trouvé pour « ${editId} ». Re-saisis ses paramètres une fois pour le rendre éditable.`,
@@ -511,16 +528,52 @@ export default function AdminStudioPage() {
     return s;
   }, [selectedMatching, otherChecked, otherText]);
 
-  // ─── Init phase 5 fields when entering ────────────────────────────────
-  const phase5Initialized = useRef(false);
+  // ─── Phase 3 — Auto-analyse de la palette à l'entrée ─────────────────
   useEffect(() => {
-    if (phase === 5 && !phase5Initialized.current) {
+    if (phase !== 3) return;
+    if (!upload?.cleaned_svg) return;
+    if (detectedColors.length > 0) return; // déjà analysé (snapshot ou précédent)
+    let cancelled = false;
+    setPaletteLoading(true);
+    studioApi.analyzePalette(upload.cleaned_svg)
+      .then((res) => {
+        if (cancelled) return;
+        setDetectedColors(res.detected_colors ?? []);
+        setAutoPaletteMapping(res.auto_mapping ?? {});
+        // Ne pas écraser un mapping déjà saisi (cas snapshot vide mais user a touché)
+        setPaletteMapping((prev) => Object.keys(prev).length > 0 ? prev : (res.auto_mapping ?? {}));
+      })
+      .catch((e) => toast.error(e?.message ?? "Échec de l'analyse de palette"))
+      .finally(() => { if (!cancelled) setPaletteLoading(false); });
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase, upload?.cleaned_svg]);
+
+  const previewPalette = palettes[previewPaletteKey];
+  const previewSvg = useMemo(() => {
+    if (!upload?.cleaned_svg) return "";
+    return applyPaletteToSvg(upload.cleaned_svg, paletteMapping, previewPalette);
+  }, [upload?.cleaned_svg, paletteMapping, previewPalette]);
+
+  const duplicatePaletteRoles = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const r of Object.values(paletteMapping)) {
+      if (!r) continue;
+      counts.set(r, (counts.get(r) ?? 0) + 1);
+    }
+    return Array.from(counts.entries()).filter(([, n]) => n > 1).map(([r]) => r);
+  }, [paletteMapping]);
+
+  // ─── Init phase 6 fields when entering ────────────────────────────────
+  const phase6Initialized = useRef(false);
+  useEffect(() => {
+    if (phase === 6 && !phase6Initialized.current) {
       setTplCategory(derivedPrimaryIntent);
       if (!tplDescription) setTplDescription(derivedBestFor.slice(0, 250));
       if (tplMarkers.length === 0) setTplMarkers(derivedMarkers);
-      phase5Initialized.current = true;
+      phase6Initialized.current = true;
     }
-    if (phase !== 5) phase5Initialized.current = false;
+    if (phase !== 6) phase6Initialized.current = false;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase]);
 
@@ -536,26 +589,29 @@ export default function AdminStudioPage() {
   const goNext = () => {
     if (phase === 1 && !upload) return;
     if (phase === 2 && anchors.length === 0) return;
-    if (phase === 4 && matchingIds.length === 0) {
+    if (phase === 5 && matchingIds.length === 0) {
       toast.error("Coche au moins une intention pour continuer.");
       return;
     }
-    if (phase === 4 && otherChecked && !otherText.trim()) {
+    if (phase === 5 && otherChecked && !otherText.trim()) {
       toast.error("Précise le texte « Autre » ou décoche la case.");
       return;
     }
-    let next = (phase + 1) as Phase;
-    // Skip phase 3 si pas de slots répétés
-    if (next === 3 && cardinality.length === 0) {
-      toast("Pas de cardinalité à configurer, on passe à la suite.");
-      next = 4;
+    if (phase === 3 && duplicatePaletteRoles.length > 0) {
+      toast.warning(`Plusieurs couleurs partagent le même rôle (${duplicatePaletteRoles.join(", ")}).`);
     }
-    if (next > 5) return;
+    let next = (phase + 1) as Phase;
+    // Skip phase 4 (cardinalité) si pas de slots répétés
+    if (next === 4 && cardinality.length === 0) {
+      toast("Pas de cardinalité à configurer, on passe à la suite.");
+      next = 5;
+    }
+    if (next > 6) return;
     setPhase(next);
   };
   const goPrev = () => {
     let prev = (phase - 1) as Phase;
-    if (prev === 3 && cardinality.length === 0) prev = 2;
+    if (prev === 4 && cardinality.length === 0) prev = 3;
     if (prev < 1) return;
     setPhase(prev);
   };
@@ -569,6 +625,9 @@ export default function AdminStudioPage() {
     setMatchingIds([]);
     setOtherChecked(false);
     setOtherText("");
+    setDetectedColors([]);
+    setPaletteMapping({});
+    setAutoPaletteMapping({});
     setTplId(""); setTplName(""); setTplDescription(""); setTplMarkers([]); setTplTestText("");
     setEditingExistingId(null);
     setResetOpen(false);
@@ -603,6 +662,7 @@ export default function AdminStudioPage() {
       matching_types: matchingLabels,
       test_text: tplTestText.trim(),
       add_to_test_suite: tplTestText.trim().length > 0,
+      palette_mapping: paletteMapping,
       approved_by: "admin",
     };
   };
@@ -667,6 +727,8 @@ export default function AdminStudioPage() {
           otherChecked,
           otherText,
           upload,
+          paletteMapping,
+          detectedColors,
           saved_at: new Date().toISOString(),
         });
       } catch {
@@ -703,15 +765,15 @@ export default function AdminStudioPage() {
           </Button>
         </div>
         {/* Progress bar */}
-        <div className="max-w-7xl mx-auto px-6 pb-4 grid grid-cols-5 gap-2">
-          {([1, 2, 3, 4, 5] as Phase[]).map((p) => {
+        <div className="max-w-7xl mx-auto px-6 pb-4 grid grid-cols-6 gap-2">
+          {([1, 2, 3, 4, 5, 6] as Phase[]).map((p) => {
             const done = p < phase;
             const current = p === phase;
             return (
               <div key={p} className="space-y-1">
                 <div className={`h-1.5 rounded-full ${done ? "bg-primary" : current ? "bg-primary/60" : "bg-muted"}`} />
                 <p className={`text-xs ${current ? "font-medium text-foreground" : "text-muted-foreground"}`}>
-                  {p}/5 · {PHASE_LABELS[p]}
+                  {p}/6 · {PHASE_LABELS[p]}
                 </p>
               </div>
             );
@@ -997,8 +1059,126 @@ export default function AdminStudioPage() {
           </div>
         )}
 
-        {/* PHASE 3 */}
-        {phase === 3 && (
+        {/* PHASE 3 — Palette */}
+        {phase === 3 && upload && (
+          <div className="max-w-3xl mx-auto space-y-4">
+            <div>
+              <h2 className="text-xl font-semibold">Palette du template</h2>
+              <p className="text-sm text-muted-foreground">
+                {paletteLoading
+                  ? "Analyse des couleurs en cours…"
+                  : detectedColors.length === 0
+                    ? "Aucune couleur détectée."
+                    : `J'ai détecté ${detectedColors.length} couleur${detectedColors.length > 1 ? "s" : ""}. Assigne chaque couleur à un rôle de la palette Krobar, ou laisse-la inchangée.`}
+              </p>
+            </div>
+
+            {paletteLoading && (
+              <Card className="p-4 flex items-center gap-3">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <p className="text-sm">Détection des couleurs dominantes…</p>
+              </Card>
+            )}
+
+            {detectedColors.length > 0 && (
+              <>
+                <div className="flex items-center justify-between">
+                  <p className="text-xs text-muted-foreground">
+                    {Object.values(paletteMapping).filter(Boolean).length} / {detectedColors.length} assignée(s)
+                  </p>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => setPaletteMapping({ ...autoPaletteMapping })}
+                  >
+                    <RotateCcw className="w-3 h-3" /> Reset auto
+                  </Button>
+                </div>
+
+                {duplicatePaletteRoles.length > 0 && (
+                  <Card className="p-3 border-amber-500/50 bg-amber-500/5">
+                    <p className="text-xs text-amber-700 dark:text-amber-400">
+                      ⚠️ Plusieurs couleurs partagent le même rôle : {duplicatePaletteRoles.join(", ")}.
+                      Le rendu pourra être ambigu.
+                    </p>
+                  </Card>
+                )}
+
+                <Card className="divide-y">
+                  {detectedColors.map((c, idx) => {
+                    const isDominant = idx === 0;
+                    const role = paletteMapping[c.hex_value] ?? null;
+                    return (
+                      <div key={c.hex_value} className="p-3 flex items-center gap-3">
+                        <div
+                          className="w-8 h-8 rounded border shrink-0"
+                          style={{ background: c.hex_value }}
+                          aria-label={c.hex_value}
+                        />
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-mono text-sm">{c.hex_value}</span>
+                            <span className="text-xs text-muted-foreground">
+                              {c.occurrences} occurrence{c.occurrences > 1 ? "s" : ""}
+                            </span>
+                            {isDominant && <Badge variant="outline" className="text-[10px]">dominante</Badge>}
+                            {c.is_neutral && <Badge variant="secondary" className="text-[10px]">neutre détecté</Badge>}
+                          </div>
+                        </div>
+                        <Select
+                          value={role ?? "__keep__"}
+                          onValueChange={(v) => {
+                            setPaletteMapping((prev) => ({
+                              ...prev,
+                              [c.hex_value]: v === "__keep__" ? null : v,
+                            }));
+                          }}
+                        >
+                          <SelectTrigger className="w-44 shrink-0"><SelectValue /></SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="__keep__">garder telle quelle</SelectItem>
+                            {PALETTE_ROLES.map((r) => (
+                              <SelectItem key={r} value={r}>{r}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    );
+                  })}
+                </Card>
+
+                {/* Aperçu live */}
+                <Card className="p-4 space-y-3">
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <h3 className="text-sm font-semibold">Aperçu avec palette « {previewPalette.name} »</h3>
+                    <div className="flex items-center gap-2">
+                      <Label htmlFor="preview-palette" className="text-xs text-muted-foreground">Palette d'aperçu :</Label>
+                      <Select value={previewPaletteKey} onValueChange={(v) => setPreviewPaletteKey(v as PaletteKey)}>
+                        <SelectTrigger id="preview-palette" className="w-40 h-8"><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          {Object.values(palettes).map((p) => (
+                            <SelectItem key={p.key} value={p.key}>{p.name}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <div
+                    className="rounded border p-3"
+                    style={{ background: previewPalette.colors.bg }}
+                    dangerouslySetInnerHTML={{ __html: previewSvg }}
+                  />
+                  <p className="text-[11px] text-muted-foreground">
+                    L'aperçu remplace localement les couleurs ; au déploiement, le SVG en prod utilisera <code>var(--xxx)</code>.
+                  </p>
+                </Card>
+              </>
+            )}
+          </div>
+        )}
+
+        {/* PHASE 4 — Cardinalité */}
+        {phase === 4 && (
           <div className="max-w-2xl mx-auto space-y-4">
             <h2 className="text-xl font-semibold">Cardinalité des slots répétés</h2>
             {cardinality.length === 0 ? (
@@ -1063,8 +1243,8 @@ export default function AdminStudioPage() {
           </div>
         )}
 
-        {/* PHASE 4 */}
-        {phase === 4 && (
+        {/* PHASE 5 — Matching */}
+        {phase === 5 && (
           <div className="max-w-2xl mx-auto space-y-4">
             <div>
               <h2 className="text-xl font-semibold">Pour quels textes ton template est-il pertinent ?</h2>
@@ -1111,8 +1291,8 @@ export default function AdminStudioPage() {
           </div>
         )}
 
-        {/* PHASE 5 */}
-        {phase === 5 && upload && (
+        {/* PHASE 6 — Méta + go */}
+        {phase === 6 && upload && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card className="p-4 space-y-3">
               <h3 className="text-sm font-semibold">Prévisualisation</h3>
@@ -1243,7 +1423,7 @@ export default function AdminStudioPage() {
               <>{anchors.length} ancre{anchors.length > 1 ? "s" : ""} · {slotGroups.length} slot{slotGroups.length > 1 ? "s" : ""}</>
             )}
           </div>
-          {phase < 5 ? (
+          {phase < 6 ? (
             <Button onClick={goNext} disabled={(phase === 1 && !upload) || (phase === 2 && anchors.length === 0)}>
               Continuer <ArrowRight className="w-4 h-4" />
             </Button>
