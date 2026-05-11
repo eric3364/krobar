@@ -23,6 +23,7 @@ import {
 
 import StudioCanvas, { type Anchor, colorForSlot, type Tool } from "@/components/studio/StudioCanvas";
 import { studioApi, type MatchingType, type UploadResponse, validateStudioUploadFile } from "@/lib/studioApi";
+import { supabase } from "@/integrations/supabase/client";
 
 type Phase = 1 | 2 | 3 | 4 | 5;
 
@@ -92,6 +93,34 @@ export default function AdminStudioPage() {
   const [tplTestText, setTplTestText] = useState("");
   const [deployOpen, setDeployOpen] = useState(false);
   const [deploying, setDeploying] = useState(false);
+  const [existingIds, setExistingIds] = useState<Set<string>>(new Set());
+
+  // Charge l'ensemble des IDs déjà utilisés (manifest statique + corpus backend)
+  // pour prévenir l'utilisateur en amont du déploiement.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const ids = new Set<string>();
+      try {
+        const r = await fetch("/templates/manifest.json");
+        if (r.ok) {
+          const m = await r.json();
+          for (const t of m?.templates ?? []) if (t?.id) ids.add(String(t.id));
+        }
+      } catch { /* ignore */ }
+      try {
+        const resp = await supabase.functions.invoke("krobar-proxy", {
+          body: { endpoint: "test-texts" },
+        });
+        const tests = (resp.data as { tests?: { template_id?: string }[] } | null)?.tests ?? [];
+        for (const t of tests) if (t.template_id) ids.add(String(t.template_id));
+      } catch { /* ignore */ }
+      if (!cancelled) setExistingIds(ids);
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
+  const idTaken = tplId.length > 0 && existingIds.has(tplId);
 
   // UI
   const [resetOpen, setResetOpen] = useState(false);
@@ -394,6 +423,7 @@ export default function AdminStudioPage() {
 
   const validateBeforeDeploy = (): string | null => {
     if (!TPL_ID_RX.test(tplId)) return "Nom interne invalide (snake_case, 3-51 caractères).";
+    if (idTaken) return `L'ID interne « ${tplId} » est déjà utilisé. Choisis un nom unique.`;
     if (!tplName.trim()) return "Nom affiché requis.";
     if (tplDescription.length > 250) return "Description trop longue (max 250 caractères).";
     if (tplTestText.trim().length < 20) return "Texte de test requis (min 20 caractères) pour ajout à la suite de test.";
@@ -764,6 +794,11 @@ export default function AdminStudioPage() {
                 <Input id="tpl-id" value={tplId} onChange={(e) => setTplId(e.target.value)} placeholder="grande_roue_facettes" className="font-mono" />
                 <p className="text-xs text-muted-foreground">snake_case, immutable après déploiement</p>
                 {tplId && !TPL_ID_RX.test(tplId) && <p className="text-xs text-destructive">Format invalide</p>}
+                {tplId && TPL_ID_RX.test(tplId) && idTaken && (
+                  <p className="text-xs text-destructive">
+                    ⚠️ Cet ID est déjà utilisé par un template existant. Choisis un nom unique.
+                  </p>
+                )}
               </div>
               <div className="space-y-1">
                 <Label htmlFor="tpl-name">Nom affiché</Label>
