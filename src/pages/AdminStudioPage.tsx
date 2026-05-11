@@ -727,6 +727,8 @@ export default function AdminStudioPage() {
           otherChecked,
           otherText,
           upload,
+          paletteMapping,
+          detectedColors,
           saved_at: new Date().toISOString(),
         });
       } catch {
