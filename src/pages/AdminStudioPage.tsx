@@ -37,7 +37,7 @@ import {
   type StudioSnapshot,
 } from "@/lib/studioSnapshots";
 
-type Phase = 1 | 2 | 3 | 4 | 5;
+type Phase = 1 | 2 | 3 | 4 | 5 | 6;
 
 type CardinalityConfig = {
   slotName: string;
@@ -57,7 +57,7 @@ const CATEGORIES = [
 ] as const;
 
 const PHASE_LABELS: Record<Phase, string> = {
-  1: "Upload", 2: "Ancres", 3: "Cardinalité", 4: "Matching", 5: "Méta + go",
+  1: "Upload", 2: "Ancres", 3: "Palette", 4: "Cardinalité", 5: "Matching", 6: "Méta + go",
 };
 
 const SLOT_NAME_RX = /^[a-z][a-z0-9_]{0,30}$/;
