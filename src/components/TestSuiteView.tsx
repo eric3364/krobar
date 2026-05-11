@@ -158,7 +158,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  type FilterType = "all" | "procedural" | "choreme" | "A" | "B" | "C";
+  type FilterType = "all" | "procedural" | "choreme" | "premium" | "A" | "B" | "C";
   type FilterStatus = "all" | "success" | "warning" | "fail" | "mismatch" | "errors";
   const [filterType, setFilterType] = useState<FilterType>("all");
   const [filterCategory, setFilterCategory] = useState<string>("all");
