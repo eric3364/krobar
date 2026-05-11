@@ -67,7 +67,6 @@ export default function AdminStudioPage() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [snapshots, setSnapshots] = useState<StudioSnapshot[]>(() => listSnapshots());
-  const refreshSnapshots = () => setSnapshots(listSnapshots());
   useEffect(() => {
     void hydrateSnapshots();
     const unsub = subscribeSnapshots(() => setSnapshots(listSnapshots()));
