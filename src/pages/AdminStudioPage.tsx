@@ -68,6 +68,11 @@ export default function AdminStudioPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [snapshots, setSnapshots] = useState<StudioSnapshot[]>(() => listSnapshots());
   const refreshSnapshots = () => setSnapshots(listSnapshots());
+  useEffect(() => {
+    void hydrateSnapshots();
+    const unsub = subscribeSnapshots(() => setSnapshots(listSnapshots()));
+    return unsub;
+  }, []);
   const [knownPremiumTemplates, setKnownPremiumTemplates] = useState<TemplateMetadata[]>([]);
 
   const [phase, setPhase] = useState<Phase>(1);
