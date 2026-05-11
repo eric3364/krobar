@@ -25,6 +25,13 @@ import StudioCanvas, { type Anchor, colorForSlot, type Tool } from "@/components
 import { studioApi, type MatchingType, type UploadResponse, validateStudioUploadFile } from "@/lib/studioApi";
 import { supabase } from "@/integrations/supabase/client";
 import { STUDIO_RECENT_DEPLOYS_STORAGE } from "@/data/test-suite";
+import {
+  deleteSnapshot,
+  listSnapshots,
+  loadSnapshot,
+  saveSnapshot,
+  type StudioSnapshot,
+} from "@/lib/studioSnapshots";
 
 type Phase = 1 | 2 | 3 | 4 | 5;
 
