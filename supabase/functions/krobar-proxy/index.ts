@@ -103,6 +103,14 @@ Deno.serve(async (req) => {
       try {
         data = text ? JSON.parse(text) : {};
       } catch {
+        if (upstream.status === 413) {
+          return adminErrorResponse(
+            "Le fichier envoyé au Studio est trop volumineux pour l'upload actuel via le proxy. Réduisez son poids ou exportez-le en SVG.",
+            413,
+            "payload_too_large",
+          );
+        }
+
         return jsonResponse(
           { error: `Réponse non-JSON du backend (${upstream.status}). Début: ${text.slice(0, 120)}` },
           502,

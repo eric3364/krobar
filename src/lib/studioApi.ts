@@ -17,6 +17,11 @@ const USE_MOCKS = (import.meta.env.VITE_USE_STUDIO_MOCKS ?? "false") === "true";
 
 export type { MatchingType, UploadResponse } from "@/mocks/studio";
 
+// Le backend Studio reçoit aujourd'hui l'upload via JSON + base64.
+// Au-delà d'environ 1 Mo de corps HTTP côté reverse proxy, Krobar renvoie 413.
+// On garde une marge pour éviter le 502 côté edge function.
+const REAL_UPLOAD_MAX_BODY_BYTES = 900_000;
+
 async function fileToBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const r = new FileReader();
@@ -24,6 +29,12 @@ async function fileToBase64(file: File): Promise<string> {
     r.onerror = () => reject(r.error);
     r.readAsDataURL(file);
   });
+}
+
+function estimateBase64JsonBodySize(file: File): number {
+  const base64Bytes = Math.ceil(file.size / 3) * 4;
+  const jsonOverhead = 256;
+  return base64Bytes + jsonOverhead;
 }
 
 // Backend renvoie { groups: [{ label, matching_types: [{id,label,primary_intent,suggested_markers}] }] }
@@ -63,6 +74,13 @@ function flattenMatchingTypes(r: BackendMatchingTypesResponse): MatchingType[] {
 export const studioApi = {
   async upload(file: File): Promise<UploadResponse> {
     if (USE_MOCKS) return mockUpload(file);
+
+    if (estimateBase64JsonBodySize(file) > REAL_UPLOAD_MAX_BODY_BYTES) {
+      throw new Error(
+        "Ce fichier dépasse la limite d'upload actuelle du backend Studio en base64. Réduisez son poids ou exportez-le en SVG avant import.",
+      );
+    }
+
     const base64 = await fileToBase64(file);
     return adminFetch<UploadResponse>("/admin/studio/upload", {
       body: { filename: file.name, content_base64: base64 },
