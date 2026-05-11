@@ -137,6 +137,7 @@ interface Props {
 }
 
 export default function TestSuiteView({ manifest, onBack }: Props) {
+  const navigate = useNavigate();
   const [testSuite, setTestSuite] = useState<TestCase[]>([]);
   const [corpusLoading, setCorpusLoading] = useState(true);
   const [corpusError, setCorpusError] = useState<string | null>(null);
