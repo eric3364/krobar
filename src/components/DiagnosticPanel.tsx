@@ -185,9 +185,9 @@ function Tile({
 
 function SvgFrame({ svg }: { svg: string }) {
   return (
-    <div
+    <KrobarSvg
+      svg={svg}
       className="w-full h-[140px] flex items-center justify-center bg-muted/30 [&>svg]:max-w-full [&>svg]:max-h-full"
-      dangerouslySetInnerHTML={{ __html: svg }}
     />
   );
 }
@@ -411,10 +411,7 @@ function LightboxView({
       : null;
   return (
     <div className="relative inline-block">
-      <div
-        className="[&>svg]:max-w-full [&>svg]:max-h-[80vh]"
-        dangerouslySetInnerHTML={{ __html: svg }}
-      />
+      <KrobarSvg svg={svg} className="[&>svg]:max-w-full [&>svg]:max-h-[80vh]" />
       {slot && (
         <div className="absolute top-2 left-2 bg-primary text-primary-foreground text-xs px-2 py-1 rounded shadow">
           {slot.slot_id} → {slot.bbox.join(", ")}
