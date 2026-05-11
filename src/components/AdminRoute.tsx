@@ -1,14 +1,17 @@
 import { ReactNode } from "react";
 import { Navigate, Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { Loader2, LogOut, LayoutDashboard, FlaskConical, FolderOpen, Plus } from "lucide-react";
+import { Loader2, LogOut, LayoutDashboard, FlaskConical, FolderOpen, Plus, Wand2, Palette, ListChecks } from "lucide-react";
 import { BYPASS_AUTH } from "@/lib/devAuth";
 import { Helmet } from "react-helmet-async";
 
 const navItems = [
   { label: "Back-office", path: "/admin", icon: LayoutDashboard },
   { label: "Nouveau template", path: "/admin/templates/new", icon: Plus },
+  { label: "Atelier IA", path: "/admin/templates/atelier", icon: Wand2 },
+  { label: "Studio", path: "/admin/studio", icon: Palette },
   { label: "Drafts", path: "/admin/templates/drafts", icon: FolderOpen },
+  { label: "Suite de tests", path: "/admin/test-suite", icon: ListChecks },
   { label: "Benchmark", path: "/admin/benchmark", icon: FlaskConical },
 ];
 
