@@ -554,9 +554,9 @@ export default function AdminStudioPage() {
       } catch {
         /* ignore local cache failures */
       }
-      // Persiste un snapshot complet pour permettre la modification ultérieure.
+      // Persiste un snapshot complet (Supabase + cache local).
       try {
-        saveSnapshot({
+        await saveSnapshot({
           template_id: res.template_id,
           tplId,
           tplName,
@@ -572,9 +572,8 @@ export default function AdminStudioPage() {
           upload,
           saved_at: new Date().toISOString(),
         });
-        refreshSnapshots();
       } catch {
-        /* ignore snapshot persistence failures */
+        toast.warning("Template déployé, mais la sauvegarde des paramètres a échoué.");
       }
       toast.success("✅ Template déployé !");
       setDeployOpen(false);
