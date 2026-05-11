@@ -315,19 +315,35 @@ export default function AdminStudioPage() {
   };
 
   // ─── Phase 5 actions ──────────────────────────────────────────────────
-  const buildPayload = () => ({
-    session_id: upload?.session_id,
-    template_id: tplId,
-    template_name: tplName,
-    category: tplCategory,
-    description: tplDescription,
-    best_for: derivedBestFor,
-    textual_markers: tplMarkers,
-    anchors,
-    cardinality,
-    matching_type_ids: matchingIds,
-    other_matching_text: otherChecked ? otherText : "",
-  });
+  const buildPayload = () => {
+    const matchingLabels = selectedMatching.map((t) => t.label);
+    if (otherChecked && otherText.trim()) matchingLabels.push(otherText.trim());
+    return {
+      session_id: upload?.session_id,
+      template_id: tplId,
+      name: tplName,
+      category: tplCategory,
+      description: tplDescription,
+      best_for: derivedBestFor,
+      cleaned_svg: upload?.cleaned_svg ?? "",
+      image_width: upload?.image_width ?? 0,
+      image_height: upload?.image_height ?? 0,
+      source_format: upload?.source_format ?? "svg",
+      anchors: anchors.map((a) => ({
+        slot_name: a.slotName,
+        x: Math.round(a.bbox.x),
+        y: Math.round(a.bbox.y),
+        w: Math.round(a.bbox.w),
+        h: Math.round(a.bbox.h),
+      })),
+      cardinality_configs: cardinality.map((c) => ({
+        slot_name: c.slotName, mode: c.mode, min: c.min, max: c.max,
+      })),
+      textual_markers: tplMarkers,
+      matching_types: matchingLabels,
+      approved_by: "admin",
+    };
+  };
 
   const saveDraft = async () => {
     try {
@@ -375,7 +391,7 @@ export default function AdminStudioPage() {
               <Link to="/admin"><ArrowLeft className="w-4 h-4" /> Back-office</Link>
             </Button>
             <div>
-              <h1 className="text-xl font-semibold">Krobar Studio</h1>
+              <h1 className="text-xl font-semibold">Studio Krobar</h1>
               <p className="text-xs text-muted-foreground">Pattern designer Premium · {studioApi.isMockMode() ? "Mode mock" : "Backend connecté"}</p>
             </div>
           </div>
