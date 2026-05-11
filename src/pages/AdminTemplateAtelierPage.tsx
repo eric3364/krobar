@@ -209,6 +209,17 @@ export default function AdminTemplateAtelierPage() {
       const result = await templateCreatorApi.generate(payload);
       setDraft(result);
       sessionStorage.setItem(DRAFT_ID_KEY, result.draft_id);
+      if (result.intermediate_steps) {
+        setDiagnosticVersions((prev) => [
+          ...prev,
+          {
+            id: `${result.draft_id}-${prev.length + 1}`,
+            label: `v${prev.length + 1}`,
+            createdAt: Date.now(),
+            steps: result.intermediate_steps!,
+          },
+        ]);
+      }
       // Suggérer marqueurs s'il n'y en a pas encore
       if (state.textual_markers.length === 0 && result.suggested_markers.length) {
         dispatch({ type: "SET_MARKERS", markers: result.suggested_markers });
