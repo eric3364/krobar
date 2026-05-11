@@ -236,9 +236,12 @@ export default function AdminTemplateAtelierPage() {
   const reset = () => {
     dispatch({ type: "RESET" });
     setDraft(null);
+    setDiagnosticVersions([]);
     sessionStorage.removeItem(STORAGE_KEY);
     sessionStorage.removeItem(DRAFT_ID_KEY);
   };
+
+  const hasDiagnostic = diagnosticVersions.length > 0;
 
   return (
     <TooltipProvider>
