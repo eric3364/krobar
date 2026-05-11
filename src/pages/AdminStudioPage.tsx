@@ -264,6 +264,7 @@ export default function AdminStudioPage() {
       setOtherChecked(unresolved.length > 0);
       setOtherText(unresolved.join(" · "));
       setTplId(tpl.id);
+      setEditingExistingId(tpl.id);
       setTplName(tpl.name || tpl.id);
       setTplDescription(tpl.description || "");
       setTplMarkers(sp.textual_markers ?? []);
