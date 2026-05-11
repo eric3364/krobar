@@ -171,8 +171,9 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
 
   const filteredTests = useMemo(() => {
     return testSuite.filter((t) => {
-      if (filterType === "procedural" && t.choreme) return false;
+      if (filterType === "procedural" && (t.choreme || t.premium)) return false;
       if (filterType === "choreme" && !t.choreme) return false;
+      if (filterType === "premium" && !t.premium) return false;
       if ((filterType === "A" || filterType === "B" || filterType === "C") && t.choreme?.family !== filterType) return false;
       if (filterCategory !== "all" && t.category !== filterCategory) return false;
       if (filterStatus !== "all") {
