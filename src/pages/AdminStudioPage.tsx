@@ -1423,7 +1423,7 @@ export default function AdminStudioPage() {
               <>{anchors.length} ancre{anchors.length > 1 ? "s" : ""} · {slotGroups.length} slot{slotGroups.length > 1 ? "s" : ""}</>
             )}
           </div>
-          {phase < 5 ? (
+          {phase < 6 ? (
             <Button onClick={goNext} disabled={(phase === 1 && !upload) || (phase === 2 && anchors.length === 0)}>
               Continuer <ArrowRight className="w-4 h-4" />
             </Button>
