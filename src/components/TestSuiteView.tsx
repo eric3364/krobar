@@ -148,22 +148,52 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
     return [];
   });
 
+  const originalTextsRef = useRef<Record<number, string>>({});
+  const [textOverrides, setTextOverrides] = useState<Record<string, string>>(() => loadTextOverrides());
+
   const loadCorpus = async () => {
     setCorpusLoading(true);
     setCorpusError(null);
     try {
       const suite = await fetchCanonicalTestSuite(manifest);
-      setTestSuite(suite);
+      const overrides = loadTextOverrides();
+      const merged = suite.map((t) => {
+        originalTextsRef.current[t.id] = t.text;
+        const ov = overrides[t.expected_template];
+        return ov != null ? { ...t, text: ov } : t;
+      });
+      setTextOverrides(overrides);
+      setTestSuite(merged);
       setResults((prev) => {
         // Conserver les résultats persistés correspondants, initialiser le reste.
         const byId = new Map(prev.map((r) => [r.id, r]));
-        return suite.map((t) => byId.get(t.id) ?? emptyResult(t.id));
+        return merged.map((t) => byId.get(t.id) ?? emptyResult(t.id));
       });
     } catch (e) {
       setCorpusError(e instanceof Error ? e.message : String(e));
     } finally {
       setCorpusLoading(false);
     }
+  };
+
+  const updateTestText = (id: number, templateId: string, text: string) => {
+    setTestSuite((prev) => prev.map((t) => (t.id === id ? { ...t, text } : t)));
+    setTextOverrides((prev) => {
+      const next = { ...prev, [templateId]: text };
+      saveTextOverrides(next);
+      return next;
+    });
+  };
+
+  const resetTestText = (id: number, templateId: string) => {
+    const original = originalTextsRef.current[id] ?? "";
+    setTestSuite((prev) => prev.map((t) => (t.id === id ? { ...t, text: original } : t)));
+    setTextOverrides((prev) => {
+      const next = { ...prev };
+      delete next[templateId];
+      saveTextOverrides(next);
+      return next;
+    });
   };
 
   useEffect(() => {
