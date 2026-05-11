@@ -227,14 +227,23 @@ export default function StudioCanvas({
                   strokeDasharray={isSel ? "0" : "8 6"}
                   style={{ cursor: "move" }}
                 />
-                <foreignObject x={a.bbox.x} y={a.bbox.y + a.bbox.h / 2 - 14} width={a.bbox.w} height={28} pointerEvents="none">
-                  <div style={{
-                    fontFamily: "monospace", fontSize: 14, color: "#111",
-                    textAlign: "center", lineHeight: "28px",
-                    background: "rgba(255,255,255,0.85)",
-                    border: `1px solid ${c}`, borderRadius: 4,
-                    margin: "0 8px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
-                  }}>
+                <foreignObject x={a.bbox.x} y={a.bbox.y + a.bbox.h / 2 - 14} width={a.bbox.w} height={28}>
+                  <div
+                    title="Double-clique pour renommer"
+                    onDoubleClick={(e) => {
+                      e.stopPropagation();
+                      onRenameSlot?.(a.slotName);
+                    }}
+                    style={{
+                      fontFamily: "monospace", fontSize: 14, color: "#111",
+                      textAlign: "center", lineHeight: "28px",
+                      background: "rgba(255,255,255,0.85)",
+                      border: `1px solid ${c}`, borderRadius: 4,
+                      margin: "0 8px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+                      cursor: onRenameSlot ? "text" : "default",
+                      userSelect: "none",
+                    }}
+                  >
                     {a.slotName}
                   </div>
                 </foreignObject>
