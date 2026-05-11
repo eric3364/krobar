@@ -1144,21 +1144,92 @@ function TestCard({ test, result, note, selected, isTextOverridden, onToggleSele
 
 
       <div className="text-xs">
-        <button
-          onClick={() => setTextOpen((v) => !v)}
-          className="text-[10px] underline text-muted-foreground hover:text-foreground"
-        >
-          {textOpen ? "Masquer le texte" : "Voir le texte"}
-        </button>
-        {textOpen && (
-          <p className="mt-1 text-muted-foreground whitespace-pre-wrap text-[11px]">
-            {test.text}
-            {test.text.length > 400 && (
-              <button onClick={onShowFullText} className="ml-1 underline text-foreground">
-                ouvrir
+        <div className="flex items-center gap-2 flex-wrap">
+          <button
+            onClick={() => setTextOpen((v) => !v)}
+            className="text-[10px] underline text-muted-foreground hover:text-foreground"
+          >
+            {textOpen ? "Masquer le texte" : "Voir / éditer le texte"}
+          </button>
+          {isTextOverridden && (
+            <span className="text-[10px] px-1.5 py-0.5 rounded border bg-amber-100 text-amber-800 border-amber-300">
+              Texte modifié
+            </span>
+          )}
+        </div>
+        {textOpen && !editing && (
+          <div className="mt-1">
+            <p className="text-muted-foreground whitespace-pre-wrap text-[11px]">
+              {test.text}
+              {test.text.length > 400 && (
+                <button onClick={onShowFullText} className="ml-1 underline text-foreground">
+                  ouvrir
+                </button>
+              )}
+            </p>
+            <div className="flex gap-2 mt-1">
+              <button
+                onClick={() => {
+                  setDraftText(test.text);
+                  setEditing(true);
+                }}
+                className="text-[10px] underline text-foreground hover:text-primary"
+              >
+                ✏️ Modifier
               </button>
-            )}
-          </p>
+              {isTextOverridden && (
+                <button
+                  onClick={() => {
+                    onResetText();
+                    toast.success("Texte de référence réinitialisé");
+                  }}
+                  className="text-[10px] underline text-muted-foreground hover:text-foreground"
+                >
+                  ↺ Réinitialiser
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+        {textOpen && editing && (
+          <div className="mt-1 space-y-1">
+            <Textarea
+              value={draftText}
+              onChange={(e) => setDraftText(e.target.value)}
+              rows={6}
+              className="text-[11px]"
+              placeholder="Texte de référence pour ce template…"
+            />
+            <div className="flex gap-1">
+              <Button
+                size="sm"
+                className="h-6 text-[10px] px-2"
+                onClick={() => {
+                  const t = draftText.trim();
+                  if (!t) {
+                    toast.error("Le texte ne peut pas être vide");
+                    return;
+                  }
+                  onUpdateText(t);
+                  setEditing(false);
+                  toast.success("Texte de référence enregistré");
+                }}
+              >
+                Enregistrer
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                className="h-6 text-[10px] px-2"
+                onClick={() => {
+                  setEditing(false);
+                  setDraftText(test.text);
+                }}
+              >
+                Annuler
+              </Button>
+            </div>
+          </div>
         )}
       </div>
 
