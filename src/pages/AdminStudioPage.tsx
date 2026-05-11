@@ -193,6 +193,7 @@ export default function AdminStudioPage() {
     setOtherChecked(!!snap.otherChecked);
     setOtherText(snap.otherText ?? "");
     setTplId(snap.tplId ?? "");
+    setEditingExistingId(snap.tplId ?? snap.template_id ?? null);
     setTplName(snap.tplName ?? "");
     setTplCategory((snap.tplCategory ?? "network") as typeof tplCategory);
     setTplDescription(snap.tplDescription ?? "");
