@@ -346,7 +346,7 @@ export default function AdminStudioPage() {
     setMatchingIds([]);
     setOtherChecked(false);
     setOtherText("");
-    setTplId(""); setTplName(""); setTplDescription(""); setTplMarkers([]);
+    setTplId(""); setTplName(""); setTplDescription(""); setTplMarkers([]); setTplTestText("");
     setResetOpen(false);
   };
 
