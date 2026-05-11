@@ -23,11 +23,13 @@ import {
 
 import StudioCanvas, { type Anchor, colorForSlot, type Tool } from "@/components/studio/StudioCanvas";
 import { studioApi, type MatchingType, type UploadResponse, validateStudioUploadFile } from "@/lib/studioApi";
+import { getTemplates, type TemplateMetadata } from "@/lib/api";
 import { supabase } from "@/integrations/supabase/client";
 import { STUDIO_RECENT_DEPLOYS_STORAGE } from "@/data/test-suite";
 import {
   deleteSnapshot,
   listSnapshots,
+  listSnapshotIds,
   loadSnapshot,
   saveSnapshot,
   type StudioSnapshot,
@@ -64,6 +66,7 @@ export default function AdminStudioPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [snapshots, setSnapshots] = useState<StudioSnapshot[]>(() => listSnapshots());
   const refreshSnapshots = () => setSnapshots(listSnapshots());
+  const [knownPremiumTemplates, setKnownPremiumTemplates] = useState<TemplateMetadata[]>([]);
 
   const [phase, setPhase] = useState<Phase>(1);
 
@@ -131,6 +134,37 @@ export default function AdminStudioPage() {
     })();
     return () => { cancelled = true; };
   }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const data = await getTemplates();
+        const snapshotIds = new Set(listSnapshotIds());
+        const premiumTemplates = (data.templates ?? [])
+          .filter((tpl) =>
+            tpl.premium === true ||
+            tpl.tier === "premium" ||
+            tpl.family === "premium" ||
+            tpl.created_via === "studio_v1" ||
+            tpl.source === "studio",
+          )
+          .sort((a, b) => {
+            const aHas = snapshotIds.has(a.id);
+            const bHas = snapshotIds.has(b.id);
+            if (aHas !== bHas) return aHas ? -1 : 1;
+            return a.name.localeCompare(b.name, "fr");
+          });
+        if (!cancelled) setKnownPremiumTemplates(premiumTemplates);
+      } catch {
+        if (!cancelled) setKnownPremiumTemplates([]);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [snapshots]);
 
   const idTaken = tplId.length > 0 && existingIds.has(tplId);
 
@@ -662,64 +696,83 @@ export default function AdminStudioPage() {
               </>
             )}
 
-            {/* Templates créés via le Studio — double-clic pour rouvrir */}
-            {snapshots.length > 0 && (
+            {/* Templates Premium connus — double-clic pour rouvrir */}
+            {knownPremiumTemplates.length > 0 && (
               <Card className="p-4 space-y-2">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-sm font-semibold">Templates créés via le Studio</h3>
+                    <h3 className="text-sm font-semibold">Templates Premium du Studio</h3>
                     <p className="text-xs text-muted-foreground">
-                      Double-clique sur un template pour rouvrir et modifier ses paramètres.
+                      Double-clique sur un template pour rouvrir son édition. Les templates de ce navigateur conservent tous leurs paramètres.
                     </p>
                   </div>
-                  <Badge variant="outline" className="text-xs">{snapshots.length}</Badge>
+                  <Badge variant="outline" className="text-xs">{knownPremiumTemplates.length}</Badge>
                 </div>
                 <ul className="divide-y border rounded-md">
-                  {snapshots.map((snap) => (
-                    <li
-                      key={snap.template_id}
-                      onDoubleClick={() => restoreSnapshot(snap, 5)}
-                      className="flex items-center justify-between gap-3 px-3 py-2 hover:bg-muted/50 cursor-pointer select-none"
-                      title="Double-cliquer pour modifier"
-                    >
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium text-sm truncate">{snap.tplName || snap.template_id}</span>
-                          <Badge variant="secondary" className="text-[10px] font-mono">{snap.template_id}</Badge>
+                  {knownPremiumTemplates.map((tpl) => {
+                    const snap = snapshots.find((item) => item.template_id === tpl.id);
+                    const editable = !!snap;
+                    return (
+                      <li
+                        key={tpl.id}
+                        onDoubleClick={() => editable && restoreSnapshot(snap, 5)}
+                        className="flex items-center justify-between gap-3 px-3 py-2 hover:bg-muted/50 select-none"
+                        title={editable ? "Double-cliquer pour modifier" : "Paramètres historiques non disponibles dans ce navigateur"}
+                      >
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-medium text-sm truncate">{snap?.tplName || tpl.name || tpl.id}</span>
+                            <Badge variant="secondary" className="text-[10px] font-mono">{tpl.id}</Badge>
+                            <Badge variant={editable ? "outline" : "secondary"} className="text-[10px]">
+                              {editable ? "modifiable" : "à reconnecter"}
+                            </Badge>
+                          </div>
+                          <p className="text-xs text-muted-foreground">
+                            {snap
+                              ? (
+                                <>
+                                  {snap.anchors?.length ?? 0} ancre{(snap.anchors?.length ?? 0) > 1 ? "s" : ""}
+                                  {snap.tplCategory && <> · {snap.tplCategory}</>}
+                                  {snap.saved_at && <> · {new Date(snap.saved_at).toLocaleDateString("fr-FR")}</>}
+                                </>
+                              )
+                              : (tpl.description || "Template Premium existant")}
+                          </p>
                         </div>
-                        <p className="text-xs text-muted-foreground">
-                          {snap.anchors?.length ?? 0} ancre{(snap.anchors?.length ?? 0) > 1 ? "s" : ""}
-                          {snap.tplCategory && <> · {snap.tplCategory}</>}
-                          {snap.saved_at && <> · {new Date(snap.saved_at).toLocaleDateString("fr-FR")}</>}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-1 shrink-0">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="h-7 text-xs"
-                          onClick={(e) => { e.stopPropagation(); restoreSnapshot(snap, 5); }}
-                        >
-                          Modifier
-                        </Button>
-                        <Button
-                          size="icon"
-                          variant="ghost"
-                          className="h-7 w-7"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (confirm(`Supprimer le snapshot local de « ${snap.tplName || snap.template_id} » ? Le template déployé n'est pas affecté.`)) {
-                              deleteSnapshot(snap.template_id);
-                              refreshSnapshots();
-                            }
-                          }}
-                          aria-label="Supprimer le snapshot"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </Button>
-                      </div>
-                    </li>
-                  ))}
+                        <div className="flex items-center gap-1 shrink-0">
+                          <Button
+                            size="sm"
+                            variant={editable ? "outline" : "secondary"}
+                            className="h-7 text-xs"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (snap) restoreSnapshot(snap, 5);
+                              else toast.error(`Les paramètres de « ${tpl.id} » ne sont pas stockés dans ce navigateur.`);
+                            }}
+                          >
+                            {editable ? "Modifier" : "Indisponible"}
+                          </Button>
+                          {snap && (
+                            <Button
+                              size="icon"
+                              variant="ghost"
+                              className="h-7 w-7"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                if (confirm(`Supprimer le snapshot local de « ${snap.tplName || snap.template_id} » ? Le template déployé n'est pas affecté.`)) {
+                                  deleteSnapshot(snap.template_id);
+                                  refreshSnapshots();
+                                }
+                              }}
+                              aria-label="Supprimer le snapshot"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </Button>
+                          )}
+                        </div>
+                      </li>
+                    );
+                  })}
                 </ul>
               </Card>
             )}
