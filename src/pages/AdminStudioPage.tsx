@@ -106,14 +106,14 @@ export default function AdminStudioPage() {
   // Phase 4 — Cardinalité (ex-Phase 3)
   const [cardinality, setCardinality] = useState<CardinalityConfig[]>([]);
 
-  // Phase 4
+  // Phase 5 — Matching (ex-Phase 4)
   const [matchingTypes, setMatchingTypes] = useState<MatchingType[]>([]);
   const [matchingIds, setMatchingIds] = useState<string[]>([]);
   const [otherChecked, setOtherChecked] = useState(false);
   const [otherText, setOtherText] = useState("");
   const [matchingLoading, setMatchingLoading] = useState(false);
 
-  // Phase 5
+  // Phase 6 — Méta + go (ex-Phase 5)
   const [tplId, setTplId] = useState("");
   const [tplName, setTplName] = useState("");
   const [tplCategory, setTplCategory] = useState<typeof CATEGORIES[number]["value"]>("network");
