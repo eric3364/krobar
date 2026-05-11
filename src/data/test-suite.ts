@@ -192,11 +192,18 @@ export async function fetchCanonicalTestSuite(
         (entry.category || "").toLowerCase() === "premium" ||
         isUnknownToStaticManifest);
 
+    // Pour les Premium, le snapshot Studio (s'il existe) fait autorité sur le
+    // texte de test : c'est le texte explicitement saisi par l'admin pour
+    // valider le rendu, pas la description marketing renvoyée par le backend.
+    const snap = premium ? loadSnapshot(entry.template_id) : null;
+    const studioTestText = snap?.tplTestText?.trim();
+    const finalText = studioTestText && studioTestText.length > 0 ? studioTestText : entry.text;
+
     return {
       id: idx + 1,
       expected_template: entry.template_id,
       category: entry.category || (choreme ? "Chorème" : premium ? "Premium" : "Other"),
-      text: entry.text,
+      text: finalText,
       expected_slots: entry.expected_slots,
       expected_slot_count:
         entry.expected_slot_count ?? entry.expected_slots?.length,
