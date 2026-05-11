@@ -149,13 +149,32 @@ export default function StudioCanvas({
       if (e.key === "Delete" || e.key === "Backspace") {
         setAnchors(anchors.filter((a) => a.id !== selectedId));
         setSelectedId(null);
-      } else if (e.key === "Escape") {
+        return;
+      }
+      if (e.key === "Escape") {
         setSelectedId(null);
+        return;
+      }
+      const arrowKeys = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"];
+      if (arrowKeys.includes(e.key)) {
+        e.preventDefault();
+        const a = anchors.find((x) => x.id === selectedId);
+        if (!a) return;
+        // Pas fin (1px) avec Alt, normal (10px) sinon, grand (50px) avec Shift.
+        const step = e.altKey ? 1 : e.shiftKey ? 50 : 10;
+        let dx = 0, dy = 0;
+        if (e.key === "ArrowLeft") dx = -step;
+        else if (e.key === "ArrowRight") dx = step;
+        else if (e.key === "ArrowUp") dy = -step;
+        else if (e.key === "ArrowDown") dy = step;
+        const nx = Math.max(0, Math.min(imageWidth - a.bbox.w, a.bbox.x + dx));
+        const ny = Math.max(0, Math.min(imageHeight - a.bbox.h, a.bbox.y + dy));
+        setAnchors(anchors.map((x) => (x.id === selectedId ? { ...x, bbox: { ...x.bbox, x: nx, y: ny } } : x)));
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [selectedId, anchors, setAnchors, setSelectedId]);
+  }, [selectedId, anchors, setAnchors, setSelectedId, imageWidth, imageHeight]);
 
   const aspect = imageHeight / imageWidth;
   const baseW = Math.min(900, wrapRef.current?.clientWidth ?? 700);
