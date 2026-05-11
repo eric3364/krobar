@@ -32,6 +32,11 @@ export type TemplateMetadata = {
   slots: string[];
   best_for: string;
   priority?: number;
+  family?: string;
+  source?: string;
+  premium?: boolean;
+  tier?: string;
+  created_via?: string;
 };
 
 export type TemplatesResponse = {

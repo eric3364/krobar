@@ -70,3 +70,7 @@ export function deleteSnapshot(templateId: string) {
 export function hasSnapshot(templateId: string): boolean {
   return listSnapshots().some((s) => s.template_id === templateId);
 }
+
+export function listSnapshotIds(): string[] {
+  return listSnapshots().map((s) => s.template_id);
+}
