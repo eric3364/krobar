@@ -96,7 +96,14 @@ export default function AdminStudioPage() {
   const [renameTarget, setRenameTarget] = useState<string | null>(null);
   const [renameValue, setRenameValue] = useState("");
 
-  // Phase 3
+  // Phase 3 — Palette
+  const [detectedColors, setDetectedColors] = useState<Array<{ hex_value: string; occurrences: number; is_neutral: boolean }>>([]);
+  const [paletteMapping, setPaletteMapping] = useState<Record<string, string | null>>({});
+  const [autoPaletteMapping, setAutoPaletteMapping] = useState<Record<string, string | null>>({});
+  const [paletteLoading, setPaletteLoading] = useState(false);
+  const [previewPaletteKey, setPreviewPaletteKey] = useState<PaletteKey>(defaultPalette);
+
+  // Phase 4 — Cardinalité (ex-Phase 3)
   const [cardinality, setCardinality] = useState<CardinalityConfig[]>([]);
 
   // Phase 4
