@@ -61,8 +61,10 @@ const TPL_ID_RX = /^[a-z][a-z0-9_]{2,50}$/;
 
 export default function AdminStudioPage() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [snapshots, setSnapshots] = useState<StudioSnapshot[]>(() => listSnapshots());
+  const refreshSnapshots = () => setSnapshots(listSnapshots());
 
-  const [phase, setPhase] = useState<Phase>(1);
 
   // Phase 1
   const [uploading, setUploading] = useState(false);
