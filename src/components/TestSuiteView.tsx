@@ -1323,6 +1323,16 @@ function TestCard({ test, result, note, selected, isTextOverridden, onToggleSele
           📝 Annoter {note ? "•" : ""}
         </Button>
       </div>
+      {onEditTemplate && (
+        <Button
+          onClick={onEditTemplate}
+          size="sm"
+          variant={result.status === "fail" || result.status === "warning" ? "default" : "outline"}
+          className="w-full h-7 text-[11px]"
+        >
+          ✏️ Modifier le template
+        </Button>
+      )}
     </Card>
   );
 }
