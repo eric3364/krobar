@@ -28,10 +28,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { STUDIO_RECENT_DEPLOYS_STORAGE } from "@/data/test-suite";
 import {
   deleteSnapshot,
+  hydrateSnapshots,
   listSnapshots,
   listSnapshotIds,
   loadSnapshot,
   saveSnapshot,
+  subscribeSnapshots,
   type StudioSnapshot,
 } from "@/lib/studioSnapshots";
 
