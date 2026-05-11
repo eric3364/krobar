@@ -90,9 +90,23 @@ export const studioApi = {
     }
 
     const base64 = await fileToBase64(file);
-    return adminFetch<UploadResponse>("/admin/studio/upload", {
+    const res = await adminFetch<UploadResponse>("/admin/studio/upload", {
       body: { filename: file.name, content_base64: base64 },
     });
+
+    // Le backend renvoie un chemin relatif "/api/admin/studio/preview/<id>.png"
+    // qui n'est pas accessible directement depuis le navigateur. On reconstruit
+    // un aperçu utilisable côté client à partir du SVG nettoyé renvoyé.
+    const isRelative = typeof res.rendered_png_url === "string" && res.rendered_png_url.startsWith("/");
+    if (isRelative && res.cleaned_svg) {
+      try {
+        const dataUrl = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(res.cleaned_svg)))}`;
+        return { ...res, rendered_png_url: dataUrl };
+      } catch {
+        // fallback : laisse l'URL telle quelle
+      }
+    }
+    return res;
   },
   async matchingTypes(): Promise<MatchingType[]> {
     if (USE_MOCKS) return (await mockMatchingTypes()).matching_types;
