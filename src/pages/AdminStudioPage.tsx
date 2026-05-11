@@ -117,6 +117,9 @@ export default function AdminStudioPage() {
   const [existingIds, setExistingIds] = useState<Set<string>>(new Set());
   const [reconnecting, setReconnecting] = useState<string | null>(null);
   const [reconstructedBanner, setReconstructedBanner] = useState<string | null>(null);
+  // ID du template existant en cours d'édition (snapshot ou reconnect).
+  // Permet d'autoriser le redéploiement sous le même ID sans déclencher "ID déjà utilisé".
+  const [editingExistingId, setEditingExistingId] = useState<string | null>(null);
 
   // Charge l'ensemble des IDs déjà utilisés (manifest statique + corpus backend)
   // pour prévenir l'utilisateur en amont du déploiement.
@@ -174,7 +177,7 @@ export default function AdminStudioPage() {
     };
   }, [snapshots]);
 
-  const idTaken = tplId.length > 0 && existingIds.has(tplId);
+  const idTaken = tplId.length > 0 && existingIds.has(tplId) && tplId !== editingExistingId;
 
   // UI
   const [resetOpen, setResetOpen] = useState(false);
@@ -190,6 +193,7 @@ export default function AdminStudioPage() {
     setOtherChecked(!!snap.otherChecked);
     setOtherText(snap.otherText ?? "");
     setTplId(snap.tplId ?? "");
+    setEditingExistingId(snap.tplId ?? snap.template_id ?? null);
     setTplName(snap.tplName ?? "");
     setTplCategory((snap.tplCategory ?? "network") as typeof tplCategory);
     setTplDescription(snap.tplDescription ?? "");
@@ -260,6 +264,7 @@ export default function AdminStudioPage() {
       setOtherChecked(unresolved.length > 0);
       setOtherText(unresolved.join(" · "));
       setTplId(tpl.id);
+      setEditingExistingId(tpl.id);
       setTplName(tpl.name || tpl.id);
       setTplDescription(tpl.description || "");
       setTplMarkers(sp.textual_markers ?? []);
@@ -276,6 +281,7 @@ export default function AdminStudioPage() {
       const msg = err instanceof Error ? err.message : "Échec de la reconnexion";
       // Fallback : démarre la re-saisie manuelle (comportement précédent)
       setTplId(tpl.id);
+      setEditingExistingId(tpl.id);
       setTplName(tpl.name || tpl.id);
       setTplDescription(tpl.description || "");
       setPhase(1);
@@ -564,6 +570,7 @@ export default function AdminStudioPage() {
     setOtherChecked(false);
     setOtherText("");
     setTplId(""); setTplName(""); setTplDescription(""); setTplMarkers([]); setTplTestText("");
+    setEditingExistingId(null);
     setResetOpen(false);
   };
 
