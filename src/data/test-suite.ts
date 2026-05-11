@@ -19,10 +19,15 @@ export type TestCase = {
   expected_slot_count?: number;
   /** Présent si le template est un chorème (enrichi depuis le manifest). */
   choreme?: ChoremeMeta;
+  /** True si le template a été créé via le Studio (famille Premium). */
+  premium?: boolean;
 };
 
 type ManifestEntry = {
   id: string;
+  family?: string;
+  source?: string;
+  premium?: boolean;
   choreme?: {
     code?: string;
     family?: ChoremeFamily;
@@ -88,15 +93,25 @@ export async function fetchCanonicalTestSuite(
           }
         : undefined;
 
+    // Détection « Premium » : templates créés via le Studio.
+    // Conventions backend possibles : family/source/premium ou catégorie "premium".
+    const premium =
+      !choreme &&
+      (tpl?.premium === true ||
+        tpl?.family === "premium" ||
+        tpl?.source === "studio" ||
+        (entry.category || "").toLowerCase() === "premium");
+
     return {
       id: idx + 1,
       expected_template: entry.template_id,
-      category: entry.category || (choreme ? "Chorème" : "Other"),
+      category: entry.category || (choreme ? "Chorème" : premium ? "Premium" : "Other"),
       text: entry.text,
       expected_slots: entry.expected_slots,
       expected_slot_count:
         entry.expected_slot_count ?? entry.expected_slots?.length,
       choreme,
+      premium,
     };
   });
 }

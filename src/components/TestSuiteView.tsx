@@ -158,7 +158,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  type FilterType = "all" | "procedural" | "choreme" | "A" | "B" | "C";
+  type FilterType = "all" | "procedural" | "choreme" | "premium" | "A" | "B" | "C";
   type FilterStatus = "all" | "success" | "warning" | "fail" | "mismatch" | "errors";
   const [filterType, setFilterType] = useState<FilterType>("all");
   const [filterCategory, setFilterCategory] = useState<string>("all");
@@ -171,8 +171,9 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
 
   const filteredTests = useMemo(() => {
     return testSuite.filter((t) => {
-      if (filterType === "procedural" && t.choreme) return false;
+      if (filterType === "procedural" && (t.choreme || t.premium)) return false;
       if (filterType === "choreme" && !t.choreme) return false;
+      if (filterType === "premium" && !t.premium) return false;
       if ((filterType === "A" || filterType === "B" || filterType === "C") && t.choreme?.family !== filterType) return false;
       if (filterCategory !== "all" && t.category !== filterCategory) return false;
       if (filterStatus !== "all") {
@@ -474,11 +475,14 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
 
   // Score breakdown procéduraux vs chorèmes
   const choremeIds = useMemo(() => new Set(testSuite.filter((t) => t.choreme).map((t) => t.id)), [testSuite]);
-  const procIds = useMemo(() => new Set(testSuite.filter((t) => !t.choreme).map((t) => t.id)), [testSuite]);
+  const premiumIds = useMemo(() => new Set(testSuite.filter((t) => t.premium).map((t) => t.id)), [testSuite]);
+  const procIds = useMemo(() => new Set(testSuite.filter((t) => !t.choreme && !t.premium).map((t) => t.id)), [testSuite]);
   const procDone = results.filter((r) => procIds.has(r.id) && r.status !== "idle" && r.status !== "running");
   const procSuccess = procDone.filter((r) => r.status === "success").length;
   const chorDone = results.filter((r) => choremeIds.has(r.id) && r.status !== "idle" && r.status !== "running");
   const chorSuccess = chorDone.filter((r) => r.status === "success").length;
+  const premDone = results.filter((r) => premiumIds.has(r.id) && r.status !== "idle" && r.status !== "running");
+  const premSuccess = premDone.filter((r) => r.status === "success").length;
 
   const selectFiltered = () => setSelectedIds(new Set(filteredTests.map((t) => t.id)));
 
@@ -778,8 +782,12 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
                   {procDone.length > 0 && ` (${Math.round((procSuccess / procDone.length) * 100)}%)`}
                 </span>
                 <span className="text-xs text-muted-foreground font-mono pl-3">
-                  └─ Chorèmes&nbsp;&nbsp;&nbsp;: {chorSuccess}/{chorDone.length}
+                  ├─ Chorèmes&nbsp;&nbsp;&nbsp;: {chorSuccess}/{chorDone.length}
                   {chorDone.length > 0 && ` (${Math.round((chorSuccess / chorDone.length) * 100)}%)`}
+                </span>
+                <span className="text-xs text-muted-foreground font-mono pl-3">
+                  └─ Premium&nbsp;&nbsp;&nbsp;&nbsp;: {premSuccess}/{premDone.length}
+                  {premDone.length > 0 && ` (${Math.round((premSuccess / premDone.length) * 100)}%)`}
                 </span>
                 <div className="flex gap-3 text-xs mt-1">
                   <span>✅ {successCount}</span>
@@ -815,6 +823,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
               ["all", "Tous"],
               ["procedural", "Procéduraux"],
               ["choreme", "Chorèmes"],
+              ["premium", "Premium"],
               ["A", "Famille A"],
               ["B", "Famille B"],
               ["C", "Famille C"],
