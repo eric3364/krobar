@@ -89,6 +89,7 @@ export default function AdminStudioPage() {
   const [tplDescription, setTplDescription] = useState("");
   const [tplMarkers, setTplMarkers] = useState<string[]>([]);
   const [newMarker, setNewMarker] = useState("");
+  const [tplTestText, setTplTestText] = useState("");
   const [deployOpen, setDeployOpen] = useState(false);
   const [deploying, setDeploying] = useState(false);
 
