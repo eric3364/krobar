@@ -139,6 +139,46 @@ export default function AdminStudioPage() {
   const [dragState, setDragState] = useState<"idle" | "accept" | "reject">("idle");
   const [dragMessage, setDragMessage] = useState<string | null>(null);
 
+  // ─── Restauration d'un template existant ──────────────────────────────
+  const restoreSnapshot = (snap: StudioSnapshot, jumpTo: Phase = 5) => {
+    setUpload(snap.upload);
+    setAnchors(snap.anchors ?? []);
+    setCardinality(snap.cardinality ?? []);
+    setMatchingIds(snap.matchingIds ?? []);
+    setOtherChecked(!!snap.otherChecked);
+    setOtherText(snap.otherText ?? "");
+    setTplId(snap.tplId ?? "");
+    setTplName(snap.tplName ?? "");
+    setTplCategory((snap.tplCategory ?? "network") as typeof tplCategory);
+    setTplDescription(snap.tplDescription ?? "");
+    setTplMarkers(snap.tplMarkers ?? []);
+    setTplTestText(snap.tplTestText ?? "");
+    setSelectedId(null);
+    setPhase(snap.upload ? jumpTo : 1);
+    toast.success(`Template « ${snap.tplName || snap.template_id} » chargé pour modification`);
+  };
+
+  const restoredEditRef = useRef<string | null>(null);
+  useEffect(() => {
+    const editId = searchParams.get("edit");
+    if (!editId || restoredEditRef.current === editId) return;
+    const snap = loadSnapshot(editId);
+    if (snap) {
+      restoredEditRef.current = editId;
+      restoreSnapshot(snap, 5);
+    } else {
+      toast.error(
+        `Aucun snapshot local pour « ${editId} ». Les paramètres ne peuvent être réouverts que pour les templates créés depuis ce navigateur.`,
+      );
+    }
+    // Nettoie l'URL pour ne pas re-déclencher au prochain render.
+    const next = new URLSearchParams(searchParams);
+    next.delete("edit");
+    setSearchParams(next, { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
+
   // ─── Phase 1: upload ──────────────────────────────────────────────────
   const fileInputRef = useRef<HTMLInputElement>(null);
   const handleFile = async (file: File) => {
