@@ -662,6 +662,7 @@ export default function AdminStudioPage() {
       matching_types: matchingLabels,
       test_text: tplTestText.trim(),
       add_to_test_suite: tplTestText.trim().length > 0,
+      palette_mapping: paletteMapping,
       approved_by: "admin",
     };
   };
