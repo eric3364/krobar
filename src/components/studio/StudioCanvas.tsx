@@ -208,7 +208,7 @@ export default function StudioCanvas({
                   style={{ cursor: "move" }}
                 />
                 <foreignObject x={a.bbox.x} y={a.bbox.y + a.bbox.h / 2 - 14} width={a.bbox.w} height={28} pointerEvents="none">
-                  <div xmlns="http://www.w3.org/1999/xhtml" style={{
+                  <div style={{
                     fontFamily: "monospace", fontSize: 14, color: "#111",
                     textAlign: "center", lineHeight: "28px",
                     background: "rgba(255,255,255,0.85)",
