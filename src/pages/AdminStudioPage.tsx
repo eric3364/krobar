@@ -194,7 +194,7 @@ export default function AdminStudioPage() {
   const [dragMessage, setDragMessage] = useState<string | null>(null);
 
   // ─── Restauration d'un template existant ──────────────────────────────
-  const restoreSnapshot = (snap: StudioSnapshot, jumpTo: Phase = 5) => {
+  const restoreSnapshot = (snap: StudioSnapshot, jumpTo: Phase = 6) => {
     setUpload(snap.upload);
     setAnchors(snap.anchors ?? []);
     setCardinality(snap.cardinality ?? []);
@@ -208,6 +208,9 @@ export default function AdminStudioPage() {
     setTplDescription(snap.tplDescription ?? "");
     setTplMarkers(snap.tplMarkers ?? []);
     setTplTestText(snap.tplTestText ?? "");
+    setDetectedColors(snap.detectedColors ?? []);
+    setPaletteMapping(snap.paletteMapping ?? {});
+    setAutoPaletteMapping(snap.paletteMapping ?? {});
     setSelectedId(null);
     setPhase(snap.upload ? jumpTo : 1);
     toast.success(`Template « ${snap.tplName || snap.template_id} » chargé pour modification`);
