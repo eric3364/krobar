@@ -794,6 +794,11 @@ export default function AdminStudioPage() {
                 <Input id="tpl-id" value={tplId} onChange={(e) => setTplId(e.target.value)} placeholder="grande_roue_facettes" className="font-mono" />
                 <p className="text-xs text-muted-foreground">snake_case, immutable après déploiement</p>
                 {tplId && !TPL_ID_RX.test(tplId) && <p className="text-xs text-destructive">Format invalide</p>}
+                {tplId && TPL_ID_RX.test(tplId) && idTaken && (
+                  <p className="text-xs text-destructive">
+                    ⚠️ Cet ID est déjà utilisé par un template existant. Choisis un nom unique.
+                  </p>
+                )}
               </div>
               <div className="space-y-1">
                 <Label htmlFor="tpl-name">Nom affiché</Label>
