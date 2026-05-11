@@ -27,6 +27,8 @@ import {
 } from "@/lib/kroki";
 import { normalizeScore } from "@/lib/format";
 import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
+import { hasSnapshot } from "@/lib/studioSnapshots";
 
 type Status = "idle" | "running" | "success" | "warning" | "fail";
 
@@ -135,6 +137,7 @@ interface Props {
 }
 
 export default function TestSuiteView({ manifest, onBack }: Props) {
+  const navigate = useNavigate();
   const [testSuite, setTestSuite] = useState<TestCase[]>([]);
   const [corpusLoading, setCorpusLoading] = useState(true);
   const [corpusError, setCorpusError] = useState<string | null>(null);
@@ -989,6 +992,11 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
               onAnnotate={() => setAnnotateId(test.id)}
               onUpdateText={(text) => updateTestText(test.id, test.expected_template, text)}
               onResetText={() => resetTestText(test.id, test.expected_template)}
+              onEditTemplate={
+                hasSnapshot(test.expected_template)
+                  ? () => navigate(`/admin/studio?edit=${encodeURIComponent(test.expected_template)}`)
+                  : undefined
+              }
             />
           );
         })}
@@ -1052,9 +1060,10 @@ interface CardProps {
   onAnnotate: () => void;
   onUpdateText: (text: string) => void;
   onResetText: () => void;
+  onEditTemplate?: () => void;
 }
 
-function TestCard({ test, result, note, selected, isTextOverridden, onToggleSelect, onReplay, onZoom, onShowFullText, onAnnotate, onUpdateText, onResetText }: CardProps) {
+function TestCard({ test, result, note, selected, isTextOverridden, onToggleSelect, onReplay, onZoom, onShowFullText, onAnnotate, onUpdateText, onResetText, onEditTemplate }: CardProps) {
   const [textOpen, setTextOpen] = useState(false);
   const [editing, setEditing] = useState(false);
   const [draftText, setDraftText] = useState(test.text);
@@ -1314,6 +1323,16 @@ function TestCard({ test, result, note, selected, isTextOverridden, onToggleSele
           📝 Annoter {note ? "•" : ""}
         </Button>
       </div>
+      {onEditTemplate && (
+        <Button
+          onClick={onEditTemplate}
+          size="sm"
+          variant={result.status === "fail" || result.status === "warning" ? "default" : "outline"}
+          className="w-full h-7 text-[11px]"
+        >
+          ✏️ Modifier le template
+        </Button>
+      )}
     </Card>
   );
 }
