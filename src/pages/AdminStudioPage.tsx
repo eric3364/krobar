@@ -528,16 +528,52 @@ export default function AdminStudioPage() {
     return s;
   }, [selectedMatching, otherChecked, otherText]);
 
-  // ─── Init phase 5 fields when entering ────────────────────────────────
-  const phase5Initialized = useRef(false);
+  // ─── Phase 3 — Auto-analyse de la palette à l'entrée ─────────────────
   useEffect(() => {
-    if (phase === 5 && !phase5Initialized.current) {
+    if (phase !== 3) return;
+    if (!upload?.cleaned_svg) return;
+    if (detectedColors.length > 0) return; // déjà analysé (snapshot ou précédent)
+    let cancelled = false;
+    setPaletteLoading(true);
+    studioApi.analyzePalette(upload.cleaned_svg)
+      .then((res) => {
+        if (cancelled) return;
+        setDetectedColors(res.detected_colors ?? []);
+        setAutoPaletteMapping(res.auto_mapping ?? {});
+        // Ne pas écraser un mapping déjà saisi (cas snapshot vide mais user a touché)
+        setPaletteMapping((prev) => Object.keys(prev).length > 0 ? prev : (res.auto_mapping ?? {}));
+      })
+      .catch((e) => toast.error(e?.message ?? "Échec de l'analyse de palette"))
+      .finally(() => { if (!cancelled) setPaletteLoading(false); });
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase, upload?.cleaned_svg]);
+
+  const previewPalette = palettes[previewPaletteKey];
+  const previewSvg = useMemo(() => {
+    if (!upload?.cleaned_svg) return "";
+    return applyPaletteToSvg(upload.cleaned_svg, paletteMapping, previewPalette);
+  }, [upload?.cleaned_svg, paletteMapping, previewPalette]);
+
+  const duplicatePaletteRoles = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const r of Object.values(paletteMapping)) {
+      if (!r) continue;
+      counts.set(r, (counts.get(r) ?? 0) + 1);
+    }
+    return Array.from(counts.entries()).filter(([, n]) => n > 1).map(([r]) => r);
+  }, [paletteMapping]);
+
+  // ─── Init phase 6 fields when entering ────────────────────────────────
+  const phase6Initialized = useRef(false);
+  useEffect(() => {
+    if (phase === 6 && !phase6Initialized.current) {
       setTplCategory(derivedPrimaryIntent);
       if (!tplDescription) setTplDescription(derivedBestFor.slice(0, 250));
       if (tplMarkers.length === 0) setTplMarkers(derivedMarkers);
-      phase5Initialized.current = true;
+      phase6Initialized.current = true;
     }
-    if (phase !== 5) phase5Initialized.current = false;
+    if (phase !== 6) phase6Initialized.current = false;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase]);
 
@@ -553,26 +589,29 @@ export default function AdminStudioPage() {
   const goNext = () => {
     if (phase === 1 && !upload) return;
     if (phase === 2 && anchors.length === 0) return;
-    if (phase === 4 && matchingIds.length === 0) {
+    if (phase === 5 && matchingIds.length === 0) {
       toast.error("Coche au moins une intention pour continuer.");
       return;
     }
-    if (phase === 4 && otherChecked && !otherText.trim()) {
+    if (phase === 5 && otherChecked && !otherText.trim()) {
       toast.error("Précise le texte « Autre » ou décoche la case.");
       return;
     }
-    let next = (phase + 1) as Phase;
-    // Skip phase 3 si pas de slots répétés
-    if (next === 3 && cardinality.length === 0) {
-      toast("Pas de cardinalité à configurer, on passe à la suite.");
-      next = 4;
+    if (phase === 3 && duplicatePaletteRoles.length > 0) {
+      toast.warning(`Plusieurs couleurs partagent le même rôle (${duplicatePaletteRoles.join(", ")}).`);
     }
-    if (next > 5) return;
+    let next = (phase + 1) as Phase;
+    // Skip phase 4 (cardinalité) si pas de slots répétés
+    if (next === 4 && cardinality.length === 0) {
+      toast("Pas de cardinalité à configurer, on passe à la suite.");
+      next = 5;
+    }
+    if (next > 6) return;
     setPhase(next);
   };
   const goPrev = () => {
     let prev = (phase - 1) as Phase;
-    if (prev === 3 && cardinality.length === 0) prev = 2;
+    if (prev === 4 && cardinality.length === 0) prev = 3;
     if (prev < 1) return;
     setPhase(prev);
   };
@@ -586,6 +625,9 @@ export default function AdminStudioPage() {
     setMatchingIds([]);
     setOtherChecked(false);
     setOtherText("");
+    setDetectedColors([]);
+    setPaletteMapping({});
+    setAutoPaletteMapping({});
     setTplId(""); setTplName(""); setTplDescription(""); setTplMarkers([]); setTplTestText("");
     setEditingExistingId(null);
     setResetOpen(false);
