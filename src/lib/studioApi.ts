@@ -80,6 +80,30 @@ function flattenMatchingTypes(r: BackendMatchingTypesResponse): MatchingType[] {
   return r.matching_types ?? [];
 }
 
+// Entrées matching ajoutées côté frontend en attendant que le backend les expose.
+const FRONTEND_EXTRA_MATCHING_TYPES: MatchingType[] = [
+  {
+    id: "matrix_six_quadrants",
+    label: "Distinguer 6 quadrants",
+    category: "MATRICE & CROISEMENT",
+    primary_intent: "matrix",
+    textual_markers: ["six quadrants", "six catégories", "grille 2x3", "grille 3x2"],
+  },
+];
+
+function mergeFrontendExtras(list: MatchingType[]): MatchingType[] {
+  const ids = new Set(list.map((t) => t.id));
+  const merged = [...list];
+  for (const extra of FRONTEND_EXTRA_MATCHING_TYPES) {
+    if (ids.has(extra.id)) continue;
+    // insère juste après la dernière entrée de la même catégorie pour grouper
+    const lastIdx = merged.map((t) => t.category).lastIndexOf(extra.category);
+    if (lastIdx >= 0) merged.splice(lastIdx + 1, 0, extra);
+    else merged.push(extra);
+  }
+  return merged;
+}
+
 export const studioApi = {
   async upload(file: File): Promise<UploadResponse> {
     if (USE_MOCKS) return mockUpload(file);
