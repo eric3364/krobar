@@ -23,6 +23,8 @@ export type TestCase = {
   premium?: boolean;
 };
 
+export const STUDIO_RECENT_DEPLOYS_STORAGE = "krobar-studio-recent-deploys";
+
 type ManifestEntry = {
   id: string;
   family?: string;
@@ -46,6 +48,35 @@ type CanonicalEntry = {
 };
 
 type CanonicalResponse = { count?: number; tests: CanonicalEntry[] };
+
+type RecentStudioDeploy = {
+  template_id: string;
+  name?: string;
+  category?: string;
+  test_text: string;
+  deployed_at?: string;
+};
+
+function readRecentStudioDeploys(): RecentStudioDeploy[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = localStorage.getItem(STUDIO_RECENT_DEPLOYS_STORAGE);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw) as RecentStudioDeploy[];
+    return Array.isArray(parsed)
+      ? parsed.filter(
+          (item) =>
+            !!item &&
+            typeof item.template_id === "string" &&
+            typeof item.test_text === "string" &&
+            item.template_id.trim().length > 0 &&
+            item.test_text.trim().length > 0,
+        )
+      : [];
+  } catch {
+    return [];
+  }
+}
 
 /**
  * Charge le corpus canonique de tests depuis le backend Krobar (79 textes
@@ -72,12 +103,31 @@ export async function fetchCanonicalTestSuite(
     throw new Error(detail || "Échec du chargement du corpus");
   }
   const data = resp.data as CanonicalResponse | null;
-  const tests = data?.tests;
-  if (!Array.isArray(tests) || tests.length === 0) {
+  const backendTests = data?.tests;
+  if (!Array.isArray(backendTests) || backendTests.length === 0) {
     throw new Error("Le backend a renvoyé un corpus vide");
   }
 
   const manifestById = new Map(manifest.templates.map((t) => [t.id, t]));
+  const knownTestIds = new Set(backendTests.map((entry) => entry.template_id));
+  const recentStudioTests: CanonicalEntry[] = readRecentStudioDeploys()
+    .filter((entry) => !knownTestIds.has(entry.template_id))
+    .map((entry) => {
+      const tpl = manifestById.get(entry.template_id);
+      const inferredSlots = tpl && "slots" in tpl && Array.isArray((tpl as ManifestEntry & { slots?: string[] }).slots)
+        ? (tpl as ManifestEntry & { slots?: string[] }).slots
+        : undefined;
+
+      return {
+        template_id: entry.template_id,
+        text: entry.test_text,
+        expected_slots: inferredSlots,
+        expected_slot_count: inferredSlots?.length,
+        category: entry.category || "Premium",
+      };
+    });
+
+  const tests = [...backendTests, ...recentStudioTests];
 
   return tests.map((entry, idx) => {
     const tpl = manifestById.get(entry.template_id);
