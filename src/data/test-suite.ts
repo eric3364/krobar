@@ -94,13 +94,20 @@ export async function fetchCanonicalTestSuite(
         : undefined;
 
     // Détection « Premium » : templates créés via le Studio.
-    // Conventions backend possibles : family/source/premium ou catégorie "premium".
+    // Critères (l'un suffit) :
+    //  - flags backend explicites sur l'entrée manifest (premium / family / source)
+    //  - catégorie "premium" renvoyée par /test-texts
+    //  - template_id absent du manifest statique ET pas un chorème
+    //    (cas typique : template tout juste déployé via le Studio, pas encore
+    //    présent dans public/templates/manifest.json packagé au build).
+    const isUnknownToStaticManifest = !tpl && !isChoreme;
     const premium =
       !choreme &&
       (tpl?.premium === true ||
         tpl?.family === "premium" ||
         tpl?.source === "studio" ||
-        (entry.category || "").toLowerCase() === "premium");
+        (entry.category || "").toLowerCase() === "premium" ||
+        isUnknownToStaticManifest);
 
     return {
       id: idx + 1,
