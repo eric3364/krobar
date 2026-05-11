@@ -1059,8 +1059,126 @@ export default function AdminStudioPage() {
           </div>
         )}
 
-        {/* PHASE 3 */}
-        {phase === 3 && (
+        {/* PHASE 3 — Palette */}
+        {phase === 3 && upload && (
+          <div className="max-w-3xl mx-auto space-y-4">
+            <div>
+              <h2 className="text-xl font-semibold">Palette du template</h2>
+              <p className="text-sm text-muted-foreground">
+                {paletteLoading
+                  ? "Analyse des couleurs en cours…"
+                  : detectedColors.length === 0
+                    ? "Aucune couleur détectée."
+                    : `J'ai détecté ${detectedColors.length} couleur${detectedColors.length > 1 ? "s" : ""}. Assigne chaque couleur à un rôle de la palette Krobar, ou laisse-la inchangée.`}
+              </p>
+            </div>
+
+            {paletteLoading && (
+              <Card className="p-4 flex items-center gap-3">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <p className="text-sm">Détection des couleurs dominantes…</p>
+              </Card>
+            )}
+
+            {detectedColors.length > 0 && (
+              <>
+                <div className="flex items-center justify-between">
+                  <p className="text-xs text-muted-foreground">
+                    {Object.values(paletteMapping).filter(Boolean).length} / {detectedColors.length} assignée(s)
+                  </p>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => setPaletteMapping({ ...autoPaletteMapping })}
+                  >
+                    <RotateCcw className="w-3 h-3" /> Reset auto
+                  </Button>
+                </div>
+
+                {duplicatePaletteRoles.length > 0 && (
+                  <Card className="p-3 border-amber-500/50 bg-amber-500/5">
+                    <p className="text-xs text-amber-700 dark:text-amber-400">
+                      ⚠️ Plusieurs couleurs partagent le même rôle : {duplicatePaletteRoles.join(", ")}.
+                      Le rendu pourra être ambigu.
+                    </p>
+                  </Card>
+                )}
+
+                <Card className="divide-y">
+                  {detectedColors.map((c, idx) => {
+                    const isDominant = idx === 0;
+                    const role = paletteMapping[c.hex_value] ?? null;
+                    return (
+                      <div key={c.hex_value} className="p-3 flex items-center gap-3">
+                        <div
+                          className="w-8 h-8 rounded border shrink-0"
+                          style={{ background: c.hex_value }}
+                          aria-label={c.hex_value}
+                        />
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-mono text-sm">{c.hex_value}</span>
+                            <span className="text-xs text-muted-foreground">
+                              {c.occurrences} occurrence{c.occurrences > 1 ? "s" : ""}
+                            </span>
+                            {isDominant && <Badge variant="outline" className="text-[10px]">dominante</Badge>}
+                            {c.is_neutral && <Badge variant="secondary" className="text-[10px]">neutre détecté</Badge>}
+                          </div>
+                        </div>
+                        <Select
+                          value={role ?? "__keep__"}
+                          onValueChange={(v) => {
+                            setPaletteMapping((prev) => ({
+                              ...prev,
+                              [c.hex_value]: v === "__keep__" ? null : v,
+                            }));
+                          }}
+                        >
+                          <SelectTrigger className="w-44 shrink-0"><SelectValue /></SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="__keep__">garder telle quelle</SelectItem>
+                            {PALETTE_ROLES.map((r) => (
+                              <SelectItem key={r} value={r}>{r}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    );
+                  })}
+                </Card>
+
+                {/* Aperçu live */}
+                <Card className="p-4 space-y-3">
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <h3 className="text-sm font-semibold">Aperçu avec palette « {previewPalette.name} »</h3>
+                    <div className="flex items-center gap-2">
+                      <Label htmlFor="preview-palette" className="text-xs text-muted-foreground">Palette d'aperçu :</Label>
+                      <Select value={previewPaletteKey} onValueChange={(v) => setPreviewPaletteKey(v as PaletteKey)}>
+                        <SelectTrigger id="preview-palette" className="w-40 h-8"><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          {Object.values(palettes).map((p) => (
+                            <SelectItem key={p.key} value={p.key}>{p.name}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <div
+                    className="rounded border p-3"
+                    style={{ background: previewPalette.colors.bg }}
+                    dangerouslySetInnerHTML={{ __html: previewSvg }}
+                  />
+                  <p className="text-[11px] text-muted-foreground">
+                    L'aperçu remplace localement les couleurs ; au déploiement, le SVG en prod utilisera <code>var(--xxx)</code>.
+                  </p>
+                </Card>
+              </>
+            )}
+          </div>
+        )}
+
+        {/* PHASE 4 — Cardinalité */}
+        {phase === 4 && (
           <div className="max-w-2xl mx-auto space-y-4">
             <h2 className="text-xl font-semibold">Cardinalité des slots répétés</h2>
             {cardinality.length === 0 ? (
