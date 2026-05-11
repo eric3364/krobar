@@ -714,7 +714,7 @@ export default function AdminStudioPage() {
                   <div>
                     <h3 className="text-sm font-semibold">Templates Premium du Studio</h3>
                     <p className="text-xs text-muted-foreground">
-                      Double-clique sur un template pour rouvrir son édition. Les templates de ce navigateur conservent tous leurs paramètres.
+                      Double-clique sur un template pour rouvrir son édition. Paramètres synchronisés via Lovable Cloud (partagés entre tous tes navigateurs).
                     </p>
                   </div>
                   <Badge variant="outline" className="text-xs">{knownPremiumTemplates.length}</Badge>
