@@ -109,13 +109,13 @@ export const studioApi = {
     return res;
   },
   async matchingTypes(): Promise<MatchingType[]> {
-    if (USE_MOCKS) return (await mockMatchingTypes()).matching_types;
+    if (USE_MOCKS) return mergeFrontendExtras((await mockMatchingTypes()).matching_types);
     try {
       const r = await adminFetch<BackendMatchingTypesResponse>("/admin/studio/matching-types", { method: "GET" });
       const flat = flattenMatchingTypes(r);
-      return flat.length > 0 ? flat : MATCHING_TYPES_FALLBACK;
+      return mergeFrontendExtras(flat.length > 0 ? flat : MATCHING_TYPES_FALLBACK);
     } catch {
-      return MATCHING_TYPES_FALLBACK;
+      return mergeFrontendExtras(MATCHING_TYPES_FALLBACK);
     }
   },
   saveDraft(payload: unknown) {
