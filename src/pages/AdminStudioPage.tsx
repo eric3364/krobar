@@ -24,6 +24,7 @@ import {
 import StudioCanvas, { type Anchor, colorForSlot, type Tool } from "@/components/studio/StudioCanvas";
 import { studioApi, type MatchingType, type UploadResponse, validateStudioUploadFile } from "@/lib/studioApi";
 import { supabase } from "@/integrations/supabase/client";
+import { STUDIO_RECENT_DEPLOYS_STORAGE } from "@/data/test-suite";
 
 type Phase = 1 | 2 | 3 | 4 | 5;
 
@@ -439,6 +440,23 @@ export default function AdminStudioPage() {
     setDeploying(true);
     try {
       const res = await studioApi.deploy(buildPayload());
+      try {
+        const raw = localStorage.getItem(STUDIO_RECENT_DEPLOYS_STORAGE);
+        const existing = raw ? JSON.parse(raw) : [];
+        const next = Array.isArray(existing)
+          ? existing.filter((item) => item?.template_id !== res.template_id)
+          : [];
+        next.unshift({
+          template_id: res.template_id,
+          name: tplName,
+          category: "Premium",
+          test_text: tplTestText.trim(),
+          deployed_at: new Date().toISOString(),
+        });
+        localStorage.setItem(STUDIO_RECENT_DEPLOYS_STORAGE, JSON.stringify(next.slice(0, 20)));
+      } catch {
+        /* ignore local cache failures */
+      }
       toast.success("✅ Template déployé !");
       setDeployOpen(false);
       navigate("/admin");

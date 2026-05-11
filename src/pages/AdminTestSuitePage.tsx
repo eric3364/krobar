@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import TestSuiteView from "@/components/TestSuiteView";
+import { getTemplates } from "@/lib/api";
 
 type Manifest = { templates: any[] };
 
@@ -11,13 +12,20 @@ export default function AdminTestSuitePage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("/templates/manifest.json")
-      .then((r) => {
-        if (!r.ok) throw new Error("Impossible de charger le manifest");
-        return r.json();
+    getTemplates()
+      .then((data) => {
+        const templates = Array.isArray(data) ? data : data.templates;
+        setManifest({ templates });
       })
-      .then(setManifest)
-      .catch((e) => setError(e instanceof Error ? e.message : "Erreur de chargement"));
+      .catch(() => {
+        fetch("/templates/manifest.json")
+          .then((r) => {
+            if (!r.ok) throw new Error("Impossible de charger le manifest");
+            return r.json();
+          })
+          .then(setManifest)
+          .catch((e) => setError(e instanceof Error ? e.message : "Erreur de chargement"));
+      });
   }, []);
 
   if (error) {
