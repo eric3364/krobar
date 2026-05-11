@@ -177,7 +177,7 @@ export default function AdminStudioPage() {
     };
   }, [snapshots]);
 
-  const idTaken = tplId.length > 0 && existingIds.has(tplId);
+  const idTaken = tplId.length > 0 && existingIds.has(tplId) && tplId !== editingExistingId;
 
   // UI
   const [resetOpen, setResetOpen] = useState(false);
