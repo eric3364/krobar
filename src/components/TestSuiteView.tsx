@@ -58,6 +58,19 @@ type TestResult = {
 
 const RESULTS_STORAGE = "kroki-last-test-run";
 const NOTES_STORAGE = "kroki-test-notes";
+const TEXT_OVERRIDES_STORAGE = "kroki-test-text-overrides";
+
+function loadTextOverrides(): Record<string, string> {
+  try {
+    return JSON.parse(localStorage.getItem(TEXT_OVERRIDES_STORAGE) || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function saveTextOverrides(o: Record<string, string>) {
+  localStorage.setItem(TEXT_OVERRIDES_STORAGE, JSON.stringify(o));
+}
 
 function emptyResult(id: number): TestResult {
   return {
@@ -135,22 +148,52 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
     return [];
   });
 
+  const originalTextsRef = useRef<Record<number, string>>({});
+  const [textOverrides, setTextOverrides] = useState<Record<string, string>>(() => loadTextOverrides());
+
   const loadCorpus = async () => {
     setCorpusLoading(true);
     setCorpusError(null);
     try {
       const suite = await fetchCanonicalTestSuite(manifest);
-      setTestSuite(suite);
+      const overrides = loadTextOverrides();
+      const merged = suite.map((t) => {
+        originalTextsRef.current[t.id] = t.text;
+        const ov = overrides[t.expected_template];
+        return ov != null ? { ...t, text: ov } : t;
+      });
+      setTextOverrides(overrides);
+      setTestSuite(merged);
       setResults((prev) => {
         // Conserver les résultats persistés correspondants, initialiser le reste.
         const byId = new Map(prev.map((r) => [r.id, r]));
-        return suite.map((t) => byId.get(t.id) ?? emptyResult(t.id));
+        return merged.map((t) => byId.get(t.id) ?? emptyResult(t.id));
       });
     } catch (e) {
       setCorpusError(e instanceof Error ? e.message : String(e));
     } finally {
       setCorpusLoading(false);
     }
+  };
+
+  const updateTestText = (id: number, templateId: string, text: string) => {
+    setTestSuite((prev) => prev.map((t) => (t.id === id ? { ...t, text } : t)));
+    setTextOverrides((prev) => {
+      const next = { ...prev, [templateId]: text };
+      saveTextOverrides(next);
+      return next;
+    });
+  };
+
+  const resetTestText = (id: number, templateId: string) => {
+    const original = originalTextsRef.current[id] ?? "";
+    setTestSuite((prev) => prev.map((t) => (t.id === id ? { ...t, text: original } : t)));
+    setTextOverrides((prev) => {
+      const next = { ...prev };
+      delete next[templateId];
+      saveTextOverrides(next);
+      return next;
+    });
   };
 
   useEffect(() => {
@@ -930,6 +973,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
       <main className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredTests.map((test) => {
           const r = results.find((x) => x.id === test.id) ?? emptyResult(test.id);
+          const isOverridden = textOverrides[test.expected_template] != null;
           return (
             <TestCard
               key={test.id}
@@ -937,11 +981,14 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
               result={r}
               note={notes[test.id] || ""}
               selected={selectedIds.has(test.id)}
+              isTextOverridden={isOverridden}
               onToggleSelect={() => toggleSelected(test.id)}
               onReplay={() => replayOne(test)}
               onZoom={(svg) => setZoom({ id: test.id, svg })}
               onShowFullText={() => setFullText(test)}
               onAnnotate={() => setAnnotateId(test.id)}
+              onUpdateText={(text) => updateTestText(test.id, test.expected_template, text)}
+              onResetText={() => resetTestText(test.id, test.expected_template)}
             />
           );
         })}
@@ -997,15 +1044,23 @@ interface CardProps {
   result: TestResult;
   note: string;
   selected: boolean;
+  isTextOverridden: boolean;
   onToggleSelect: () => void;
   onReplay: () => void;
   onZoom: (svg: string) => void;
   onShowFullText: () => void;
   onAnnotate: () => void;
+  onUpdateText: (text: string) => void;
+  onResetText: () => void;
 }
 
-function TestCard({ test, result, note, selected, onToggleSelect, onReplay, onZoom, onShowFullText, onAnnotate }: CardProps) {
+function TestCard({ test, result, note, selected, isTextOverridden, onToggleSelect, onReplay, onZoom, onShowFullText, onAnnotate, onUpdateText, onResetText }: CardProps) {
   const [textOpen, setTextOpen] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [draftText, setDraftText] = useState(test.text);
+  useEffect(() => {
+    if (!editing) setDraftText(test.text);
+  }, [test.text, editing]);
   const matchBadge = useMemo(() => {
     if (result.matchKind === "exact")
       return <span className="text-xs text-green-700 font-medium">✅ Match attendu</span>;
@@ -1089,21 +1144,92 @@ function TestCard({ test, result, note, selected, onToggleSelect, onReplay, onZo
 
 
       <div className="text-xs">
-        <button
-          onClick={() => setTextOpen((v) => !v)}
-          className="text-[10px] underline text-muted-foreground hover:text-foreground"
-        >
-          {textOpen ? "Masquer le texte" : "Voir le texte"}
-        </button>
-        {textOpen && (
-          <p className="mt-1 text-muted-foreground whitespace-pre-wrap text-[11px]">
-            {test.text}
-            {test.text.length > 400 && (
-              <button onClick={onShowFullText} className="ml-1 underline text-foreground">
-                ouvrir
+        <div className="flex items-center gap-2 flex-wrap">
+          <button
+            onClick={() => setTextOpen((v) => !v)}
+            className="text-[10px] underline text-muted-foreground hover:text-foreground"
+          >
+            {textOpen ? "Masquer le texte" : "Voir / éditer le texte"}
+          </button>
+          {isTextOverridden && (
+            <span className="text-[10px] px-1.5 py-0.5 rounded border bg-amber-100 text-amber-800 border-amber-300">
+              Texte modifié
+            </span>
+          )}
+        </div>
+        {textOpen && !editing && (
+          <div className="mt-1">
+            <p className="text-muted-foreground whitespace-pre-wrap text-[11px]">
+              {test.text}
+              {test.text.length > 400 && (
+                <button onClick={onShowFullText} className="ml-1 underline text-foreground">
+                  ouvrir
+                </button>
+              )}
+            </p>
+            <div className="flex gap-2 mt-1">
+              <button
+                onClick={() => {
+                  setDraftText(test.text);
+                  setEditing(true);
+                }}
+                className="text-[10px] underline text-foreground hover:text-primary"
+              >
+                ✏️ Modifier
               </button>
-            )}
-          </p>
+              {isTextOverridden && (
+                <button
+                  onClick={() => {
+                    onResetText();
+                    toast.success("Texte de référence réinitialisé");
+                  }}
+                  className="text-[10px] underline text-muted-foreground hover:text-foreground"
+                >
+                  ↺ Réinitialiser
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+        {textOpen && editing && (
+          <div className="mt-1 space-y-1">
+            <Textarea
+              value={draftText}
+              onChange={(e) => setDraftText(e.target.value)}
+              rows={6}
+              className="text-[11px]"
+              placeholder="Texte de référence pour ce template…"
+            />
+            <div className="flex gap-1">
+              <Button
+                size="sm"
+                className="h-6 text-[10px] px-2"
+                onClick={() => {
+                  const t = draftText.trim();
+                  if (!t) {
+                    toast.error("Le texte ne peut pas être vide");
+                    return;
+                  }
+                  onUpdateText(t);
+                  setEditing(false);
+                  toast.success("Texte de référence enregistré");
+                }}
+              >
+                Enregistrer
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                className="h-6 text-[10px] px-2"
+                onClick={() => {
+                  setEditing(false);
+                  setDraftText(test.text);
+                }}
+              >
+                Annuler
+              </Button>
+            </div>
+          </div>
         )}
       </div>
 
