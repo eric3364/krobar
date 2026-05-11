@@ -30,6 +30,9 @@ type ManifestEntry = {
   family?: string;
   source?: string;
   premium?: boolean;
+  tier?: string;
+  created_via?: string;
+  slots?: string[];
   choreme?: {
     code?: string;
     family?: ChoremeFamily;
@@ -154,7 +157,9 @@ export async function fetchCanonicalTestSuite(
     const premium =
       !choreme &&
       (tpl?.premium === true ||
+        tpl?.tier === "premium" ||
         tpl?.family === "premium" ||
+        tpl?.created_via === "studio_v1" ||
         tpl?.source === "studio" ||
         (entry.category || "").toLowerCase() === "premium" ||
         isUnknownToStaticManifest);
