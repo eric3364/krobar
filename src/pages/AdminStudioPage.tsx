@@ -200,6 +200,93 @@ export default function AdminStudioPage() {
     toast.success(`Template « ${snap.tplName || snap.template_id} » chargé pour modification`);
   };
 
+  // ─── Reconnecter un template historique via le backend Krobar ────────
+  // Le backend reconstitue ancres/cardinalité/markers depuis le SVG déployé.
+  // L'utilisateur arrive en Phase 2 pour vérifier avant de sauvegarder.
+  const reconnectFromBackend = async (tpl: TemplateMetadata) => {
+    setReconnecting(tpl.id);
+    setReconstructedBanner(null);
+    try {
+      const res = await studioApi.getStudioParams(tpl.id);
+      const sp = res.studio_params;
+      if (!sp || !Array.isArray(sp.anchors) || sp.anchors.length === 0) {
+        throw new Error("Réponse backend incomplète (aucune ancre).");
+      }
+
+      // Construit un UploadResponse synthétique pour alimenter Phase 2+.
+      let previewUrl = "";
+      try {
+        previewUrl = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(sp.cleaned_svg)))}`;
+      } catch { /* preview optionnelle */ }
+      const synthUpload: UploadResponse = {
+        session_id: sp.session_id ?? `reconnect-${tpl.id}`,
+        source_format: sp.source_format ?? "svg",
+        image_width: sp.image_width,
+        image_height: sp.image_height,
+        rendered_png_url: previewUrl,
+        cleaned_svg: sp.cleaned_svg,
+        native_text_count: 0,
+        sanitization: { elements_removed: 0, attributes_removed: 0, external_refs_blocked: 0 },
+      };
+
+      const restoredAnchors: Anchor[] = sp.anchors.map((a, idx) => ({
+        id: `anch_${idx}_${Math.random().toString(36).slice(2, 8)}`,
+        slotName: a.slot_name,
+        bbox: { x: a.x, y: a.y, w: a.w, h: a.h },
+      }));
+
+      const restoredCard: CardinalityConfig[] = (sp.cardinality_configs ?? []).map((c) => ({
+        slotName: c.slot_name,
+        mode: c.mode,
+        min: c.min,
+        max: c.max,
+      }));
+
+      // Résolution des matching_types par label (les types peuvent ne pas être chargés
+      // encore — on tente une résolution best-effort, le reste passe en "otherText").
+      const labels = sp.matching_types ?? [];
+      const resolvedIds: string[] = [];
+      const unresolved: string[] = [];
+      for (const label of labels) {
+        const found = matchingTypes.find((t) => t.label === label);
+        if (found) resolvedIds.push(found.id);
+        else unresolved.push(label);
+      }
+
+      setUpload(synthUpload);
+      setAnchors(restoredAnchors);
+      setCardinality(restoredCard);
+      setMatchingIds(resolvedIds);
+      setOtherChecked(unresolved.length > 0);
+      setOtherText(unresolved.join(" · "));
+      setTplId(tpl.id);
+      setTplName(tpl.name || tpl.id);
+      setTplDescription(tpl.description || "");
+      setTplMarkers(sp.textual_markers ?? []);
+      setSelectedId(null);
+      setPhase(2);
+
+      if (res.source === "reconstructed_from_svg") {
+        setReconstructedBanner(
+          `Paramètres de « ${tpl.name || tpl.id} » reconstitués depuis le SVG déployé. Vérifie les ${restoredAnchors.length} ancres avant de sauvegarder.`,
+        );
+      }
+      toast.success(`Template « ${tpl.name || tpl.id} » prêt à être ajusté.`);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Échec de la reconnexion";
+      // Fallback : démarre la re-saisie manuelle (comportement précédent)
+      setTplId(tpl.id);
+      setTplName(tpl.name || tpl.id);
+      setTplDescription(tpl.description || "");
+      setPhase(1);
+      toast.error(
+        `Reconnexion automatique impossible (${msg}). Re-uploade le SVG manuellement.`,
+        { duration: 8000 },
+      );
+    } finally {
+      setReconnecting(null);
+    }
+
   const restoredEditRef = useRef<string | null>(null);
   useEffect(() => {
     const editId = searchParams.get("edit");
