@@ -1339,7 +1339,7 @@ function TestCard({ test, result, note, selected, isTextOverridden, onToggleSele
           </Button>
           {!hasSnapshot(test.expected_template) && (
             <p className="text-[10px] text-muted-foreground">
-              Le template apparaît bien ici, mais ses paramètres passés ne sont pas stockés dans ce navigateur.
+              Paramètres historiques absents — re-saisis-les une fois depuis le Studio pour rendre ce template éditable.
             </p>
           )}
         </div>
