@@ -79,8 +79,14 @@ async function invokeKrobar<T>(endpoint: KrobarEndpoint, payload?: Record<string
   return data as T;
 }
 
-export async function analyzeText(text: string, detail_level: string = "auto"): Promise<AnalyzeResponse> {
-  return invokeKrobar<AnalyzeResponse>("analyze", { text, detail_level });
+export async function analyzeText(
+  text: string,
+  detail_level: string = "auto",
+  force_template_id?: string,
+): Promise<AnalyzeResponse> {
+  const payload: Record<string, unknown> = { text, detail_level };
+  if (force_template_id) payload.force_template_id = force_template_id;
+  return invokeKrobar<AnalyzeResponse>("analyze", payload);
 }
 
 export async function renderTemplate(
