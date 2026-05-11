@@ -130,7 +130,23 @@ export async function fetchCanonicalTestSuite(
       };
     });
 
-  const tests = [...backendTests, ...recentStudioTests];
+  const manifestPremiumTests: CanonicalEntry[] = manifest.templates
+    .filter(
+      (tpl) =>
+        !knownTestIds.has(tpl.id) &&
+        (tpl.premium === true || tpl.tier === "premium" || tpl.family === "premium" || tpl.created_via === "studio_v1"),
+    )
+    .map((tpl) => ({
+      template_id: tpl.id,
+      text: [tpl.name, tpl.best_for ?? tpl.description]
+        .filter((value): value is string => typeof value === "string" && value.trim().length > 0)
+        .join(" — "),
+      expected_slots: tpl.slots,
+      expected_slot_count: tpl.slots?.length,
+      category: "Premium",
+    }));
+
+  const tests = [...backendTests, ...recentStudioTests, ...manifestPremiumTests];
 
   return tests.map((entry, idx) => {
     const tpl = manifestById.get(entry.template_id);
