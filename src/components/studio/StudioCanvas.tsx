@@ -35,6 +35,7 @@ type Props = {
   snap: boolean;
   zoom: number;
   onPromptName: (cb: (name: string | null) => void, suggestion?: string) => void;
+  onRenameSlot?: (slotName: string) => void;
 };
 
 const HANDLE = 8;
