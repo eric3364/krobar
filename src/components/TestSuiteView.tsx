@@ -153,6 +153,12 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
 
   const originalTextsRef = useRef<Record<number, string>>({});
   const [textOverrides, setTextOverrides] = useState<Record<string, string>>(() => loadTextOverrides());
+  const [, setSnapshotTick] = useState(0);
+  useEffect(() => {
+    void hydrateSnapshots();
+    const unsub = subscribeSnapshots(() => setSnapshotTick((n) => n + 1));
+    return unsub;
+  }, []);
 
   const loadCorpus = async () => {
     setCorpusLoading(true);
