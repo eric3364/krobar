@@ -281,6 +281,7 @@ export default function AdminStudioPage() {
       const msg = err instanceof Error ? err.message : "Échec de la reconnexion";
       // Fallback : démarre la re-saisie manuelle (comportement précédent)
       setTplId(tpl.id);
+      setEditingExistingId(tpl.id);
       setTplName(tpl.name || tpl.id);
       setTplDescription(tpl.description || "");
       setPhase(1);
