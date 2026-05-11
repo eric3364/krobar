@@ -337,7 +337,7 @@ export default function AdminTemplateAtelierPage() {
                         <p className="text-xs text-muted-foreground">L'IA dessine ton template, ça peut prendre 30 à 90 secondes…</p>
                       </div>
                     ) : draft ? (
-                      <div className="w-full h-full p-4" dangerouslySetInnerHTML={{ __html: draft.svg }} />
+                      <KrobarSvg svg={draft.svg} className="w-full h-full p-4" />
                     ) : (
                       <div className="text-center text-muted-foreground text-sm p-6">
                         <Sparkles className="w-8 h-8 mx-auto mb-2 opacity-40" />

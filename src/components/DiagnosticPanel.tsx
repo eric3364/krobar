@@ -3,6 +3,7 @@ import { Copy, Download, X, ZoomIn, ZoomOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import KrobarSvg from "@/components/KrobarSvg";
 import {
   Select,
   SelectContent,
