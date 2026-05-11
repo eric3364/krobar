@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { toast } from "sonner";
 import { templateCreatorApi, type GeneratePayload, type GenerateResponse, type SlotRole } from "@/lib/templateCreatorApi";
+import { DiagnosticPanel, type DiagnosticVersion } from "@/components/DiagnosticPanel";
 
 type Mode = "description" | "image" | "both";
 type CardinalityMode = "variants" | "optional_groups" | "fixed_decor_pool";
