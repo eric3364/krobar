@@ -609,6 +609,7 @@ export default function AdminStudioPage() {
                 snap={snap}
                 zoom={zoom}
                 onPromptName={onPromptName}
+                onRenameSlot={(name) => { setRenameTarget(name); setRenameValue(name); }}
               />
               <p className="text-xs text-muted-foreground">
                 Astuce : dessine la première instance d'un slot répété, sélectionne-la et utilise « Dupliquer » pour les suivantes.
