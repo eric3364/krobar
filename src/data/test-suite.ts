@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { loadSnapshot } from "@/lib/studioSnapshots";
 
 export type ChoremeFamily = "A" | "B" | "C";
 
