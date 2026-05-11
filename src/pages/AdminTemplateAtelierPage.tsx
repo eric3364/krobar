@@ -305,39 +305,69 @@ export default function AdminTemplateAtelierPage() {
             </div>
           </div>
 
-          {/* COLONNE DROITE — aperçu */}
+          {/* COLONNE DROITE — aperçu / diagnostic */}
           <div>
             <Card className="p-4 sticky top-6">
-              <div className="flex items-center justify-between mb-3">
-                <h2 className="font-semibold">Aperçu</h2>
-                {draft && <Badge variant="secondary" className="text-xs">draft {draft.draft_id.slice(-6)}</Badge>}
-              </div>
-              <div className="bg-muted/30 rounded-md aspect-[6/5] flex items-center justify-center overflow-hidden border">
-                {generating ? (
-                  <div className="text-center space-y-3 p-6">
-                    <Loader2 className="w-8 h-8 animate-spin mx-auto text-primary" />
-                    <p className="text-sm text-muted-foreground">{LOADING_MESSAGES[loadingMsgIdx]}</p>
-                    <p className="text-xs text-muted-foreground">L'IA dessine ton template, ça peut prendre 30 à 90 secondes…</p>
-                  </div>
-                ) : draft ? (
-                  <div className="w-full h-full p-4" dangerouslySetInnerHTML={{ __html: draft.svg }} />
-                ) : (
-                  <div className="text-center text-muted-foreground text-sm p-6">
-                    <Sparkles className="w-8 h-8 mx-auto mb-2 opacity-40" />
-                    L'aperçu apparaîtra après génération à l'étape 5.
-                  </div>
-                )}
-              </div>
-              {draft?.variants && draft.variants.length > 1 && (
-                <div className="mt-3">
-                  <p className="text-xs text-muted-foreground mb-2">Variantes générées ({draft.variants.length}) :</p>
-                  <div className="flex gap-2 flex-wrap">
-                    {draft.variants.map((v) => (
-                      <Badge key={v.cardinality} variant="outline">cardinalité {v.cardinality}</Badge>
-                    ))}
-                  </div>
+              <Tabs defaultValue="preview">
+                <div className="flex items-center justify-between mb-3">
+                  <TabsList>
+                    <TabsTrigger value="preview">Aperçu</TabsTrigger>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span>
+                          <TabsTrigger value="diagnostic" disabled={!hasDiagnostic}>
+                            Diagnostic
+                          </TabsTrigger>
+                        </span>
+                      </TooltipTrigger>
+                      {!hasDiagnostic && (
+                        <TooltipContent>Disponible après la première génération.</TooltipContent>
+                      )}
+                    </Tooltip>
+                  </TabsList>
+                  {draft && <Badge variant="secondary" className="text-xs">draft {draft.draft_id.slice(-6)}</Badge>}
                 </div>
-              )}
+
+                <TabsContent value="preview">
+                  <div className="bg-muted/30 rounded-md aspect-[6/5] flex items-center justify-center overflow-hidden border">
+                    {generating ? (
+                      <div className="text-center space-y-3 p-6">
+                        <Loader2 className="w-8 h-8 animate-spin mx-auto text-primary" />
+                        <p className="text-sm text-muted-foreground">{LOADING_MESSAGES[loadingMsgIdx]}</p>
+                        <p className="text-xs text-muted-foreground">L'IA dessine ton template, ça peut prendre 30 à 90 secondes…</p>
+                      </div>
+                    ) : draft ? (
+                      <div className="w-full h-full p-4" dangerouslySetInnerHTML={{ __html: draft.svg }} />
+                    ) : (
+                      <div className="text-center text-muted-foreground text-sm p-6">
+                        <Sparkles className="w-8 h-8 mx-auto mb-2 opacity-40" />
+                        L'aperçu apparaîtra après génération à l'étape 5.
+                      </div>
+                    )}
+                  </div>
+                  {draft?.variants && draft.variants.length > 1 && (
+                    <div className="mt-3">
+                      <p className="text-xs text-muted-foreground mb-2">Variantes générées ({draft.variants.length}) :</p>
+                      <div className="flex gap-2 flex-wrap">
+                        {draft.variants.map((v) => (
+                          <Badge key={v.cardinality} variant="outline">cardinalité {v.cardinality}</Badge>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </TabsContent>
+
+                <TabsContent value="diagnostic">
+                  {hasDiagnostic ? (
+                    <DiagnosticPanel versions={diagnosticVersions} />
+                  ) : (
+                    <div className="text-sm text-muted-foreground border rounded-md p-6 text-center">
+                      Les étapes intermédiaires ne sont pas disponibles pour cette génération
+                      (mode mock ou option désactivée côté backend).
+                    </div>
+                  )}
+                </TabsContent>
+              </Tabs>
             </Card>
           </div>
         </div>
