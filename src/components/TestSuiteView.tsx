@@ -1321,15 +1321,22 @@ function TestCard({ test, result, note, selected, isTextOverridden, onToggleSele
           📝 Annoter {note ? "•" : ""}
         </Button>
       </div>
-      {onEditTemplate && (
-        <Button
-          onClick={onEditTemplate}
-          size="sm"
-          variant={result.status === "fail" || result.status === "warning" ? "default" : "outline"}
-          className="w-full h-7 text-[11px]"
-        >
-          ✏️ Modifier le template
-        </Button>
+      {canEditTemplate && onEditTemplate && (
+        <div className="space-y-1">
+          <Button
+            onClick={onEditTemplate}
+            size="sm"
+            variant={result.status === "fail" || result.status === "warning" ? "default" : "outline"}
+            className="w-full h-7 text-[11px]"
+          >
+            ✏️ Modifier le template
+          </Button>
+          {!hasSnapshot(test.expected_template) && (
+            <p className="text-[10px] text-muted-foreground">
+              Le template apparaît bien ici, mais ses paramètres passés ne sont pas stockés dans ce navigateur.
+            </p>
+          )}
+        </div>
       )}
     </Card>
   );
