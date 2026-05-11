@@ -121,6 +121,7 @@ export default function AdminTemplateAtelierPage() {
   const [generating, setGenerating] = useState(false);
   const [loadingMsgIdx, setLoadingMsgIdx] = useState(0);
   const [draft, setDraft] = useState<GenerateResponse | null>(null);
+  const [diagnosticVersions, setDiagnosticVersions] = useState<DiagnosticVersion[]>([]);
   const [markerInput, setMarkerInput] = useState("");
   const navigate = useNavigate();
 
