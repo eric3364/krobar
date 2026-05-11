@@ -140,15 +140,23 @@ export async function fetchCanonicalTestSuite(
         !knownTestIds.has(tpl.id) &&
         (tpl.premium === true || tpl.tier === "premium" || tpl.family === "premium" || tpl.created_via === "studio_v1"),
     )
-    .map((tpl) => ({
-      template_id: tpl.id,
-      text: [tpl.name, tpl.best_for ?? tpl.description]
+    .map((tpl) => {
+      // Préférence : le texte de test saisi dans le Studio (snapshot Supabase),
+      // qui est le texte explicitement choisi par l'admin pour valider le
+      // template — pas la description marketing.
+      const snap = loadSnapshot(tpl.id);
+      const studioTestText = snap?.tplTestText?.trim();
+      const fallbackText = [tpl.name, tpl.best_for ?? tpl.description]
         .filter((value): value is string => typeof value === "string" && value.trim().length > 0)
-        .join(" — "),
-      expected_slots: tpl.slots,
-      expected_slot_count: tpl.slots?.length,
-      category: "Premium",
-    }));
+        .join(" — ");
+      return {
+        template_id: tpl.id,
+        text: studioTestText && studioTestText.length > 0 ? studioTestText : fallbackText,
+        expected_slots: tpl.slots,
+        expected_slot_count: tpl.slots?.length,
+        category: "Premium",
+      };
+    });
 
   const tests = [...backendTests, ...recentStudioTests, ...manifestPremiumTests];
 
