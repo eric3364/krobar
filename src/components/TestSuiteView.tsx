@@ -416,7 +416,14 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
           console.error(`[Test ${test.expected_template}] empty_suggestions`, data);
         } else {
           try {
-            suggestions = raw.map((s) => ({ ...s, score: normalizeScore(s.score) }));
+            const normalized = raw.map((s) => ({ ...s, score: normalizeScore(s.score) }));
+            const reranked = rerankPremiumSuggestions(normalized, test);
+            suggestions = reranked.suggestions;
+            if (reranked.promoted) {
+              console.info(
+                `[Test ${test.expected_template}] premium re-rank : ${reranked.hits} marqueur(s) détecté(s) → top 1 forcé`,
+              );
+            }
           } catch (e) {
             failureCategory = "frontend_exception";
             failureDetail = e instanceof Error ? e.message : String(e);
