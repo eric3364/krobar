@@ -816,6 +816,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
               ["all", "Tous"],
               ["procedural", "Procéduraux"],
               ["choreme", "Chorèmes"],
+              ["premium", "Premium"],
               ["A", "Famille A"],
               ["B", "Famille B"],
               ["C", "Famille C"],
