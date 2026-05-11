@@ -126,6 +126,15 @@ export const studioApi = {
     if (USE_MOCKS) return mockDeploy(payload);
     return adminFetch<{ deployed: boolean; template_id: string }>("/admin/studio/deploy", { body: payload });
   },
+  // Analyse les couleurs présentes dans un SVG nettoyé et retourne un mapping
+  // automatique vers les rôles CSS Krobar (--primary, --secondary, etc.).
+  analyzePalette(cleaned_svg: string) {
+    return adminFetch<{
+      detected_colors: Array<{ hex_value: string; occurrences: number; is_neutral: boolean }>;
+      auto_mapping: Record<string, string | null>;
+      available_roles: string[];
+    }>("/admin/studio/analyze-palette", { body: { cleaned_svg } });
+  },
   // Reconstitue les paramètres Studio d'un template déjà déployé (utilisé pour
   // « Reconnecter » les templates Premium historiques sans snapshot Supabase).
   getStudioParams(template_id: string) {
