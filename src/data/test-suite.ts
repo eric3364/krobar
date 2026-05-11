@@ -19,10 +19,15 @@ export type TestCase = {
   expected_slot_count?: number;
   /** Présent si le template est un chorème (enrichi depuis le manifest). */
   choreme?: ChoremeMeta;
+  /** True si le template a été créé via le Studio (famille Premium). */
+  premium?: boolean;
 };
 
 type ManifestEntry = {
   id: string;
+  family?: string;
+  source?: string;
+  premium?: boolean;
   choreme?: {
     code?: string;
     family?: ChoremeFamily;
