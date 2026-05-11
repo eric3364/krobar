@@ -36,6 +36,8 @@ import {
   subscribeSnapshots,
   type StudioSnapshot,
 } from "@/lib/studioSnapshots";
+import { palettes, defaultPalette, type PaletteKey } from "@/palettes";
+import { applyPaletteToSvg, PALETTE_ROLES, roleColor } from "@/lib/paletteRemap";
 
 type Phase = 1 | 2 | 3 | 4 | 5 | 6;
 
