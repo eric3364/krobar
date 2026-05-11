@@ -42,7 +42,7 @@ const HANDLE = 8;
 
 export default function StudioCanvas({
   imageUrl, imageWidth, imageHeight, anchors, setAnchors,
-  tool, setTool, selectedId, setSelectedId, snap, zoom, onPromptName,
+  tool, setTool, selectedId, setSelectedId, snap, zoom, onPromptName, onRenameSlot,
 }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
