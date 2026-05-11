@@ -23,6 +23,7 @@ import {
 
 import StudioCanvas, { type Anchor, colorForSlot, type Tool } from "@/components/studio/StudioCanvas";
 import { studioApi, type MatchingType, type UploadResponse, validateStudioUploadFile } from "@/lib/studioApi";
+import { supabase } from "@/integrations/supabase/client";
 
 type Phase = 1 | 2 | 3 | 4 | 5;
 
