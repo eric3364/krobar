@@ -27,6 +27,8 @@ import {
 } from "@/lib/kroki";
 import { normalizeScore } from "@/lib/format";
 import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
+import { hasSnapshot } from "@/lib/studioSnapshots";
 
 type Status = "idle" | "running" | "success" | "warning" | "fail";
 
