@@ -757,11 +757,22 @@ export default function AdminStudioPage() {
                             className="h-7 text-xs"
                             onClick={(e) => {
                               e.stopPropagation();
-                              if (snap) restoreSnapshot(snap, 5);
-                              else toast.error(`Les paramètres de « ${tpl.id} » ne sont pas stockés dans ce navigateur.`);
+                              if (snap) {
+                                restoreSnapshot(snap, 5);
+                              } else {
+                                // Pré-remplit les méta connues et démarre la re-saisie au Phase 1 (upload).
+                                setTplId(tpl.id);
+                                setTplName(tpl.name || tpl.id);
+                                setTplDescription(tpl.description || "");
+                                setPhase(1);
+                                toast.info(
+                                  `Re-saisie de « ${tpl.id} » : ré-uploade le SVG d'origine, refais ancres/cardinalité/matching. Les paramètres seront sauvegardés au déploiement.`,
+                                  { duration: 7000 },
+                                );
+                              }
                             }}
                           >
-                            {editable ? "Modifier" : "Indisponible"}
+                            {editable ? "Modifier" : "Reconnecter"}
                           </Button>
                           {snap && (
                             <Button
