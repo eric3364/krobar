@@ -508,6 +508,28 @@ export default function AdminStudioPage() {
       } catch {
         /* ignore local cache failures */
       }
+      // Persiste un snapshot complet pour permettre la modification ultérieure.
+      try {
+        saveSnapshot({
+          template_id: res.template_id,
+          tplId,
+          tplName,
+          tplCategory,
+          tplDescription,
+          tplMarkers,
+          tplTestText: tplTestText.trim(),
+          anchors,
+          cardinality,
+          matchingIds,
+          otherChecked,
+          otherText,
+          upload,
+          saved_at: new Date().toISOString(),
+        });
+        refreshSnapshots();
+      } catch {
+        /* ignore snapshot persistence failures */
+      }
       toast.success("✅ Template déployé !");
       setDeployOpen(false);
       navigate("/admin");
