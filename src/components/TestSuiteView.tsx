@@ -28,7 +28,7 @@ import {
 import { normalizeScore } from "@/lib/format";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
-import { hasSnapshot } from "@/lib/studioSnapshots";
+import { hasSnapshot, hydrateSnapshots, subscribeSnapshots } from "@/lib/studioSnapshots";
 
 type Status = "idle" | "running" | "success" | "warning" | "fail";
 
@@ -153,6 +153,12 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
 
   const originalTextsRef = useRef<Record<number, string>>({});
   const [textOverrides, setTextOverrides] = useState<Record<string, string>>(() => loadTextOverrides());
+  const [, setSnapshotTick] = useState(0);
+  useEffect(() => {
+    void hydrateSnapshots();
+    const unsub = subscribeSnapshots(() => setSnapshotTick((n) => n + 1));
+    return unsub;
+  }, []);
 
   const loadCorpus = async () => {
     setCorpusLoading(true);
@@ -1333,7 +1339,7 @@ function TestCard({ test, result, note, selected, isTextOverridden, onToggleSele
           </Button>
           {!hasSnapshot(test.expected_template) && (
             <p className="text-[10px] text-muted-foreground">
-              Le template apparaît bien ici, mais ses paramètres passés ne sont pas stockés dans ce navigateur.
+              Paramètres historiques absents — re-saisis-les une fois depuis le Studio pour rendre ce template éditable.
             </p>
           )}
         </div>

@@ -28,10 +28,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { STUDIO_RECENT_DEPLOYS_STORAGE } from "@/data/test-suite";
 import {
   deleteSnapshot,
+  hydrateSnapshots,
   listSnapshots,
   listSnapshotIds,
   loadSnapshot,
   saveSnapshot,
+  subscribeSnapshots,
   type StudioSnapshot,
 } from "@/lib/studioSnapshots";
 
@@ -65,7 +67,11 @@ export default function AdminStudioPage() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [snapshots, setSnapshots] = useState<StudioSnapshot[]>(() => listSnapshots());
-  const refreshSnapshots = () => setSnapshots(listSnapshots());
+  useEffect(() => {
+    void hydrateSnapshots();
+    const unsub = subscribeSnapshots(() => setSnapshots(listSnapshots()));
+    return unsub;
+  }, []);
   const [knownPremiumTemplates, setKnownPremiumTemplates] = useState<TemplateMetadata[]>([]);
 
   const [phase, setPhase] = useState<Phase>(1);
@@ -196,19 +202,24 @@ export default function AdminStudioPage() {
   useEffect(() => {
     const editId = searchParams.get("edit");
     if (!editId || restoredEditRef.current === editId) return;
-    const snap = loadSnapshot(editId);
-    if (snap) {
-      restoredEditRef.current = editId;
-      restoreSnapshot(snap, 5);
-    } else {
-      toast.error(
-        `Aucun snapshot local pour « ${editId} ». Les paramètres ne peuvent être réouverts que pour les templates créés depuis ce navigateur.`,
-      );
-    }
-    // Nettoie l'URL pour ne pas re-déclencher au prochain render.
-    const next = new URLSearchParams(searchParams);
-    next.delete("edit");
-    setSearchParams(next, { replace: true });
+    let cancelled = false;
+    (async () => {
+      await hydrateSnapshots();
+      if (cancelled) return;
+      const snap = loadSnapshot(editId);
+      if (snap) {
+        restoredEditRef.current = editId;
+        restoreSnapshot(snap, 5);
+      } else {
+        toast.error(
+          `Aucun snapshot trouvé pour « ${editId} ». Re-saisis ses paramètres une fois pour le rendre éditable.`,
+        );
+      }
+      const next = new URLSearchParams(searchParams);
+      next.delete("edit");
+      setSearchParams(next, { replace: true });
+    })();
+    return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
@@ -542,9 +553,9 @@ export default function AdminStudioPage() {
       } catch {
         /* ignore local cache failures */
       }
-      // Persiste un snapshot complet pour permettre la modification ultérieure.
+      // Persiste un snapshot complet (Supabase + cache local).
       try {
-        saveSnapshot({
+        await saveSnapshot({
           template_id: res.template_id,
           tplId,
           tplName,
@@ -560,9 +571,8 @@ export default function AdminStudioPage() {
           upload,
           saved_at: new Date().toISOString(),
         });
-        refreshSnapshots();
       } catch {
-        /* ignore snapshot persistence failures */
+        toast.warning("Template déployé, mais la sauvegarde des paramètres a échoué.");
       }
       toast.success("✅ Template déployé !");
       setDeployOpen(false);
@@ -703,7 +713,7 @@ export default function AdminStudioPage() {
                   <div>
                     <h3 className="text-sm font-semibold">Templates Premium du Studio</h3>
                     <p className="text-xs text-muted-foreground">
-                      Double-clique sur un template pour rouvrir son édition. Les templates de ce navigateur conservent tous leurs paramètres.
+                      Double-clique sur un template pour rouvrir son édition. Paramètres synchronisés via Lovable Cloud (partagés entre tous tes navigateurs).
                     </p>
                   </div>
                   <Badge variant="outline" className="text-xs">{knownPremiumTemplates.length}</Badge>
@@ -717,7 +727,7 @@ export default function AdminStudioPage() {
                         key={tpl.id}
                         onDoubleClick={() => editable && restoreSnapshot(snap, 5)}
                         className="flex items-center justify-between gap-3 px-3 py-2 hover:bg-muted/50 select-none"
-                        title={editable ? "Double-cliquer pour modifier" : "Paramètres historiques non disponibles dans ce navigateur"}
+                        title={editable ? "Double-cliquer pour modifier" : "Paramètres historiques absents — re-saisis-les une fois pour rendre ce template éditable"}
                       >
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2 flex-wrap">
@@ -746,22 +756,33 @@ export default function AdminStudioPage() {
                             className="h-7 text-xs"
                             onClick={(e) => {
                               e.stopPropagation();
-                              if (snap) restoreSnapshot(snap, 5);
-                              else toast.error(`Les paramètres de « ${tpl.id} » ne sont pas stockés dans ce navigateur.`);
+                              if (snap) {
+                                restoreSnapshot(snap, 5);
+                              } else {
+                                // Pré-remplit les méta connues et démarre la re-saisie au Phase 1 (upload).
+                                setTplId(tpl.id);
+                                setTplName(tpl.name || tpl.id);
+                                setTplDescription(tpl.description || "");
+                                setPhase(1);
+                                toast.info(
+                                  `Re-saisie de « ${tpl.id} » : ré-uploade le SVG d'origine, refais ancres/cardinalité/matching. Les paramètres seront sauvegardés au déploiement.`,
+                                  { duration: 7000 },
+                                );
+                              }
                             }}
                           >
-                            {editable ? "Modifier" : "Indisponible"}
+                            {editable ? "Modifier" : "Reconnecter"}
                           </Button>
                           {snap && (
                             <Button
                               size="icon"
                               variant="ghost"
                               className="h-7 w-7"
-                              onClick={(e) => {
+                              onClick={async (e) => {
                                 e.stopPropagation();
-                                if (confirm(`Supprimer le snapshot local de « ${snap.tplName || snap.template_id} » ? Le template déployé n'est pas affecté.`)) {
-                                  deleteSnapshot(snap.template_id);
-                                  refreshSnapshots();
+                                if (confirm(`Supprimer les paramètres Studio de « ${snap.tplName || snap.template_id} » ? Le template déployé n'est pas affecté.`)) {
+                                  try { await deleteSnapshot(snap.template_id); }
+                                  catch { toast.error("Échec de la suppression"); }
                                 }
                               }}
                               aria-label="Supprimer le snapshot"
