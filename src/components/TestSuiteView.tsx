@@ -28,7 +28,7 @@ import {
 import { normalizeScore } from "@/lib/format";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
-import { hasSnapshot } from "@/lib/studioSnapshots";
+import { hasSnapshot, hydrateSnapshots, subscribeSnapshots } from "@/lib/studioSnapshots";
 
 type Status = "idle" | "running" | "success" | "warning" | "fail";
 
