@@ -782,8 +782,12 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
                   {procDone.length > 0 && ` (${Math.round((procSuccess / procDone.length) * 100)}%)`}
                 </span>
                 <span className="text-xs text-muted-foreground font-mono pl-3">
-                  └─ Chorèmes&nbsp;&nbsp;&nbsp;: {chorSuccess}/{chorDone.length}
+                  ├─ Chorèmes&nbsp;&nbsp;&nbsp;: {chorSuccess}/{chorDone.length}
                   {chorDone.length > 0 && ` (${Math.round((chorSuccess / chorDone.length) * 100)}%)`}
+                </span>
+                <span className="text-xs text-muted-foreground font-mono pl-3">
+                  └─ Premium&nbsp;&nbsp;&nbsp;&nbsp;: {premSuccess}/{premDone.length}
+                  {premDone.length > 0 && ` (${Math.round((premSuccess / premDone.length) * 100)}%)`}
                 </span>
                 <div className="flex gap-3 text-xs mt-1">
                   <span>✅ {successCount}</span>
