@@ -570,6 +570,7 @@ export default function AdminStudioPage() {
     setOtherChecked(false);
     setOtherText("");
     setTplId(""); setTplName(""); setTplDescription(""); setTplMarkers([]); setTplTestText("");
+    setEditingExistingId(null);
     setResetOpen(false);
   };
 
