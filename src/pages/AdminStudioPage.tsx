@@ -65,6 +65,8 @@ export default function AdminStudioPage() {
   const [snapshots, setSnapshots] = useState<StudioSnapshot[]>(() => listSnapshots());
   const refreshSnapshots = () => setSnapshots(listSnapshots());
 
+  const [phase, setPhase] = useState<Phase>(1);
+
 
   // Phase 1
   const [uploading, setUploading] = useState(false);
