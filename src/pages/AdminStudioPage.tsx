@@ -768,11 +768,11 @@ export default function AdminStudioPage() {
                               size="icon"
                               variant="ghost"
                               className="h-7 w-7"
-                              onClick={(e) => {
+                              onClick={async (e) => {
                                 e.stopPropagation();
-                                if (confirm(`Supprimer le snapshot local de « ${snap.tplName || snap.template_id} » ? Le template déployé n'est pas affecté.`)) {
-                                  deleteSnapshot(snap.template_id);
-                                  refreshSnapshots();
+                                if (confirm(`Supprimer les paramètres Studio de « ${snap.tplName || snap.template_id} » ? Le template déployé n'est pas affecté.`)) {
+                                  try { await deleteSnapshot(snap.template_id); }
+                                  catch { toast.error("Échec de la suppression"); }
                                 }
                               }}
                               aria-label="Supprimer le snapshot"
