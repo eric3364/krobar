@@ -218,6 +218,7 @@ export async function mockGenerate(payload: GeneratePayload): Promise<GenerateRe
       payload.cardinality_mode === "optional_groups" && repeated && (repeated.max ?? 0) - (repeated.min ?? 0) > 4
         ? ["Plage de cardinalité large : risque de trous visuels avec slot-groups optionnels."]
         : undefined,
+    intermediate_steps: buildMockIntermediateSteps(payload, baseSvg),
   };
 }
 
