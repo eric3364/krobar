@@ -43,17 +43,70 @@ export const MATCHING_TYPES_FALLBACK: MatchingType[] = [
 const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
 const uuid = () => "sess_" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
 
+function readAsText(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve((r.result as string) ?? "");
+    r.onerror = () => reject(r.error);
+    r.readAsText(file);
+  });
+}
+
+function readAsDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve((r.result as string) ?? "");
+    r.onerror = () => reject(r.error);
+    r.readAsDataURL(file);
+  });
+}
+
+function svgDimensions(svg: string): { w: number; h: number } {
+  const vb = svg.match(/viewBox\s*=\s*"([^"]+)"/i);
+  if (vb) {
+    const p = vb[1].split(/[\s,]+/).map(Number);
+    if (p.length === 4 && p[2] > 0 && p[3] > 0) return { w: p[2], h: p[3] };
+  }
+  const wM = svg.match(/<svg[^>]*\swidth\s*=\s*"([\d.]+)/i);
+  const hM = svg.match(/<svg[^>]*\sheight\s*=\s*"([\d.]+)/i);
+  if (wM && hM) return { w: parseFloat(wM[1]), h: parseFloat(hM[1]) };
+  return { w: 1345, h: 1550 };
+}
+
 export async function mockUpload(file: File): Promise<UploadResponse> {
-  await delay(1200);
+  await delay(400);
   const ext = (file.name.split(".").pop() ?? "svg").toLowerCase() as UploadResponse["source_format"];
-  const w = 1345, h = 1550;
+
+  let w = 1345, h = 1550;
+  let rendered_png_url = "";
+  let cleaned_svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}"></svg>`;
+
+  if (ext === "svg") {
+    const text = await readAsText(file);
+    const dims = svgDimensions(text);
+    w = Math.round(dims.w); h = Math.round(dims.h);
+    cleaned_svg = text;
+    // data URL for direct preview in <img>
+    rendered_png_url = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(text)))}`;
+  } else if (ext === "pdf") {
+    // blob URL — browsers won't show PDF in <img>, but we still expose it.
+    rendered_png_url = URL.createObjectURL(file);
+  } else {
+    // EPS / AI : pas de rendu client possible. On affiche une vignette explicite.
+    try {
+      rendered_png_url = URL.createObjectURL(file);
+    } catch {
+      rendered_png_url = `https://placehold.co/${w}x${h}/fafaf8/666666?text=${encodeURIComponent(file.name + " (preview indispo en mock)")}`;
+    }
+  }
+
   return {
     session_id: uuid(),
     source_format: ext,
     image_width: w,
     image_height: h,
-    rendered_png_url: `https://placehold.co/${w}x${h}/fafaf8/666666?text=${encodeURIComponent(file.name)}`,
-    cleaned_svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}"></svg>`,
+    rendered_png_url,
+    cleaned_svg,
     native_text_count: 0,
     sanitization: { elements_removed: 0, attributes_removed: 0, external_refs_blocked: 0 },
   };
