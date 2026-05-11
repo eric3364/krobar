@@ -1060,9 +1060,10 @@ interface CardProps {
   onAnnotate: () => void;
   onUpdateText: (text: string) => void;
   onResetText: () => void;
+  onEditTemplate?: () => void;
 }
 
-function TestCard({ test, result, note, selected, isTextOverridden, onToggleSelect, onReplay, onZoom, onShowFullText, onAnnotate, onUpdateText, onResetText }: CardProps) {
+function TestCard({ test, result, note, selected, isTextOverridden, onToggleSelect, onReplay, onZoom, onShowFullText, onAnnotate, onUpdateText, onResetText, onEditTemplate }: CardProps) {
   const [textOpen, setTextOpen] = useState(false);
   const [editing, setEditing] = useState(false);
   const [draftText, setDraftText] = useState(test.text);
