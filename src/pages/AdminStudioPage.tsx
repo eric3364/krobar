@@ -115,6 +115,8 @@ export default function AdminStudioPage() {
   const [deployOpen, setDeployOpen] = useState(false);
   const [deploying, setDeploying] = useState(false);
   const [existingIds, setExistingIds] = useState<Set<string>>(new Set());
+  const [reconnecting, setReconnecting] = useState<string | null>(null);
+  const [reconstructedBanner, setReconstructedBanner] = useState<string | null>(null);
 
   // Charge l'ensemble des IDs déjà utilisés (manifest statique + corpus backend)
   // pour prévenir l'utilisateur en amont du déploiement.
