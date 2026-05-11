@@ -377,6 +377,8 @@ export default function AdminStudioPage() {
       })),
       textual_markers: tplMarkers,
       matching_types: matchingLabels,
+      test_text: tplTestText.trim(),
+      add_to_test_suite: tplTestText.trim().length > 0,
       approved_by: "admin",
     };
   };
