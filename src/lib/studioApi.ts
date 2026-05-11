@@ -46,12 +46,6 @@ async function fileToBase64(file: File): Promise<string> {
   });
 }
 
-function estimateBase64JsonBodySize(file: File): number {
-  const base64Bytes = Math.ceil(file.size / 3) * 4;
-  const jsonOverhead = 256;
-  return base64Bytes + jsonOverhead;
-}
-
 // Backend renvoie { groups: [{ label, matching_types: [{id,label,primary_intent,suggested_markers}] }] }
 type BackendMatchingTypesResponse = {
   groups?: Array<{
@@ -91,7 +85,7 @@ export const studioApi = {
     if (USE_MOCKS) return mockUpload(file);
 
     const validation = validateStudioUploadFile(file);
-    if (!validation.ok) {
+    if (validation.ok === false) {
       throw new Error(validation.error);
     }
 
