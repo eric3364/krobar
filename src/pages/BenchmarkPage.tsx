@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useRef } from "react";
+import KrobarSvg from "@/components/KrobarSvg";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -273,7 +274,7 @@ export default function BenchmarkPage() {
             <DialogTitle>{selected?.id}</DialogTitle>
           </DialogHeader>
           {selected?.svg && (
-            <div className="w-full" dangerouslySetInnerHTML={{ __html: selected.svg }} />
+            <KrobarSvg svg={selected.svg} className="w-full" />
           )}
           {selected && (
             <div className="text-xs text-muted-foreground mt-2 space-y-1">

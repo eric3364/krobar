@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import KrobarSvg from "@/components/KrobarSvg";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -1012,9 +1013,9 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
             <DialogTitle>Aperçu Test {zoom?.id}</DialogTitle>
           </DialogHeader>
           {zoom && (
-            <div
+            <KrobarSvg
+              svg={zoom.svg}
               className="w-full bg-card rounded border"
-              dangerouslySetInnerHTML={{ __html: zoom.svg }}
             />
           )}
         </DialogContent>
@@ -1253,10 +1254,7 @@ function TestCard({ test, result, note, selected, isTextOverridden, onToggleSele
       >
         {result.status === "running" && <Loader2 className="w-5 h-5 animate-spin" />}
         {result.svgString ? (
-          <div
-            className="w-full h-full"
-            dangerouslySetInnerHTML={{ __html: result.svgString }}
-          />
+          <KrobarSvg svg={result.svgString} className="w-full h-full" />
         ) : (
           result.status !== "running" && (
             <span className="text-[10px] text-muted-foreground">Pas encore exécuté</span>

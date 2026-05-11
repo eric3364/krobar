@@ -115,6 +115,8 @@ export default function AdminStudioPage() {
   const [deployOpen, setDeployOpen] = useState(false);
   const [deploying, setDeploying] = useState(false);
   const [existingIds, setExistingIds] = useState<Set<string>>(new Set());
+  const [reconnecting, setReconnecting] = useState<string | null>(null);
+  const [reconstructedBanner, setReconstructedBanner] = useState<string | null>(null);
 
   // Charge l'ensemble des IDs déjà utilisés (manifest statique + corpus backend)
   // pour prévenir l'utilisateur en amont du déploiement.
@@ -197,6 +199,95 @@ export default function AdminStudioPage() {
     setPhase(snap.upload ? jumpTo : 1);
     toast.success(`Template « ${snap.tplName || snap.template_id} » chargé pour modification`);
   };
+
+  // ─── Reconnecter un template historique via le backend Krobar ────────
+  // Le backend reconstitue ancres/cardinalité/markers depuis le SVG déployé.
+  // L'utilisateur arrive en Phase 2 pour vérifier avant de sauvegarder.
+  const reconnectFromBackend = async (tpl: TemplateMetadata) => {
+    setReconnecting(tpl.id);
+    setReconstructedBanner(null);
+    try {
+      const res = await studioApi.getStudioParams(tpl.id);
+      const sp = res.studio_params;
+      if (!sp || !Array.isArray(sp.anchors) || sp.anchors.length === 0) {
+        throw new Error("Réponse backend incomplète (aucune ancre).");
+      }
+
+      // Construit un UploadResponse synthétique pour alimenter Phase 2+.
+      let previewUrl = "";
+      try {
+        previewUrl = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(sp.cleaned_svg)))}`;
+      } catch { /* preview optionnelle */ }
+      const synthUpload: UploadResponse = {
+        session_id: sp.session_id ?? `reconnect-${tpl.id}`,
+        source_format: sp.source_format ?? "svg",
+        image_width: sp.image_width,
+        image_height: sp.image_height,
+        rendered_png_url: previewUrl,
+        cleaned_svg: sp.cleaned_svg,
+        native_text_count: 0,
+        sanitization: { elements_removed: 0, attributes_removed: 0, external_refs_blocked: 0 },
+      };
+
+      const restoredAnchors: Anchor[] = sp.anchors.map((a, idx) => ({
+        id: `anch_${idx}_${Math.random().toString(36).slice(2, 8)}`,
+        slotName: a.slot_name,
+        bbox: { x: a.x, y: a.y, w: a.w, h: a.h },
+      }));
+
+      const restoredCard: CardinalityConfig[] = (sp.cardinality_configs ?? []).map((c) => ({
+        slotName: c.slot_name,
+        mode: c.mode,
+        min: c.min,
+        max: c.max,
+      }));
+
+      // Résolution des matching_types par label (les types peuvent ne pas être chargés
+      // encore — on tente une résolution best-effort, le reste passe en "otherText").
+      const labels = sp.matching_types ?? [];
+      const resolvedIds: string[] = [];
+      const unresolved: string[] = [];
+      for (const label of labels) {
+        const found = matchingTypes.find((t) => t.label === label);
+        if (found) resolvedIds.push(found.id);
+        else unresolved.push(label);
+      }
+
+      setUpload(synthUpload);
+      setAnchors(restoredAnchors);
+      setCardinality(restoredCard);
+      setMatchingIds(resolvedIds);
+      setOtherChecked(unresolved.length > 0);
+      setOtherText(unresolved.join(" · "));
+      setTplId(tpl.id);
+      setTplName(tpl.name || tpl.id);
+      setTplDescription(tpl.description || "");
+      setTplMarkers(sp.textual_markers ?? []);
+      setSelectedId(null);
+      setPhase(2);
+
+      if (res.source === "reconstructed_from_svg") {
+        setReconstructedBanner(
+          `Paramètres de « ${tpl.name || tpl.id} » reconstitués depuis le SVG déployé. Vérifie les ${restoredAnchors.length} ancres avant de sauvegarder.`,
+        );
+      }
+      toast.success(`Template « ${tpl.name || tpl.id} » prêt à être ajusté.`);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Échec de la reconnexion";
+      // Fallback : démarre la re-saisie manuelle (comportement précédent)
+      setTplId(tpl.id);
+      setTplName(tpl.name || tpl.id);
+      setTplDescription(tpl.description || "");
+      setPhase(1);
+      toast.error(
+        `Reconnexion automatique impossible (${msg}). Re-uploade le SVG manuellement.`,
+        { duration: 8000 },
+      );
+    } finally {
+      setReconnecting(null);
+    }
+  };
+
 
   const restoredEditRef = useRef<string | null>(null);
   useEffect(() => {
@@ -622,6 +713,17 @@ export default function AdminStudioPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-8">
+        {reconstructedBanner && (
+          <Card className="mb-6 p-4 border-amber-500/50 bg-amber-500/5 flex items-start justify-between gap-3">
+            <div className="text-sm">
+              <p className="font-medium text-amber-700 dark:text-amber-400">Paramètres reconstitués depuis le SVG déployé</p>
+              <p className="text-muted-foreground">{reconstructedBanner}</p>
+            </div>
+            <Button size="sm" variant="ghost" onClick={() => setReconstructedBanner(null)}>
+              <X className="w-4 h-4" />
+            </Button>
+          </Card>
+        )}
         {/* PHASE 1 */}
         {phase === 1 && (
           <div className="max-w-2xl mx-auto space-y-6">
@@ -754,24 +856,21 @@ export default function AdminStudioPage() {
                             size="sm"
                             variant={editable ? "outline" : "secondary"}
                             className="h-7 text-xs"
+                            disabled={reconnecting === tpl.id}
                             onClick={(e) => {
                               e.stopPropagation();
                               if (snap) {
                                 restoreSnapshot(snap, 5);
                               } else {
-                                // Pré-remplit les méta connues et démarre la re-saisie au Phase 1 (upload).
-                                setTplId(tpl.id);
-                                setTplName(tpl.name || tpl.id);
-                                setTplDescription(tpl.description || "");
-                                setPhase(1);
-                                toast.info(
-                                  `Re-saisie de « ${tpl.id} » : ré-uploade le SVG d'origine, refais ancres/cardinalité/matching. Les paramètres seront sauvegardés au déploiement.`,
-                                  { duration: 7000 },
-                                );
+                                void reconnectFromBackend(tpl);
                               }
                             }}
                           >
-                            {editable ? "Modifier" : "Reconnecter"}
+                            {reconnecting === tpl.id ? (
+                              <><Loader2 className="w-3 h-3 animate-spin" /> Reconnexion…</>
+                            ) : (
+                              editable ? "Modifier" : "Reconnecter"
+                            )}
                           </Button>
                           {snap && (
                             <Button

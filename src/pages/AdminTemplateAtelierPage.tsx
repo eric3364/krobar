@@ -1,4 +1,5 @@
 import { useEffect, useReducer, useState, useCallback, useMemo } from "react";
+import KrobarSvg from "@/components/KrobarSvg";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Plus, Trash2, Loader2, Upload, X, Sparkles, Image as ImageIcon, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -337,7 +338,7 @@ export default function AdminTemplateAtelierPage() {
                         <p className="text-xs text-muted-foreground">L'IA dessine ton template, ça peut prendre 30 à 90 secondes…</p>
                       </div>
                     ) : draft ? (
-                      <div className="w-full h-full p-4" dangerouslySetInnerHTML={{ __html: draft.svg }} />
+                      <KrobarSvg svg={draft.svg} className="w-full h-full p-4" />
                     ) : (
                       <div className="text-center text-muted-foreground text-sm p-6">
                         <Sparkles className="w-8 h-8 mx-auto mb-2 opacity-40" />

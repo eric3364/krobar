@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from "react";
+import KrobarSvg from "@/components/KrobarSvg";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -342,7 +343,7 @@ export default function AdminTemplateCreatePage() {
                   )}
                 </div>
                 <div className="border rounded-lg p-4 bg-white overflow-auto max-h-64">
-                  <div dangerouslySetInnerHTML={{ __html: svgContent }} className="[&>svg]:max-w-full [&>svg]:h-auto" />
+                  <KrobarSvg svg={svgContent} className="[&>svg]:max-w-full [&>svg]:h-auto" />
                 </div>
               </div>
             )}
