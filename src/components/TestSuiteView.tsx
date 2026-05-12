@@ -424,6 +424,12 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
         svg.setAttribute("height", "100%");
         paletteOk = checkPaletteApplied(svg, currentPalette);
         svgString = svgToString(svg);
+        if (test.premium) {
+          const remaining = (svgString.match(/\{\{[^}]+\}\}/g) ?? []).slice(0, 8);
+          console.info(
+            `[Test ${test.expected_template}] render → slots envoyés=${JSON.stringify(Object.keys(top.slots))} | placeholders restants dans le SVG=${remaining.length ? remaining.join(",") : "aucun ✓"}`,
+          );
+        }
       } catch (e) {
         if (matchKind === "exact") {
           status = "warning";
