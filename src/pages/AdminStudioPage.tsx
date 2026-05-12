@@ -1264,6 +1264,22 @@ export default function AdminStudioPage() {
           </div>
         )}
 
+        {/* Banner mode canonique (Phase 2+) */}
+        {phase >= 2 && templateType === "canonical" && canonicalPreset && (
+          <Card className="mb-4 p-3 border-primary/40 bg-primary/5 flex items-center gap-3 text-sm">
+            <Badge>📐 Canonique</Badge>
+            <span className="font-medium">{canonicalPreset.name_fr}</span>
+            {canonicalCoverage && (
+              <span className="text-xs text-muted-foreground ml-auto">
+                {canonicalPreset.slots.filter((s) => (canonicalCoverage[s.key] ?? 0) > 0).length}/{canonicalPreset.slots.length} slots mappés
+                {canonicalUnmappedKeys.length > 0 && (
+                  <span className="text-destructive"> · manque : {canonicalUnmappedKeys.join(", ")}</span>
+                )}
+              </span>
+            )}
+          </Card>
+        )}
+
         {/* PHASE 2 */}
         {phase === 2 && upload && (
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
