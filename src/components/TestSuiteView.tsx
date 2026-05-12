@@ -1114,6 +1114,8 @@ function TestCard({ test, result, note, selected, isTextOverridden, onToggleSele
     if (!editing) setDraftText(test.text);
   }, [test.text, editing]);
   const matchBadge = useMemo(() => {
+    if (result.forced)
+      return <span className="text-xs text-muted-foreground font-medium">⚪ N/A (matching forcé)</span>;
     if (result.matchKind === "exact")
       return <span className="text-xs text-green-700 font-medium">✅ Match attendu</span>;
     if (result.matchKind === "in_top3")
@@ -1121,7 +1123,7 @@ function TestCard({ test, result, note, selected, isTextOverridden, onToggleSele
     if (result.matchKind === "miss")
       return <span className="text-xs text-red-600 font-medium">❌ Hors top 3</span>;
     return null;
-  }, [result.matchKind]);
+  }, [result.matchKind, result.forced]);
 
   const Pill = ({ ok, label }: { ok: boolean | null; label: string }) => {
     const color =
