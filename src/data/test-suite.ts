@@ -141,15 +141,13 @@ export async function fetchCanonicalTestSuite(
         (tpl.premium === true || tpl.tier === "premium" || tpl.family === "premium" || tpl.created_via === "studio_v1"),
     )
     .map((tpl) => {
-      // Préférence : le texte de test saisi dans le Studio (snapshot Supabase),
-      // qui est le texte explicitement choisi par l'admin pour valider le
-      // template — pas la description marketing.
+      // Seul le « Texte de test » saisi dans le Studio (snapshot Supabase)
+      // fait foi. Si absent, on ne fabrique pas de texte : la suite affichera
+      // un placeholder demandant de re-saisir le template depuis le Studio.
       const snap = loadSnapshot(tpl.id);
       const studioTestText = snap?.tplTestText?.trim();
       return {
         template_id: tpl.id,
-        // On laisse `text` vide ici pour signaler qu'il faudra synthétiser
-        // un vrai texte de test à partir des markers/intents (ci-dessous).
         text: studioTestText && studioTestText.length > 0 ? studioTestText : "",
         expected_slots: tpl.slots,
         expected_slot_count: tpl.slots?.length,
@@ -159,71 +157,51 @@ export async function fetchCanonicalTestSuite(
 
   const tests = [...backendTests, ...recentStudioTests, ...manifestPremiumTests];
 
-  // Construit les TestCase en synthétisant un vrai texte de test pour les
-  // Premium dépourvus de snapshot (sinon on retomberait sur la description
-  // marketing du template, qui ne déclenche ni les marqueurs ni les intents).
-  const built = await Promise.all(
-    tests.map(async (entry, idx) => {
-      const tpl = manifestById.get(entry.template_id);
-      const isChoreme = entry.template_id.startsWith("choreme_") || !!tpl?.choreme;
-      const choreme: ChoremeMeta | undefined =
-        isChoreme && tpl?.choreme?.code && tpl.choreme.family
-          ? {
-              code: tpl.choreme.code,
-              family: tpl.choreme.family,
-              triplet: tpl.choreme.triplet,
-              dominant_processes: tpl.choreme.dominant_processes,
-              matching_expressions: tpl.choreme.matching_expressions,
-            }
-          : undefined;
+  return tests.map((entry, idx) => {
+    const tpl = manifestById.get(entry.template_id);
+    const isChoreme = entry.template_id.startsWith("choreme_") || !!tpl?.choreme;
+    const choreme: ChoremeMeta | undefined =
+      isChoreme && tpl?.choreme?.code && tpl.choreme.family
+        ? {
+            code: tpl.choreme.code,
+            family: tpl.choreme.family,
+            triplet: tpl.choreme.triplet,
+            dominant_processes: tpl.choreme.dominant_processes,
+            matching_expressions: tpl.choreme.matching_expressions,
+          }
+        : undefined;
 
-      const isUnknownToStaticManifest = !tpl && !isChoreme;
-      const premium =
-        !choreme &&
-        (tpl?.premium === true ||
-          tpl?.tier === "premium" ||
-          tpl?.family === "premium" ||
-          tpl?.created_via === "studio_v1" ||
-          tpl?.source === "studio" ||
-          (entry.category || "").toLowerCase() === "premium" ||
-          isUnknownToStaticManifest);
+    const isUnknownToStaticManifest = !tpl && !isChoreme;
+    const premium =
+      !choreme &&
+      (tpl?.premium === true ||
+        tpl?.tier === "premium" ||
+        tpl?.family === "premium" ||
+        tpl?.created_via === "studio_v1" ||
+        tpl?.source === "studio" ||
+        (entry.category || "").toLowerCase() === "premium" ||
+        isUnknownToStaticManifest);
 
-      // Snapshot Studio (s'il existe) → texte saisi par l'admin = autorité.
-      const snap = premium ? loadSnapshot(entry.template_id) : null;
-      const studioTestText = snap?.tplTestText?.trim();
+    // Pour les Premium, le « Texte de test » du Studio fait autorité.
+    // S'il n'existe pas (snapshot historique manquant), on retourne une
+    // chaîne vide plutôt que la description marketing : le composant test
+    // affichera alors un message « re-saisis-le dans le Studio ».
+    const snap = premium ? loadSnapshot(entry.template_id) : null;
+    const studioTestText = snap?.tplTestText?.trim();
+    const finalText = premium
+      ? (studioTestText && studioTestText.length > 0 ? studioTestText : "")
+      : entry.text;
 
-      let finalText = studioTestText && studioTestText.length > 0 ? studioTestText : entry.text;
-
-      // Pour un Premium sans texte de test exploitable, on récupère les
-      // paramètres Studio côté backend (markers + matching types) et on
-      // synthétise une phrase qui contient les marqueurs et exprime les
-      // intents. C'est ce texte qui sera réellement envoyé à /analyze.
-      if (premium && (!finalText || !finalText.trim())) {
-        const params = await fetchPremiumStudioParams(entry.template_id);
-        finalText = synthesizePremiumTestText({
-          name: tpl?.name,
-          description: tpl?.description,
-          best_for: tpl?.best_for,
-          matching_types: snap?.matchingIds ? undefined : params.matching_types,
-          textual_markers: (snap?.tplMarkers && snap.tplMarkers.length > 0)
-            ? snap.tplMarkers
-            : params.textual_markers,
-        });
-      }
-
-      return {
-        id: idx + 1,
-        expected_template: entry.template_id,
-        category: entry.category || (choreme ? "Chorème" : premium ? "Premium" : "Other"),
-        text: finalText,
-        expected_slots: entry.expected_slots,
-        expected_slot_count:
-          entry.expected_slot_count ?? entry.expected_slots?.length,
-        choreme,
-        premium,
-      } as TestCase;
-    }),
-  );
-
-  return built;
+    return {
+      id: idx + 1,
+      expected_template: entry.template_id,
+      category: entry.category || (choreme ? "Chorème" : premium ? "Premium" : "Other"),
+      text: finalText,
+      expected_slots: entry.expected_slots,
+      expected_slot_count:
+        entry.expected_slot_count ?? entry.expected_slots?.length,
+      choreme,
+      premium,
+    };
+  });
 }
