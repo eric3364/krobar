@@ -308,7 +308,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
 
     if (!test.text || !test.text.trim()) {
       updateResult(test.id, {
-        status: "error",
+        status: "fail",
         forced: forceMode,
         failureCategory: "api_error",
         failureDetail:
