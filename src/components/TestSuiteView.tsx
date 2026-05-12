@@ -29,106 +29,14 @@ import {
 import { normalizeScore } from "@/lib/format";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
-import { hasSnapshot, hydrateSnapshots, loadSnapshot, subscribeSnapshots } from "@/lib/studioSnapshots";
-import { MATCHING_TYPES_FALLBACK } from "@/mocks/studio";
+import { hasSnapshot, hydrateSnapshots, subscribeSnapshots } from "@/lib/studioSnapshots";
 
 /**
- * Pour les tests Premium (templates créés via le Studio), les marqueurs
- * textuels saisis dans le Studio (tplMarkers + markers issus des matching
- * types choisis) doivent peser de manière prépondérante dans le matching.
- *
- * Le backend `/analyze` ne connaît pas encore les templates Premium tout
- * juste déployés (ou les note faiblement). On ré-ordonne donc les
- * suggestions côté frontend : si le texte du test contient au moins un
- * marqueur du template Premium attendu, on le promeut en top 1 (en boostant
- * son score au-dessus du top actuel) tout en gardant l'ordre des autres.
+ * Pour les tests Premium (templates créés via le Studio), on appelle
+ * /analyze avec `force_template_id`. Le backend bypass alors le matcher
+ * et renvoie suggestions[0] = { template_id, score: 1, slots } avec les
+ * slots répétés au format slot_1..slot_N. Aucun rerank côté frontend.
  */
-function normalizeForMatch(s: string): string {
-  return s
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
-}
-
-function premiumMarkersFor(templateId: string): string[] {
-  const snap = loadSnapshot(templateId);
-  if (!snap) return [];
-  const fromMatching = (snap.matchingIds ?? []).flatMap((id) => {
-    const mt = MATCHING_TYPES_FALLBACK.find((m) => m.id === id);
-    return mt?.textual_markers ?? [];
-  });
-  return [...(snap.tplMarkers ?? []), ...fromMatching]
-    .map((m) => m.trim())
-    .filter((m) => m.length > 0);
-}
-
-function countMarkerHits(text: string, markers: string[]): number {
-  if (markers.length === 0) return 0;
-  const hay = normalizeForMatch(text);
-  let hits = 0;
-  for (const m of markers) {
-    const needle = normalizeForMatch(m);
-    if (needle && hay.includes(needle)) hits++;
-  }
-  return hits;
-}
-
-async function rerankPremiumSuggestions(
-  suggestions: Suggestion[],
-  test: TestCase,
-): Promise<{ suggestions: Suggestion[]; promoted: boolean; hits: number; forcedError?: string }> {
-  if (!test.premium || suggestions.length === 0) {
-    return { suggestions, promoted: false, hits: 0 };
-  }
-  const markers = premiumMarkersFor(test.expected_template);
-  const hits = countMarkerHits(test.text, markers);
-  if (hits === 0) return { suggestions, promoted: false, hits: 0 };
-
-  // Appel backend avec force_template_id : Gemini Writer génère les vrais
-  // slots du template Premium attendu (bypass du matcher).
-  let forced: Suggestion | null = null;
-  let forcedError: string | undefined;
-  try {
-    const resp = await supabase.functions.invoke("krobar-proxy", {
-      body: {
-        endpoint: "analyze",
-        payload: { text: test.text, force_template_id: test.expected_template },
-      },
-    });
-    if (resp.error) {
-      forcedError = resp.error.message;
-    } else {
-      const data = resp.data as { suggestions?: Suggestion[] } | null;
-      const first = data?.suggestions?.[0];
-      if (first && first.template_id === test.expected_template) {
-        forced = { ...first, score: normalizeScore(first.score) };
-      }
-    }
-  } catch (e) {
-    forcedError = e instanceof Error ? e.message : String(e);
-  }
-
-  const topScore = suggestions[0]?.score ?? 0;
-  const boostedScore = Math.min(0.999, Math.max(topScore + 0.05, 0.95));
-
-  let expected: Suggestion;
-  if (forced) {
-    expected = { ...forced, score: boostedScore };
-  } else {
-    const idx = suggestions.findIndex((s) => s.template_id === test.expected_template);
-    if (idx >= 0) {
-      expected = { ...suggestions[idx], score: boostedScore };
-    } else {
-      expected = {
-        template_id: test.expected_template,
-        score: boostedScore,
-        slots: {},
-      } as Suggestion;
-    }
-  }
-  const rest = suggestions.filter((s) => s.template_id !== test.expected_template);
-  return { suggestions: [expected, ...rest], promoted: true, hits, forcedError };
-}
 
 type Status = "idle" | "running" | "success" | "warning" | "fail";
 
@@ -402,8 +310,18 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
     let failureDetail: string | null = null;
 
     try {
+      // Pour les Premium : appel direct avec force_template_id. Le backend
+      // bypass le matcher et renvoie suggestions[0] = { template_id, score:1,
+      // slots } avec les slots répétés au format slot_1..slot_N.
+      const analyzePayload: Record<string, unknown> = {
+        text: test.text,
+        detail_level: "auto",
+      };
+      if (test.premium) {
+        analyzePayload.force_template_id = test.expected_template;
+      }
       const resp = await supabase.functions.invoke("krobar-proxy", {
-        body: { endpoint: "analyze", payload: { text: test.text, detail_level: "auto" } },
+        body: { endpoint: "analyze", payload: analyzePayload },
       });
       latencyMs = Math.round(performance.now() - t0);
 
@@ -431,7 +349,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
         }
         console.error(`[Test ${test.expected_template}] ${failureCategory}`, resp.error, body);
       } else {
-        const data = resp.data as { suggestions?: Suggestion[]; latency_ms?: number } | null;
+        const data = resp.data as { suggestions?: Suggestion[]; latency_ms?: number; source?: string } | null;
         const raw = data?.suggestions ?? [];
         if (typeof data?.latency_ms === "number") latencyMs = data.latency_ms;
         if (raw.length === 0) {
@@ -440,12 +358,10 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
           console.error(`[Test ${test.expected_template}] empty_suggestions`, data);
         } else {
           try {
-            const normalized = raw.map((s) => ({ ...s, score: normalizeScore(s.score) }));
-            const reranked = await rerankPremiumSuggestions(normalized, test);
-            suggestions = reranked.suggestions;
-            if (reranked.promoted) {
+            suggestions = raw.map((s) => ({ ...s, score: normalizeScore(s.score) }));
+            if (test.premium) {
               console.info(
-                `[Test ${test.expected_template}] premium re-rank : ${reranked.hits} marqueur(s) → top 1 forcé${reranked.forcedError ? ` (force_template_id KO: ${reranked.forcedError}, slots vides)` : " (slots remplis via force_template_id)"}`,
+                `[Test ${test.expected_template}] premium force_template_id → ${Object.keys(suggestions[0]?.slots ?? {}).length} slot(s) (source=${data?.source ?? "?"})`,
               );
             }
           } catch (e) {
