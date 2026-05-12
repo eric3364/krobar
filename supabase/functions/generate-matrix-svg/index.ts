@@ -32,7 +32,7 @@ Deno.serve(async (req) => {
     const sys = `Tu es un illustrateur de diagrammes business. Tu produis UNIQUEMENT un fichier SVG valide, sans aucun texte autour, sans markdown, sans explication.
 Contraintes :
 - Format <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 600"> avec font-family="Plus Jakarta Sans, system-ui, sans-serif".
-- Design éditorial Krobar : épuré, monochrome neutre + 1 accent. Utilise les variables CSS var(--bg), var(--text), var(--primary), var(--accent) (le rendu remplacera ces variables).
+- Design éditorial Krobar : épuré, monochrome neutre + 1 accent. Utilise les variables CSS AVEC FALLBACK OBLIGATOIRE : var(--bg, #ffffff), var(--text, #0f172a), var(--primary, #2563eb), var(--accent, #f59e0b). Ne JAMAIS écrire fill="var(--bg)" sans fallback (le SVG deviendrait noir hors contexte).
 - Tous les libellés textuels doivent être placés dans des <foreignObject> avec un <div xmlns="http://www.w3.org/1999/xhtml" data-slot="..."> pour permettre l'édition ultérieure (titre = data-slot="title", autres slots nommés sémantiquement).
 - En haut à gauche : étiquette catégorie. Titre principal centré ou gauche.
 - Pas d'images bitmap, pas de <foreignObject> imbriqués.
