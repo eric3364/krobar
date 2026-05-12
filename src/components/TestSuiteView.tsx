@@ -1192,6 +1192,11 @@ function TestCard({ test, result, note, selected, isTextOverridden, onToggleSele
               </Tooltip>
             </TooltipProvider>
           )}
+          {result.forced && (
+            <span className="text-[10px] px-1.5 py-0.5 rounded border bg-orange-100 text-orange-800 border-orange-300">
+              🎯 Template forcé
+            </span>
+          )}
           <span className="text-[10px] text-muted-foreground">{statusLabel[result.status]}</span>
         </div>
       </div>
