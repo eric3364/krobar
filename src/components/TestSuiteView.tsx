@@ -256,6 +256,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
 
   const [paletteKey, setPaletteKey] = useState<keyof typeof palettes>("ocean");
   const [fastMode, setFastMode] = useState(true);
+  const [matchingEnabled, setMatchingEnabled] = useState(true);
   const [running, setRunning] = useState(false);
   const pauseRef = useRef(false);
   const [paused, setPaused] = useState(false);
