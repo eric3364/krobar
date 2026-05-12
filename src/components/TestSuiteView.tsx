@@ -306,6 +306,17 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
   const runOne = async (test: TestCase, currentPalette: Palette, forceMode: boolean): Promise<void> => {
     updateResult(test.id, { ...emptyResult(test.id), status: "running", forced: forceMode });
 
+    if (!test.text || !test.text.trim()) {
+      updateResult(test.id, {
+        status: "error",
+        forced: forceMode,
+        failureCategory: "api_error",
+        failureDetail:
+          "Texte de test manquant. Re-saisis-le dans le Studio (champ « Texte de test ») puis redéploie le template.",
+      });
+      return;
+    }
+
     const t0 = performance.now();
     let latencyMs: number | null = null;
     let suggestions: Suggestion[] = [];
