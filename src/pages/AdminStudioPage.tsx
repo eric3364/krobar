@@ -1296,22 +1296,48 @@ export default function AdminStudioPage() {
 
             {matchingLoading && <Card className="p-4"><Loader2 className="w-4 h-4 animate-spin" /></Card>}
 
-            {matchingByCategory.map(([cat, items]) => (
-              <Card key={cat} className="p-4 space-y-2">
-                <p className="text-xs font-semibold text-muted-foreground tracking-wide">── {cat} ──</p>
-                {items.map((t) => (
-                  <label key={t.id} className="flex items-start gap-2 cursor-pointer py-1">
-                    <Checkbox
-                      checked={matchingIds.includes(t.id)}
-                      onCheckedChange={(v) => {
-                        setMatchingIds(v ? [...matchingIds, t.id] : matchingIds.filter((x) => x !== t.id));
-                      }}
-                    />
-                    <span className="text-sm leading-tight">{t.label}</span>
-                  </label>
-                ))}
-              </Card>
-            ))}
+            {matchingByCategory.map(([cat, items]) => {
+              const catCount = templateCountByCategory.get(cat) ?? 0;
+              return (
+                <Card key={cat} className="p-4 space-y-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="text-xs font-semibold text-muted-foreground tracking-wide">── {cat} ──</p>
+                    <span
+                      className={`text-[11px] font-medium px-2 py-0.5 rounded-full border ${
+                        catCount === 0
+                          ? "border-destructive/40 text-destructive bg-destructive/10"
+                          : "border-border text-muted-foreground bg-muted/40"
+                      }`}
+                      title="Nombre de templates Premium couvrant cette catégorie"
+                    >
+                      {catCount} template{catCount > 1 ? "s" : ""}
+                    </span>
+                  </div>
+                  {items.map((t) => {
+                    const n = templateCountByMatchingId.get(t.id) ?? 0;
+                    return (
+                      <label key={t.id} className="flex items-start gap-2 cursor-pointer py-1">
+                        <Checkbox
+                          checked={matchingIds.includes(t.id)}
+                          onCheckedChange={(v) => {
+                            setMatchingIds(v ? [...matchingIds, t.id] : matchingIds.filter((x) => x !== t.id));
+                          }}
+                        />
+                        <span className="text-sm leading-tight flex-1">{t.label}</span>
+                        <span
+                          className={`text-[11px] tabular-nums shrink-0 px-1.5 rounded ${
+                            n === 0 ? "text-destructive" : "text-muted-foreground"
+                          }`}
+                          title="Templates Premium déjà rattachés à cette intention"
+                        >
+                          {n}
+                        </span>
+                      </label>
+                    );
+                  })}
+                </Card>
+              );
+            })}
 
             <Card className="p-4 space-y-2">
               <label className="flex items-center gap-2 cursor-pointer">
