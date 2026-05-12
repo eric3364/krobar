@@ -83,6 +83,15 @@ export default function AdminStudioPage() {
 
   const [phase, setPhase] = useState<Phase>(1);
 
+  // Phase 0 — Type chooser (narrative vs canonical) + canonical preset selection
+  const [templateType, setTemplateType] = useState<TemplateType | null>(null);
+  const [canonicalPresets, setCanonicalPresets] = useState<CanonicalPreset[]>([]);
+  const [canonicalPresetId, setCanonicalPresetId] = useState<string | null>(null);
+  useEffect(() => { void fetchCanonicalPresets().then(setCanonicalPresets); }, []);
+  const canonicalPreset = useMemo(
+    () => canonicalPresets.find((p) => p.id === canonicalPresetId) ?? null,
+    [canonicalPresets, canonicalPresetId],
+  );
 
   // Phase 1
   const [uploading, setUploading] = useState(false);
