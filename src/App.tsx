@@ -43,6 +43,7 @@ const App = () => (
             <Route path="/admin/test-suite" element={<AdminRoute><AdminTestSuitePage /></AdminRoute>} />
             <Route path="/admin/templates/drafts" element={<AdminRoute><AdminDraftsPage /></AdminRoute>} />
             <Route path="/admin/studio" element={<AdminRoute><AdminStudioPage /></AdminRoute>} />
+            <Route path="/admin/familles" element={<AdminRoute><AdminFamiliesPage /></AdminRoute>} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>
