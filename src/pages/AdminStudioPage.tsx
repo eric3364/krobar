@@ -497,6 +497,34 @@ export default function AdminStudioPage() {
     return Array.from(m.entries());
   }, [matchingTypes]);
 
+  // Décompte des templates Premium déjà rattachés à chaque matching type
+  // (basé sur les snapshots Studio enregistrés). Permet à l'utilisateur
+  // d'identifier les intentions sous-couvertes par le catalogue actuel.
+  const templateCountByMatchingId = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const snap of snapshots) {
+      for (const id of snap.matchingIds ?? []) {
+        counts.set(id, (counts.get(id) ?? 0) + 1);
+      }
+    }
+    return counts;
+  }, [snapshots]);
+
+  const templateCountByCategory = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const [cat, items] of matchingByCategory) {
+      const ids = new Set(items.map((t) => t.id));
+      const tplSet = new Set<string>();
+      for (const snap of snapshots) {
+        if ((snap.matchingIds ?? []).some((id) => ids.has(id))) {
+          tplSet.add(snap.template_id);
+        }
+      }
+      counts.set(cat, tplSet.size);
+    }
+    return counts;
+  }, [matchingByCategory, snapshots]);
+
   // ─── Phase 4 → 5 derivation ───────────────────────────────────────────
   const selectedMatching = matchingTypes.filter((t) => matchingIds.includes(t.id));
 
