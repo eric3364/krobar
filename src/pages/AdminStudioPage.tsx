@@ -732,6 +732,8 @@ export default function AdminStudioPage() {
 
   const resetAll = () => {
     setPhase(1);
+    setTemplateType(null);
+    setCanonicalPresetId(null);
     setUpload(null);
     setAnchors([]);
     setSelectedId(null);
@@ -747,10 +749,52 @@ export default function AdminStudioPage() {
     setResetOpen(false);
   };
 
+  // Compte des ancres par clé sémantique du preset (canonique uniquement).
+  // Une ancre nommée "strength" OU "strength_2" compte pour la clé "strength".
+  const canonicalCoverage = useMemo(() => {
+    if (!canonicalPreset) return null;
+    const counts: Record<string, number> = {};
+    for (const slot of canonicalPreset.slots) counts[slot.key] = 0;
+    for (const a of anchors) {
+      for (const slot of canonicalPreset.slots) {
+        if (a.slotName === slot.key || a.slotName.startsWith(slot.key + "_")) {
+          counts[slot.key] = (counts[slot.key] ?? 0) + 1;
+          break;
+        }
+      }
+    }
+    return counts;
+  }, [canonicalPreset, anchors]);
+
+  const canonicalUnmappedKeys = useMemo(() => {
+    if (!canonicalPreset || !canonicalCoverage) return [];
+    return canonicalPreset.slots.filter((s) => (canonicalCoverage[s.key] ?? 0) === 0).map((s) => s.key);
+  }, [canonicalPreset, canonicalCoverage]);
+
   // ─── Phase 5 actions ──────────────────────────────────────────────────
   const buildPayload = () => {
     const matchingLabels = selectedMatching.map((t) => t.label);
     if (otherChecked && otherText.trim()) matchingLabels.push(otherText.trim());
+
+    // En mode canonique, fournir aussi slot_definitions agrégés par clé sémantique
+    // pour le backend Phase 8 (1 entrée par clé du preset, avec toutes ses bboxes).
+    let slotDefinitions: unknown[] | undefined;
+    if (templateType === "canonical" && canonicalPreset) {
+      slotDefinitions = canonicalPreset.slots.map((slot) => {
+        const bboxes = anchors
+          .filter((a) => a.slotName === slot.key || a.slotName.startsWith(slot.key + "_"))
+          .map((a) => [Math.round(a.bbox.x), Math.round(a.bbox.y), Math.round(a.bbox.w), Math.round(a.bbox.h)]);
+        return {
+          id: slot.key,
+          type: bboxes.length > 1 ? "repeated" : "unique",
+          label: slot.label_fr,
+          bboxes,
+          cardinality_min: 1,
+          cardinality_max: Math.max(1, bboxes.length),
+        };
+      });
+    }
+
     return {
       session_id: upload?.session_id,
       template_id: tplId,
@@ -778,6 +822,10 @@ export default function AdminStudioPage() {
       add_to_test_suite: tplTestText.trim().length > 0,
       palette_mapping: paletteMapping,
       approved_by: "admin",
+      // Phase 8 : flag canonique + preset id + slot_definitions sémantiques
+      canonical: templateType === "canonical",
+      canonical_preset_id: templateType === "canonical" ? canonicalPresetId : null,
+      ...(slotDefinitions ? { slot_definitions: slotDefinitions } : {}),
     };
   };
 
@@ -797,6 +845,12 @@ export default function AdminStudioPage() {
     if (tplDescription.length > 250) return "Description trop longue (max 250 caractères).";
     if (tplTestText.trim().length < 20) return "Texte de test requis (min 20 caractères) pour ajout à la suite de test.";
     if (tplTestText.trim().length > 1000) return "Texte de test trop long (max 1000 caractères).";
+    if (templateType === "canonical") {
+      if (!canonicalPreset) return "Choisis une matrice canonique avant de déployer.";
+      if (canonicalUnmappedKeys.length > 0) {
+        return `Les slots du preset « ${canonicalPreset.name_fr} » ne sont pas tous mappés : ${canonicalUnmappedKeys.join(", ")}.`;
+      }
+    }
     return null;
   };
   const onDeployClick = () => {
