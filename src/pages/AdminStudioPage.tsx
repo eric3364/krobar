@@ -353,10 +353,34 @@ export default function AdminStudioPage() {
 
   const pickFromLibrary = async (item: { id: string; name: string; svg: string }) => {
     setLibraryPickerOpen(false);
-    const file = new File([item.svg], `${item.name.replace(/[^a-z0-9]+/gi, "_")}.svg`, { type: "image/svg+xml" });
-    await handleFile(file);
-    markInProduction(item.id);
-    toast.success(`« ${item.name} » marquée En production`);
+    // On NE passe PAS par l'upload backend qui sanitize et supprime les textes
+    // (titre matrice + libellés des cadrans). Le SVG vient de la bibliothèque
+    // académique : il est déjà validé, on l'injecte tel quel pour préserver
+    // tous les libellés qui guident l'utilisateur final.
+    try {
+      const svg = item.svg;
+      const vb = svg.match(/viewBox\s*=\s*"([^"]+)"/i)?.[1]?.split(/\s+/).map(Number);
+      const width = vb && vb.length === 4 ? vb[2] : 1040;
+      const height = vb && vb.length === 4 ? vb[3] : 600;
+      const nativeText = (svg.match(/<text[\s>]/gi)?.length ?? 0)
+        + (svg.match(/<foreignObject[\s>]/gi)?.length ?? 0);
+      const previewUrl = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svg)))}`;
+      const synthUpload: UploadResponse = {
+        session_id: `library-${item.id}-${Date.now()}`,
+        source_format: "svg",
+        image_width: width,
+        image_height: height,
+        rendered_png_url: previewUrl,
+        cleaned_svg: svg,
+        native_text_count: nativeText,
+        sanitization: { elements_removed: 0, attributes_removed: 0, external_refs_blocked: 0 },
+      };
+      setUpload(synthUpload);
+      markInProduction(item.id);
+      toast.success(`« ${item.name} » marquée En production · titres préservés`);
+    } catch (e: any) {
+      toast.error(e?.message ?? "Impossible de charger la matrice depuis la bibliothèque");
+    }
   };
 
   const handleFile = async (file: File) => {
