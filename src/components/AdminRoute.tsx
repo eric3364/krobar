@@ -14,6 +14,7 @@ const navItems = [
   { label: "Drafts", path: "/admin/templates/drafts", icon: FolderOpen },
   { label: "Suite de tests", path: "/admin/test-suite", icon: ListChecks },
   { label: "Familles", path: "/admin/familles", icon: Users },
+  { label: "Matrice", path: "/admin/matrice", icon: Grid3x3 },
   { label: "Benchmark", path: "/admin/benchmark", icon: FlaskConical },
 ];
 
