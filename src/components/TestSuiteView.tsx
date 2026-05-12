@@ -502,7 +502,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
         toast.info("Pause — exécution arrêtée");
         break;
       }
-      await runOne(test, palette);
+      await runOne(test, palette, !matchingEnabled);
       await new Promise((r) => setTimeout(r, 1000)); // rate limiting
       if (!fastMode) {
         // (placeholder pour différencier — pour l'instant identique)
@@ -523,7 +523,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
         toast.info("Pause — exécution arrêtée");
         break;
       }
-      await runOne(test, palette);
+      await runOne(test, palette, !matchingEnabled);
       await new Promise((r) => setTimeout(r, 1000));
     }
     setRunning(false);
@@ -545,7 +545,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
       const r = results.find((x) => x.id === test.id);
       if (r && r.status !== "idle") continue;
       if (pauseRef.current) break;
-      await runOne(test, palette);
+      await runOne(test, palette, !matchingEnabled);
       await new Promise((r) => setTimeout(r, 1000));
     }
     setRunning(false);
@@ -553,7 +553,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
   };
 
   const replayOne = async (test: TestCase) => {
-    await runOne(test, palette);
+    await runOne(test, palette, !matchingEnabled);
     playBeep();
   };
 
