@@ -16,6 +16,7 @@ import AdminTemplateAtelierPage from "./pages/AdminTemplateAtelierPage.tsx";
 import AdminTestSuitePage from "./pages/AdminTestSuitePage.tsx";
 import AdminDraftsPage from "./pages/AdminDraftsPage.tsx";
 import AdminStudioPage from "./pages/AdminStudioPage.tsx";
+import AdminFamiliesPage from "./pages/AdminFamiliesPage.tsx";
 import AuthPage from "./pages/Auth.tsx";
 import ResetPassword from "./pages/ResetPassword.tsx";
 
