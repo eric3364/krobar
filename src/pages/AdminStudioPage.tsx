@@ -462,11 +462,26 @@ export default function AdminStudioPage() {
 
   const allNames = slotGroups.map((g) => g.name);
 
+  // En mode canonique, le nommage n'est pas libre : on suggère/force la
+  // sélection d'un slot du preset (avec numérotation auto pour la cardinalité).
+  const [canonicalPickerOpen, setCanonicalPickerOpen] = useState(false);
   const onPromptName = (cb: (n: string | null) => void) => {
     namePromptCb.current = cb;
+    if (templateType === "canonical" && canonicalPreset) {
+      setCanonicalPickerOpen(true);
+      return;
+    }
     setNameValue("");
     setNameError("");
     setNamePromptOpen(true);
+  };
+  const pickCanonicalKey = (slotKey: string) => {
+    // Compte les ancres existantes pour ce slot et suffixe si nécessaire (ex: strength_2)
+    const existing = anchors.filter((a) => a.slotName === slotKey || a.slotName.startsWith(slotKey + "_")).length;
+    const finalName = existing === 0 ? slotKey : `${slotKey}_${existing + 1}`;
+    setCanonicalPickerOpen(false);
+    namePromptCb.current?.(finalName);
+    namePromptCb.current = null;
   };
   const submitName = () => {
     const v = nameValue.trim();
@@ -480,6 +495,7 @@ export default function AdminStudioPage() {
   };
   const cancelName = () => {
     setNamePromptOpen(false);
+    setCanonicalPickerOpen(false);
     namePromptCb.current?.(null);
     namePromptCb.current = null;
   };
