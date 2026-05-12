@@ -1,7 +1,8 @@
 import { ReactNode } from "react";
 import { Navigate, Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { Loader2, LogOut, LayoutDashboard, FlaskConical, FolderOpen, Plus, Wand2, Palette, ListChecks } from "lucide-react";
+import { Loader2, LogOut, LayoutDashboard, FlaskConical, FolderOpen, Plus, Wand2, Palette, ListChecks, Users, Pencil } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { BYPASS_AUTH } from "@/lib/devAuth";
 import { Helmet } from "react-helmet-async";
 
