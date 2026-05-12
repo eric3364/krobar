@@ -961,8 +961,72 @@ export default function AdminStudioPage() {
             </Button>
           </Card>
         )}
+        {/* PHASE 0 — Type chooser (gate) */}
+        {phase === 1 && !templateType && (
+          <div className="max-w-3xl mx-auto space-y-6">
+            <div className="text-center space-y-2">
+              <h2 className="text-2xl font-semibold">Quel type de template veux-tu créer ?</h2>
+              <p className="text-sm text-muted-foreground">
+                Ce choix conditionne le naming des slots et le matching côté backend (Phase 8).
+              </p>
+            </div>
+            <div className="grid md:grid-cols-2 gap-4">
+              <Card
+                className="p-6 cursor-pointer hover:ring-2 hover:ring-primary transition space-y-2"
+                onClick={() => setTemplateType("narrative")}
+              >
+                <div className="text-3xl">📝</div>
+                <h3 className="font-semibold">Template narratif</h3>
+                <p className="text-sm text-muted-foreground">
+                  Schémas libres : process, hiérarchie, infographies. Slots avec noms personnalisés (<code>item_1</code>…).
+                </p>
+                <Button size="sm" className="mt-2">Choisir</Button>
+              </Card>
+              <Card
+                className="p-6 cursor-pointer hover:ring-2 hover:ring-primary transition space-y-2"
+                onClick={() => setTemplateType("canonical")}
+              >
+                <div className="text-3xl">📐</div>
+                <h3 className="font-semibold">Matrice canonique académique</h3>
+                <p className="text-sm text-muted-foreground">
+                  SWOT, PESTEL, BCG, Porter, BMC, McKinsey 7S, Ansoff. Slots sémantiques imposés (<code>strength</code>, <code>political</code>…).
+                </p>
+                <Button size="sm" className="mt-2">Choisir</Button>
+              </Card>
+            </div>
+          </div>
+        )}
+
+        {/* PHASE 0bis — Choix du preset canonique avant upload */}
+        {phase === 1 && templateType === "canonical" && !canonicalPresetId && (
+          <div className="max-w-2xl mx-auto space-y-4">
+            <div className="flex items-center gap-2">
+              <Button size="sm" variant="ghost" onClick={() => setTemplateType(null)}>
+                <ArrowLeftCircle className="w-4 h-4" /> Changer de type
+              </Button>
+            </div>
+            <Card className="p-6 space-y-4">
+              <h2 className="text-xl font-semibold">Quelle matrice veux-tu utiliser ?</h2>
+              <p className="text-sm text-muted-foreground">
+                Le pipeline IA imposera les slots sémantiques de la matrice choisie et activera le gate de matching.
+              </p>
+              <Select value={canonicalPresetId ?? ""} onValueChange={setCanonicalPresetId}>
+                <SelectTrigger><SelectValue placeholder="Choisir une matrice…" /></SelectTrigger>
+                <SelectContent>
+                  {canonicalPresets.map((p) => (
+                    <SelectItem key={p.id} value={p.id}>{p.name_fr} ({p.cardinality} slots)</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {canonicalPresets.length === 0 && (
+                <p className="text-xs text-muted-foreground">Chargement des presets…</p>
+              )}
+            </Card>
+          </div>
+        )}
+
         {/* PHASE 1 */}
-        {phase === 1 && (
+        {phase === 1 && templateType && (templateType !== "canonical" || canonicalPresetId) && (
           <div className="max-w-2xl mx-auto space-y-6">
             <Card
               className={`p-12 border-2 border-dashed cursor-pointer transition-colors ${
