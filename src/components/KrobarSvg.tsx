@@ -33,11 +33,21 @@ export default function KrobarSvg({ svg, className, style, onAutoFit }: Props) {
     return () => observer.disconnect();
   }, [svg, onAutoFit]);
 
+  // Default palette so SVGs using var(--bg) etc. always render correctly,
+  // even when the host doesn't define these vars.
+  const defaultPaletteVars: CSSProperties = {
+    ["--bg" as any]: "#ffffff",
+    ["--text" as any]: "#0f172a",
+    ["--primary" as any]: "#2563eb",
+    ["--accent" as any]: "#f59e0b",
+    ["--muted" as any]: "#e5e7eb",
+  };
+
   return (
     <div
       ref={ref}
       className={className}
-      style={style}
+      style={{ ...defaultPaletteVars, ...style }}
       dangerouslySetInnerHTML={{ __html: svg }}
     />
   );
