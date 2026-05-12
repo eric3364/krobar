@@ -342,6 +342,23 @@ export default function AdminStudioPage() {
 
   // ─── Phase 1: upload ──────────────────────────────────────────────────
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [libraryPickerOpen, setLibraryPickerOpen] = useState(false);
+  const [matriceStates, setMatriceStates] = useState(getAllStates());
+  useEffect(() => subscribeMatrice(() => setMatriceStates(getAllStates())), []);
+  const libraryItems = useMemo(() => {
+    return (matricesData as Array<{id:string;name:string;category:string;usage:string}>)
+      .filter((m) => matriceStates[m.id]?.validatedSvg)
+      .map((m) => ({ ...m, svg: matriceStates[m.id]!.validatedSvg!, inProduction: !!matriceStates[m.id]?.inProduction }));
+  }, [matriceStates]);
+
+  const pickFromLibrary = async (item: { id: string; name: string; svg: string }) => {
+    setLibraryPickerOpen(false);
+    const file = new File([item.svg], `${item.name.replace(/[^a-z0-9]+/gi, "_")}.svg`, { type: "image/svg+xml" });
+    await handleFile(file);
+    markInProduction(item.id);
+    toast.success(`« ${item.name} » marquée En production`);
+  };
+
   const handleFile = async (file: File) => {
     if (!/\.(svg|eps|ai|pdf)$/i.test(file.name)) {
       toast.error("Format non supporté. Utilisez SVG, EPS, AI ou PDF.");
