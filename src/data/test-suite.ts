@@ -1,56 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
 import { loadSnapshot } from "@/lib/studioSnapshots";
-import { studioApi } from "@/lib/studioApi";
-
-/**
- * Construit un texte de test réaliste pour un template Premium qui n'a ni
- * `tplTestText` saisi dans le Studio, ni texte canonique côté backend.
- *
- * Plutôt que de retomber sur la description marketing (ce qui ne déclenche
- * ni les marqueurs textuels ni les intents et fournit donc des résultats
- * non représentatifs), on synthétise une phrase contenant les
- * `textual_markers` + `matching_types` du template afin que /analyze puisse
- * réellement matcher et que /render produise des slots remplis.
- */
-function synthesizePremiumTestText(opts: {
-  name?: string;
-  description?: string;
-  best_for?: string;
-  matching_types?: string[];
-  textual_markers?: string[];
-}): string {
-  const { name, description, best_for, matching_types = [], textual_markers = [] } = opts;
-  const intents = matching_types.filter((s) => typeof s === "string" && s.trim().length > 0);
-  const markers = textual_markers.filter((s) => typeof s === "string" && s.trim().length > 0);
-  const intro = name ? `Cas d'usage du template « ${name} ».` : `Cas d'usage du template.`;
-  const intentSentence = intents.length > 0
-    ? `Ce diagramme vise à ${intents.map((i) => i.toLowerCase()).join(" et à ")}.`
-    : "";
-  const markerSentence = markers.length > 0
-    ? `Les éléments suivants structurent l'analyse : ${markers.join(", ")}.`
-    : "";
-  const ctx = best_for || description || "";
-  const ctxSentence = ctx ? `Contexte : ${ctx}.` : "";
-  return [intro, intentSentence, markerSentence, ctxSentence].filter(Boolean).join(" ");
-}
-
-const premiumStudioParamsCache = new Map<string, { matching_types?: string[]; textual_markers?: string[] }>();
-
-async function fetchPremiumStudioParams(templateId: string) {
-  if (premiumStudioParamsCache.has(templateId)) return premiumStudioParamsCache.get(templateId)!;
-  try {
-    const r = await studioApi.getStudioParams(templateId);
-    const out = {
-      matching_types: r.studio_params?.matching_types,
-      textual_markers: r.studio_params?.textual_markers,
-    };
-    premiumStudioParamsCache.set(templateId, out);
-    return out;
-  } catch {
-    premiumStudioParamsCache.set(templateId, {});
-    return {};
-  }
-}
 
 export type ChoremeFamily = "A" | "B" | "C";
 
