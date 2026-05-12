@@ -41,8 +41,10 @@ import {
 import { palettes, defaultPalette, type PaletteKey } from "@/palettes";
 import { applyPaletteToSvg, PALETTE_ROLES, detectColorsInSvg, autoMapDetectedColors } from "@/lib/paletteRemap";
 import KrobarSvg from "@/components/KrobarSvg";
+import { fetchCanonicalPresets, type CanonicalPreset } from "@/lib/canonicalPresets";
 
 type Phase = 1 | 2 | 3 | 4 | 5 | 6;
+type TemplateType = "narrative" | "canonical";
 
 type CardinalityConfig = {
   slotName: string;
@@ -81,6 +83,15 @@ export default function AdminStudioPage() {
 
   const [phase, setPhase] = useState<Phase>(1);
 
+  // Phase 0 — Type chooser (narrative vs canonical) + canonical preset selection
+  const [templateType, setTemplateType] = useState<TemplateType | null>(null);
+  const [canonicalPresets, setCanonicalPresets] = useState<CanonicalPreset[]>([]);
+  const [canonicalPresetId, setCanonicalPresetId] = useState<string | null>(null);
+  useEffect(() => { void fetchCanonicalPresets().then(setCanonicalPresets); }, []);
+  const canonicalPreset = useMemo(
+    () => canonicalPresets.find((p) => p.id === canonicalPresetId) ?? null,
+    [canonicalPresets, canonicalPresetId],
+  );
 
   // Phase 1
   const [uploading, setUploading] = useState(false);
@@ -451,11 +462,26 @@ export default function AdminStudioPage() {
 
   const allNames = slotGroups.map((g) => g.name);
 
+  // En mode canonique, le nommage n'est pas libre : on suggère/force la
+  // sélection d'un slot du preset (avec numérotation auto pour la cardinalité).
+  const [canonicalPickerOpen, setCanonicalPickerOpen] = useState(false);
   const onPromptName = (cb: (n: string | null) => void) => {
     namePromptCb.current = cb;
+    if (templateType === "canonical" && canonicalPreset) {
+      setCanonicalPickerOpen(true);
+      return;
+    }
     setNameValue("");
     setNameError("");
     setNamePromptOpen(true);
+  };
+  const pickCanonicalKey = (slotKey: string) => {
+    // Compte les ancres existantes pour ce slot et suffixe si nécessaire (ex: strength_2)
+    const existing = anchors.filter((a) => a.slotName === slotKey || a.slotName.startsWith(slotKey + "_")).length;
+    const finalName = existing === 0 ? slotKey : `${slotKey}_${existing + 1}`;
+    setCanonicalPickerOpen(false);
+    namePromptCb.current?.(finalName);
+    namePromptCb.current = null;
   };
   const submitName = () => {
     const v = nameValue.trim();
@@ -469,6 +495,7 @@ export default function AdminStudioPage() {
   };
   const cancelName = () => {
     setNamePromptOpen(false);
+    setCanonicalPickerOpen(false);
     namePromptCb.current?.(null);
     namePromptCb.current = null;
   };
@@ -705,6 +732,8 @@ export default function AdminStudioPage() {
 
   const resetAll = () => {
     setPhase(1);
+    setTemplateType(null);
+    setCanonicalPresetId(null);
     setUpload(null);
     setAnchors([]);
     setSelectedId(null);
@@ -720,10 +749,52 @@ export default function AdminStudioPage() {
     setResetOpen(false);
   };
 
+  // Compte des ancres par clé sémantique du preset (canonique uniquement).
+  // Une ancre nommée "strength" OU "strength_2" compte pour la clé "strength".
+  const canonicalCoverage = useMemo(() => {
+    if (!canonicalPreset) return null;
+    const counts: Record<string, number> = {};
+    for (const slot of canonicalPreset.slots) counts[slot.key] = 0;
+    for (const a of anchors) {
+      for (const slot of canonicalPreset.slots) {
+        if (a.slotName === slot.key || a.slotName.startsWith(slot.key + "_")) {
+          counts[slot.key] = (counts[slot.key] ?? 0) + 1;
+          break;
+        }
+      }
+    }
+    return counts;
+  }, [canonicalPreset, anchors]);
+
+  const canonicalUnmappedKeys = useMemo(() => {
+    if (!canonicalPreset || !canonicalCoverage) return [];
+    return canonicalPreset.slots.filter((s) => (canonicalCoverage[s.key] ?? 0) === 0).map((s) => s.key);
+  }, [canonicalPreset, canonicalCoverage]);
+
   // ─── Phase 5 actions ──────────────────────────────────────────────────
   const buildPayload = () => {
     const matchingLabels = selectedMatching.map((t) => t.label);
     if (otherChecked && otherText.trim()) matchingLabels.push(otherText.trim());
+
+    // En mode canonique, fournir aussi slot_definitions agrégés par clé sémantique
+    // pour le backend Phase 8 (1 entrée par clé du preset, avec toutes ses bboxes).
+    let slotDefinitions: unknown[] | undefined;
+    if (templateType === "canonical" && canonicalPreset) {
+      slotDefinitions = canonicalPreset.slots.map((slot) => {
+        const bboxes = anchors
+          .filter((a) => a.slotName === slot.key || a.slotName.startsWith(slot.key + "_"))
+          .map((a) => [Math.round(a.bbox.x), Math.round(a.bbox.y), Math.round(a.bbox.w), Math.round(a.bbox.h)]);
+        return {
+          id: slot.key,
+          type: bboxes.length > 1 ? "repeated" : "unique",
+          label: slot.label_fr,
+          bboxes,
+          cardinality_min: 1,
+          cardinality_max: Math.max(1, bboxes.length),
+        };
+      });
+    }
+
     return {
       session_id: upload?.session_id,
       template_id: tplId,
@@ -751,6 +822,10 @@ export default function AdminStudioPage() {
       add_to_test_suite: tplTestText.trim().length > 0,
       palette_mapping: paletteMapping,
       approved_by: "admin",
+      // Phase 8 : flag canonique + preset id + slot_definitions sémantiques
+      canonical: templateType === "canonical",
+      canonical_preset_id: templateType === "canonical" ? canonicalPresetId : null,
+      ...(slotDefinitions ? { slot_definitions: slotDefinitions } : {}),
     };
   };
 
@@ -770,6 +845,12 @@ export default function AdminStudioPage() {
     if (tplDescription.length > 250) return "Description trop longue (max 250 caractères).";
     if (tplTestText.trim().length < 20) return "Texte de test requis (min 20 caractères) pour ajout à la suite de test.";
     if (tplTestText.trim().length > 1000) return "Texte de test trop long (max 1000 caractères).";
+    if (templateType === "canonical") {
+      if (!canonicalPreset) return "Choisis une matrice canonique avant de déployer.";
+      if (canonicalUnmappedKeys.length > 0) {
+        return `Les slots du preset « ${canonicalPreset.name_fr} » ne sont pas tous mappés : ${canonicalUnmappedKeys.join(", ")}.`;
+      }
+    }
     return null;
   };
   const onDeployClick = () => {
@@ -880,8 +961,72 @@ export default function AdminStudioPage() {
             </Button>
           </Card>
         )}
+        {/* PHASE 0 — Type chooser (gate) */}
+        {phase === 1 && !templateType && (
+          <div className="max-w-3xl mx-auto space-y-6">
+            <div className="text-center space-y-2">
+              <h2 className="text-2xl font-semibold">Quel type de template veux-tu créer ?</h2>
+              <p className="text-sm text-muted-foreground">
+                Ce choix conditionne le naming des slots et le matching côté backend (Phase 8).
+              </p>
+            </div>
+            <div className="grid md:grid-cols-2 gap-4">
+              <Card
+                className="p-6 cursor-pointer hover:ring-2 hover:ring-primary transition space-y-2"
+                onClick={() => setTemplateType("narrative")}
+              >
+                <div className="text-3xl">📝</div>
+                <h3 className="font-semibold">Template narratif</h3>
+                <p className="text-sm text-muted-foreground">
+                  Schémas libres : process, hiérarchie, infographies. Slots avec noms personnalisés (<code>item_1</code>…).
+                </p>
+                <Button size="sm" className="mt-2">Choisir</Button>
+              </Card>
+              <Card
+                className="p-6 cursor-pointer hover:ring-2 hover:ring-primary transition space-y-2"
+                onClick={() => setTemplateType("canonical")}
+              >
+                <div className="text-3xl">📐</div>
+                <h3 className="font-semibold">Matrice canonique académique</h3>
+                <p className="text-sm text-muted-foreground">
+                  SWOT, PESTEL, BCG, Porter, BMC, McKinsey 7S, Ansoff. Slots sémantiques imposés (<code>strength</code>, <code>political</code>…).
+                </p>
+                <Button size="sm" className="mt-2">Choisir</Button>
+              </Card>
+            </div>
+          </div>
+        )}
+
+        {/* PHASE 0bis — Choix du preset canonique avant upload */}
+        {phase === 1 && templateType === "canonical" && !canonicalPresetId && (
+          <div className="max-w-2xl mx-auto space-y-4">
+            <div className="flex items-center gap-2">
+              <Button size="sm" variant="ghost" onClick={() => setTemplateType(null)}>
+                <ArrowLeftCircle className="w-4 h-4" /> Changer de type
+              </Button>
+            </div>
+            <Card className="p-6 space-y-4">
+              <h2 className="text-xl font-semibold">Quelle matrice veux-tu utiliser ?</h2>
+              <p className="text-sm text-muted-foreground">
+                Le pipeline IA imposera les slots sémantiques de la matrice choisie et activera le gate de matching.
+              </p>
+              <Select value={canonicalPresetId ?? ""} onValueChange={setCanonicalPresetId}>
+                <SelectTrigger><SelectValue placeholder="Choisir une matrice…" /></SelectTrigger>
+                <SelectContent>
+                  {canonicalPresets.map((p) => (
+                    <SelectItem key={p.id} value={p.id}>{p.name_fr} ({p.cardinality} slots)</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {canonicalPresets.length === 0 && (
+                <p className="text-xs text-muted-foreground">Chargement des presets…</p>
+              )}
+            </Card>
+          </div>
+        )}
+
         {/* PHASE 1 */}
-        {phase === 1 && (
+        {phase === 1 && templateType && (templateType !== "canonical" || canonicalPresetId) && (
           <div className="max-w-2xl mx-auto space-y-6">
             <Card
               className={`p-12 border-2 border-dashed cursor-pointer transition-colors ${
@@ -1117,6 +1262,22 @@ export default function AdminStudioPage() {
               </Card>
             )}
           </div>
+        )}
+
+        {/* Banner mode canonique (Phase 2+) */}
+        {phase >= 2 && templateType === "canonical" && canonicalPreset && (
+          <Card className="mb-4 p-3 border-primary/40 bg-primary/5 flex items-center gap-3 text-sm">
+            <Badge>📐 Canonique</Badge>
+            <span className="font-medium">{canonicalPreset.name_fr}</span>
+            {canonicalCoverage && (
+              <span className="text-xs text-muted-foreground ml-auto">
+                {canonicalPreset.slots.filter((s) => (canonicalCoverage[s.key] ?? 0) > 0).length}/{canonicalPreset.slots.length} slots mappés
+                {canonicalUnmappedKeys.length > 0 && (
+                  <span className="text-destructive"> · manque : {canonicalUnmappedKeys.join(", ")}</span>
+                )}
+              </span>
+            )}
+          </Card>
         )}
 
         {/* PHASE 2 */}
@@ -1617,6 +1778,45 @@ export default function AdminStudioPage() {
           )}
         </div>
       </div>
+
+      {/* Modal: choisir un slot canonique pour la zone qu'on vient de dessiner */}
+      <Dialog open={canonicalPickerOpen} onOpenChange={(o) => { if (!o) cancelName(); }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>À quel cadran cette zone correspond-elle ?</DialogTitle>
+            <DialogDescription>
+              Preset : {canonicalPreset?.name_fr ?? ""}. Clique un slot pour l'assigner. Si tu cliques un slot déjà mappé, la zone sera ajoutée comme variante (cardinalité).
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {canonicalPreset?.slots.map((slot) => {
+              const count = canonicalCoverage?.[slot.key] ?? 0;
+              return (
+                <button
+                  key={slot.key}
+                  type="button"
+                  onClick={() => pickCanonicalKey(slot.key)}
+                  className={`text-left border rounded-md p-3 hover:ring-2 hover:ring-primary transition ${count === 0 ? "" : "bg-muted/40"}`}
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-mono text-xs">{slot.key}</span>
+                    <Badge variant={count === 0 ? "destructive" : "secondary"} className="text-[10px]">
+                      {count === 0 ? "à mapper" : `×${count}`}
+                    </Badge>
+                  </div>
+                  <div className="text-sm font-medium mt-1">{slot.label_fr}</div>
+                  {slot.description_fr && (
+                    <div className="text-xs text-muted-foreground">{slot.description_fr}</div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={cancelName}>Annuler</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Modal: nommer le slot */}
       <Dialog open={namePromptOpen} onOpenChange={(o) => { if (!o) cancelName(); }}>
