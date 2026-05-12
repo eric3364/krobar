@@ -47,10 +47,12 @@ function AdminLayoutInner({ children }: { children: ReactNode }) {
               );
             })}
           </nav>
-          <div className="p-3 border-t border-border space-y-2">
-            <Link to="/workspace" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
-              <LogOut className="h-4 w-4" /> Retour à l'éditeur
-            </Link>
+          <div className="p-3 border-t border-border">
+            <Button asChild className="w-full" size="sm">
+              <Link to="/workspace">
+                <Pencil className="h-4 w-4" /> Passer en mode éditeur
+              </Link>
+            </Button>
           </div>
         </aside>
 
