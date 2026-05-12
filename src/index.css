@@ -117,8 +117,9 @@ All colors MUST be HSL.
   justify-content: center;
   text-align: center;
   word-wrap: break-word;
-  overflow-wrap: anywhere;
-  hyphens: auto;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: manual;
   white-space: normal;
   line-height: 1.2;
   box-sizing: border-box;
