@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState, type DragEvent } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowLeft, ArrowRight, ArrowLeftCircle, Copy, Loader2, RotateCcw, Save, Trash2, Upload, X, Rocket, MousePointer2, Square as SquareIcon, Plus } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowLeftCircle, Copy, Loader2, RotateCcw, Save, Trash2, Upload, X, Rocket, MousePointer2, Square as SquareIcon, Plus, Library } from "lucide-react";
+import matricesData from "@/data/matrices.json";
+import { getAllStates, markInProduction, subscribe as subscribeMatrice } from "@/lib/matriceLibrary";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
