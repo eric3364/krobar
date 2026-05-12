@@ -913,6 +913,63 @@ export default function AdminStudioPage() {
               </div>
             </Card>
 
+            <div className="flex items-center gap-3 justify-center">
+              <div className="h-px flex-1 bg-border" />
+              <span className="text-xs text-muted-foreground uppercase tracking-wider">ou</span>
+              <div className="h-px flex-1 bg-border" />
+            </div>
+
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={() => setLibraryPickerOpen(true)}
+            >
+              <Library className="w-4 h-4" />
+              Choisir depuis la bibliothèque académique ({libraryItems.length})
+            </Button>
+
+            <Dialog open={libraryPickerOpen} onOpenChange={setLibraryPickerOpen}>
+              <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>Bibliothèque matrice académique</DialogTitle>
+                  <DialogDescription>
+                    Sélectionne une matrice validée pour la transformer en template premium.
+                  </DialogDescription>
+                </DialogHeader>
+                {libraryItems.length === 0 ? (
+                  <p className="text-sm text-muted-foreground py-8 text-center">
+                    Aucune matrice validée dans la bibliothèque. Va dans <Link to="/admin/matrice" className="underline">Matrice</Link> pour en générer.
+                  </p>
+                ) : (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {libraryItems.map((item) => (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => pickFromLibrary(item)}
+                        className="text-left border rounded-md overflow-hidden hover:ring-2 hover:ring-primary transition"
+                      >
+                        <div className="aspect-[16/9] bg-white">
+                          <div
+                            className="w-full h-full [&>svg]:w-full [&>svg]:h-full"
+                            dangerouslySetInnerHTML={{ __html: item.svg }}
+                          />
+                        </div>
+                        <div className="p-2">
+                          <div className="text-xs font-medium line-clamp-1">{item.name}</div>
+                          <div className="text-[10px] text-muted-foreground line-clamp-1">{item.category}</div>
+                          {item.inProduction && (
+                            <Badge variant="default" className="mt-1 text-[9px]">En production</Badge>
+                          )}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </DialogContent>
+            </Dialog>
+
             {uploading && (
               <Card className="p-4 flex items-center gap-3">
                 <Loader2 className="w-5 h-5 animate-spin" />
