@@ -497,6 +497,34 @@ export default function AdminStudioPage() {
     return Array.from(m.entries());
   }, [matchingTypes]);
 
+  // Décompte des templates Premium déjà rattachés à chaque matching type
+  // (basé sur les snapshots Studio enregistrés). Permet à l'utilisateur
+  // d'identifier les intentions sous-couvertes par le catalogue actuel.
+  const templateCountByMatchingId = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const snap of snapshots) {
+      for (const id of snap.matchingIds ?? []) {
+        counts.set(id, (counts.get(id) ?? 0) + 1);
+      }
+    }
+    return counts;
+  }, [snapshots]);
+
+  const templateCountByCategory = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const [cat, items] of matchingByCategory) {
+      const ids = new Set(items.map((t) => t.id));
+      const tplSet = new Set<string>();
+      for (const snap of snapshots) {
+        if ((snap.matchingIds ?? []).some((id) => ids.has(id))) {
+          tplSet.add(snap.template_id);
+        }
+      }
+      counts.set(cat, tplSet.size);
+    }
+    return counts;
+  }, [matchingByCategory, snapshots]);
+
   // ─── Phase 4 → 5 derivation ───────────────────────────────────────────
   const selectedMatching = matchingTypes.filter((t) => matchingIds.includes(t.id));
 
@@ -1268,22 +1296,48 @@ export default function AdminStudioPage() {
 
             {matchingLoading && <Card className="p-4"><Loader2 className="w-4 h-4 animate-spin" /></Card>}
 
-            {matchingByCategory.map(([cat, items]) => (
-              <Card key={cat} className="p-4 space-y-2">
-                <p className="text-xs font-semibold text-muted-foreground tracking-wide">── {cat} ──</p>
-                {items.map((t) => (
-                  <label key={t.id} className="flex items-start gap-2 cursor-pointer py-1">
-                    <Checkbox
-                      checked={matchingIds.includes(t.id)}
-                      onCheckedChange={(v) => {
-                        setMatchingIds(v ? [...matchingIds, t.id] : matchingIds.filter((x) => x !== t.id));
-                      }}
-                    />
-                    <span className="text-sm leading-tight">{t.label}</span>
-                  </label>
-                ))}
-              </Card>
-            ))}
+            {matchingByCategory.map(([cat, items]) => {
+              const catCount = templateCountByCategory.get(cat) ?? 0;
+              return (
+                <Card key={cat} className="p-4 space-y-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="text-xs font-semibold text-muted-foreground tracking-wide">── {cat} ──</p>
+                    <span
+                      className={`text-[11px] font-medium px-2 py-0.5 rounded-full border ${
+                        catCount === 0
+                          ? "border-destructive/40 text-destructive bg-destructive/10"
+                          : "border-border text-muted-foreground bg-muted/40"
+                      }`}
+                      title="Nombre de templates Premium couvrant cette catégorie"
+                    >
+                      {catCount} template{catCount > 1 ? "s" : ""}
+                    </span>
+                  </div>
+                  {items.map((t) => {
+                    const n = templateCountByMatchingId.get(t.id) ?? 0;
+                    return (
+                      <label key={t.id} className="flex items-start gap-2 cursor-pointer py-1">
+                        <Checkbox
+                          checked={matchingIds.includes(t.id)}
+                          onCheckedChange={(v) => {
+                            setMatchingIds(v ? [...matchingIds, t.id] : matchingIds.filter((x) => x !== t.id));
+                          }}
+                        />
+                        <span className="text-sm leading-tight flex-1">{t.label}</span>
+                        <span
+                          className={`text-[11px] tabular-nums shrink-0 px-1.5 rounded ${
+                            n === 0 ? "text-destructive" : "text-muted-foreground"
+                          }`}
+                          title="Templates Premium déjà rattachés à cette intention"
+                        >
+                          {n}
+                        </span>
+                      </label>
+                    );
+                  })}
+                </Card>
+              );
+            })}
 
             <Card className="p-4 space-y-2">
               <label className="flex items-center gap-2 cursor-pointer">
