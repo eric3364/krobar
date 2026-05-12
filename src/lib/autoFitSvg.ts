@@ -32,8 +32,9 @@ export function autoFitTextInForeignObject(fo: SVGForeignObjectElement): {
 
   // ÉTAPE 1 — wrap multiligne
   div.style.wordWrap = "break-word";
-  div.style.overflowWrap = "anywhere";
-  div.style.hyphens = "auto";
+  div.style.overflowWrap = "break-word";
+  div.style.wordBreak = "normal";
+  div.style.hyphens = "manual";
   div.style.whiteSpace = "normal";
   if (!div.style.lineHeight) div.style.lineHeight = "1.2";
 
