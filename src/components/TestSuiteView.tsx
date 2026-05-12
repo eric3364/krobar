@@ -402,8 +402,18 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
     let failureDetail: string | null = null;
 
     try {
+      // Pour les Premium : appel direct avec force_template_id. Le backend
+      // bypass le matcher et renvoie suggestions[0] = { template_id, score:1,
+      // slots } avec les slots répétés au format slot_1..slot_N.
+      const analyzePayload: Record<string, unknown> = {
+        text: test.text,
+        detail_level: "auto",
+      };
+      if (test.premium) {
+        analyzePayload.force_template_id = test.expected_template;
+      }
       const resp = await supabase.functions.invoke("krobar-proxy", {
-        body: { endpoint: "analyze", payload: { text: test.text, detail_level: "auto" } },
+        body: { endpoint: "analyze", payload: analyzePayload },
       });
       latencyMs = Math.round(performance.now() - t0);
 
@@ -431,7 +441,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
         }
         console.error(`[Test ${test.expected_template}] ${failureCategory}`, resp.error, body);
       } else {
-        const data = resp.data as { suggestions?: Suggestion[]; latency_ms?: number } | null;
+        const data = resp.data as { suggestions?: Suggestion[]; latency_ms?: number; source?: string } | null;
         const raw = data?.suggestions ?? [];
         if (typeof data?.latency_ms === "number") latencyMs = data.latency_ms;
         if (raw.length === 0) {
@@ -440,12 +450,10 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
           console.error(`[Test ${test.expected_template}] empty_suggestions`, data);
         } else {
           try {
-            const normalized = raw.map((s) => ({ ...s, score: normalizeScore(s.score) }));
-            const reranked = await rerankPremiumSuggestions(normalized, test);
-            suggestions = reranked.suggestions;
-            if (reranked.promoted) {
+            suggestions = raw.map((s) => ({ ...s, score: normalizeScore(s.score) }));
+            if (test.premium) {
               console.info(
-                `[Test ${test.expected_template}] premium re-rank : ${reranked.hits} marqueur(s) → top 1 forcé${reranked.forcedError ? ` (force_template_id KO: ${reranked.forcedError}, slots vides)` : " (slots remplis via force_template_id)"}`,
+                `[Test ${test.expected_template}] premium force_template_id → ${Object.keys(suggestions[0]?.slots ?? {}).length} slot(s) (source=${data?.source ?? "?"})`,
               );
             }
           } catch (e) {
