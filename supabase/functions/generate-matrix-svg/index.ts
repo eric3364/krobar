@@ -32,7 +32,7 @@ Deno.serve(async (req) => {
     const sys = `Tu es un illustrateur de diagrammes business. Tu produis UNIQUEMENT un fichier SVG valide, sans aucun texte autour, sans markdown, sans explication.
 Contraintes :
 - Format <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 600"> avec font-family="Plus Jakarta Sans, system-ui, sans-serif".
-- Design éditorial Krobar : épuré, monochrome neutre + 1 accent. Utilise les variables CSS AVEC FALLBACK OBLIGATOIRE : var(--bg, #ffffff), var(--text, #0f172a), var(--primary, #2563eb), var(--accent, #f59e0b). Ne JAMAIS écrire fill="var(--bg)" sans fallback (le SVG deviendrait noir hors contexte).
+- Design éditorial Krobar : STRICTEMENT NOIR & BLANC, aucune couleur. Palette autorisée UNIQUEMENT : blanc (#ffffff) pour les fonds, noir (#0f172a ou #000000) pour le texte et les contours, et des gris neutres (#f1f5f9, #e2e8f0, #cbd5e1, #94a3b8, #64748b) pour les fonds légers, séparateurs et nuances. AUCUNE couleur (pas de bleu, rouge, vert, jaune, orange, violet, etc.), aucun gradient coloré, aucun accent chromatique. N'utilise PAS les variables CSS var(--primary), var(--accent) : uniquement des valeurs hex en niveaux de gris. Tout doit rester monochromatique noir/blanc/gris.
 - Tous les libellés textuels doivent être placés dans des <foreignObject> avec un <div xmlns="http://www.w3.org/1999/xhtml" data-slot="..."> pour permettre l'édition ultérieure (titre = data-slot="title", autres slots nommés sémantiquement).
 - En haut à gauche : étiquette catégorie. Titre principal centré ou gauche.
 - Pas d'images bitmap, pas de <foreignObject> imbriqués.
