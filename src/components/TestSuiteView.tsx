@@ -317,8 +317,13 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
         text: test.text,
         detail_level: "auto",
       };
-      if (test.premium) {
+      const knownInManifest = manifest.templates.some((t) => t.id === test.expected_template);
+      if (test.premium && knownInManifest) {
         analyzePayload.force_template_id = test.expected_template;
+      } else if (test.premium && !knownInManifest) {
+        console.warn(
+          `[Test ${test.expected_template}] template absent du manifest backend → force désactivé, fallback matcher`,
+        );
       }
       const resp = await supabase.functions.invoke("krobar-proxy", {
         body: { endpoint: "analyze", payload: analyzePayload },
