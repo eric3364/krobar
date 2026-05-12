@@ -859,7 +859,20 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
                 Mode rapide (1ère suggestion uniquement)
               </Label>
             </div>
+            <div className="flex items-center gap-2">
+              <Switch checked={matchingEnabled} onCheckedChange={setMatchingEnabled} id="matching" />
+              <Label htmlFor="matching" className="text-xs">
+                🎯 Tester le matching {matchingEnabled ? "(ON)" : "(OFF — template forcé)"}
+              </Label>
+            </div>
           </div>
+
+          {!matchingEnabled && (
+            <div className="rounded-lg border border-orange-300 bg-orange-50 px-3 py-2 text-xs text-orange-900">
+              ⚠️ <span className="font-semibold">Matching désactivé</span> — tous les tests utilisent leur template attendu.
+              Les évaluations « Match attendu » sont affichées en N/A. Seuls le remplissage et le rendu sont évalués.
+            </div>
+          )}
 
           {hasAnyCompleted && (
             <div className="rounded-lg border bg-accent/30 px-4 py-3 flex items-center justify-between gap-3 flex-wrap">
