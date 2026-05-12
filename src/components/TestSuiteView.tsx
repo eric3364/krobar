@@ -1322,12 +1322,14 @@ function TestCard({ test, result, note, selected, isTextOverridden, onToggleSele
             )}
           </div>
           {matchBadge}
-          <div className="text-[10px] text-muted-foreground">
-            Top 3 :{" "}
-            {result.suggestions
-              .map((s) => `${s.template_id} (${formatScorePct(s.score)}${s.source ? `, ${s.source}` : ""})`)
-              .join(" · ")}
-          </div>
+          {!result.forced && (
+            <div className="text-[10px] text-muted-foreground">
+              Top 3 :{" "}
+              {result.suggestions
+                .map((s) => `${s.template_id} (${formatScorePct(s.score)}${s.source ? `, ${s.source}` : ""})`)
+                .join(" · ")}
+            </div>
+          )}
         </div>
       ) : result.status !== "idle" && result.status !== "running" ? (
         <div className="text-[11px] space-y-1 text-muted-foreground">
