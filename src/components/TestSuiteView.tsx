@@ -64,6 +64,7 @@ type TestResult = {
   timestamp: string | null;
   failureCategory: FailureCategory | null;
   failureDetail: string | null;
+  forced: boolean;
 };
 
 const RESULTS_STORAGE = "kroki-last-test-run";
@@ -98,6 +99,7 @@ function emptyResult(id: number): TestResult {
     timestamp: null,
     failureCategory: null,
     failureDetail: null,
+    forced: false,
   };
 }
 
@@ -254,6 +256,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
 
   const [paletteKey, setPaletteKey] = useState<keyof typeof palettes>("ocean");
   const [fastMode, setFastMode] = useState(true);
+  const [matchingEnabled, setMatchingEnabled] = useState(true);
   const [running, setRunning] = useState(false);
   const pauseRef = useRef(false);
   const [paused, setPaused] = useState(false);
@@ -300,8 +303,8 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
     setResults((prev) => prev.map((r) => (r.id === id ? { ...r, ...patch } : r)));
   };
 
-  const runOne = async (test: TestCase, currentPalette: Palette): Promise<void> => {
-    updateResult(test.id, { ...emptyResult(test.id), status: "running" });
+  const runOne = async (test: TestCase, currentPalette: Palette, forceMode: boolean): Promise<void> => {
+    updateResult(test.id, { ...emptyResult(test.id), status: "running", forced: forceMode });
 
     const t0 = performance.now();
     let latencyMs: number | null = null;
@@ -318,7 +321,9 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
         detail_level: "auto",
       };
       const knownInManifest = manifest.templates.some((t) => t.id === test.expected_template);
-      if (test.premium && knownInManifest) {
+      if (forceMode && knownInManifest) {
+        analyzePayload.force_template_id = test.expected_template;
+      } else if (test.premium && knownInManifest) {
         analyzePayload.force_template_id = test.expected_template;
       } else if (test.premium && !knownInManifest) {
         console.warn(
@@ -497,7 +502,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
         toast.info("Pause — exécution arrêtée");
         break;
       }
-      await runOne(test, palette);
+      await runOne(test, palette, !matchingEnabled);
       await new Promise((r) => setTimeout(r, 1000)); // rate limiting
       if (!fastMode) {
         // (placeholder pour différencier — pour l'instant identique)
@@ -518,7 +523,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
         toast.info("Pause — exécution arrêtée");
         break;
       }
-      await runOne(test, palette);
+      await runOne(test, palette, !matchingEnabled);
       await new Promise((r) => setTimeout(r, 1000));
     }
     setRunning(false);
@@ -540,7 +545,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
       const r = results.find((x) => x.id === test.id);
       if (r && r.status !== "idle") continue;
       if (pauseRef.current) break;
-      await runOne(test, palette);
+      await runOne(test, palette, !matchingEnabled);
       await new Promise((r) => setTimeout(r, 1000));
     }
     setRunning(false);
@@ -548,7 +553,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
   };
 
   const replayOne = async (test: TestCase) => {
-    await runOne(test, palette);
+    await runOne(test, palette, !matchingEnabled);
     playBeep();
   };
 
@@ -854,7 +859,20 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
                 Mode rapide (1ère suggestion uniquement)
               </Label>
             </div>
+            <div className="flex items-center gap-2">
+              <Switch checked={matchingEnabled} onCheckedChange={setMatchingEnabled} id="matching" />
+              <Label htmlFor="matching" className="text-xs">
+                🎯 Tester le matching {matchingEnabled ? "(ON)" : "(OFF — template forcé)"}
+              </Label>
+            </div>
           </div>
+
+          {!matchingEnabled && (
+            <div className="rounded-lg border border-orange-300 bg-orange-50 px-3 py-2 text-xs text-orange-900">
+              ⚠️ <span className="font-semibold">Matching désactivé</span> — tous les tests utilisent leur template attendu.
+              Les évaluations « Match attendu » sont affichées en N/A. Seuls le remplissage et le rendu sont évalués.
+            </div>
+          )}
 
           {hasAnyCompleted && (
             <div className="rounded-lg border bg-accent/30 px-4 py-3 flex items-center justify-between gap-3 flex-wrap">
@@ -1109,6 +1127,8 @@ function TestCard({ test, result, note, selected, isTextOverridden, onToggleSele
     if (!editing) setDraftText(test.text);
   }, [test.text, editing]);
   const matchBadge = useMemo(() => {
+    if (result.forced)
+      return <span className="text-xs text-muted-foreground font-medium">⚪ N/A (matching forcé)</span>;
     if (result.matchKind === "exact")
       return <span className="text-xs text-green-700 font-medium">✅ Match attendu</span>;
     if (result.matchKind === "in_top3")
@@ -1116,7 +1136,7 @@ function TestCard({ test, result, note, selected, isTextOverridden, onToggleSele
     if (result.matchKind === "miss")
       return <span className="text-xs text-red-600 font-medium">❌ Hors top 3</span>;
     return null;
-  }, [result.matchKind]);
+  }, [result.matchKind, result.forced]);
 
   const Pill = ({ ok, label }: { ok: boolean | null; label: string }) => {
     const color =
@@ -1184,6 +1204,11 @@ function TestCard({ test, result, note, selected, isTextOverridden, onToggleSele
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
+          )}
+          {result.forced && (
+            <span className="text-[10px] px-1.5 py-0.5 rounded border bg-orange-100 text-orange-800 border-orange-300">
+              🎯 Template forcé
+            </span>
           )}
           <span className="text-[10px] text-muted-foreground">{statusLabel[result.status]}</span>
         </div>
@@ -1315,12 +1340,14 @@ function TestCard({ test, result, note, selected, isTextOverridden, onToggleSele
             )}
           </div>
           {matchBadge}
-          <div className="text-[10px] text-muted-foreground">
-            Top 3 :{" "}
-            {result.suggestions
-              .map((s) => `${s.template_id} (${formatScorePct(s.score)}${s.source ? `, ${s.source}` : ""})`)
-              .join(" · ")}
-          </div>
+          {!result.forced && (
+            <div className="text-[10px] text-muted-foreground">
+              Top 3 :{" "}
+              {result.suggestions
+                .map((s) => `${s.template_id} (${formatScorePct(s.score)}${s.source ? `, ${s.source}` : ""})`)
+                .join(" · ")}
+            </div>
+          )}
         </div>
       ) : result.status !== "idle" && result.status !== "running" ? (
         <div className="text-[11px] space-y-1 text-muted-foreground">
