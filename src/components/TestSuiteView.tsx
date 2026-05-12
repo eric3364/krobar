@@ -99,6 +99,7 @@ function emptyResult(id: number): TestResult {
     timestamp: null,
     failureCategory: null,
     failureDetail: null,
+    forced: false,
   };
 }
 
