@@ -37,7 +37,7 @@ Contraintes :
 - En haut à gauche : étiquette catégorie. Titre principal centré ou gauche.
 - Pas d'images bitmap, pas de <foreignObject> imbriqués.
 - 1040x600, marges confortables.
-- IMPÉRATIF : aucun cadran, case, zone, quadrant ou conteneur ne doit contenir d'exemple de contenu, de texte d'illustration, de phrases types, de bullet points pré-remplis, ni de placeholder descriptif. Seuls les libellés structurels du modèle sont autorisés (titre du modèle, nom de la catégorie, et noms canoniques des axes/quadrants/étapes — ex. "Forces", "Faiblesses", "Stars", "Cash Cows", "Étape 1"…). Les zones destinées à recevoir le contenu utilisateur doivent rester visuellement VIDES, avec suffisamment d'espace libre pour que l'utilisateur puisse les remplir lui-même par la suite.`;
+- IMPÉRATIF — TITRES OBLIGATOIRES, CONTENU INTERDIT : chaque cadran, case, axe, quadrant, étape ou zone DOIT impérativement porter son libellé canonique (titre du quadrant, nom de l'axe, numéro et nom de l'étape — ex. "Forces", "Faiblesses", "Opportunités", "Menaces" pour un SWOT ; "Plan", "Do", "Check", "Act" pour un PDCA ; "Stars", "Cash Cows", "Question Marks", "Dogs" pour une BCG ; etc.) placé de manière lisible (en en-tête de la zone ou sur l'axe correspondant). Ces titres structurels guident l'utilisateur. EN REVANCHE, AUCUN exemple de contenu, texte d'illustration, phrase type, bullet point pré-rempli ou placeholder descriptif n'est autorisé À L'INTÉRIEUR des zones destinées à recevoir la saisie utilisateur : ces zones doivent rester visuellement VIDES sous leur titre, avec suffisamment d'espace libre pour que l'utilisateur puisse les remplir lui-même.`;
 
     const user = `Crée le SVG de la matrice/modèle suivant :
 - Nom : ${name}
