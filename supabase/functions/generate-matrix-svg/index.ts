@@ -36,7 +36,8 @@ Contraintes :
 - Tous les libellés textuels doivent être placés dans des <foreignObject> avec un <div xmlns="http://www.w3.org/1999/xhtml" data-slot="..."> pour permettre l'édition ultérieure (titre = data-slot="title", autres slots nommés sémantiquement).
 - En haut à gauche : étiquette catégorie. Titre principal centré ou gauche.
 - Pas d'images bitmap, pas de <foreignObject> imbriqués.
-- 1040x600, marges confortables.`;
+- 1040x600, marges confortables.
+- IMPÉRATIF : aucun cadran, case, zone, quadrant ou conteneur ne doit contenir d'exemple de contenu, de texte d'illustration, de phrases types, de bullet points pré-remplis, ni de placeholder descriptif. Seuls les libellés structurels du modèle sont autorisés (titre du modèle, nom de la catégorie, et noms canoniques des axes/quadrants/étapes — ex. "Forces", "Faiblesses", "Stars", "Cash Cows", "Étape 1"…). Les zones destinées à recevoir le contenu utilisateur doivent rester visuellement VIDES, avec suffisamment d'espace libre pour que l'utilisateur puisse les remplir lui-même par la suite.`;
 
     const user = `Crée le SVG de la matrice/modèle suivant :
 - Nom : ${name}
