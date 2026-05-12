@@ -1779,6 +1779,45 @@ export default function AdminStudioPage() {
         </div>
       </div>
 
+      {/* Modal: choisir un slot canonique pour la zone qu'on vient de dessiner */}
+      <Dialog open={canonicalPickerOpen} onOpenChange={(o) => { if (!o) cancelName(); }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>À quel cadran cette zone correspond-elle ?</DialogTitle>
+            <DialogDescription>
+              Preset : {canonicalPreset?.name_fr ?? ""}. Clique un slot pour l'assigner. Si tu cliques un slot déjà mappé, la zone sera ajoutée comme variante (cardinalité).
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {canonicalPreset?.slots.map((slot) => {
+              const count = canonicalCoverage?.[slot.key] ?? 0;
+              return (
+                <button
+                  key={slot.key}
+                  type="button"
+                  onClick={() => pickCanonicalKey(slot.key)}
+                  className={`text-left border rounded-md p-3 hover:ring-2 hover:ring-primary transition ${count === 0 ? "" : "bg-muted/40"}`}
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-mono text-xs">{slot.key}</span>
+                    <Badge variant={count === 0 ? "destructive" : "secondary"} className="text-[10px]">
+                      {count === 0 ? "à mapper" : `×${count}`}
+                    </Badge>
+                  </div>
+                  <div className="text-sm font-medium mt-1">{slot.label_fr}</div>
+                  {slot.description_fr && (
+                    <div className="text-xs text-muted-foreground">{slot.description_fr}</div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={cancelName}>Annuler</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       {/* Modal: nommer le slot */}
       <Dialog open={namePromptOpen} onOpenChange={(o) => { if (!o) cancelName(); }}>
         <DialogContent>
