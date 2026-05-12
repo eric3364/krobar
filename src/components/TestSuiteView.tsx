@@ -303,8 +303,8 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
     setResults((prev) => prev.map((r) => (r.id === id ? { ...r, ...patch } : r)));
   };
 
-  const runOne = async (test: TestCase, currentPalette: Palette): Promise<void> => {
-    updateResult(test.id, { ...emptyResult(test.id), status: "running" });
+  const runOne = async (test: TestCase, currentPalette: Palette, forceMode: boolean): Promise<void> => {
+    updateResult(test.id, { ...emptyResult(test.id), status: "running", forced: forceMode });
 
     const t0 = performance.now();
     let latencyMs: number | null = null;
@@ -321,7 +321,9 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
         detail_level: "auto",
       };
       const knownInManifest = manifest.templates.some((t) => t.id === test.expected_template);
-      if (test.premium && knownInManifest) {
+      if (forceMode && knownInManifest) {
+        analyzePayload.force_template_id = test.expected_template;
+      } else if (test.premium && knownInManifest) {
         analyzePayload.force_template_id = test.expected_template;
       } else if (test.premium && !knownInManifest) {
         console.warn(
