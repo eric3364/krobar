@@ -40,6 +40,7 @@ import {
 } from "@/lib/studioSnapshots";
 import { palettes, defaultPalette, type PaletteKey } from "@/palettes";
 import { applyPaletteToSvg, PALETTE_ROLES, detectColorsInSvg, autoMapDetectedColors } from "@/lib/paletteRemap";
+import KrobarSvg from "@/components/KrobarSvg";
 
 type Phase = 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -1004,11 +1005,18 @@ export default function AdminStudioPage() {
             {upload && (
               <>
                 <Card className="p-4">
-                  <img
-                    src={upload.rendered_png_url}
-                    alt="Aperçu"
-                    className="max-w-full max-h-96 mx-auto rounded border"
-                  />
+                  {upload.cleaned_svg ? (
+                    <KrobarSvg
+                      svg={upload.cleaned_svg}
+                      className="mx-auto max-h-96 max-w-full overflow-hidden rounded border [&>svg]:max-h-96 [&>svg]:w-full [&>svg]:h-auto"
+                    />
+                  ) : (
+                    <img
+                      src={upload.rendered_png_url}
+                      alt="Aperçu"
+                      className="max-w-full max-h-96 mx-auto rounded border"
+                    />
+                  )}
                 </Card>
                 <Card className="p-4 border-green-600/40 bg-green-600/5 space-y-1 text-sm">
                   <p className="font-medium text-green-700 dark:text-green-400">✅ Fichier accepté</p>
@@ -1136,6 +1144,7 @@ export default function AdminStudioPage() {
               </div>
               <StudioCanvas
                 imageUrl={upload.rendered_png_url}
+                imageSvg={upload.cleaned_svg}
                 imageWidth={upload.image_width}
                 imageHeight={upload.image_height}
                 anchors={anchors}

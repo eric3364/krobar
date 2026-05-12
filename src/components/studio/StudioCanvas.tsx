@@ -2,6 +2,7 @@
 // Coordonnées stockées dans le repère image original (imageWidth × imageHeight).
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import KrobarSvg from "@/components/KrobarSvg";
 
 export type Anchor = {
   id: string;
@@ -24,6 +25,7 @@ export function colorForSlot(name: string, allNames: string[]): string {
 
 type Props = {
   imageUrl: string;
+  imageSvg?: string;
   imageWidth: number;
   imageHeight: number;
   anchors: Anchor[];
@@ -41,7 +43,7 @@ type Props = {
 const HANDLE = 8;
 
 export default function StudioCanvas({
-  imageUrl, imageWidth, imageHeight, anchors, setAnchors,
+  imageUrl, imageSvg, imageWidth, imageHeight, anchors, setAnchors,
   tool, setTool, selectedId, setSelectedId, snap, zoom, onPromptName, onRenameSlot,
 }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -194,12 +196,20 @@ export default function StudioCanvas({
   return (
     <div ref={wrapRef} className="w-full overflow-auto bg-muted/30 rounded-md border" style={{ maxHeight: "70vh" }}>
       <div style={{ width: displayWidth, height: displayHeight, position: "relative" }}>
-        <img
-          src={imageUrl}
-          alt="Source à annoter"
-          draggable={false}
-          style={{ width: "100%", height: "100%", display: "block", userSelect: "none", pointerEvents: "none" }}
-        />
+        {imageSvg ? (
+          <KrobarSvg
+            svg={imageSvg}
+            className="absolute inset-0 overflow-hidden [&>svg]:block [&>svg]:h-full [&>svg]:w-full"
+            style={{ pointerEvents: "none" }}
+          />
+        ) : (
+          <img
+            src={imageUrl}
+            alt="Source à annoter"
+            draggable={false}
+            style={{ width: "100%", height: "100%", display: "block", userSelect: "none", pointerEvents: "none" }}
+          />
+        )}
         <svg
           ref={svgRef}
           viewBox={`0 0 ${imageWidth} ${imageHeight}`}
