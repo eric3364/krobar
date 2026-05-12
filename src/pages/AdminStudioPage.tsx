@@ -41,8 +41,10 @@ import {
 import { palettes, defaultPalette, type PaletteKey } from "@/palettes";
 import { applyPaletteToSvg, PALETTE_ROLES, detectColorsInSvg, autoMapDetectedColors } from "@/lib/paletteRemap";
 import KrobarSvg from "@/components/KrobarSvg";
+import { fetchCanonicalPresets, type CanonicalPreset } from "@/lib/canonicalPresets";
 
 type Phase = 1 | 2 | 3 | 4 | 5 | 6;
+type TemplateType = "narrative" | "canonical";
 
 type CardinalityConfig = {
   slotName: string;
