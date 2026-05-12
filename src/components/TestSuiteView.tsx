@@ -64,6 +64,7 @@ type TestResult = {
   timestamp: string | null;
   failureCategory: FailureCategory | null;
   failureDetail: string | null;
+  forced: boolean;
 };
 
 const RESULTS_STORAGE = "kroki-last-test-run";
