@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState, type DragEvent } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowLeft, ArrowRight, ArrowLeftCircle, Copy, Loader2, RotateCcw, Save, Trash2, Upload, X, Rocket, MousePointer2, Square as SquareIcon, Plus } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowLeftCircle, Copy, Loader2, RotateCcw, Save, Trash2, Upload, X, Rocket, MousePointer2, Square as SquareIcon, Plus, Library } from "lucide-react";
+import matricesData from "@/data/matrices.json";
+import { getAllStates, markInProduction, subscribe as subscribeMatrice } from "@/lib/matriceLibrary";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -340,6 +342,23 @@ export default function AdminStudioPage() {
 
   // ─── Phase 1: upload ──────────────────────────────────────────────────
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [libraryPickerOpen, setLibraryPickerOpen] = useState(false);
+  const [matriceStates, setMatriceStates] = useState(getAllStates());
+  useEffect(() => subscribeMatrice(() => setMatriceStates(getAllStates())), []);
+  const libraryItems = useMemo(() => {
+    return (matricesData as Array<{id:string;name:string;category:string;usage:string}>)
+      .filter((m) => matriceStates[m.id]?.validatedSvg)
+      .map((m) => ({ ...m, svg: matriceStates[m.id]!.validatedSvg!, inProduction: !!matriceStates[m.id]?.inProduction }));
+  }, [matriceStates]);
+
+  const pickFromLibrary = async (item: { id: string; name: string; svg: string }) => {
+    setLibraryPickerOpen(false);
+    const file = new File([item.svg], `${item.name.replace(/[^a-z0-9]+/gi, "_")}.svg`, { type: "image/svg+xml" });
+    await handleFile(file);
+    markInProduction(item.id);
+    toast.success(`« ${item.name} » marquée En production`);
+  };
+
   const handleFile = async (file: File) => {
     if (!/\.(svg|eps|ai|pdf)$/i.test(file.name)) {
       toast.error("Format non supporté. Utilisez SVG, EPS, AI ou PDF.");
@@ -893,6 +912,63 @@ export default function AdminStudioPage() {
                 />
               </div>
             </Card>
+
+            <div className="flex items-center gap-3 justify-center">
+              <div className="h-px flex-1 bg-border" />
+              <span className="text-xs text-muted-foreground uppercase tracking-wider">ou</span>
+              <div className="h-px flex-1 bg-border" />
+            </div>
+
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={() => setLibraryPickerOpen(true)}
+            >
+              <Library className="w-4 h-4" />
+              Choisir depuis la bibliothèque académique ({libraryItems.length})
+            </Button>
+
+            <Dialog open={libraryPickerOpen} onOpenChange={setLibraryPickerOpen}>
+              <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>Bibliothèque matrice académique</DialogTitle>
+                  <DialogDescription>
+                    Sélectionne une matrice validée pour la transformer en template premium.
+                  </DialogDescription>
+                </DialogHeader>
+                {libraryItems.length === 0 ? (
+                  <p className="text-sm text-muted-foreground py-8 text-center">
+                    Aucune matrice validée dans la bibliothèque. Va dans <Link to="/admin/matrice" className="underline">Matrice</Link> pour en générer.
+                  </p>
+                ) : (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {libraryItems.map((item) => (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => pickFromLibrary(item)}
+                        className="text-left border rounded-md overflow-hidden hover:ring-2 hover:ring-primary transition"
+                      >
+                        <div className="aspect-[16/9] bg-white">
+                          <div
+                            className="w-full h-full [&>svg]:w-full [&>svg]:h-full"
+                            dangerouslySetInnerHTML={{ __html: item.svg }}
+                          />
+                        </div>
+                        <div className="p-2">
+                          <div className="text-xs font-medium line-clamp-1">{item.name}</div>
+                          <div className="text-[10px] text-muted-foreground line-clamp-1">{item.category}</div>
+                          {item.inProduction && (
+                            <Badge variant="default" className="mt-1 text-[9px]">En production</Badge>
+                          )}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </DialogContent>
+            </Dialog>
 
             {uploading && (
               <Card className="p-4 flex items-center gap-3">

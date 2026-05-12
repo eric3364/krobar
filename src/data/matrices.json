@@ -1,0 +1,2036 @@
+[
+  {
+    "id": "m001",
+    "category": "Stratégie d’entreprise",
+    "name": "SWOT",
+    "usage": "Forces, faiblesses, opportunités, menaces"
+  },
+  {
+    "id": "m002",
+    "category": "Stratégie d’entreprise",
+    "name": "PESTEL",
+    "usage": "Analyse de l’environnement macro"
+  },
+  {
+    "id": "m003",
+    "category": "Stratégie d’entreprise",
+    "name": "5 forces de Porter",
+    "usage": "Analyse de l’intensité concurrentielle"
+  },
+  {
+    "id": "m004",
+    "category": "Stratégie d’entreprise",
+    "name": "Matrice BCG",
+    "usage": "Gestion d’un portefeuille d’activités"
+  },
+  {
+    "id": "m005",
+    "category": "Stratégie d’entreprise",
+    "name": "Matrice McKinsey / GE",
+    "usage": "Attractivité du marché vs position concurrentielle"
+  },
+  {
+    "id": "m006",
+    "category": "Stratégie d’entreprise",
+    "name": "Matrice ADL",
+    "usage": "Maturité du secteur vs position concurrentielle"
+  },
+  {
+    "id": "m007",
+    "category": "Stratégie d’entreprise",
+    "name": "Matrice Ansoff",
+    "usage": "Stratégies de croissance"
+  },
+  {
+    "id": "m008",
+    "category": "Stratégie d’entreprise",
+    "name": "Océan Bleu",
+    "usage": "Création d’un espace stratégique non concurrentiel"
+  },
+  {
+    "id": "m009",
+    "category": "Stratégie d’entreprise",
+    "name": "Canevas stratégique Océan Bleu",
+    "usage": "Comparaison des facteurs de valeur"
+  },
+  {
+    "id": "m010",
+    "category": "Stratégie d’entreprise",
+    "name": "Matrice des avantages concurrentiels",
+    "usage": "Coût, différenciation, focalisation"
+  },
+  {
+    "id": "m011",
+    "category": "Stratégie d’entreprise",
+    "name": "Stratégies génériques de Porter",
+    "usage": "Domination par les coûts, différenciation, concentration"
+  },
+  {
+    "id": "m012",
+    "category": "Stratégie d’entreprise",
+    "name": "Matrice SPACE",
+    "usage": "Position stratégique et choix d’orientation"
+  },
+  {
+    "id": "m013",
+    "category": "Stratégie d’entreprise",
+    "name": "Matrice TOWS",
+    "usage": "Croisement opérationnel des éléments SWOT"
+  },
+  {
+    "id": "m014",
+    "category": "Stratégie d’entreprise",
+    "name": "Matrice d’attractivité marché / compétitivité",
+    "usage": "Priorisation des marchés"
+  },
+  {
+    "id": "m015",
+    "category": "Stratégie d’entreprise",
+    "name": "Matrice de positionnement stratégique",
+    "usage": "Comparaison des acteurs sur deux axes"
+  },
+  {
+    "id": "m016",
+    "category": "Stratégie d’entreprise",
+    "name": "Matrice de diversification",
+    "usage": "Diversification liée ou non liée"
+  },
+  {
+    "id": "m017",
+    "category": "Stratégie d’entreprise",
+    "name": "Matrice de synergies",
+    "usage": "Identification des synergies entre activités"
+  },
+  {
+    "id": "m018",
+    "category": "Stratégie d’entreprise",
+    "name": "Matrice de risque stratégique",
+    "usage": "Risque vs impact stratégique"
+  },
+  {
+    "id": "m019",
+    "category": "Stratégie d’entreprise",
+    "name": "Matrice de scénarios",
+    "usage": "Hypothèses futures et options stratégiques"
+  },
+  {
+    "id": "m020",
+    "category": "Stratégie d’entreprise",
+    "name": "Matrice de décision stratégique",
+    "usage": "Pondération multicritère des options"
+  },
+  {
+    "id": "m021",
+    "category": "Marketing",
+    "name": "STP",
+    "usage": "Segmentation, ciblage, positionnement"
+  },
+  {
+    "id": "m022",
+    "category": "Marketing",
+    "name": "Matrice de segmentation",
+    "usage": "Découpage du marché"
+  },
+  {
+    "id": "m023",
+    "category": "Marketing",
+    "name": "Matrice de ciblage",
+    "usage": "Priorisation des segments"
+  },
+  {
+    "id": "m024",
+    "category": "Marketing",
+    "name": "Carte perceptuelle / perceptual map",
+    "usage": "Positionnement perçu par les clients"
+  },
+  {
+    "id": "m025",
+    "category": "Marketing",
+    "name": "Matrice de positionnement",
+    "usage": "Position de la marque ou de l’offre"
+  },
+  {
+    "id": "m026",
+    "category": "Marketing",
+    "name": "Marketing mix 4P",
+    "usage": "Produit, prix, place, promotion"
+  },
+  {
+    "id": "m027",
+    "category": "Marketing",
+    "name": "Marketing mix 7P",
+    "usage": "Version services : 4P + people, process, physical evidence"
+  },
+  {
+    "id": "m028",
+    "category": "Marketing",
+    "name": "Matrice produit / marché",
+    "usage": "Croisement offre et cible"
+  },
+  {
+    "id": "m029",
+    "category": "Marketing",
+    "name": "Matrice prix / valeur",
+    "usage": "Positionnement tarifaire"
+  },
+  {
+    "id": "m030",
+    "category": "Marketing",
+    "name": "Matrice d’élasticité prix",
+    "usage": "Sensibilité au prix"
+  },
+  {
+    "id": "m031",
+    "category": "Marketing",
+    "name": "Matrice de différenciation",
+    "usage": "Facteurs distinctifs de l’offre"
+  },
+  {
+    "id": "m032",
+    "category": "Marketing",
+    "name": "Matrice de proposition de valeur",
+    "usage": "Bénéfices, preuves, différenciation"
+  },
+  {
+    "id": "m033",
+    "category": "Marketing",
+    "name": "Value Proposition Canvas",
+    "usage": "Profil client et proposition de valeur"
+  },
+  {
+    "id": "m034",
+    "category": "Marketing",
+    "name": "Brand Key",
+    "usage": "Plateforme de marque"
+  },
+  {
+    "id": "m035",
+    "category": "Marketing",
+    "name": "Brand Onion",
+    "usage": "Identité de marque par couches"
+  },
+  {
+    "id": "m036",
+    "category": "Marketing",
+    "name": "Brand Equity Model",
+    "usage": "Capital de marque"
+  },
+  {
+    "id": "m037",
+    "category": "Marketing",
+    "name": "Pyramide de Keller",
+    "usage": "Construction de la marque"
+  },
+  {
+    "id": "m038",
+    "category": "Marketing",
+    "name": "Prisme d’identité de Kapferer",
+    "usage": "Analyse de l’identité de marque"
+  },
+  {
+    "id": "m039",
+    "category": "Marketing",
+    "name": "Matrice de notoriété / image",
+    "usage": "Diagnostic de marque"
+  },
+  {
+    "id": "m040",
+    "category": "Marketing",
+    "name": "Matrice de fidélité client",
+    "usage": "Attachement et réachat"
+  },
+  {
+    "id": "m041",
+    "category": "Marketing",
+    "name": "Matrice RFM",
+    "usage": "Récence, fréquence, montant"
+  },
+  {
+    "id": "m042",
+    "category": "Marketing",
+    "name": "Matrice satisfaction / fidélité",
+    "usage": "Typologie des clients"
+  },
+  {
+    "id": "m043",
+    "category": "Marketing",
+    "name": "Matrice importance / performance",
+    "usage": "Priorisation des attributs client"
+  },
+  {
+    "id": "m044",
+    "category": "Marketing",
+    "name": "Matrice expérience client",
+    "usage": "Points de contact et satisfaction"
+  },
+  {
+    "id": "m045",
+    "category": "Marketing",
+    "name": "Customer Journey Map",
+    "usage": "Parcours client"
+  },
+  {
+    "id": "m046",
+    "category": "Marketing",
+    "name": "Empathy Map",
+    "usage": "Compréhension des besoins utilisateurs"
+  },
+  {
+    "id": "m047",
+    "category": "Marketing",
+    "name": "Persona Matrix",
+    "usage": "Typologie des profils clients"
+  },
+  {
+    "id": "m048",
+    "category": "Marketing",
+    "name": "Matrice des objections",
+    "usage": "Freins à l’achat et réponses"
+  },
+  {
+    "id": "m049",
+    "category": "Marketing",
+    "name": "Matrice des bénéfices clients",
+    "usage": "Bénéfices fonctionnels, émotionnels, sociaux"
+  },
+  {
+    "id": "m050",
+    "category": "Marketing",
+    "name": "Matrice contenu / parcours d’achat",
+    "usage": "Contenus selon étape du funnel"
+  },
+  {
+    "id": "m051",
+    "category": "Marketing",
+    "name": "Matrice AIDA",
+    "usage": "Attention, intérêt, désir, action"
+  },
+  {
+    "id": "m052",
+    "category": "Marketing",
+    "name": "Funnel marketing",
+    "usage": "Acquisition, conversion, fidélisation"
+  },
+  {
+    "id": "m053",
+    "category": "Marketing",
+    "name": "Matrice acquisition / rétention",
+    "usage": "Allocation des efforts marketing"
+  },
+  {
+    "id": "m054",
+    "category": "Marketing",
+    "name": "Matrice paid / owned / earned media",
+    "usage": "Canaux de communication"
+  },
+  {
+    "id": "m055",
+    "category": "Marketing",
+    "name": "Matrice des canaux",
+    "usage": "Performance par canal"
+  },
+  {
+    "id": "m056",
+    "category": "Marketing",
+    "name": "Matrice message / cible",
+    "usage": "Adaptation des messages par segment"
+  },
+  {
+    "id": "m057",
+    "category": "Marketing",
+    "name": "Matrice de campagnes",
+    "usage": "Objectifs, cibles, canaux, KPI"
+  },
+  {
+    "id": "m058",
+    "category": "Marketing",
+    "name": "Matrice de valeur client",
+    "usage": "Valeur actuelle vs potentiel"
+  },
+  {
+    "id": "m059",
+    "category": "Marketing",
+    "name": "Matrice CLV / CAC",
+    "usage": "Valeur vie client vs coût d’acquisition"
+  },
+  {
+    "id": "m060",
+    "category": "Marketing digital et performance",
+    "name": "Matrice SEO impact / effort",
+    "usage": "Priorisation des actions SEO"
+  },
+  {
+    "id": "m061",
+    "category": "Marketing digital et performance",
+    "name": "Matrice mots-clés intention / volume",
+    "usage": "Stratégie de mots-clés"
+  },
+  {
+    "id": "m062",
+    "category": "Marketing digital et performance",
+    "name": "Matrice contenu evergreen / actualité",
+    "usage": "Stratégie éditoriale"
+  },
+  {
+    "id": "m063",
+    "category": "Marketing digital et performance",
+    "name": "Matrice contenu / intention de recherche",
+    "usage": "Alignement SEO"
+  },
+  {
+    "id": "m064",
+    "category": "Marketing digital et performance",
+    "name": "Matrice social media engagement / portée",
+    "usage": "Analyse des contenus sociaux"
+  },
+  {
+    "id": "m065",
+    "category": "Marketing digital et performance",
+    "name": "Matrice paid media coût / conversion",
+    "usage": "Optimisation publicitaire"
+  },
+  {
+    "id": "m066",
+    "category": "Marketing digital et performance",
+    "name": "Matrice ROAS / marge",
+    "usage": "Rentabilité des campagnes"
+  },
+  {
+    "id": "m067",
+    "category": "Marketing digital et performance",
+    "name": "Matrice lead scoring",
+    "usage": "Qualification des prospects"
+  },
+  {
+    "id": "m068",
+    "category": "Marketing digital et performance",
+    "name": "Matrice nurturing",
+    "usage": "Scénarios de marketing automation"
+  },
+  {
+    "id": "m069",
+    "category": "Marketing digital et performance",
+    "name": "Matrice CRM valeur / engagement",
+    "usage": "Segmentation relationnelle"
+  },
+  {
+    "id": "m070",
+    "category": "Marketing digital et performance",
+    "name": "Matrice taux de conversion / trafic",
+    "usage": "Diagnostic web"
+  },
+  {
+    "id": "m071",
+    "category": "Marketing digital et performance",
+    "name": "Matrice UX impact / friction",
+    "usage": "Priorisation UX"
+  },
+  {
+    "id": "m072",
+    "category": "Marketing digital et performance",
+    "name": "Matrice analytics KPI / objectif",
+    "usage": "Pilotage digital"
+  },
+  {
+    "id": "m073",
+    "category": "Marketing digital et performance",
+    "name": "Matrice canal / attribution",
+    "usage": "Contribution des canaux"
+  },
+  {
+    "id": "m074",
+    "category": "Marketing digital et performance",
+    "name": "Matrice email performance",
+    "usage": "Ouverture, clic, conversion"
+  },
+  {
+    "id": "m075",
+    "category": "Marketing digital et performance",
+    "name": "Matrice de maturité digitale",
+    "usage": "Évaluation du niveau digital"
+  },
+  {
+    "id": "m076",
+    "category": "Marketing digital et performance",
+    "name": "Matrice data marketing",
+    "usage": "Données disponibles vs activation"
+  },
+  {
+    "id": "m077",
+    "category": "Marketing digital et performance",
+    "name": "Matrice privacy / performance",
+    "usage": "Arbitrage RGPD et performance"
+  },
+  {
+    "id": "m078",
+    "category": "Management et organisation",
+    "name": "Matrice RACI",
+    "usage": "Répartition des rôles et responsabilités"
+  },
+  {
+    "id": "m079",
+    "category": "Management et organisation",
+    "name": "Matrice RAPID",
+    "usage": "Décision et gouvernance"
+  },
+  {
+    "id": "m080",
+    "category": "Management et organisation",
+    "name": "Matrice pouvoir / intérêt",
+    "usage": "Gestion des parties prenantes"
+  },
+  {
+    "id": "m081",
+    "category": "Management et organisation",
+    "name": "Matrice influence / impact",
+    "usage": "Analyse des acteurs clés"
+  },
+  {
+    "id": "m082",
+    "category": "Management et organisation",
+    "name": "Matrice responsabilité / autonomie",
+    "usage": "Délégation managériale"
+  },
+  {
+    "id": "m083",
+    "category": "Management et organisation",
+    "name": "Matrice urgence / importance d’Eisenhower",
+    "usage": "Priorisation personnelle"
+  },
+  {
+    "id": "m084",
+    "category": "Management et organisation",
+    "name": "Matrice effort / impact",
+    "usage": "Priorisation des actions"
+  },
+  {
+    "id": "m085",
+    "category": "Management et organisation",
+    "name": "Matrice complexité / valeur",
+    "usage": "Arbitrage des projets"
+  },
+  {
+    "id": "m086",
+    "category": "Management et organisation",
+    "name": "Matrice risque / impact",
+    "usage": "Gestion des risques"
+  },
+  {
+    "id": "m087",
+    "category": "Management et organisation",
+    "name": "Matrice probabilité / gravité",
+    "usage": "Cartographie des risques"
+  },
+  {
+    "id": "m088",
+    "category": "Management et organisation",
+    "name": "Matrice décisionnelle multicritère",
+    "usage": "Choix entre options"
+  },
+  {
+    "id": "m089",
+    "category": "Management et organisation",
+    "name": "Matrice de délégation",
+    "usage": "Niveau de délégation selon collaborateur"
+  },
+  {
+    "id": "m090",
+    "category": "Management et organisation",
+    "name": "Matrice compétences / tâches",
+    "usage": "Allocation des ressources"
+  },
+  {
+    "id": "m091",
+    "category": "Management et organisation",
+    "name": "Matrice charge / capacité",
+    "usage": "Planification des équipes"
+  },
+  {
+    "id": "m092",
+    "category": "Management et organisation",
+    "name": "Matrice alignement / engagement",
+    "usage": "Diagnostic organisationnel"
+  },
+  {
+    "id": "m093",
+    "category": "Management et organisation",
+    "name": "Matrice maturité organisationnelle",
+    "usage": "Évaluation de la structuration"
+  },
+  {
+    "id": "m094",
+    "category": "Management et organisation",
+    "name": "Matrice centralisation / autonomie",
+    "usage": "Design organisationnel"
+  },
+  {
+    "id": "m095",
+    "category": "Management et organisation",
+    "name": "Matrice processus / responsabilité",
+    "usage": "Cartographie opérationnelle"
+  },
+  {
+    "id": "m096",
+    "category": "Management et organisation",
+    "name": "Matrice performance / potentiel",
+    "usage": "Évaluation des collaborateurs"
+  },
+  {
+    "id": "m097",
+    "category": "Management et organisation",
+    "name": "Matrice 9-box",
+    "usage": "Talent management"
+  },
+  {
+    "id": "m098",
+    "category": "Management et organisation",
+    "name": "Matrice motivation / compétence",
+    "usage": "Style de management adapté"
+  },
+  {
+    "id": "m099",
+    "category": "Management et organisation",
+    "name": "Matrice Hersey-Blanchard",
+    "usage": "Leadership situationnel"
+  },
+  {
+    "id": "m100",
+    "category": "Management et organisation",
+    "name": "Matrice Blake & Mouton",
+    "usage": "Style de management"
+  },
+  {
+    "id": "m101",
+    "category": "Management et organisation",
+    "name": "Matrice de culture organisationnelle",
+    "usage": "Analyse des cultures internes"
+  },
+  {
+    "id": "m102",
+    "category": "Management et organisation",
+    "name": "Matrice de gouvernance",
+    "usage": "Droits de décision et instances"
+  },
+  {
+    "id": "m103",
+    "category": "Gestion de projet",
+    "name": "Matrice impact / effort",
+    "usage": "Priorisation des fonctionnalités ou tâches"
+  },
+  {
+    "id": "m104",
+    "category": "Gestion de projet",
+    "name": "Matrice valeur / complexité",
+    "usage": "Arbitrage produit/projet"
+  },
+  {
+    "id": "m105",
+    "category": "Gestion de projet",
+    "name": "Matrice risques projet",
+    "usage": "Identification et traitement des risques"
+  },
+  {
+    "id": "m106",
+    "category": "Gestion de projet",
+    "name": "Matrice parties prenantes",
+    "usage": "Analyse et plan d’engagement"
+  },
+  {
+    "id": "m107",
+    "category": "Gestion de projet",
+    "name": "Matrice RACI projet",
+    "usage": "Clarification des responsabilités"
+  },
+  {
+    "id": "m108",
+    "category": "Gestion de projet",
+    "name": "Matrice MoSCoW",
+    "usage": "Must, Should, Could, Won’t"
+  },
+  {
+    "id": "m109",
+    "category": "Gestion de projet",
+    "name": "Matrice Kano",
+    "usage": "Satisfaction utilisateur selon fonctionnalités"
+  },
+  {
+    "id": "m110",
+    "category": "Gestion de projet",
+    "name": "Matrice ICE",
+    "usage": "Impact, confidence, ease"
+  },
+  {
+    "id": "m111",
+    "category": "Gestion de projet",
+    "name": "Matrice RICE",
+    "usage": "Reach, impact, confidence, effort"
+  },
+  {
+    "id": "m112",
+    "category": "Gestion de projet",
+    "name": "Matrice WSJF",
+    "usage": "Priorisation agile par valeur économique"
+  },
+  {
+    "id": "m113",
+    "category": "Gestion de projet",
+    "name": "Matrice Eisenhower",
+    "usage": "Urgence vs importance"
+  },
+  {
+    "id": "m114",
+    "category": "Gestion de projet",
+    "name": "Matrice coûts / délais / qualité",
+    "usage": "Triangle projet"
+  },
+  {
+    "id": "m115",
+    "category": "Gestion de projet",
+    "name": "Matrice de dépendances",
+    "usage": "Liens entre lots ou tâches"
+  },
+  {
+    "id": "m116",
+    "category": "Gestion de projet",
+    "name": "Matrice de criticité",
+    "usage": "Urgence et sévérité"
+  },
+  {
+    "id": "m117",
+    "category": "Gestion de projet",
+    "name": "Matrice de décision Go / No Go",
+    "usage": "Validation d’un jalon"
+  },
+  {
+    "id": "m118",
+    "category": "Gestion de projet",
+    "name": "Matrice de maturité projet",
+    "usage": "Niveau de maîtrise projet"
+  },
+  {
+    "id": "m119",
+    "category": "Gestion de projet",
+    "name": "Matrice d’arbitrage backlog",
+    "usage": "Priorisation produit"
+  },
+  {
+    "id": "m120",
+    "category": "Gestion de projet",
+    "name": "Matrice risques / opportunités",
+    "usage": "Vision projet équilibrée"
+  },
+  {
+    "id": "m121",
+    "category": "Innovation et product management",
+    "name": "Business Model Canvas",
+    "usage": "Modèle économique"
+  },
+  {
+    "id": "m122",
+    "category": "Innovation et product management",
+    "name": "Lean Canvas",
+    "usage": "Version startup du business model"
+  },
+  {
+    "id": "m123",
+    "category": "Innovation et product management",
+    "name": "Product Market Fit Canvas",
+    "usage": "Alignement produit / marché"
+  },
+  {
+    "id": "m124",
+    "category": "Innovation et product management",
+    "name": "Value Proposition Canvas",
+    "usage": "Proposition de valeur"
+  },
+  {
+    "id": "m125",
+    "category": "Innovation et product management",
+    "name": "Jobs To Be Done Matrix",
+    "usage": "Besoins et tâches clients"
+  },
+  {
+    "id": "m126",
+    "category": "Innovation et product management",
+    "name": "Matrice Kano",
+    "usage": "Priorisation des fonctionnalités"
+  },
+  {
+    "id": "m127",
+    "category": "Innovation et product management",
+    "name": "Matrice impact / effort produit",
+    "usage": "Roadmap produit"
+  },
+  {
+    "id": "m128",
+    "category": "Innovation et product management",
+    "name": "Matrice valeur utilisateur / valeur business",
+    "usage": "Arbitrage roadmap"
+  },
+  {
+    "id": "m129",
+    "category": "Innovation et product management",
+    "name": "Matrice innovation incrémentale / rupture",
+    "usage": "Typologie d’innovation"
+  },
+  {
+    "id": "m130",
+    "category": "Innovation et product management",
+    "name": "Matrice Ambition Innovation",
+    "usage": "Core, adjacent, transformational"
+  },
+  {
+    "id": "m131",
+    "category": "Innovation et product management",
+    "name": "Matrice Horizon de McKinsey",
+    "usage": "H1, H2, H3"
+  },
+  {
+    "id": "m132",
+    "category": "Innovation et product management",
+    "name": "Matrice technologie / marché",
+    "usage": "Innovation produit"
+  },
+  {
+    "id": "m133",
+    "category": "Innovation et product management",
+    "name": "Matrice attractivité / faisabilité",
+    "usage": "Sélection d’idées"
+  },
+  {
+    "id": "m134",
+    "category": "Innovation et product management",
+    "name": "Matrice desirability / feasibility / viability",
+    "usage": "Design thinking"
+  },
+  {
+    "id": "m135",
+    "category": "Innovation et product management",
+    "name": "Matrice expérimentation / apprentissage",
+    "usage": "Tests startup"
+  },
+  {
+    "id": "m136",
+    "category": "Innovation et product management",
+    "name": "Matrice MVP",
+    "usage": "Minimum viable product"
+  },
+  {
+    "id": "m137",
+    "category": "Innovation et product management",
+    "name": "Matrice riskiest assumption",
+    "usage": "Hypothèses critiques"
+  },
+  {
+    "id": "m138",
+    "category": "Innovation et product management",
+    "name": "Matrice pain / gain",
+    "usage": "Diagnostic utilisateur"
+  },
+  {
+    "id": "m139",
+    "category": "Innovation et product management",
+    "name": "Matrice opportunité solution",
+    "usage": "Product discovery"
+  },
+  {
+    "id": "m140",
+    "category": "Innovation et product management",
+    "name": "Opportunity Solution Tree",
+    "usage": "Exploration produit"
+  },
+  {
+    "id": "m141",
+    "category": "Innovation et product management",
+    "name": "Matrice adoption innovation",
+    "usage": "Courbe d’adoption"
+  },
+  {
+    "id": "m142",
+    "category": "Innovation et product management",
+    "name": "Matrice disruption",
+    "usage": "Risque de rupture"
+  },
+  {
+    "id": "m143",
+    "category": "Innovation et product management",
+    "name": "Matrice de maturité produit",
+    "usage": "Niveau d’évolution produit"
+  },
+  {
+    "id": "m144",
+    "category": "RH, compétences et formation",
+    "name": "Matrice compétences / postes",
+    "usage": "Cartographie des compétences"
+  },
+  {
+    "id": "m145",
+    "category": "RH, compétences et formation",
+    "name": "Matrice compétences / niveaux",
+    "usage": "Évaluation des acquis"
+  },
+  {
+    "id": "m146",
+    "category": "RH, compétences et formation",
+    "name": "Matrice polyvalence",
+    "usage": "Capacité à occuper plusieurs rôles"
+  },
+  {
+    "id": "m147",
+    "category": "RH, compétences et formation",
+    "name": "Matrice 9-box RH",
+    "usage": "Performance vs potentiel"
+  },
+  {
+    "id": "m148",
+    "category": "RH, compétences et formation",
+    "name": "Matrice motivation / compétence",
+    "usage": "Accompagnement managérial"
+  },
+  {
+    "id": "m149",
+    "category": "RH, compétences et formation",
+    "name": "Matrice engagement / satisfaction",
+    "usage": "Diagnostic social"
+  },
+  {
+    "id": "m150",
+    "category": "RH, compétences et formation",
+    "name": "Matrice climat social",
+    "usage": "Perception interne"
+  },
+  {
+    "id": "m151",
+    "category": "RH, compétences et formation",
+    "name": "Matrice formation impact / urgence",
+    "usage": "Priorisation formation"
+  },
+  {
+    "id": "m152",
+    "category": "RH, compétences et formation",
+    "name": "Matrice GPEC",
+    "usage": "Emplois, compétences, évolution"
+  },
+  {
+    "id": "m153",
+    "category": "RH, compétences et formation",
+    "name": "Matrice criticité des compétences",
+    "usage": "Compétences rares ou stratégiques"
+  },
+  {
+    "id": "m154",
+    "category": "RH, compétences et formation",
+    "name": "Matrice mobilité interne",
+    "usage": "Passerelles métiers"
+  },
+  {
+    "id": "m155",
+    "category": "RH, compétences et formation",
+    "name": "Matrice succession planning",
+    "usage": "Remplacement des postes clés"
+  },
+  {
+    "id": "m156",
+    "category": "RH, compétences et formation",
+    "name": "Matrice attractivité / rétention",
+    "usage": "Politique RH"
+  },
+  {
+    "id": "m157",
+    "category": "RH, compétences et formation",
+    "name": "Matrice risques RH",
+    "usage": "Risque de départ, désengagement"
+  },
+  {
+    "id": "m158",
+    "category": "RH, compétences et formation",
+    "name": "Matrice d’évaluation 360°",
+    "usage": "Feedback multi-acteurs"
+  },
+  {
+    "id": "m159",
+    "category": "RH, compétences et formation",
+    "name": "Matrice objectifs / compétences",
+    "usage": "Évaluation annuelle"
+  },
+  {
+    "id": "m160",
+    "category": "RH, compétences et formation",
+    "name": "Matrice d’autonomie",
+    "usage": "Niveau de maîtrise collaborateur"
+  },
+  {
+    "id": "m161",
+    "category": "RH, compétences et formation",
+    "name": "Matrice tutorat / apprentissage",
+    "usage": "Suivi pédagogique"
+  },
+  {
+    "id": "m162",
+    "category": "RH, compétences et formation",
+    "name": "Matrice certification / blocs de compétences",
+    "usage": "Validation des acquis"
+  },
+  {
+    "id": "m163",
+    "category": "RH, compétences et formation",
+    "name": "Matrice Bloom",
+    "usage": "Niveaux cognitifs d’apprentissage"
+  },
+  {
+    "id": "m164",
+    "category": "RH, compétences et formation",
+    "name": "Matrice Kirkpatrick",
+    "usage": "Évaluation de la formation"
+  },
+  {
+    "id": "m165",
+    "category": "RH, compétences et formation",
+    "name": "Matrice progression pédagogique",
+    "usage": "Objectifs, activités, évaluations"
+  },
+  {
+    "id": "m166",
+    "category": "Finance et business performance",
+    "name": "Matrice marge / volume",
+    "usage": "Analyse de rentabilité"
+  },
+  {
+    "id": "m167",
+    "category": "Finance et business performance",
+    "name": "Matrice coût / valeur",
+    "usage": "Optimisation économique"
+  },
+  {
+    "id": "m168",
+    "category": "Finance et business performance",
+    "name": "Matrice ROI / risque",
+    "usage": "Priorisation des investissements"
+  },
+  {
+    "id": "m169",
+    "category": "Finance et business performance",
+    "name": "Matrice rentabilité / croissance",
+    "usage": "Pilotage portefeuille"
+  },
+  {
+    "id": "m170",
+    "category": "Finance et business performance",
+    "name": "Matrice cash-flow / profitabilité",
+    "usage": "Santé financière"
+  },
+  {
+    "id": "m171",
+    "category": "Finance et business performance",
+    "name": "Matrice prix / marge",
+    "usage": "Politique tarifaire"
+  },
+  {
+    "id": "m172",
+    "category": "Finance et business performance",
+    "name": "Matrice coût fixe / coût variable",
+    "usage": "Analyse économique"
+  },
+  {
+    "id": "m173",
+    "category": "Finance et business performance",
+    "name": "Matrice seuil de rentabilité",
+    "usage": "Point mort"
+  },
+  {
+    "id": "m174",
+    "category": "Finance et business performance",
+    "name": "Matrice TCO / bénéfices",
+    "usage": "Coût total de possession"
+  },
+  {
+    "id": "m175",
+    "category": "Finance et business performance",
+    "name": "Matrice CAPEX / OPEX",
+    "usage": "Arbitrage investissement/exploitation"
+  },
+  {
+    "id": "m176",
+    "category": "Finance et business performance",
+    "name": "Matrice budget / impact",
+    "usage": "Allocation des ressources"
+  },
+  {
+    "id": "m177",
+    "category": "Finance et business performance",
+    "name": "Matrice performance / coût",
+    "usage": "Optimisation des dépenses"
+  },
+  {
+    "id": "m178",
+    "category": "Finance et business performance",
+    "name": "Matrice client rentable / non rentable",
+    "usage": "Analyse portefeuille client"
+  },
+  {
+    "id": "m179",
+    "category": "Finance et business performance",
+    "name": "Matrice business case",
+    "usage": "Gains, coûts, risques"
+  },
+  {
+    "id": "m180",
+    "category": "Finance et business performance",
+    "name": "Matrice sensibilité financière",
+    "usage": "Hypothèses critiques"
+  },
+  {
+    "id": "m181",
+    "category": "Finance et business performance",
+    "name": "Matrice de scoring d’investissement",
+    "usage": "Choix des projets"
+  },
+  {
+    "id": "m182",
+    "category": "Commercial et ventes",
+    "name": "Matrice prospects / potentiel",
+    "usage": "Priorisation commerciale"
+  },
+  {
+    "id": "m183",
+    "category": "Commercial et ventes",
+    "name": "Matrice opportunité / probabilité",
+    "usage": "Pipeline commercial"
+  },
+  {
+    "id": "m184",
+    "category": "Commercial et ventes",
+    "name": "Matrice valeur compte / accessibilité",
+    "usage": "Account management"
+  },
+  {
+    "id": "m185",
+    "category": "Commercial et ventes",
+    "name": "Matrice grands comptes",
+    "usage": "Segmentation comptes clés"
+  },
+  {
+    "id": "m186",
+    "category": "Commercial et ventes",
+    "name": "Matrice pouvoir / influence acheteur",
+    "usage": "Cartographie des décideurs"
+  },
+  {
+    "id": "m187",
+    "category": "Commercial et ventes",
+    "name": "Matrice besoin / maturité client",
+    "usage": "Adaptation du discours"
+  },
+  {
+    "id": "m188",
+    "category": "Commercial et ventes",
+    "name": "Matrice objections / réponses",
+    "usage": "Argumentaire commercial"
+  },
+  {
+    "id": "m189",
+    "category": "Commercial et ventes",
+    "name": "Matrice solution / douleur client",
+    "usage": "Vente consultative"
+  },
+  {
+    "id": "m190",
+    "category": "Commercial et ventes",
+    "name": "Matrice urgence / budget",
+    "usage": "Qualification commerciale"
+  },
+  {
+    "id": "m191",
+    "category": "Commercial et ventes",
+    "name": "Matrice BANT",
+    "usage": "Budget, authority, need, timing"
+  },
+  {
+    "id": "m192",
+    "category": "Commercial et ventes",
+    "name": "Matrice MEDDIC",
+    "usage": "Qualification complexe"
+  },
+  {
+    "id": "m193",
+    "category": "Commercial et ventes",
+    "name": "Matrice challenger sale",
+    "usage": "Tension commerciale"
+  },
+  {
+    "id": "m194",
+    "category": "Commercial et ventes",
+    "name": "Matrice cycle de vente / contenu",
+    "usage": "Sales enablement"
+  },
+  {
+    "id": "m195",
+    "category": "Commercial et ventes",
+    "name": "Matrice cross-sell / up-sell",
+    "usage": "Développement client"
+  },
+  {
+    "id": "m196",
+    "category": "Commercial et ventes",
+    "name": "Matrice fidélisation / expansion",
+    "usage": "Customer success"
+  },
+  {
+    "id": "m197",
+    "category": "Commercial et ventes",
+    "name": "Matrice churn risk",
+    "usage": "Risque de départ client"
+  },
+  {
+    "id": "m198",
+    "category": "Commercial et ventes",
+    "name": "Matrice satisfaction / valeur",
+    "usage": "Priorisation comptes clients"
+  },
+  {
+    "id": "m199",
+    "category": "Qualité, process et amélioration continue",
+    "name": "Matrice PDCA",
+    "usage": "Plan, do, check, act"
+  },
+  {
+    "id": "m200",
+    "category": "Qualité, process et amélioration continue",
+    "name": "Matrice DMAIC",
+    "usage": "Six Sigma"
+  },
+  {
+    "id": "m201",
+    "category": "Qualité, process et amélioration continue",
+    "name": "Matrice SIPOC",
+    "usage": "Processus fournisseurs-inputs-process-output-clients"
+  },
+  {
+    "id": "m202",
+    "category": "Qualité, process et amélioration continue",
+    "name": "Matrice cause / effet",
+    "usage": "Diagramme d’Ishikawa"
+  },
+  {
+    "id": "m203",
+    "category": "Qualité, process et amélioration continue",
+    "name": "Matrice 5 pourquoi",
+    "usage": "Recherche de causes racines"
+  },
+  {
+    "id": "m204",
+    "category": "Qualité, process et amélioration continue",
+    "name": "Matrice AMDEC",
+    "usage": "Analyse des modes de défaillance"
+  },
+  {
+    "id": "m205",
+    "category": "Qualité, process et amélioration continue",
+    "name": "Matrice criticité",
+    "usage": "Gravité, occurrence, détection"
+  },
+  {
+    "id": "m206",
+    "category": "Qualité, process et amélioration continue",
+    "name": "Matrice qualité / coût",
+    "usage": "Arbitrage qualité"
+  },
+  {
+    "id": "m207",
+    "category": "Qualité, process et amélioration continue",
+    "name": "Matrice conformité / risque",
+    "usage": "Audit qualité"
+  },
+  {
+    "id": "m208",
+    "category": "Qualité, process et amélioration continue",
+    "name": "Matrice processus / performance",
+    "usage": "Pilotage opérationnel"
+  },
+  {
+    "id": "m209",
+    "category": "Qualité, process et amélioration continue",
+    "name": "Matrice gaspillage Lean",
+    "usage": "Identification des mudas"
+  },
+  {
+    "id": "m210",
+    "category": "Qualité, process et amélioration continue",
+    "name": "Matrice valeur ajoutée / non-valeur ajoutée",
+    "usage": "Optimisation process"
+  },
+  {
+    "id": "m211",
+    "category": "Qualité, process et amélioration continue",
+    "name": "Matrice contrôle / fréquence",
+    "usage": "Plan de contrôle"
+  },
+  {
+    "id": "m212",
+    "category": "Qualité, process et amélioration continue",
+    "name": "Matrice maturité qualité",
+    "usage": "Niveau de maîtrise"
+  },
+  {
+    "id": "m213",
+    "category": "Qualité, process et amélioration continue",
+    "name": "Matrice satisfaction / réclamation",
+    "usage": "Analyse qualité client"
+  },
+  {
+    "id": "m214",
+    "category": "UX, design et expérience utilisateur",
+    "name": "Empathy Map",
+    "usage": "Compréhension utilisateur"
+  },
+  {
+    "id": "m215",
+    "category": "UX, design et expérience utilisateur",
+    "name": "Customer Journey Map",
+    "usage": "Parcours client"
+  },
+  {
+    "id": "m216",
+    "category": "UX, design et expérience utilisateur",
+    "name": "Experience Map",
+    "usage": "Expérience globale"
+  },
+  {
+    "id": "m217",
+    "category": "UX, design et expérience utilisateur",
+    "name": "Service Blueprint",
+    "usage": "Processus visible et invisible"
+  },
+  {
+    "id": "m218",
+    "category": "UX, design et expérience utilisateur",
+    "name": "Matrice UX impact / effort",
+    "usage": "Priorisation UX"
+  },
+  {
+    "id": "m219",
+    "category": "UX, design et expérience utilisateur",
+    "name": "Matrice friction / fréquence",
+    "usage": "Optimisation parcours"
+  },
+  {
+    "id": "m220",
+    "category": "UX, design et expérience utilisateur",
+    "name": "Matrice accessibilité / impact",
+    "usage": "Priorisation accessibilité"
+  },
+  {
+    "id": "m221",
+    "category": "UX, design et expérience utilisateur",
+    "name": "Matrice besoins / fonctionnalités",
+    "usage": "Design produit"
+  },
+  {
+    "id": "m222",
+    "category": "UX, design et expérience utilisateur",
+    "name": "Matrice persona / besoins",
+    "usage": "Ciblage UX"
+  },
+  {
+    "id": "m223",
+    "category": "UX, design et expérience utilisateur",
+    "name": "Matrice tâches / émotions",
+    "usage": "Analyse de parcours"
+  },
+  {
+    "id": "m224",
+    "category": "UX, design et expérience utilisateur",
+    "name": "Matrice heuristique Nielsen",
+    "usage": "Audit ergonomique"
+  },
+  {
+    "id": "m225",
+    "category": "UX, design et expérience utilisateur",
+    "name": "Matrice utilisabilité / désirabilité",
+    "usage": "Évaluation interface"
+  },
+  {
+    "id": "m226",
+    "category": "UX, design et expérience utilisateur",
+    "name": "Matrice contenu / contexte",
+    "usage": "Architecture de l’information"
+  },
+  {
+    "id": "m227",
+    "category": "UX, design et expérience utilisateur",
+    "name": "Matrice wireframe / objectif",
+    "usage": "Structuration écran"
+  },
+  {
+    "id": "m228",
+    "category": "UX, design et expérience utilisateur",
+    "name": "Matrice design system",
+    "usage": "Composants et usages"
+  },
+  {
+    "id": "m229",
+    "category": "UX, design et expérience utilisateur",
+    "name": "Matrice test utilisateur",
+    "usage": "Hypothèses, résultats, corrections"
+  },
+  {
+    "id": "m230",
+    "category": "Data, IA et transformation numérique",
+    "name": "Matrice maturité digitale",
+    "usage": "Diagnostic transformation"
+  },
+  {
+    "id": "m231",
+    "category": "Data, IA et transformation numérique",
+    "name": "Matrice maturité data",
+    "usage": "Gouvernance et usage des données"
+  },
+  {
+    "id": "m232",
+    "category": "Data, IA et transformation numérique",
+    "name": "Matrice maturité IA",
+    "usage": "Niveau d’adoption de l’IA"
+  },
+  {
+    "id": "m233",
+    "category": "Data, IA et transformation numérique",
+    "name": "Matrice cas d’usage IA impact / faisabilité",
+    "usage": "Priorisation IA"
+  },
+  {
+    "id": "m234",
+    "category": "Data, IA et transformation numérique",
+    "name": "Matrice risque IA / valeur",
+    "usage": "Arbitrage IA"
+  },
+  {
+    "id": "m235",
+    "category": "Data, IA et transformation numérique",
+    "name": "Matrice automatisation / complexité",
+    "usage": "Priorisation automatisation"
+  },
+  {
+    "id": "m236",
+    "category": "Data, IA et transformation numérique",
+    "name": "Matrice données disponibles / données nécessaires",
+    "usage": "Diagnostic data"
+  },
+  {
+    "id": "m237",
+    "category": "Data, IA et transformation numérique",
+    "name": "Matrice qualité des données",
+    "usage": "Fiabilité, complétude, fraîcheur"
+  },
+  {
+    "id": "m238",
+    "category": "Data, IA et transformation numérique",
+    "name": "Matrice gouvernance data",
+    "usage": "Rôles, règles, responsabilités"
+  },
+  {
+    "id": "m239",
+    "category": "Data, IA et transformation numérique",
+    "name": "Matrice sécurité / accessibilité",
+    "usage": "Gestion des accès"
+  },
+  {
+    "id": "m240",
+    "category": "Data, IA et transformation numérique",
+    "name": "Matrice IA générative usage / risque",
+    "usage": "Encadrement des usages GenAI"
+  },
+  {
+    "id": "m241",
+    "category": "Data, IA et transformation numérique",
+    "name": "Matrice conformité IA",
+    "usage": "Risques réglementaires"
+  },
+  {
+    "id": "m242",
+    "category": "Data, IA et transformation numérique",
+    "name": "Matrice humain / machine",
+    "usage": "Répartition des tâches"
+  },
+  {
+    "id": "m243",
+    "category": "Data, IA et transformation numérique",
+    "name": "Matrice augmentation / automatisation",
+    "usage": "Impact sur le travail"
+  },
+  {
+    "id": "m244",
+    "category": "Data, IA et transformation numérique",
+    "name": "Matrice prompt / tâche",
+    "usage": "Standardisation des usages IA"
+  },
+  {
+    "id": "m245",
+    "category": "Data, IA et transformation numérique",
+    "name": "Matrice ROI IA",
+    "usage": "Gains, coûts, risques"
+  },
+  {
+    "id": "m246",
+    "category": "Data, IA et transformation numérique",
+    "name": "Matrice éthique IA",
+    "usage": "Biais, transparence, responsabilité"
+  },
+  {
+    "id": "m247",
+    "category": "Communication et image",
+    "name": "Matrice message / cible",
+    "usage": "Communication ciblée"
+  },
+  {
+    "id": "m248",
+    "category": "Communication et image",
+    "name": "Matrice canal / objectif",
+    "usage": "Choix des canaux"
+  },
+  {
+    "id": "m249",
+    "category": "Communication et image",
+    "name": "Matrice tonalité / audience",
+    "usage": "Ligne éditoriale"
+  },
+  {
+    "id": "m250",
+    "category": "Communication et image",
+    "name": "Matrice média paid / owned / earned",
+    "usage": "Stratégie média"
+  },
+  {
+    "id": "m251",
+    "category": "Communication et image",
+    "name": "Matrice réputation / visibilité",
+    "usage": "Image publique"
+  },
+  {
+    "id": "m252",
+    "category": "Communication et image",
+    "name": "Matrice crise impact / probabilité",
+    "usage": "Communication de crise"
+  },
+  {
+    "id": "m253",
+    "category": "Communication et image",
+    "name": "Matrice parties prenantes communication",
+    "usage": "Messages par acteur"
+  },
+  {
+    "id": "m254",
+    "category": "Communication et image",
+    "name": "Matrice influence / relais",
+    "usage": "Relations publiques"
+  },
+  {
+    "id": "m255",
+    "category": "Communication et image",
+    "name": "Matrice contenu / objectif",
+    "usage": "Stratégie éditoriale"
+  },
+  {
+    "id": "m256",
+    "category": "Communication et image",
+    "name": "Matrice preuve / promesse",
+    "usage": "Crédibilité du discours"
+  },
+  {
+    "id": "m257",
+    "category": "Communication et image",
+    "name": "Matrice storytelling",
+    "usage": "Message, conflit, transformation"
+  },
+  {
+    "id": "m258",
+    "category": "Communication et image",
+    "name": "Matrice marque employeur",
+    "usage": "Attractivité RH"
+  },
+  {
+    "id": "m259",
+    "category": "Communication et image",
+    "name": "Matrice perception / réalité",
+    "usage": "Diagnostic d’image"
+  },
+  {
+    "id": "m260",
+    "category": "Achats, supply chain et opérations",
+    "name": "Matrice de Kraljic",
+    "usage": "Stratégie achats"
+  },
+  {
+    "id": "m261",
+    "category": "Achats, supply chain et opérations",
+    "name": "Matrice fournisseurs risque / valeur",
+    "usage": "Priorisation fournisseurs"
+  },
+  {
+    "id": "m262",
+    "category": "Achats, supply chain et opérations",
+    "name": "Matrice criticité fournisseurs",
+    "usage": "Dépendance et risque"
+  },
+  {
+    "id": "m263",
+    "category": "Achats, supply chain et opérations",
+    "name": "Matrice Make or Buy",
+    "usage": "Faire ou acheter"
+  },
+  {
+    "id": "m264",
+    "category": "Achats, supply chain et opérations",
+    "name": "Matrice coûts / délais / qualité fournisseurs",
+    "usage": "Évaluation fournisseurs"
+  },
+  {
+    "id": "m265",
+    "category": "Achats, supply chain et opérations",
+    "name": "Matrice stock rotation / valeur",
+    "usage": "Gestion des stocks"
+  },
+  {
+    "id": "m266",
+    "category": "Achats, supply chain et opérations",
+    "name": "Matrice ABC",
+    "usage": "Classification par valeur"
+  },
+  {
+    "id": "m267",
+    "category": "Achats, supply chain et opérations",
+    "name": "Matrice XYZ",
+    "usage": "Variabilité de la demande"
+  },
+  {
+    "id": "m268",
+    "category": "Achats, supply chain et opérations",
+    "name": "Matrice ABC / XYZ",
+    "usage": "Politique de stock"
+  },
+  {
+    "id": "m269",
+    "category": "Achats, supply chain et opérations",
+    "name": "Matrice capacité / demande",
+    "usage": "Planification opérationnelle"
+  },
+  {
+    "id": "m270",
+    "category": "Achats, supply chain et opérations",
+    "name": "Matrice flux / contraintes",
+    "usage": "Optimisation supply chain"
+  },
+  {
+    "id": "m271",
+    "category": "Achats, supply chain et opérations",
+    "name": "Matrice risque logistique",
+    "usage": "Rupture, délai, dépendance"
+  },
+  {
+    "id": "m272",
+    "category": "Achats, supply chain et opérations",
+    "name": "Matrice qualité fournisseur",
+    "usage": "Non-conformités et criticité"
+  },
+  {
+    "id": "m273",
+    "category": "Achats, supply chain et opérations",
+    "name": "Matrice empreinte carbone / coût",
+    "usage": "Arbitrage supply durable"
+  },
+  {
+    "id": "m274",
+    "category": "Juridique, conformité et risques",
+    "name": "Matrice risques juridiques",
+    "usage": "Cartographie des risques"
+  },
+  {
+    "id": "m275",
+    "category": "Juridique, conformité et risques",
+    "name": "Matrice conformité / impact",
+    "usage": "Priorisation conformité"
+  },
+  {
+    "id": "m276",
+    "category": "Juridique, conformité et risques",
+    "name": "Matrice RGPD risque / données",
+    "usage": "Données personnelles"
+  },
+  {
+    "id": "m277",
+    "category": "Juridique, conformité et risques",
+    "name": "Matrice probabilité / gravité",
+    "usage": "Analyse de risque classique"
+  },
+  {
+    "id": "m278",
+    "category": "Juridique, conformité et risques",
+    "name": "Matrice criticité réglementaire",
+    "usage": "Obligations prioritaires"
+  },
+  {
+    "id": "m279",
+    "category": "Juridique, conformité et risques",
+    "name": "Matrice responsabilité / contrôle",
+    "usage": "Gouvernance conformité"
+  },
+  {
+    "id": "m280",
+    "category": "Juridique, conformité et risques",
+    "name": "Matrice audit / preuve",
+    "usage": "Suivi documentaire"
+  },
+  {
+    "id": "m281",
+    "category": "Juridique, conformité et risques",
+    "name": "Matrice contrats / risques",
+    "usage": "Analyse contractuelle"
+  },
+  {
+    "id": "m282",
+    "category": "Juridique, conformité et risques",
+    "name": "Matrice litiges / exposition",
+    "usage": "Suivi contentieux"
+  },
+  {
+    "id": "m283",
+    "category": "Juridique, conformité et risques",
+    "name": "Matrice corruption / exposition",
+    "usage": "Compliance anticorruption"
+  },
+  {
+    "id": "m284",
+    "category": "Juridique, conformité et risques",
+    "name": "Matrice cybersécurité impact / probabilité",
+    "usage": "Analyse cyber"
+  },
+  {
+    "id": "m285",
+    "category": "Juridique, conformité et risques",
+    "name": "Matrice continuité d’activité",
+    "usage": "PCA / PRA"
+  },
+  {
+    "id": "m286",
+    "category": "Juridique, conformité et risques",
+    "name": "Matrice AI Act risque / usage",
+    "usage": "Classification des systèmes IA"
+  },
+  {
+    "id": "m287",
+    "category": "Pédagogie et formation",
+    "name": "Taxonomie de Bloom",
+    "usage": "Niveau cognitif des objectifs"
+  },
+  {
+    "id": "m288",
+    "category": "Pédagogie et formation",
+    "name": "Matrice objectifs / activités / évaluations",
+    "usage": "Alignement pédagogique"
+  },
+  {
+    "id": "m289",
+    "category": "Pédagogie et formation",
+    "name": "Matrice compétences / preuves",
+    "usage": "Certification"
+  },
+  {
+    "id": "m290",
+    "category": "Pédagogie et formation",
+    "name": "Matrice niveau / compétence",
+    "usage": "Progression pédagogique"
+  },
+  {
+    "id": "m291",
+    "category": "Pédagogie et formation",
+    "name": "Matrice prérequis / objectifs",
+    "usage": "Construction de parcours"
+  },
+  {
+    "id": "m292",
+    "category": "Pédagogie et formation",
+    "name": "Matrice scénario pédagogique",
+    "usage": "Séquence, activité, évaluation"
+  },
+  {
+    "id": "m293",
+    "category": "Pédagogie et formation",
+    "name": "Matrice synchrone / asynchrone",
+    "usage": "Modalités de formation"
+  },
+  {
+    "id": "m294",
+    "category": "Pédagogie et formation",
+    "name": "Matrice individuel / collectif",
+    "usage": "Design pédagogique"
+  },
+  {
+    "id": "m295",
+    "category": "Pédagogie et formation",
+    "name": "Matrice effort apprenant / valeur pédagogique",
+    "usage": "Priorisation activités"
+  },
+  {
+    "id": "m296",
+    "category": "Pédagogie et formation",
+    "name": "Matrice évaluation formative / sommative",
+    "usage": "Évaluation des apprentissages"
+  },
+  {
+    "id": "m297",
+    "category": "Pédagogie et formation",
+    "name": "Matrice Kirkpatrick",
+    "usage": "Évaluation de formation"
+  },
+  {
+    "id": "m298",
+    "category": "Pédagogie et formation",
+    "name": "Matrice compétences / badges",
+    "usage": "Gamification pédagogique"
+  },
+  {
+    "id": "m299",
+    "category": "Pédagogie et formation",
+    "name": "Matrice motivation / difficulté",
+    "usage": "Engagement apprenant"
+  },
+  {
+    "id": "m300",
+    "category": "Pédagogie et formation",
+    "name": "Matrice feedback / progression",
+    "usage": "Suivi individualisé"
+  },
+  {
+    "id": "m301",
+    "category": "Décision et priorisation transversales",
+    "name": "Impact / effort",
+    "usage": "Prioriser rapidement"
+  },
+  {
+    "id": "m302",
+    "category": "Décision et priorisation transversales",
+    "name": "Valeur / complexité",
+    "usage": "Arbitrer des initiatives"
+  },
+  {
+    "id": "m303",
+    "category": "Décision et priorisation transversales",
+    "name": "Urgence / importance",
+    "usage": "Gérer le temps"
+  },
+  {
+    "id": "m304",
+    "category": "Décision et priorisation transversales",
+    "name": "Risque / impact",
+    "usage": "Gérer les risques"
+  },
+  {
+    "id": "m305",
+    "category": "Décision et priorisation transversales",
+    "name": "Coût / bénéfice",
+    "usage": "Arbitrage économique"
+  },
+  {
+    "id": "m306",
+    "category": "Décision et priorisation transversales",
+    "name": "Faisabilité / attractivité",
+    "usage": "Choisir des idées"
+  },
+  {
+    "id": "m307",
+    "category": "Décision et priorisation transversales",
+    "name": "Importance / performance",
+    "usage": "Améliorer une offre"
+  },
+  {
+    "id": "m308",
+    "category": "Décision et priorisation transversales",
+    "name": "Probabilité / gravité",
+    "usage": "Cartographier un risque"
+  },
+  {
+    "id": "m309",
+    "category": "Décision et priorisation transversales",
+    "name": "Pouvoir / intérêt",
+    "usage": "Piloter les parties prenantes"
+  },
+  {
+    "id": "m310",
+    "category": "Décision et priorisation transversales",
+    "name": "Influence / attitude",
+    "usage": "Conduite du changement"
+  },
+  {
+    "id": "m311",
+    "category": "Décision et priorisation transversales",
+    "name": "Maturité / potentiel",
+    "usage": "Évaluer une organisation"
+  },
+  {
+    "id": "m312",
+    "category": "Décision et priorisation transversales",
+    "name": "Performance / potentiel",
+    "usage": "Évaluer les talents"
+  },
+  {
+    "id": "m313",
+    "category": "Décision et priorisation transversales",
+    "name": "Besoin / capacité",
+    "usage": "Allouer les moyens"
+  },
+  {
+    "id": "m314",
+    "category": "Décision et priorisation transversales",
+    "name": "Fréquence / intensité",
+    "usage": "Analyser un problème"
+  },
+  {
+    "id": "m315",
+    "category": "Décision et priorisation transversales",
+    "name": "Effort / confiance / impact",
+    "usage": "Priorisation ICE"
+  },
+  {
+    "id": "m316",
+    "category": "Décision et priorisation transversales",
+    "name": "Reach / impact / confidence / effort",
+    "usage": "Priorisation RICE"
+  },
+  {
+    "id": "m317",
+    "category": "Décision et priorisation transversales",
+    "name": "Décision multicritère pondérée",
+    "usage": "Choix rationnel entre options"
+  },
+  {
+    "id": "m318",
+    "category": "Autres modèles utiles",
+    "name": "Cynefin Framework",
+    "usage": "Décision selon complexité du contexte"
+  },
+  {
+    "id": "m319",
+    "category": "Autres modèles utiles",
+    "name": "OODA Loop",
+    "usage": "Observation, orientation, décision, action"
+  },
+  {
+    "id": "m320",
+    "category": "Autres modèles utiles",
+    "name": "VRIO",
+    "usage": "Valeur, rareté, imitabilité, organisation"
+  },
+  {
+    "id": "m321",
+    "category": "Autres modèles utiles",
+    "name": "Matrice VRIN",
+    "usage": "Ressources stratégiques"
+  },
+  {
+    "id": "m322",
+    "category": "Autres modèles utiles",
+    "name": "7S McKinsey",
+    "usage": "Diagnostic organisationnel"
+  },
+  {
+    "id": "m323",
+    "category": "Autres modèles utiles",
+    "name": "Balanced Scorecard",
+    "usage": "Pilotage stratégique"
+  },
+  {
+    "id": "m324",
+    "category": "Autres modèles utiles",
+    "name": "OKR Matrix",
+    "usage": "Objectifs et résultats clés"
+  },
+  {
+    "id": "m325",
+    "category": "Autres modèles utiles",
+    "name": "Hoshin Kanri Matrix",
+    "usage": "Déploiement stratégique"
+  },
+  {
+    "id": "m326",
+    "category": "Autres modèles utiles",
+    "name": "Strategy Map",
+    "usage": "Carte stratégique"
+  },
+  {
+    "id": "m327",
+    "category": "Autres modèles utiles",
+    "name": "Theory of Change",
+    "usage": "Transformation et impact"
+  },
+  {
+    "id": "m328",
+    "category": "Autres modèles utiles",
+    "name": "Logic Model",
+    "usage": "Ressources, activités, résultats"
+  },
+  {
+    "id": "m329",
+    "category": "Autres modèles utiles",
+    "name": "Stakeholder Salience Model",
+    "usage": "Pouvoir, légitimité, urgence"
+  },
+  {
+    "id": "m330",
+    "category": "Autres modèles utiles",
+    "name": "Competing Values Framework",
+    "usage": "Culture organisationnelle"
+  },
+  {
+    "id": "m331",
+    "category": "Autres modèles utiles",
+    "name": "Greiner Growth Model",
+    "usage": "Phases de croissance"
+  },
+  {
+    "id": "m332",
+    "category": "Autres modèles utiles",
+    "name": "Kotter Change Model",
+    "usage": "Conduite du changement"
+  },
+  {
+    "id": "m333",
+    "category": "Autres modèles utiles",
+    "name": "ADKAR",
+    "usage": "Changement individuel"
+  },
+  {
+    "id": "m334",
+    "category": "Autres modèles utiles",
+    "name": "Lewin Change Model",
+    "usage": "Unfreeze, change, refreeze"
+  },
+  {
+    "id": "m335",
+    "category": "Autres modèles utiles",
+    "name": "Spiral Dynamics",
+    "usage": "Niveaux de culture et valeurs"
+  },
+  {
+    "id": "m336",
+    "category": "Autres modèles utiles",
+    "name": "Design Thinking Double Diamond",
+    "usage": "Divergence et convergence"
+  },
+  {
+    "id": "m337",
+    "category": "Autres modèles utiles",
+    "name": "Wardley Mapping",
+    "usage": "Stratégie technologique"
+  },
+  {
+    "id": "m338",
+    "category": "Autres modèles utiles",
+    "name": "North Star Metric Framework",
+    "usage": "Croissance produit"
+  },
+  {
+    "id": "m339",
+    "category": "Autres modèles utiles",
+    "name": "Pirate Metrics AARRR",
+    "usage": "Acquisition, activation, rétention, revenu, referral"
+  }
+]

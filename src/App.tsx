@@ -17,6 +17,7 @@ import AdminTestSuitePage from "./pages/AdminTestSuitePage.tsx";
 import AdminDraftsPage from "./pages/AdminDraftsPage.tsx";
 import AdminStudioPage from "./pages/AdminStudioPage.tsx";
 import AdminFamiliesPage from "./pages/AdminFamiliesPage.tsx";
+import AdminMatricePage from "./pages/AdminMatricePage.tsx";
 import AuthPage from "./pages/Auth.tsx";
 import ResetPassword from "./pages/ResetPassword.tsx";
 
@@ -44,6 +45,7 @@ const App = () => (
             <Route path="/admin/templates/drafts" element={<AdminRoute><AdminDraftsPage /></AdminRoute>} />
             <Route path="/admin/studio" element={<AdminRoute><AdminStudioPage /></AdminRoute>} />
             <Route path="/admin/familles" element={<AdminRoute><AdminFamiliesPage /></AdminRoute>} />
+            <Route path="/admin/matrice" element={<AdminRoute><AdminMatricePage /></AdminRoute>} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>
