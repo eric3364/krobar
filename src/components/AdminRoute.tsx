@@ -1,7 +1,8 @@
 import { ReactNode } from "react";
 import { Navigate, Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { Loader2, LogOut, LayoutDashboard, FlaskConical, FolderOpen, Plus, Wand2, Palette, ListChecks } from "lucide-react";
+import { Loader2, LogOut, LayoutDashboard, FlaskConical, FolderOpen, Plus, Wand2, Palette, ListChecks, Users, Pencil } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { BYPASS_AUTH } from "@/lib/devAuth";
 import { Helmet } from "react-helmet-async";
 
@@ -12,6 +13,7 @@ const navItems = [
   { label: "Studio", path: "/admin/studio", icon: Palette },
   { label: "Drafts", path: "/admin/templates/drafts", icon: FolderOpen },
   { label: "Suite de tests", path: "/admin/test-suite", icon: ListChecks },
+  { label: "Familles", path: "/admin/familles", icon: Users },
   { label: "Benchmark", path: "/admin/benchmark", icon: FlaskConical },
 ];
 
@@ -45,10 +47,12 @@ function AdminLayoutInner({ children }: { children: ReactNode }) {
               );
             })}
           </nav>
-          <div className="p-3 border-t border-border space-y-2">
-            <Link to="/workspace" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
-              <LogOut className="h-4 w-4" /> Retour à l'éditeur
-            </Link>
+          <div className="p-3 border-t border-border">
+            <Button asChild className="w-full" size="sm">
+              <Link to="/workspace">
+                <Pencil className="h-4 w-4" /> Passer en mode éditeur
+              </Link>
+            </Button>
           </div>
         </aside>
 
