@@ -274,6 +274,7 @@ const Index = () => {
 
   const previewRef = useRef<HTMLDivElement>(null);
   const [renderedIcons, setRenderedIcons] = useState<Record<string, import("@/types/analyze").SlotIcon> | undefined>(undefined);
+  const { menu: slotIconMenu } = useSlotIconInteractivity(previewRef, renderedIcons, undefined);
   const thumbRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // In-place editing state
