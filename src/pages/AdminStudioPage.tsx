@@ -518,8 +518,10 @@ export default function AdminStudioPage() {
   };
   const pickCanonicalKey = (slotKey: string) => {
     // Compte les ancres existantes pour ce slot et suffixe si nécessaire (ex: strength_2)
+    // Convention canonique : toujours suffixer avec _N (même quand N=1) pour
+    // que les placeholders SVG soient cohérents avec les cardinalités > 1.
     const existing = anchors.filter((a) => a.slotName === slotKey || a.slotName.startsWith(slotKey + "_")).length;
-    const finalName = existing === 0 ? slotKey : `${slotKey}_${existing + 1}`;
+    const finalName = `${slotKey}_${existing + 1}`;
     setCanonicalPickerOpen(false);
     namePromptCb.current?.(finalName);
     namePromptCb.current = null;
