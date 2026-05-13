@@ -122,6 +122,28 @@ export default function AdminStudioPage() {
   const [selectedDecorativeIconId, setSelectedDecorativeIconId] = useState<string | null>(null);
   const [iconPickerOpen, setIconPickerOpen] = useState(false);
 
+  // Phase 5 — Slot icons (dynamiques, résolus au runtime)
+  const [iconSlots, setIconSlots] = useState<Record<string, IconSlotSpec>>({});
+  const [contextualPickerSlot, setContextualPickerSlot] = useState<string | null>(null);
+
+  const toggleSlotIconographable = (slotKey: string) => {
+    setIconSlots((prev) => {
+      const next = { ...prev };
+      if (slotKey in next) {
+        delete next[slotKey];
+      } else {
+        next[slotKey] = { size: 48, default_icon: null, position_x: 0, position_y: 0 };
+      }
+      return next;
+    });
+  };
+  const updateIconSlotSpec = (slotKey: string, partial: Partial<IconSlotSpec>) => {
+    setIconSlots((prev) => {
+      if (!(slotKey in prev)) return prev;
+      return { ...prev, [slotKey]: { ...prev[slotKey], ...partial } };
+    });
+  };
+
   // Phase 3 — Palette
   const [detectedColors, setDetectedColors] = useState<Array<{ hex_value: string; occurrences: number; is_neutral: boolean }>>([]);
   const [paletteMapping, setPaletteMapping] = useState<Record<string, string | null>>({});
