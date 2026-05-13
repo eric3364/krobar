@@ -270,6 +270,7 @@ export default function AdminStudioPage() {
         }
         if (d.editingExistingId !== undefined) setEditingExistingId(d.editingExistingId);
         if (Array.isArray(d.decorativeIcons)) setDecorativeIcons(d.decorativeIcons);
+        if (d.iconSlots && typeof d.iconSlots === "object") setIconSlots(d.iconSlots);
         toast.info("Brouillon Studio restauré", { duration: 3000 });
       }
     } catch { /* ignore */ }
@@ -306,6 +307,7 @@ export default function AdminStudioPage() {
         _id: "dec_" + Math.random().toString(36).slice(2, 10),
       })),
     );
+    setIconSlots(snap.icon_slots ?? {});
     setSelectedDecorativeIconId(null);
     setSelectedId(null);
     setPhase(snap.upload ? jumpTo : 1);
@@ -891,7 +893,7 @@ export default function AdminStudioPage() {
           phase, templateType, canonicalPresetId, upload, anchors, cardinality,
           matchingIds, otherChecked, otherText, tplId, tplName, tplCategory,
           tplDescription, tplMarkers, tplTestText, detectedColors, paletteMapping,
-          editingExistingId, decorativeIcons, saved_at: new Date().toISOString(),
+          editingExistingId, decorativeIcons, iconSlots, saved_at: new Date().toISOString(),
         };
         localStorage.setItem(STUDIO_DRAFT_KEY, JSON.stringify(draft));
       } catch { /* quota / ignore */ }
@@ -901,7 +903,7 @@ export default function AdminStudioPage() {
     phase, templateType, canonicalPresetId, upload, anchors, cardinality,
     matchingIds, otherChecked, otherText, tplId, tplName, tplCategory,
     tplDescription, tplMarkers, tplTestText, detectedColors, paletteMapping,
-    editingExistingId, decorativeIcons,
+    editingExistingId, decorativeIcons, iconSlots,
   ]);
 
   // Compte des ancres par clé sémantique du preset (canonique uniquement).
@@ -977,6 +979,7 @@ export default function AdminStudioPage() {
       add_to_test_suite: tplTestText.trim().length > 0,
       palette_mapping: paletteMapping,
       decorative_icons: decorativeIcons.map(({ _id, ...rest }) => rest as DecorativeIcon),
+      icon_slots: iconSlots,
       approved_by: "admin",
       // Phase 8 : flag canonique + preset id + slot_definitions sémantiques
       canonical: templateType === "canonical",
@@ -1064,6 +1067,7 @@ export default function AdminStudioPage() {
           paletteMapping,
           detectedColors,
           decorative_icons: decorativeIcons.map(({ _id, ...rest }) => rest as DecorativeIcon),
+          icon_slots: iconSlots,
           saved_at: new Date().toISOString(),
         });
       } catch {
