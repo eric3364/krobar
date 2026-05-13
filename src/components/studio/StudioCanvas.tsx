@@ -3,6 +3,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import KrobarSvg from "@/components/KrobarSvg";
+import DecorativeIconLayer, { type DecorativeIconWithId } from "@/components/admin/studio/DecorativeIconLayer";
 
 export type Anchor = {
   id: string;
@@ -38,6 +39,11 @@ type Props = {
   zoom: number;
   onPromptName: (cb: (name: string | null) => void, suggestion?: string) => void;
   onRenameSlot?: (slotName: string) => void;
+  // Phase 4 — décorative icons
+  decorativeIcons?: DecorativeIconWithId[];
+  setDecorativeIcons?: (next: DecorativeIconWithId[]) => void;
+  selectedDecorativeIconId?: string | null;
+  setSelectedDecorativeIconId?: (id: string | null) => void;
 };
 
 const HANDLE = 8;
@@ -45,6 +51,7 @@ const HANDLE = 8;
 export default function StudioCanvas({
   imageUrl, imageSvg, imageWidth, imageHeight, anchors, setAnchors,
   tool, setTool, selectedId, setSelectedId, snap, zoom, onPromptName, onRenameSlot,
+  decorativeIcons, setDecorativeIcons, selectedDecorativeIconId, setSelectedDecorativeIconId,
 }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
