@@ -2215,6 +2215,21 @@ export default function AdminStudioPage() {
         onClose={() => setIconPickerOpen(false)}
         onSelect={(name) => addDecorativeIcon(name)}
       />
+
+      {/* Picker contextuel pour slot iconographable (Phase 5) */}
+      {contextualPickerSlot && (
+        <IconPickerContextual
+          open={!!contextualPickerSlot}
+          onClose={() => setContextualPickerSlot(null)}
+          onSelect={(name) => {
+            if (contextualPickerSlot) {
+              updateIconSlotSpec(contextualPickerSlot, { default_icon: name });
+            }
+          }}
+          slotKey={contextualPickerSlot}
+          slotPlaceholderText={contextualPickerSlot.replace(/_/g, " ")}
+        />
+      )}
     </div>
   );
 }
