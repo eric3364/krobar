@@ -183,6 +183,82 @@ function remapPremiumRenderSlots(templateId: string, slots: Record<string, strin
   return mapped;
 }
 
+type PremiumSlotDefinition = {
+  id: string;
+  bbox?: number[];
+};
+
+function injectPremiumSlotOverlays(
+  svg: SVGElement,
+  manifest: Manifest,
+  templateId: string,
+  slots: Record<string, string>,
+): SVGElement {
+  const template = manifest.templates.find((entry) => entry.id === templateId) as
+    | (Manifest["templates"][number] & { slot_definitions?: PremiumSlotDefinition[] })
+    | undefined;
+  const slotDefinitions = Array.isArray(template?.slot_definitions) ? template.slot_definitions : [];
+  if (slotDefinitions.length === 0) return svg;
+
+  const existingSlotNames = new Set(
+    Array.from(svg.querySelectorAll("[data-slot]"))
+      .map((node) => node.getAttribute("data-slot")?.trim())
+      .filter((name): name is string => !!name),
+  );
+
+  const missingDefinitions = slotDefinitions.filter((definition) => {
+    const value = slots[definition.id]?.trim();
+    return !!value && !existingSlotNames.has(definition.id);
+  });
+
+  if (missingDefinitions.length === 0) return svg;
+
+  const svgNs = "http://www.w3.org/2000/svg";
+  const xhtmlNs = "http://www.w3.org/1999/xhtml";
+
+  for (const definition of missingDefinitions) {
+    if (!Array.isArray(definition.bbox) || definition.bbox.length < 4) continue;
+    const [x, y, w, h] = definition.bbox.map((value) => Number(value));
+    if (![x, y, w, h].every(Number.isFinite)) continue;
+
+    const foreignObject = document.createElementNS(svgNs, "foreignObject");
+    foreignObject.setAttribute("x", String(x + 12));
+    foreignObject.setAttribute("y", String(y + 12));
+    foreignObject.setAttribute("width", String(Math.max(w - 24, 32)));
+    foreignObject.setAttribute("height", String(Math.max(h - 24, 32)));
+    foreignObject.setAttribute("data-slot-overlay", definition.id);
+
+    const div = document.createElementNS(xhtmlNs, "div");
+    div.setAttribute("xmlns", xhtmlNs);
+    div.setAttribute("data-slot", definition.id);
+    div.setAttribute(
+      "style",
+      [
+        "width:100%",
+        "height:100%",
+        "display:flex",
+        "align-items:center",
+        "justify-content:center",
+        "text-align:center",
+        "box-sizing:border-box",
+        "font-family:Plus Jakarta Sans,system-ui,sans-serif",
+        "font-size:14px",
+        "font-weight:500",
+        "line-height:1.35",
+        "color:var(--text)",
+        "word-break:break-word",
+        "overflow-wrap:anywhere",
+        "white-space:normal",
+      ].join(";"),
+    );
+    div.textContent = slots[definition.id];
+    foreignObject.appendChild(div);
+    svg.appendChild(foreignObject);
+  }
+
+  return svg;
+}
+
 interface Props {
   manifest: Manifest;
   onBack: () => void;
@@ -411,7 +487,12 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
       candidates.map(async (result) => {
         const top = result.suggestions[0];
         const renderSlots = remapPremiumRenderSlots(top.template_id, top.slots);
-        const svg = await loadRenderedSvg(top.template_id, renderSlots, palette);
+        const svg = injectPremiumSlotOverlays(
+          await loadRenderedSvg(top.template_id, renderSlots, palette),
+          manifest,
+          top.template_id,
+          renderSlots,
+        );
         svg.setAttribute("width", "100%");
         svg.setAttribute("height", "100%");
 
@@ -601,7 +682,14 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
 
       try {
         const renderSlots = test.premium ? remapPremiumRenderSlots(top.template_id, top.slots) : top.slots;
-        const svg = await loadRenderedSvg(top.template_id, renderSlots, currentPalette);
+        const svg = test.premium
+          ? injectPremiumSlotOverlays(
+              await loadRenderedSvg(top.template_id, renderSlots, currentPalette),
+              manifest,
+              top.template_id,
+              renderSlots,
+            )
+          : await loadRenderedSvg(top.template_id, renderSlots, currentPalette);
         svg.setAttribute("width", "100%");
         svg.setAttribute("height", "100%");
         paletteOk = checkPaletteApplied(svg, currentPalette);
