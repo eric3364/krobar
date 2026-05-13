@@ -28,6 +28,7 @@ import {
   type Suggestion,
 } from "@/lib/kroki";
 import { normalizeScore } from "@/lib/format";
+import { markTemplateDeleted } from "@/lib/deletedTemplates";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { hasSnapshot, hydrateSnapshots, subscribeSnapshots } from "@/lib/studioSnapshots";
@@ -300,6 +301,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
       const payload = data as { error?: string; status?: number } | null;
       if (payload?.error) {
         if (payload.status === 404) {
+          markTemplateDeleted(tplId);
           toast.warning("Le template n'existait déjà plus côté serveur. La liste a été rafraîchie.");
           setTestSuite((prev) => prev.filter((t) => t.expected_template !== tplId));
           setDeleteModal({ open: false, templateId: null, typedConfirmation: "", status: "idle" });
@@ -307,6 +309,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
         }
         throw new Error(payload.error);
       }
+      markTemplateDeleted(tplId);
       setTestSuite((prev) => prev.filter((t) => t.expected_template !== tplId));
       toast.success(`Template « ${tplId} » supprimé. Backup du manifest créé côté serveur.`);
       setDeleteModal({ open: false, templateId: null, typedConfirmation: "", status: "idle" });
