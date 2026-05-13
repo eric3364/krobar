@@ -1511,6 +1511,8 @@ export default function AdminStudioPage() {
                 setDecorativeIcons={setDecorativeIcons}
                 selectedDecorativeIconId={selectedDecorativeIconId}
                 setSelectedDecorativeIconId={setSelectedDecorativeIconId}
+                iconSlots={iconSlots}
+                onSlotIconClick={(slotName) => setContextualPickerSlot(slotName)}
               />
               <p className="text-xs text-muted-foreground">
                 Astuce : dessine la première instance d'un slot répété, sélectionne-la et utilise « Dupliquer » pour les suivantes.
@@ -1526,6 +1528,17 @@ export default function AdminStudioPage() {
                 {slotGroups.map((g) => {
                   const c = colorForSlot(g.name, allNames);
                   const isUnique = g.items.length === 1;
+                  const iconSpec = iconSlots[g.name];
+                  const isIconographable = !!iconSpec;
+                  const DefaultIconCmp = iconSpec?.default_icon
+                    ? (Lucide as unknown as Record<string, React.ComponentType<{ size?: number }>>)[
+                        iconSpec.default_icon
+                          .split(/[-_\s]/)
+                          .filter(Boolean)
+                          .map((s) => s[0].toUpperCase() + s.slice(1).toLowerCase())
+                          .join("")
+                      ]
+                    : null;
                   return (
                     <div key={g.name} className="border rounded-md p-2 space-y-1">
                       <div className="flex items-center gap-2">
@@ -1545,6 +1558,83 @@ export default function AdminStudioPage() {
                           onClick={() => deleteGroup(g.name)}>
                           <Trash2 className="w-3 h-3" />
                         </Button>
+                      </div>
+
+                      <div className="pt-2 mt-1 border-t space-y-2">
+                        <div className="flex items-center justify-between">
+                          <Label htmlFor={`iconographable-${g.name}`} className="text-xs">
+                            Slot iconographable
+                          </Label>
+                          <Switch
+                            id={`iconographable-${g.name}`}
+                            checked={isIconographable}
+                            onCheckedChange={() => toggleSlotIconographable(g.name)}
+                          />
+                        </div>
+                        {isIconographable && iconSpec && (
+                          <div className="space-y-2">
+                            <div className="grid grid-cols-2 gap-2">
+                              <div>
+                                <Label className="text-[10px] text-muted-foreground">Offset X</Label>
+                                <Input
+                                  type="number"
+                                  className="h-7 text-xs"
+                                  value={iconSpec.position_x ?? 0}
+                                  onChange={(e) => updateIconSlotSpec(g.name, { position_x: Number(e.target.value) || 0 })}
+                                />
+                              </div>
+                              <div>
+                                <Label className="text-[10px] text-muted-foreground">Offset Y</Label>
+                                <Input
+                                  type="number"
+                                  className="h-7 text-xs"
+                                  value={iconSpec.position_y ?? 0}
+                                  onChange={(e) => updateIconSlotSpec(g.name, { position_y: Number(e.target.value) || 0 })}
+                                />
+                              </div>
+                            </div>
+                            <div>
+                              <Label className="text-[10px] text-muted-foreground">Taille (px)</Label>
+                              <Input
+                                type="number"
+                                min={16}
+                                max={256}
+                                className="h-7 text-xs"
+                                value={iconSpec.size}
+                                onChange={(e) => updateIconSlotSpec(g.name, { size: Math.max(16, Math.min(256, Number(e.target.value) || 48)) })}
+                              />
+                            </div>
+                            <div>
+                              <Label className="text-[10px] text-muted-foreground">Icône par défaut</Label>
+                              {iconSpec.default_icon ? (
+                                <div className="flex items-center gap-2 mt-1">
+                                  <div className="w-8 h-8 rounded border flex items-center justify-center bg-muted/40">
+                                    {DefaultIconCmp ? <DefaultIconCmp size={20} /> : <span className="text-[9px] font-mono">?</span>}
+                                  </div>
+                                  <span className="font-mono text-xs flex-1 truncate">{iconSpec.default_icon}</span>
+                                  <Button size="sm" variant="ghost" className="h-7 px-2 text-xs"
+                                    onClick={() => setContextualPickerSlot(g.name)}>
+                                    Changer
+                                  </Button>
+                                  <Button size="sm" variant="ghost" className="h-7 px-2 text-xs"
+                                    onClick={() => updateIconSlotSpec(g.name, { default_icon: null })}>
+                                    <X className="w-3 h-3" />
+                                  </Button>
+                                </div>
+                              ) : (
+                                <div className="space-y-1 mt-1">
+                                  <p className="text-[10px] text-muted-foreground italic">
+                                    Aucune (l'IconResolver choisira au runtime)
+                                  </p>
+                                  <Button size="sm" variant="outline" className="h-7 text-xs w-full"
+                                    onClick={() => setContextualPickerSlot(g.name)}>
+                                    Choisir une icône par défaut…
+                                  </Button>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   );
