@@ -275,6 +275,13 @@ export default function AdminStudioPage() {
     setDetectedColors(snap.detectedColors ?? []);
     setPaletteMapping(snap.paletteMapping ?? {});
     setAutoPaletteMapping(snap.paletteMapping ?? {});
+    setDecorativeIcons(
+      (snap.decorative_icons ?? []).map((d) => ({
+        ...d,
+        _id: "dec_" + Math.random().toString(36).slice(2, 10),
+      })),
+    );
+    setSelectedDecorativeIconId(null);
     setSelectedId(null);
     setPhase(snap.upload ? jumpTo : 1);
     toast.success(`Template « ${snap.tplName || snap.template_id} » chargé pour modification`);
