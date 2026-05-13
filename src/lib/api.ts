@@ -30,6 +30,8 @@ export type AnalyzeResponse = {
 export type RenderResponse = {
   svg: string;
   template_id?: string;
+  // Phase 6 — icônes dynamiques (slot-icon) résolues côté backend.
+  icons?: Record<string, import("@/types/analyze").SlotIcon>;
 };
 
 export type TemplateMetadata = {

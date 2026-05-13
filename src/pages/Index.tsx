@@ -21,6 +21,7 @@ import {
 import { formatScorePct, normalizeScore } from "@/lib/kroki";
 import { filterDeletedTemplates } from "@/lib/deletedTemplates";
 import { analyzeText, renderTemplate, getTemplates } from "@/lib/api";
+import { useSlotIconInteractivity } from "@/hooks/useSlotIconInteractivity";
 import AccountMenu from "@/components/AccountMenu";
 import { useQuota } from "@/hooks/useQuota";
 import { useAuth } from "@/hooks/useAuth";
@@ -238,10 +239,10 @@ async function loadRenderedSvg(
   templateId: string,
   slots: Record<string, string>,
   palette: Palette,
-): Promise<SVGElement> {
+): Promise<{ svg: SVGElement; icons?: import("@/types/analyze").SlotIcon extends never ? never : Record<string, import("@/types/analyze").SlotIcon> }> {
   const paletteColors = palette.colors;
   const result = await renderTemplate(templateId, slots, paletteColors as unknown as Record<string, string>);
-  return parseSvgString(result.svg);
+  return { svg: parseSvgString(result.svg), icons: result.icons };
 }
 
 function svgToString(svg: SVGElement): string {
@@ -272,6 +273,8 @@ const Index = () => {
   const [detailLevel, setDetailLevel] = useState<DetailLevel>(() => loadStoredDetailLevel());
 
   const previewRef = useRef<HTMLDivElement>(null);
+  const [renderedIcons, setRenderedIcons] = useState<Record<string, import("@/types/analyze").SlotIcon> | undefined>(undefined);
+  const { menu: slotIconMenu } = useSlotIconInteractivity(previewRef, renderedIcons, undefined);
   const thumbRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // In-place editing state
@@ -439,7 +442,7 @@ const Index = () => {
       const node = thumbRefs.current[i];
       if (!node) return;
       try {
-        const svg = await loadRenderedSvg(sug.template_id, sug.slots, effectivePalette);
+        const { svg } = await loadRenderedSvg(sug.template_id, sug.slots, effectivePalette);
         svg.setAttribute("width", "100%");
         svg.setAttribute("height", "100%");
         node.innerHTML = "";
@@ -903,13 +906,14 @@ const Index = () => {
   useEffect(() => {
     if (!selectedSuggestion || !previewRef.current) return;
     (async () => {
-      const svg = await loadRenderedSvg(selectedSuggestion.template_id, effectiveSlots, effectivePalette);
+      const { svg, icons } = await loadRenderedSvg(selectedSuggestion.template_id, effectiveSlots, effectivePalette);
       applyTransforms(svg, slotTransforms);
       applySlotTextStyles(svg, slotTextStyles);
       svg.setAttribute("width", "100%");
       svg.setAttribute("height", "100%");
       previewRef.current!.innerHTML = "";
       previewRef.current!.appendChild(svg);
+      setRenderedIcons(icons);
       // Re-measure currently selected slot, if any, after re-render.
       if (selectedSlotKey) {
         const el = svg.querySelector(`[data-slot="${selectedSlotKey}"]`) as Element | null;
@@ -1956,6 +1960,7 @@ const Index = () => {
           })()}
         </>
       )}
+      {slotIconMenu}
     </div>
   );
 };
