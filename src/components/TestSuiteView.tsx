@@ -31,7 +31,7 @@ import { normalizeScore } from "@/lib/format";
 import { markTemplateDeleted } from "@/lib/deletedTemplates";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
-import { hasSnapshot, hydrateSnapshots, subscribeSnapshots } from "@/lib/studioSnapshots";
+import { hasSnapshot, hydrateSnapshots, loadSnapshot, subscribeSnapshots } from "@/lib/studioSnapshots";
 
 /**
  * Pour les tests Premium (templates créés via le Studio), on appelle
@@ -141,6 +141,44 @@ function loadNotes(): Record<number, string> {
 
 function saveNotes(notes: Record<number, string>) {
   localStorage.setItem(NOTES_STORAGE, JSON.stringify(notes));
+}
+
+function remapPremiumRenderSlots(templateId: string, slots: Record<string, string>): Record<string, string> {
+  const snapshot = loadSnapshot(templateId);
+  if (!snapshot?.anchors?.length) return slots;
+
+  const mapped = { ...slots };
+  const anchorNames = new Set(snapshot.anchors.map((anchor) => anchor.slotName));
+  const canonicalGroups = new Map<string, string[]>();
+
+  for (const anchor of snapshot.anchors) {
+    const baseKey = anchor.slotName.replace(/_\d+$/, "");
+    const group = canonicalGroups.get(baseKey) ?? [];
+    group.push(anchor.slotName);
+    canonicalGroups.set(baseKey, group);
+  }
+
+  for (const [baseKey, anchorSlotNames] of canonicalGroups) {
+    const canonicalValue = slots[baseKey];
+    if (!canonicalValue) continue;
+
+    const sortedNames = [...anchorSlotNames].sort((a, b) => {
+      const aMatch = a.match(/_(\d+)$/);
+      const bMatch = b.match(/_(\d+)$/);
+      const aIndex = aMatch ? Number(aMatch[1]) : 0;
+      const bIndex = bMatch ? Number(bMatch[1]) : 0;
+      return aIndex - bIndex;
+    });
+
+    const preferredTarget = sortedNames[0] ?? `${baseKey}_1`;
+    mapped[preferredTarget] = canonicalValue;
+
+    if (!anchorNames.has(baseKey)) {
+      delete mapped[baseKey];
+    }
+  }
+
+  return mapped;
 }
 
 interface Props {
@@ -492,7 +530,8 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
       }
 
       try {
-        const svg = await loadRenderedSvg(top.template_id, top.slots, currentPalette);
+        const renderSlots = test.premium ? remapPremiumRenderSlots(top.template_id, top.slots) : top.slots;
+        const svg = await loadRenderedSvg(top.template_id, renderSlots, currentPalette);
         svg.setAttribute("width", "100%");
         svg.setAttribute("height", "100%");
         paletteOk = checkPaletteApplied(svg, currentPalette);
@@ -500,7 +539,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
         if (test.premium) {
           const remaining = (svgString.match(/\{\{[^}]+\}\}/g) ?? []).slice(0, 8);
           console.info(
-            `[Test ${test.expected_template}] render → slots envoyés=${JSON.stringify(Object.keys(top.slots))} | placeholders restants dans le SVG=${remaining.length ? remaining.join(",") : "aucun ✓"}`,
+            `[Test ${test.expected_template}] render → slots envoyés=${JSON.stringify(Object.keys(renderSlots))} | placeholders restants dans le SVG=${remaining.length ? remaining.join(",") : "aucun ✓"}`,
           );
         }
       } catch (e) {
