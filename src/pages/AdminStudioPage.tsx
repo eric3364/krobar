@@ -1521,6 +1521,32 @@ export default function AdminStudioPage() {
                   <Switch id="snap" checked={snap} onCheckedChange={setSnap} />
                 </div>
               </Card>
+
+              {decorativeIcons.length > 0 && (
+                <Card className="p-4 space-y-2">
+                  <h3 className="text-sm font-semibold">Icônes décoratives ({decorativeIcons.length})</h3>
+                  <div className="space-y-1">
+                    {decorativeIcons.map((ic) => (
+                      <button
+                        key={ic._id}
+                        type="button"
+                        onClick={() => setSelectedDecorativeIconId(ic._id)}
+                        className={`w-full text-left text-xs font-mono px-2 py-1 rounded hover:bg-muted ${selectedDecorativeIconId === ic._id ? "bg-muted" : ""}`}
+                      >
+                        {ic.name} <span className="text-muted-foreground">({Math.round(ic.x)},{Math.round(ic.y)})</span>
+                      </button>
+                    ))}
+                  </div>
+                </Card>
+              )}
+
+              <PropertyPanel
+                icon={selectedDecorativeIcon}
+                onUpdate={updateDecorativeIcon}
+                onDuplicate={duplicateDecorativeIcon}
+                onRemove={removeDecorativeIcon}
+                onReorder={reorderDecorativeIcon}
+              />
             </div>
           </div>
         )}
