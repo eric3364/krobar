@@ -1265,10 +1265,17 @@ export default function AdminStudioPage() {
                       Double-clique sur un template pour rouvrir son édition. Paramètres synchronisés via Lovable Cloud (partagés entre tous tes navigateurs).
                     </p>
                   </div>
-                  <Badge variant="outline" className="text-xs">{knownPremiumTemplates.length}</Badge>
+                  <Badge variant="outline" className="text-xs">{Math.min(knownPremiumTemplates.length, 3)} / {knownPremiumTemplates.length}</Badge>
                 </div>
                 <ul className="divide-y border rounded-md">
-                  {knownPremiumTemplates.map((tpl) => {
+                  {[...knownPremiumTemplates]
+                    .sort((a, b) => {
+                      const sa = snapshots.find((s) => s.template_id === a.id)?.saved_at ?? "";
+                      const sb = snapshots.find((s) => s.template_id === b.id)?.saved_at ?? "";
+                      return sb.localeCompare(sa);
+                    })
+                    .slice(0, 3)
+                    .map((tpl) => {
                     const snap = snapshots.find((item) => item.template_id === tpl.id);
                     const editable = !!snap;
                     return (
