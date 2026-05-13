@@ -1,6 +1,10 @@
 import { useEffect, useMemo, useRef, useState, type DragEvent } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowLeft, ArrowRight, ArrowLeftCircle, Copy, Loader2, RotateCcw, Save, Trash2, Upload, X, Rocket, MousePointer2, Square as SquareIcon, Plus, Library } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowLeftCircle, Copy, Loader2, RotateCcw, Save, Trash2, Upload, X, Rocket, MousePointer2, Square as SquareIcon, Plus, Library, Sparkles } from "lucide-react";
+import type { DecorativeIcon } from "@/types/template";
+import { IconPickerFull } from "@/components/admin/studio/IconPickerFull";
+import PropertyPanel from "@/components/admin/studio/PropertyPanel";
+import type { DecorativeIconWithId } from "@/components/admin/studio/DecorativeIconLayer";
 import matricesData from "@/data/matrices.json";
 import { getAllStates, markInProduction, subscribe as subscribeMatrice } from "@/lib/matriceLibrary";
 import { toast } from "sonner";
@@ -110,6 +114,11 @@ export default function AdminStudioPage() {
   const namePromptCb = useRef<((n: string | null) => void) | null>(null);
   const [renameTarget, setRenameTarget] = useState<string | null>(null);
   const [renameValue, setRenameValue] = useState("");
+
+  // Phase 4 — Décorative icons (Lucide)
+  const [decorativeIcons, setDecorativeIcons] = useState<DecorativeIconWithId[]>([]);
+  const [selectedDecorativeIconId, setSelectedDecorativeIconId] = useState<string | null>(null);
+  const [iconPickerOpen, setIconPickerOpen] = useState(false);
 
   // Phase 3 — Palette
   const [detectedColors, setDetectedColors] = useState<Array<{ hex_value: string; occurrences: number; is_neutral: boolean }>>([]);
