@@ -322,6 +322,65 @@ export default function StudioCanvas({
               stroke="hsl(217 91% 60%)" strokeWidth={2} strokeDasharray="6 4"
             />
           )}
+          {iconSlots && Object.keys(iconSlots).length > 0 && anchors.map((a) => {
+            const spec = iconSlots[a.slotName];
+            if (!spec) return null;
+            const ox = spec.position_x ?? 0;
+            const oy = spec.position_y ?? 0;
+            const sz = Math.max(16, Math.min(256, spec.size ?? 48));
+            const x = a.bbox.x + ox;
+            const y = a.bbox.y + oy;
+            const Cmp = spec.default_icon
+              ? (Lucide as unknown as Record<string, React.ComponentType<{ size?: number; color?: string }>>)[
+                  toPascalCase(spec.default_icon)
+                ]
+              : null;
+            return (
+              <g
+                key={`slot-icon-${a.id}`}
+                style={{ cursor: onSlotIconClick ? "pointer" : "default" }}
+                onPointerDown={(e) => {
+                  if (!onSlotIconClick) return;
+                  e.stopPropagation();
+                }}
+                onClick={(e) => {
+                  if (!onSlotIconClick) return;
+                  e.stopPropagation();
+                  onSlotIconClick(a.slotName);
+                }}
+              >
+                <rect
+                  x={x} y={y} width={sz} height={sz}
+                  fill="hsl(280 75% 60%)" fillOpacity={0.08}
+                  stroke="hsl(280 75% 60%)" strokeWidth={1.5}
+                  strokeDasharray="4 3"
+                  rx={4}
+                />
+                {Cmp && (
+                  <foreignObject x={x} y={y} width={sz} height={sz} style={{ pointerEvents: "none" }}>
+                    <div style={{
+                      width: "100%", height: "100%",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      color: "hsl(280 75% 40%)",
+                    }}>
+                      <Cmp size={Math.max(12, sz * 0.65)} />
+                    </div>
+                  </foreignObject>
+                )}
+                {!Cmp && (
+                  <text
+                    x={x + sz / 2} y={y + sz / 2}
+                    textAnchor="middle" dominantBaseline="middle"
+                    fontSize={Math.max(8, sz * 0.18)} fontFamily="monospace"
+                    fill="hsl(280 75% 40%)"
+                    style={{ pointerEvents: "none", userSelect: "none" }}
+                  >
+                    icon?
+                  </text>
+                )}
+              </g>
+            );
+          })}
           {decorativeIcons && setDecorativeIcons && (
             <DecorativeIconLayer
               icons={decorativeIcons}
