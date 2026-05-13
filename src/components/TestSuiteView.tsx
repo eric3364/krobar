@@ -1545,6 +1545,18 @@ function TestCard({ test, result, note, selected, isTextOverridden, onToggleSele
           )}
         </div>
       )}
+      {onDeleteTemplate && (
+        <div className="pt-2 mt-1 border-t">
+          <Button
+            onClick={onDeleteTemplate}
+            size="sm"
+            variant="outline"
+            className="w-full h-7 text-[11px] text-destructive border-destructive/40 hover:bg-destructive/10 hover:text-destructive"
+          >
+            <Trash2 className="w-3 h-3 mr-1" /> Supprimer définitivement
+          </Button>
+        </div>
+      )}
     </Card>
   );
 }
