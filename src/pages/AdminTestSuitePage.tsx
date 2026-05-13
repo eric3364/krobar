@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import TestSuiteView from "@/components/TestSuiteView";
 import { getTemplates } from "@/lib/api";
+import { filterDeletedTemplates } from "@/lib/deletedTemplates";
 
 type Manifest = { templates: any[] };
 
@@ -14,7 +15,7 @@ export default function AdminTestSuitePage() {
   useEffect(() => {
     getTemplates()
       .then((data) => {
-        const templates = Array.isArray(data) ? data : data.templates;
+        const templates = filterDeletedTemplates(Array.isArray(data) ? data : data.templates);
         setManifest({ templates });
       })
       .catch(() => {
@@ -23,7 +24,7 @@ export default function AdminTestSuitePage() {
             if (!r.ok) throw new Error("Impossible de charger le manifest");
             return r.json();
           })
-          .then(setManifest)
+          .then((data) => setManifest({ templates: filterDeletedTemplates(data.templates ?? []) }))
           .catch((e) => setError(e instanceof Error ? e.message : "Erreur de chargement"));
       });
   }, []);

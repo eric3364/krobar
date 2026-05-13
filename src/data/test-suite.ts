@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { filterDeletedTemplateEntries, filterDeletedTemplates } from "@/lib/deletedTemplates";
 import { loadSnapshot } from "@/lib/studioSnapshots";
 
 export type ChoremeFamily = "A" | "B" | "C";
@@ -110,14 +111,15 @@ export async function fetchCanonicalTestSuite(
     throw new Error(detail || "Échec du chargement du corpus");
   }
   const data = resp.data as CanonicalResponse | null;
-  const backendTests = data?.tests;
+  const backendTests = filterDeletedTemplateEntries(data?.tests ?? []);
   if (!Array.isArray(backendTests) || backendTests.length === 0) {
     throw new Error("Le backend a renvoyé un corpus vide");
   }
 
-  const manifestById = new Map(manifest.templates.map((t) => [t.id, t]));
+  const visibleManifestTemplates = filterDeletedTemplates(manifest.templates);
+  const manifestById = new Map(visibleManifestTemplates.map((t) => [t.id, t]));
   const knownTestIds = new Set(backendTests.map((entry) => entry.template_id));
-  const recentStudioTests: CanonicalEntry[] = readRecentStudioDeploys()
+  const recentStudioTests: CanonicalEntry[] = filterDeletedTemplateEntries(readRecentStudioDeploys())
     .filter((entry) => !knownTestIds.has(entry.template_id))
     .map((entry) => {
       const tpl = manifestById.get(entry.template_id);
@@ -134,7 +136,7 @@ export async function fetchCanonicalTestSuite(
       };
     });
 
-  const manifestPremiumTests: CanonicalEntry[] = manifest.templates
+  const manifestPremiumTests: CanonicalEntry[] = visibleManifestTemplates
     .filter(
       (tpl) =>
         !knownTestIds.has(tpl.id) &&

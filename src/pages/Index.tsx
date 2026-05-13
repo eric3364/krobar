@@ -19,6 +19,7 @@ import {
   ResizableHandle,
 } from "@/components/ui/resizable";
 import { formatScorePct, normalizeScore } from "@/lib/kroki";
+import { filterDeletedTemplates } from "@/lib/deletedTemplates";
 import { analyzeText, renderTemplate, getTemplates } from "@/lib/api";
 import AccountMenu from "@/components/AccountMenu";
 import { useQuota } from "@/hooks/useQuota";
@@ -381,7 +382,7 @@ const Index = () => {
     getTemplates()
       .then((data) => {
         // L'API peut retourner { templates: [...] } ou directement un tableau
-        const templates = Array.isArray(data) ? data : data.templates;
+        const templates = filterDeletedTemplates(Array.isArray(data) ? data : data.templates);
         setManifest({ templates });
       })
       .catch((err) => {
@@ -389,7 +390,7 @@ const Index = () => {
         // Fallback sur le manifest local
         fetch("/templates/manifest.json")
           .then((r) => r.json())
-          .then(setManifest)
+          .then((data) => setManifest({ templates: filterDeletedTemplates(data.templates ?? []) }))
           .catch(() => toast.error("Impossible de charger les templates"));
       });
   }, []);

@@ -25,6 +25,7 @@ import {
 
 import StudioCanvas, { type Anchor, colorForSlot, type Tool } from "@/components/studio/StudioCanvas";
 import { studioApi, type MatchingType, type UploadResponse, validateStudioUploadFile } from "@/lib/studioApi";
+import { clearDeletedTemplate, filterDeletedTemplates } from "@/lib/deletedTemplates";
 import { getTemplates, type TemplateMetadata } from "@/lib/api";
 import { supabase } from "@/integrations/supabase/client";
 import { STUDIO_RECENT_DEPLOYS_STORAGE } from "@/data/test-suite";
@@ -175,7 +176,7 @@ export default function AdminStudioPage() {
       try {
         const data = await getTemplates();
         const snapshotIds = new Set(listSnapshotIds());
-        const premiumTemplates = (data.templates ?? [])
+        const premiumTemplates = filterDeletedTemplates(data.templates ?? [])
           .filter((tpl) =>
             tpl.premium === true ||
             tpl.tier === "premium" ||
@@ -935,6 +936,7 @@ export default function AdminStudioPage() {
         ? await studioApi.updateTemplate(tplId, payload)
         : await studioApi.deploy(payload);
       try {
+        clearDeletedTemplate(res.template_id);
         const raw = localStorage.getItem(STUDIO_RECENT_DEPLOYS_STORAGE);
         const existing = raw ? JSON.parse(raw) : [];
         const next = Array.isArray(existing)
