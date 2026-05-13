@@ -965,6 +965,7 @@ export default function AdminStudioPage() {
       } catch {
         toast.warning("Template déployé, mais la sauvegarde des paramètres a échoué.");
       }
+      try { localStorage.removeItem(STUDIO_DRAFT_KEY); } catch { /* ignore */ }
       toast.success("✅ Template déployé !");
       setDeployOpen(false);
       navigate("/admin");
