@@ -67,6 +67,7 @@ type TestResult = {
   failureCategory: FailureCategory | null;
   failureDetail: string | null;
   forced: boolean;
+  renderedSlots?: Record<string, string> | null;
 };
 
 const RESULTS_STORAGE = "kroki-last-test-run";
@@ -102,6 +103,7 @@ function emptyResult(id: number): TestResult {
     failureCategory: null,
     failureDetail: null,
     forced: false,
+    renderedSlots: null,
   };
 }
 
@@ -389,6 +391,74 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
 
   const palette = palettes[paletteKey];
 
+  useEffect(() => {
+    if (corpusLoading || testSuite.length === 0 || results.length === 0) return;
+
+    const premiumIds = new Set(testSuite.filter((test) => test.premium).map((test) => test.id));
+    const candidates = results.filter(
+      (result) =>
+        premiumIds.has(result.id) &&
+        result.status !== "idle" &&
+        result.status !== "running" &&
+        !!result.suggestions[0],
+    );
+
+    if (candidates.length === 0) return;
+
+    let cancelled = false;
+
+    void Promise.all(
+      candidates.map(async (result) => {
+        const top = result.suggestions[0];
+        const renderSlots = remapPremiumRenderSlots(top.template_id, top.slots);
+        const svg = await loadRenderedSvg(top.template_id, renderSlots, palette);
+        svg.setAttribute("width", "100%");
+        svg.setAttribute("height", "100%");
+
+        return {
+          id: result.id,
+          svgString: svgToString(svg),
+          paletteOk: checkPaletteApplied(svg, palette),
+          renderedSlots: renderSlots,
+        };
+      }),
+    )
+      .then((rerendered) => {
+        if (cancelled || rerendered.length === 0) return;
+
+        const byId = new Map(rerendered.map((entry) => [entry.id, entry]));
+        setResults((prev) => {
+          let changed = false;
+          const next = prev.map((result) => {
+            const update = byId.get(result.id);
+            if (!update) return result;
+
+            const sameSvg = result.svgString === update.svgString;
+            const samePalette = result.paletteOk === update.paletteOk;
+            const sameSlots = JSON.stringify(result.renderedSlots ?? {}) === JSON.stringify(update.renderedSlots ?? {});
+            if (sameSvg && samePalette && sameSlots) return result;
+
+            changed = true;
+            return {
+              ...result,
+              svgString: update.svgString,
+              paletteOk: update.paletteOk,
+              renderedSlots: update.renderedSlots,
+            };
+          });
+
+          return changed ? next : prev;
+        });
+      })
+      .catch(() => {
+        /* ignore silent rerender failures on cached results */
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [corpusLoading, testSuite, results, palette]);
+
   // Persist results.
   useEffect(() => {
     localStorage.setItem(RESULTS_STORAGE, JSON.stringify(results));
@@ -562,6 +632,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
       matchKind,
       latencyMs,
       svgString,
+      renderedSlots: suggestions.length > 0 ? (test.premium ? remapPremiumRenderSlots(suggestions[0].template_id, suggestions[0].slots) : suggestions[0].slots) : null,
       slotsLengthOk,
       slotsOffenders,
       paletteOk,
