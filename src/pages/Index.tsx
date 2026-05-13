@@ -1960,6 +1960,7 @@ const Index = () => {
           })()}
         </>
       )}
+      {slotIconMenu}
     </div>
   );
 };
