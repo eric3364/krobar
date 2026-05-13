@@ -12,7 +12,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { ArrowLeft, Pause, Play, Download, RotateCcw, Loader2, AlertCircle } from "lucide-react";
+import { ArrowLeft, Pause, Play, Download, RotateCcw, Loader2, AlertCircle, Trash2 } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { palettes, paletteLabels, type Palette } from "@/palettes";
 import { fetchCanonicalTestSuite, type TestCase, type ChoremeFamily } from "@/data/test-suite";
@@ -265,6 +266,59 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
   const [notes, setNotes] = useState<Record<number, string>>(() => loadNotes());
   const [annotateId, setAnnotateId] = useState<number | null>(null);
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
+  const [deleteModal, setDeleteModal] = useState<{
+    open: boolean;
+    templateId: string | null;
+    typedConfirmation: string;
+    status: "idle" | "deleting" | "error";
+    errorMessage?: string;
+  }>({ open: false, templateId: null, typedConfirmation: "", status: "idle" });
+
+  const openDeleteModal = (templateId: string) => {
+    setDeleteModal({ open: true, templateId, typedConfirmation: "", status: "idle" });
+  };
+
+  const performDelete = async () => {
+    if (!deleteModal.templateId) return;
+    const tplId = deleteModal.templateId;
+    setDeleteModal((m) => ({ ...m, status: "deleting", errorMessage: undefined }));
+    try {
+      const { data, error } = await supabase.functions.invoke("krobar-proxy", {
+        body: { path: `/admin/studio/templates/${tplId}`, method: "DELETE" },
+      });
+      if (error) {
+        const ctx = (error as unknown as { context?: Response }).context;
+        let detail = error.message;
+        if (ctx instanceof Response) {
+          try {
+            const body = (await ctx.clone().json()) as { error?: string };
+            if (body?.error) detail = body.error;
+          } catch { /* ignore */ }
+        }
+        throw new Error(detail || "Échec de la suppression");
+      }
+      const payload = data as { error?: string; status?: number } | null;
+      if (payload?.error) {
+        if (payload.status === 404) {
+          toast.warning("Le template n'existait déjà plus côté serveur. La liste a été rafraîchie.");
+          setTestSuite((prev) => prev.filter((t) => t.expected_template !== tplId));
+          setDeleteModal({ open: false, templateId: null, typedConfirmation: "", status: "idle" });
+          return;
+        }
+        throw new Error(payload.error);
+      }
+      setTestSuite((prev) => prev.filter((t) => t.expected_template !== tplId));
+      toast.success(`Template « ${tplId} » supprimé. Backup du manifest créé côté serveur.`);
+      setDeleteModal({ open: false, templateId: null, typedConfirmation: "", status: "idle" });
+    } catch (e) {
+      setDeleteModal((m) => ({
+        ...m,
+        status: "error",
+        errorMessage: e instanceof Error ? e.message : String(e),
+      }));
+    }
+  };
+
 
   const toggleSelected = (id: number) => {
     setSelectedIds((prev) => {
@@ -1063,10 +1117,87 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
               onResetText={() => resetTestText(test.id, test.expected_template)}
               canEditTemplate={test.premium}
               onEditTemplate={() => navigate(`/admin/studio?edit=${encodeURIComponent(test.expected_template)}`)}
+              onDeleteTemplate={() => openDeleteModal(test.expected_template)}
             />
           );
         })}
       </main>
+
+      {/* Delete confirmation modal */}
+      <Dialog
+        open={deleteModal.open}
+        onOpenChange={(o) => {
+          if (!o && deleteModal.status !== "deleting") {
+            setDeleteModal({ open: false, templateId: null, typedConfirmation: "", status: "idle" });
+          }
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="text-destructive">
+              ⚠️ Supprimer définitivement « {deleteModal.templateId} » ?
+            </DialogTitle>
+          </DialogHeader>
+          <div className="text-sm space-y-2">
+            <p>Cette action est <strong>IRRÉVERSIBLE</strong>. Elle va :</p>
+            <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
+              <li>Supprimer le fichier SVG du serveur</li>
+              <li>Retirer l'entrée du manifest des templates</li>
+              <li>Vider les caches d'analyse associés</li>
+            </ul>
+            <p className="text-xs text-muted-foreground">
+              Un backup automatique du manifest sera créé côté serveur avant la suppression.
+            </p>
+            <div className="pt-2">
+              <Label className="text-xs">
+                Pour confirmer, tape : <code className="font-mono">{deleteModal.templateId}</code>
+              </Label>
+              <Input
+                className="mt-1 font-mono text-xs"
+                value={deleteModal.typedConfirmation}
+                disabled={deleteModal.status === "deleting"}
+                onChange={(e) =>
+                  setDeleteModal((m) => ({ ...m, typedConfirmation: e.target.value }))
+                }
+                placeholder={deleteModal.templateId ?? ""}
+              />
+            </div>
+            {deleteModal.status === "error" && (
+              <p className="text-xs text-destructive">
+                ❌ Échec de la suppression. Détail : {deleteModal.errorMessage}
+              </p>
+            )}
+          </div>
+          <div className="flex justify-end gap-2 pt-2">
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={deleteModal.status === "deleting"}
+              onClick={() =>
+                setDeleteModal({ open: false, templateId: null, typedConfirmation: "", status: "idle" })
+              }
+            >
+              Annuler
+            </Button>
+            <Button
+              variant="destructive"
+              size="sm"
+              disabled={
+                deleteModal.status === "deleting" ||
+                deleteModal.typedConfirmation !== deleteModal.templateId
+              }
+              onClick={performDelete}
+            >
+              {deleteModal.status === "deleting" ? (
+                <><Loader2 className="w-3 h-3 mr-1 animate-spin" /> Suppression…</>
+              ) : (
+                <><Trash2 className="w-3 h-3 mr-1" /> Supprimer</>
+              )}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
 
       {/* Zoom modal */}
       <Dialog open={!!zoom} onOpenChange={(o) => !o && setZoom(null)}>
@@ -1128,9 +1259,10 @@ interface CardProps {
   onResetText: () => void;
   canEditTemplate?: boolean;
   onEditTemplate?: () => void;
+  onDeleteTemplate?: () => void;
 }
 
-function TestCard({ test, result, note, selected, isTextOverridden, onToggleSelect, onReplay, onZoom, onShowFullText, onAnnotate, onUpdateText, onResetText, canEditTemplate = false, onEditTemplate }: CardProps) {
+function TestCard({ test, result, note, selected, isTextOverridden, onToggleSelect, onReplay, onZoom, onShowFullText, onAnnotate, onUpdateText, onResetText, canEditTemplate = false, onEditTemplate, onDeleteTemplate }: CardProps) {
   const [textOpen, setTextOpen] = useState(false);
   const [editing, setEditing] = useState(false);
   const [draftText, setDraftText] = useState(test.text);
@@ -1411,6 +1543,18 @@ function TestCard({ test, result, note, selected, isTextOverridden, onToggleSele
               Paramètres historiques absents — re-saisis-les une fois depuis le Studio pour rendre ce template éditable.
             </p>
           )}
+        </div>
+      )}
+      {onDeleteTemplate && (
+        <div className="pt-2 mt-1 border-t">
+          <Button
+            onClick={onDeleteTemplate}
+            size="sm"
+            variant="outline"
+            className="w-full h-7 text-[11px] text-destructive border-destructive/40 hover:bg-destructive/10 hover:text-destructive"
+          >
+            <Trash2 className="w-3 h-3 mr-1" /> Supprimer définitivement
+          </Button>
         </div>
       )}
     </Card>
