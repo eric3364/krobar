@@ -1031,6 +1031,7 @@ export default function AdminStudioPage() {
           upload,
           paletteMapping,
           detectedColors,
+          decorative_icons: decorativeIcons.map(({ _id, ...rest }) => rest as DecorativeIcon),
           saved_at: new Date().toISOString(),
         });
       } catch {
