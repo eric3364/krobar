@@ -880,6 +880,8 @@ export default function AdminStudioPage() {
     setAutoPaletteMapping({});
     setTplId(""); setTplName(""); setTplDescription(""); setTplMarkers([]); setTplTestText("");
     setEditingExistingId(null);
+    setDecorativeIcons([]);
+    setIconSlots({});
     try { localStorage.removeItem(STUDIO_DRAFT_KEY); } catch { /* ignore */ }
     setResetOpen(false);
   };
