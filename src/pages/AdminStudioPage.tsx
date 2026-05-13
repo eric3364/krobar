@@ -889,6 +889,11 @@ export default function AdminStudioPage() {
       canonical: templateType === "canonical",
       canonical_preset_id: templateType === "canonical" ? canonicalPresetId : null,
       ...(slotDefinitions ? { slot_definitions: slotDefinitions } : {}),
+      // Mode édition d'un template existant : autorise l'écrasement côté backend
+      // pour ne pas déclencher l'erreur « Template ID déjà utilisé ».
+      ...(editingExistingId && editingExistingId === tplId
+        ? { overwrite: true, update_existing: true, allow_overwrite: true }
+        : {}),
     };
   };
 
