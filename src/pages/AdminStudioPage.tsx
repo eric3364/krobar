@@ -202,6 +202,46 @@ export default function AdminStudioPage() {
 
   const idTaken = tplId.length > 0 && existingIds.has(tplId) && tplId !== editingExistingId;
 
+  // ─── Brouillon auto-sauvegardé (résiste aux refresh / fermetures) ───
+  const STUDIO_DRAFT_KEY = "krobar-studio-draft-v1";
+  const draftHydratedRef = useRef(false);
+  // Restauration au montage : seulement si pas d'édition explicite via ?edit=…
+  useEffect(() => {
+    if (draftHydratedRef.current) return;
+    if (searchParams.get("edit")) { draftHydratedRef.current = true; return; }
+    try {
+      const raw = localStorage.getItem(STUDIO_DRAFT_KEY);
+      if (!raw) { draftHydratedRef.current = true; return; }
+      const d = JSON.parse(raw);
+      if (d && typeof d === "object") {
+        if (d.phase) setPhase(d.phase);
+        if (d.templateType !== undefined) setTemplateType(d.templateType);
+        if (d.canonicalPresetId !== undefined) setCanonicalPresetId(d.canonicalPresetId);
+        if (d.upload !== undefined) setUpload(d.upload);
+        if (Array.isArray(d.anchors)) setAnchors(d.anchors);
+        if (Array.isArray(d.cardinality)) setCardinality(d.cardinality);
+        if (Array.isArray(d.matchingIds)) setMatchingIds(d.matchingIds);
+        if (typeof d.otherChecked === "boolean") setOtherChecked(d.otherChecked);
+        if (typeof d.otherText === "string") setOtherText(d.otherText);
+        if (typeof d.tplId === "string") setTplId(d.tplId);
+        if (typeof d.tplName === "string") setTplName(d.tplName);
+        if (typeof d.tplCategory === "string") setTplCategory(d.tplCategory);
+        if (typeof d.tplDescription === "string") setTplDescription(d.tplDescription);
+        if (Array.isArray(d.tplMarkers)) setTplMarkers(d.tplMarkers);
+        if (typeof d.tplTestText === "string") setTplTestText(d.tplTestText);
+        if (Array.isArray(d.detectedColors)) setDetectedColors(d.detectedColors);
+        if (d.paletteMapping && typeof d.paletteMapping === "object") {
+          setPaletteMapping(d.paletteMapping);
+          setAutoPaletteMapping(d.paletteMapping);
+        }
+        if (d.editingExistingId !== undefined) setEditingExistingId(d.editingExistingId);
+        toast.info("Brouillon Studio restauré", { duration: 3000 });
+      }
+    } catch { /* ignore */ }
+    draftHydratedRef.current = true;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // UI
   const [resetOpen, setResetOpen] = useState(false);
   const [dragState, setDragState] = useState<"idle" | "accept" | "reject">("idle");
