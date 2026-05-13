@@ -238,10 +238,10 @@ async function loadRenderedSvg(
   templateId: string,
   slots: Record<string, string>,
   palette: Palette,
-): Promise<SVGElement> {
+): Promise<{ svg: SVGElement; icons?: import("@/types/analyze").SlotIcon extends never ? never : Record<string, import("@/types/analyze").SlotIcon> }> {
   const paletteColors = palette.colors;
   const result = await renderTemplate(templateId, slots, paletteColors as unknown as Record<string, string>);
-  return parseSvgString(result.svg);
+  return { svg: parseSvgString(result.svg), icons: result.icons };
 }
 
 function svgToString(svg: SVGElement): string {
