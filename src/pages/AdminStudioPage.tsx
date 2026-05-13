@@ -867,7 +867,7 @@ export default function AdminStudioPage() {
           phase, templateType, canonicalPresetId, upload, anchors, cardinality,
           matchingIds, otherChecked, otherText, tplId, tplName, tplCategory,
           tplDescription, tplMarkers, tplTestText, detectedColors, paletteMapping,
-          editingExistingId, saved_at: new Date().toISOString(),
+          editingExistingId, decorativeIcons, saved_at: new Date().toISOString(),
         };
         localStorage.setItem(STUDIO_DRAFT_KEY, JSON.stringify(draft));
       } catch { /* quota / ignore */ }
@@ -877,7 +877,7 @@ export default function AdminStudioPage() {
     phase, templateType, canonicalPresetId, upload, anchors, cardinality,
     matchingIds, otherChecked, otherText, tplId, tplName, tplCategory,
     tplDescription, tplMarkers, tplTestText, detectedColors, paletteMapping,
-    editingExistingId,
+    editingExistingId, decorativeIcons,
   ]);
 
   // Compte des ancres par clé sémantique du preset (canonique uniquement).
