@@ -944,6 +944,7 @@ export default function AdminStudioPage() {
       test_text: tplTestText.trim(),
       add_to_test_suite: tplTestText.trim().length > 0,
       palette_mapping: paletteMapping,
+      decorative_icons: decorativeIcons.map(({ _id, ...rest }) => rest as DecorativeIcon),
       approved_by: "admin",
       // Phase 8 : flag canonique + preset id + slot_definitions sémantiques
       canonical: templateType === "canonical",
