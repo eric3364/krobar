@@ -47,6 +47,19 @@ function adminErrorResponse(message: string, status: number, code?: string) {
   return jsonResponse({ error: message, status, code }, 200);
 }
 
+function previewText(text: string, max = 120) {
+  return text.slice(0, max);
+}
+
+function isLikelyHtmlResponse(text: string, contentType: string | null) {
+  const lowered = (contentType ?? "").toLowerCase();
+  return (
+    lowered.includes("text/html") ||
+    /^\s*<!doctype html/i.test(text) ||
+    /^\s*<html[\s>]/i.test(text)
+  );
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -171,13 +184,30 @@ Deno.serve(async (req) => {
     clearTimeout(timer);
 
     const text = await upstream.text();
+    const contentType = upstream.headers.get("content-type");
     let data: Record<string, unknown>;
     try {
       data = text ? JSON.parse(text) : {};
     } catch {
+      const message = `Réponse non-JSON du backend Krobar (${upstream.status}). Début: ${previewText(text)}`;
+      const fallbackable = upstream.status >= 500 || isLikelyHtmlResponse(text, contentType);
+
+      console.error("Krobar public endpoint returned non-JSON response", {
+        endpoint,
+        status: upstream.status,
+        contentType,
+        fallbackable,
+        preview: previewText(text),
+      });
+
       return jsonResponse(
-        { error: `Réponse non-JSON du backend Krobar (${upstream.status}). Début: ${text.slice(0, 120)}` },
-        502,
+        {
+          error: message,
+          status: upstream.status,
+          fallback: fallbackable,
+          retryable: upstream.status >= 500,
+        },
+        fallbackable ? 200 : 502,
       );
     }
 
@@ -186,7 +216,16 @@ Deno.serve(async (req) => {
         (typeof data?.detail === "string" && data.detail) ||
         (typeof data?.error === "string" && data.error) ||
         `Erreur Krobar (${upstream.status})`;
-      return jsonResponse({ error: message, status: upstream.status }, upstream.status);
+      const fallbackable = upstream.status >= 500;
+      return jsonResponse(
+        {
+          error: message,
+          status: upstream.status,
+          fallback: fallbackable,
+          retryable: fallbackable,
+        },
+        fallbackable ? 200 : upstream.status,
+      );
     }
 
     // Fix duplicate style attributes on <svg> for render responses

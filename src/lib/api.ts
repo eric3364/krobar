@@ -6,6 +6,15 @@ import { supabase } from "@/integrations/supabase/client";
 
 type KrobarEndpoint = "analyze" | "render" | "templates" | "health";
 
+type ProxyErrorBody = {
+  detail?: string;
+  error?: string;
+  message?: string;
+  status?: number;
+  fallback?: boolean;
+  retryable?: boolean;
+};
+
 export type ApiSuggestion = {
   template_id: string;
   score: number;
@@ -74,6 +83,13 @@ async function invokeKrobar<T>(endpoint: KrobarEndpoint, payload?: Record<string
 
   if (error) {
     throw new Error(await readInvokeError(error));
+  }
+
+  const proxyPayload = (data ?? null) as ProxyErrorBody | null;
+  if (proxyPayload?.error) {
+    const base = proxyPayload.error || proxyPayload.detail || proxyPayload.message || "Le backend Krobar est actuellement inaccessible.";
+    const retryHint = proxyPayload.retryable ? " Réessaie dans quelques instants." : "";
+    throw new Error(`${base}${retryHint}`);
   }
 
   return data as T;
