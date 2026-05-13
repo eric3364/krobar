@@ -786,8 +786,31 @@ export default function AdminStudioPage() {
     setAutoPaletteMapping({});
     setTplId(""); setTplName(""); setTplDescription(""); setTplMarkers([]); setTplTestText("");
     setEditingExistingId(null);
+    try { localStorage.removeItem(STUDIO_DRAFT_KEY); } catch { /* ignore */ }
     setResetOpen(false);
   };
+
+  // Autosave brouillon (debounced) à chaque changement d'état pertinent
+  useEffect(() => {
+    if (!draftHydratedRef.current) return;
+    const handle = setTimeout(() => {
+      try {
+        const draft = {
+          phase, templateType, canonicalPresetId, upload, anchors, cardinality,
+          matchingIds, otherChecked, otherText, tplId, tplName, tplCategory,
+          tplDescription, tplMarkers, tplTestText, detectedColors, paletteMapping,
+          editingExistingId, saved_at: new Date().toISOString(),
+        };
+        localStorage.setItem(STUDIO_DRAFT_KEY, JSON.stringify(draft));
+      } catch { /* quota / ignore */ }
+    }, 400);
+    return () => clearTimeout(handle);
+  }, [
+    phase, templateType, canonicalPresetId, upload, anchors, cardinality,
+    matchingIds, otherChecked, otherText, tplId, tplName, tplCategory,
+    tplDescription, tplMarkers, tplTestText, detectedColors, paletteMapping,
+    editingExistingId,
+  ]);
 
   // Compte des ancres par clé sémantique du preset (canonique uniquement).
   // Une ancre nommée "strength" OU "strength_2" compte pour la clé "strength".
