@@ -1,6 +1,10 @@
 import { useEffect, useMemo, useRef, useState, type DragEvent } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowLeft, ArrowRight, ArrowLeftCircle, Copy, Loader2, RotateCcw, Save, Trash2, Upload, X, Rocket, MousePointer2, Square as SquareIcon, Plus, Library } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowLeftCircle, Copy, Loader2, RotateCcw, Save, Trash2, Upload, X, Rocket, MousePointer2, Square as SquareIcon, Plus, Library, Sparkles } from "lucide-react";
+import type { DecorativeIcon } from "@/types/template";
+import { IconPickerFull } from "@/components/admin/studio/IconPickerFull";
+import PropertyPanel from "@/components/admin/studio/PropertyPanel";
+import type { DecorativeIconWithId } from "@/components/admin/studio/DecorativeIconLayer";
 import matricesData from "@/data/matrices.json";
 import { getAllStates, markInProduction, subscribe as subscribeMatrice } from "@/lib/matriceLibrary";
 import { toast } from "sonner";
@@ -110,6 +114,11 @@ export default function AdminStudioPage() {
   const namePromptCb = useRef<((n: string | null) => void) | null>(null);
   const [renameTarget, setRenameTarget] = useState<string | null>(null);
   const [renameValue, setRenameValue] = useState("");
+
+  // Phase 4 — Décorative icons (Lucide)
+  const [decorativeIcons, setDecorativeIcons] = useState<DecorativeIconWithId[]>([]);
+  const [selectedDecorativeIconId, setSelectedDecorativeIconId] = useState<string | null>(null);
+  const [iconPickerOpen, setIconPickerOpen] = useState(false);
 
   // Phase 3 — Palette
   const [detectedColors, setDetectedColors] = useState<Array<{ hex_value: string; occurrences: number; is_neutral: boolean }>>([]);
@@ -236,6 +245,7 @@ export default function AdminStudioPage() {
           setAutoPaletteMapping(d.paletteMapping);
         }
         if (d.editingExistingId !== undefined) setEditingExistingId(d.editingExistingId);
+        if (Array.isArray(d.decorativeIcons)) setDecorativeIcons(d.decorativeIcons);
         toast.info("Brouillon Studio restauré", { duration: 3000 });
       }
     } catch { /* ignore */ }
@@ -266,6 +276,13 @@ export default function AdminStudioPage() {
     setDetectedColors(snap.detectedColors ?? []);
     setPaletteMapping(snap.paletteMapping ?? {});
     setAutoPaletteMapping(snap.paletteMapping ?? {});
+    setDecorativeIcons(
+      (snap.decorative_icons ?? []).map((d) => ({
+        ...d,
+        _id: "dec_" + Math.random().toString(36).slice(2, 10),
+      })),
+    );
+    setSelectedDecorativeIconId(null);
     setSelectedId(null);
     setPhase(snap.upload ? jumpTo : 1);
     toast.success(`Template « ${snap.tplName || snap.template_id} » chargé pour modification`);
@@ -560,6 +577,54 @@ export default function AdminStudioPage() {
     setAnchors(anchors.filter((a) => a.id !== selectedId));
     setSelectedId(null);
   };
+
+  // ─── Phase 4: décorative icon helpers ────────────────────────────────
+  const addDecorativeIcon = (name: string) => {
+    const cx = Math.round((upload?.image_width ?? 800) / 2 - 16);
+    const cy = Math.round((upload?.image_height ?? 600) / 2 - 16);
+    const maxZ = decorativeIcons.reduce((m, i) => Math.max(m, i.z_order ?? 0), 0);
+    const newIcon: DecorativeIconWithId = {
+      _id: "dec_" + Math.random().toString(36).slice(2, 10),
+      name,
+      x: cx,
+      y: cy,
+      size: 32,
+      stroke: "var(--primary)",
+      stroke_width: 2,
+      z_order: maxZ + 1,
+    };
+    setDecorativeIcons([...decorativeIcons, newIcon]);
+    setSelectedDecorativeIconId(newIcon._id);
+    setSelectedId(null);
+  };
+  const updateDecorativeIcon = (id: string, partial: Partial<DecorativeIconWithId>) => {
+    setDecorativeIcons(decorativeIcons.map((i) => (i._id === id ? { ...i, ...partial } : i)));
+  };
+  const removeDecorativeIcon = (id: string) => {
+    setDecorativeIcons(decorativeIcons.filter((i) => i._id !== id));
+    if (selectedDecorativeIconId === id) setSelectedDecorativeIconId(null);
+  };
+  const duplicateDecorativeIcon = (id: string) => {
+    const ic = decorativeIcons.find((i) => i._id === id);
+    if (!ic) return;
+    const maxZ = decorativeIcons.reduce((m, i) => Math.max(m, i.z_order ?? 0), 0);
+    const copy: DecorativeIconWithId = {
+      ...ic,
+      _id: "dec_" + Math.random().toString(36).slice(2, 10),
+      x: ic.x + 10,
+      y: ic.y + 10,
+      z_order: maxZ + 1,
+    };
+    setDecorativeIcons([...decorativeIcons, copy]);
+    setSelectedDecorativeIconId(copy._id);
+  };
+  const reorderDecorativeIcon = (id: string, dir: 1 | -1) => {
+    setDecorativeIcons(
+      decorativeIcons.map((i) => (i._id === id ? { ...i, z_order: (i.z_order ?? 0) + dir } : i)),
+    );
+  };
+  const selectedDecorativeIcon =
+    decorativeIcons.find((i) => i._id === selectedDecorativeIconId) ?? null;
   const renameGroup = () => {
     if (!renameTarget) return;
     const v = renameValue.trim();
@@ -802,7 +867,7 @@ export default function AdminStudioPage() {
           phase, templateType, canonicalPresetId, upload, anchors, cardinality,
           matchingIds, otherChecked, otherText, tplId, tplName, tplCategory,
           tplDescription, tplMarkers, tplTestText, detectedColors, paletteMapping,
-          editingExistingId, saved_at: new Date().toISOString(),
+          editingExistingId, decorativeIcons, saved_at: new Date().toISOString(),
         };
         localStorage.setItem(STUDIO_DRAFT_KEY, JSON.stringify(draft));
       } catch { /* quota / ignore */ }
@@ -812,7 +877,7 @@ export default function AdminStudioPage() {
     phase, templateType, canonicalPresetId, upload, anchors, cardinality,
     matchingIds, otherChecked, otherText, tplId, tplName, tplCategory,
     tplDescription, tplMarkers, tplTestText, detectedColors, paletteMapping,
-    editingExistingId,
+    editingExistingId, decorativeIcons,
   ]);
 
   // Compte des ancres par clé sémantique du preset (canonique uniquement).
@@ -887,6 +952,7 @@ export default function AdminStudioPage() {
       test_text: tplTestText.trim(),
       add_to_test_suite: tplTestText.trim().length > 0,
       palette_mapping: paletteMapping,
+      decorative_icons: decorativeIcons.map(({ _id, ...rest }) => rest as DecorativeIcon),
       approved_by: "admin",
       // Phase 8 : flag canonique + preset id + slot_definitions sémantiques
       canonical: templateType === "canonical",
@@ -973,6 +1039,7 @@ export default function AdminStudioPage() {
           upload,
           paletteMapping,
           detectedColors,
+          decorative_icons: decorativeIcons.map(({ _id, ...rest }) => rest as DecorativeIcon),
           saved_at: new Date().toISOString(),
         });
       } catch {
@@ -1386,6 +1453,9 @@ export default function AdminStudioPage() {
                 <Button size="sm" variant="outline" onClick={deleteSelected} disabled={!selectedId}>
                   <Trash2 className="w-4 h-4" /> Supprimer
                 </Button>
+                <Button size="sm" variant="outline" onClick={() => setIconPickerOpen(true)}>
+                  <Sparkles className="w-4 h-4" /> Icône décorative
+                </Button>
                 <div className="ml-auto flex items-center gap-2 text-sm">
                   <Button size="icon" variant="ghost" onClick={() => setZoom((z) => Math.max(0.5, z - 0.25))}>−</Button>
                   <span className="w-12 text-center">{Math.round(zoom * 100)}%</span>
@@ -1407,6 +1477,10 @@ export default function AdminStudioPage() {
                 zoom={zoom}
                 onPromptName={onPromptName}
                 onRenameSlot={(name) => { setRenameTarget(name); setRenameValue(name); }}
+                decorativeIcons={decorativeIcons}
+                setDecorativeIcons={setDecorativeIcons}
+                selectedDecorativeIconId={selectedDecorativeIconId}
+                setSelectedDecorativeIconId={setSelectedDecorativeIconId}
               />
               <p className="text-xs text-muted-foreground">
                 Astuce : dessine la première instance d'un slot répété, sélectionne-la et utilise « Dupliquer » pour les suivantes.
@@ -1457,6 +1531,32 @@ export default function AdminStudioPage() {
                   <Switch id="snap" checked={snap} onCheckedChange={setSnap} />
                 </div>
               </Card>
+
+              {decorativeIcons.length > 0 && (
+                <Card className="p-4 space-y-2">
+                  <h3 className="text-sm font-semibold">Icônes décoratives ({decorativeIcons.length})</h3>
+                  <div className="space-y-1">
+                    {decorativeIcons.map((ic) => (
+                      <button
+                        key={ic._id}
+                        type="button"
+                        onClick={() => setSelectedDecorativeIconId(ic._id)}
+                        className={`w-full text-left text-xs font-mono px-2 py-1 rounded hover:bg-muted ${selectedDecorativeIconId === ic._id ? "bg-muted" : ""}`}
+                      >
+                        {ic.name} <span className="text-muted-foreground">({Math.round(ic.x)},{Math.round(ic.y)})</span>
+                      </button>
+                    ))}
+                  </div>
+                </Card>
+              )}
+
+              <PropertyPanel
+                icon={selectedDecorativeIcon}
+                onUpdate={updateDecorativeIcon}
+                onDuplicate={duplicateDecorativeIcon}
+                onRemove={removeDecorativeIcon}
+                onReorder={reorderDecorativeIcon}
+              />
             </div>
           </div>
         )}
@@ -1988,6 +2088,13 @@ export default function AdminStudioPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Picker Lucide pour icônes décoratives (Phase 4) */}
+      <IconPickerFull
+        open={iconPickerOpen}
+        onClose={() => setIconPickerOpen(false)}
+        onSelect={(name) => addDecorativeIcon(name)}
+      />
     </div>
   );
 }

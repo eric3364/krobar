@@ -3,6 +3,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import KrobarSvg from "@/components/KrobarSvg";
+import DecorativeIconLayer, { type DecorativeIconWithId } from "@/components/admin/studio/DecorativeIconLayer";
 
 export type Anchor = {
   id: string;
@@ -38,6 +39,11 @@ type Props = {
   zoom: number;
   onPromptName: (cb: (name: string | null) => void, suggestion?: string) => void;
   onRenameSlot?: (slotName: string) => void;
+  // Phase 4 — décorative icons
+  decorativeIcons?: DecorativeIconWithId[];
+  setDecorativeIcons?: (next: DecorativeIconWithId[]) => void;
+  selectedDecorativeIconId?: string | null;
+  setSelectedDecorativeIconId?: (id: string | null) => void;
 };
 
 const HANDLE = 8;
@@ -45,6 +51,7 @@ const HANDLE = 8;
 export default function StudioCanvas({
   imageUrl, imageSvg, imageWidth, imageHeight, anchors, setAnchors,
   tool, setTool, selectedId, setSelectedId, snap, zoom, onPromptName, onRenameSlot,
+  decorativeIcons, setDecorativeIcons, selectedDecorativeIconId, setSelectedDecorativeIconId,
 }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -179,6 +186,22 @@ export default function StudioCanvas({
     return () => window.removeEventListener("keydown", onKey);
   }, [selectedId, anchors, setAnchors, setSelectedId, imageWidth, imageHeight]);
 
+  // Keyboard shortcuts for decorative icons
+  useEffect(() => {
+    if (!selectedDecorativeIconId || !decorativeIcons || !setDecorativeIcons) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+      if (e.key === "Delete" || e.key === "Backspace") {
+        setDecorativeIcons(decorativeIcons.filter((i) => i._id !== selectedDecorativeIconId));
+        setSelectedDecorativeIconId?.(null);
+      } else if (e.key === "Escape") {
+        setSelectedDecorativeIconId?.(null);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [selectedDecorativeIconId, decorativeIcons, setDecorativeIcons, setSelectedDecorativeIconId]);
+
   const aspect = imageHeight / imageWidth;
   const baseW = Math.min(900, wrapRef.current?.clientWidth ?? 700);
   const displayWidth = baseW * zoom;
@@ -283,6 +306,17 @@ export default function StudioCanvas({
               x={drawingRect.x} y={drawingRect.y} width={drawingRect.w} height={drawingRect.h}
               fill="hsl(217 91% 60%)" fillOpacity={0.15}
               stroke="hsl(217 91% 60%)" strokeWidth={2} strokeDasharray="6 4"
+            />
+          )}
+          {decorativeIcons && setDecorativeIcons && (
+            <DecorativeIconLayer
+              icons={decorativeIcons}
+              setIcons={setDecorativeIcons}
+              selectedId={selectedDecorativeIconId ?? null}
+              setSelectedId={(id) => setSelectedDecorativeIconId?.(id)}
+              toImage={toImage}
+              imageWidth={imageWidth}
+              imageHeight={imageHeight}
             />
           )}
         </svg>
