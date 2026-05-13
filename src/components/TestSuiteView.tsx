@@ -12,7 +12,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { ArrowLeft, Pause, Play, Download, RotateCcw, Loader2, AlertCircle } from "lucide-react";
+import { ArrowLeft, Pause, Play, Download, RotateCcw, Loader2, AlertCircle, Trash2 } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { palettes, paletteLabels, type Palette } from "@/palettes";
 import { fetchCanonicalTestSuite, type TestCase, type ChoremeFamily } from "@/data/test-suite";
