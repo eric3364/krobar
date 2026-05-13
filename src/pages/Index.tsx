@@ -439,7 +439,7 @@ const Index = () => {
       const node = thumbRefs.current[i];
       if (!node) return;
       try {
-        const svg = await loadRenderedSvg(sug.template_id, sug.slots, effectivePalette);
+        const { svg } = await loadRenderedSvg(sug.template_id, sug.slots, effectivePalette);
         svg.setAttribute("width", "100%");
         svg.setAttribute("height", "100%");
         node.innerHTML = "";
@@ -903,13 +903,14 @@ const Index = () => {
   useEffect(() => {
     if (!selectedSuggestion || !previewRef.current) return;
     (async () => {
-      const svg = await loadRenderedSvg(selectedSuggestion.template_id, effectiveSlots, effectivePalette);
+      const { svg, icons } = await loadRenderedSvg(selectedSuggestion.template_id, effectiveSlots, effectivePalette);
       applyTransforms(svg, slotTransforms);
       applySlotTextStyles(svg, slotTextStyles);
       svg.setAttribute("width", "100%");
       svg.setAttribute("height", "100%");
       previewRef.current!.innerHTML = "";
       previewRef.current!.appendChild(svg);
+      setRenderedIcons(icons);
       // Re-measure currently selected slot, if any, after re-render.
       if (selectedSlotKey) {
         const el = svg.querySelector(`[data-slot="${selectedSlotKey}"]`) as Element | null;
