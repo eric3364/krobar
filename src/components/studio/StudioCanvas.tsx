@@ -308,6 +308,17 @@ export default function StudioCanvas({
               stroke="hsl(217 91% 60%)" strokeWidth={2} strokeDasharray="6 4"
             />
           )}
+          {decorativeIcons && setDecorativeIcons && (
+            <DecorativeIconLayer
+              icons={decorativeIcons}
+              setIcons={setDecorativeIcons}
+              selectedId={selectedDecorativeIconId ?? null}
+              setSelectedId={(id) => setSelectedDecorativeIconId?.(id)}
+              toImage={toImage}
+              imageWidth={imageWidth}
+              imageHeight={imageHeight}
+            />
+          )}
         </svg>
       </div>
     </div>
