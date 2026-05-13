@@ -11,6 +11,7 @@
 
 import type { Anchor } from "@/components/studio/StudioCanvas";
 import type { UploadResponse } from "@/lib/studioApi";
+import type { DecorativeIcon } from "@/types/template";
 import { supabase } from "@/integrations/supabase/client";
 
 export const STUDIO_TEMPLATE_SNAPSHOTS_STORAGE = "krobar-studio-template-snapshots";
@@ -36,6 +37,7 @@ export type StudioSnapshot = {
   upload: UploadResponse | null;
   paletteMapping?: Record<string, string | null>;
   detectedColors?: Array<{ hex_value: string; occurrences: number; is_neutral: boolean }>;
+  decorative_icons?: DecorativeIcon[];
   saved_at: string;
 };
 
