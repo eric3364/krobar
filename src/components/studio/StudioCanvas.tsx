@@ -186,6 +186,22 @@ export default function StudioCanvas({
     return () => window.removeEventListener("keydown", onKey);
   }, [selectedId, anchors, setAnchors, setSelectedId, imageWidth, imageHeight]);
 
+  // Keyboard shortcuts for decorative icons
+  useEffect(() => {
+    if (!selectedDecorativeIconId || !decorativeIcons || !setDecorativeIcons) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+      if (e.key === "Delete" || e.key === "Backspace") {
+        setDecorativeIcons(decorativeIcons.filter((i) => i._id !== selectedDecorativeIconId));
+        setSelectedDecorativeIconId?.(null);
+      } else if (e.key === "Escape") {
+        setSelectedDecorativeIconId?.(null);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [selectedDecorativeIconId, decorativeIcons, setDecorativeIcons, setSelectedDecorativeIconId]);
+
   const aspect = imageHeight / imageWidth;
   const baseW = Math.min(900, wrapRef.current?.clientWidth ?? 700);
   const displayWidth = baseW * zoom;
