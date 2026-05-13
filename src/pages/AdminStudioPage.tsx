@@ -245,6 +245,7 @@ export default function AdminStudioPage() {
           setAutoPaletteMapping(d.paletteMapping);
         }
         if (d.editingExistingId !== undefined) setEditingExistingId(d.editingExistingId);
+        if (Array.isArray(d.decorativeIcons)) setDecorativeIcons(d.decorativeIcons);
         toast.info("Brouillon Studio restauré", { duration: 3000 });
       }
     } catch { /* ignore */ }
