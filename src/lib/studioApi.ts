@@ -83,6 +83,13 @@ function flattenMatchingTypes(r: BackendMatchingTypesResponse): MatchingType[] {
 // Entrées matching ajoutées côté frontend en attendant que le backend les expose.
 const FRONTEND_EXTRA_MATCHING_TYPES: MatchingType[] = [
   {
+    id: "matrix_five_quadrants",
+    label: "Distinguer 5 quadrants",
+    category: "MATRICE & CROISEMENT",
+    primary_intent: "matrix",
+    textual_markers: ["cinq quadrants", "cinq forces", "matrice de Porter", "five forces"],
+  },
+  {
     id: "matrix_six_quadrants",
     label: "Distinguer 6 quadrants",
     category: "MATRICE & CROISEMENT",
