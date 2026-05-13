@@ -929,7 +929,11 @@ export default function AdminStudioPage() {
   const confirmDeploy = async () => {
     setDeploying(true);
     try {
-      const res = await studioApi.deploy(buildPayload());
+      const payload = buildPayload();
+      const isEditingCurrentTemplate = Boolean(editingExistingId && editingExistingId === tplId);
+      const res = isEditingCurrentTemplate
+        ? await studioApi.updateTemplate(tplId, payload)
+        : await studioApi.deploy(payload);
       try {
         const raw = localStorage.getItem(STUDIO_RECENT_DEPLOYS_STORAGE);
         const existing = raw ? JSON.parse(raw) : [];
@@ -976,7 +980,12 @@ export default function AdminStudioPage() {
       navigate("/admin");
       void res;
     } catch (e: any) {
-      toast.error(e?.message ?? "Échec du déploiement");
+      const message = e?.message ?? "Échec du déploiement";
+      if (editingExistingId && editingExistingId === tplId && /404|not found|introuvable/i.test(message)) {
+        toast.error("Le backend Krobar n'expose pas encore de route dédiée pour mettre à jour un template existant.");
+      } else {
+        toast.error(message);
+      }
     } finally {
       setDeploying(false);
     }

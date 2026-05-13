@@ -150,6 +150,13 @@ export const studioApi = {
     if (USE_MOCKS) return mockDeploy(payload);
     return adminFetch<{ deployed: boolean; template_id: string }>("/admin/studio/deploy", { body: payload });
   },
+  updateTemplate(templateId: string, payload: unknown) {
+    if (USE_MOCKS) return mockDeploy(payload);
+    return adminFetch<{ deployed: boolean; template_id: string }>(`/admin/studio/templates/${encodeURIComponent(templateId)}`, {
+      method: "PUT",
+      body: payload,
+    });
+  },
   // Analyse les couleurs présentes dans un SVG nettoyé et retourne un mapping
   // automatique vers les rôles CSS Krobar (--primary, --secondary, etc.).
   analyzePalette(cleaned_svg: string) {
