@@ -569,6 +569,54 @@ export default function AdminStudioPage() {
     setAnchors(anchors.filter((a) => a.id !== selectedId));
     setSelectedId(null);
   };
+
+  // ─── Phase 4: décorative icon helpers ────────────────────────────────
+  const addDecorativeIcon = (name: string) => {
+    const cx = Math.round((upload?.image_width ?? 800) / 2 - 16);
+    const cy = Math.round((upload?.image_height ?? 600) / 2 - 16);
+    const maxZ = decorativeIcons.reduce((m, i) => Math.max(m, i.z_order ?? 0), 0);
+    const newIcon: DecorativeIconWithId = {
+      _id: "dec_" + Math.random().toString(36).slice(2, 10),
+      name,
+      x: cx,
+      y: cy,
+      size: 32,
+      stroke: "var(--primary)",
+      stroke_width: 2,
+      z_order: maxZ + 1,
+    };
+    setDecorativeIcons([...decorativeIcons, newIcon]);
+    setSelectedDecorativeIconId(newIcon._id);
+    setSelectedId(null);
+  };
+  const updateDecorativeIcon = (id: string, partial: Partial<DecorativeIconWithId>) => {
+    setDecorativeIcons(decorativeIcons.map((i) => (i._id === id ? { ...i, ...partial } : i)));
+  };
+  const removeDecorativeIcon = (id: string) => {
+    setDecorativeIcons(decorativeIcons.filter((i) => i._id !== id));
+    if (selectedDecorativeIconId === id) setSelectedDecorativeIconId(null);
+  };
+  const duplicateDecorativeIcon = (id: string) => {
+    const ic = decorativeIcons.find((i) => i._id === id);
+    if (!ic) return;
+    const maxZ = decorativeIcons.reduce((m, i) => Math.max(m, i.z_order ?? 0), 0);
+    const copy: DecorativeIconWithId = {
+      ...ic,
+      _id: "dec_" + Math.random().toString(36).slice(2, 10),
+      x: ic.x + 10,
+      y: ic.y + 10,
+      z_order: maxZ + 1,
+    };
+    setDecorativeIcons([...decorativeIcons, copy]);
+    setSelectedDecorativeIconId(copy._id);
+  };
+  const reorderDecorativeIcon = (id: string, dir: 1 | -1) => {
+    setDecorativeIcons(
+      decorativeIcons.map((i) => (i._id === id ? { ...i, z_order: (i.z_order ?? 0) + dir } : i)),
+    );
+  };
+  const selectedDecorativeIcon =
+    decorativeIcons.find((i) => i._id === selectedDecorativeIconId) ?? null;
   const renameGroup = () => {
     if (!renameTarget) return;
     const v = renameValue.trim();
