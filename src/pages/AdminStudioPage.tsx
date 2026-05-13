@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useRef, useState, type DragEvent } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight, ArrowLeftCircle, Copy, Loader2, RotateCcw, Save, Trash2, Upload, X, Rocket, MousePointer2, Square as SquareIcon, Plus, Library, Sparkles } from "lucide-react";
-import type { DecorativeIcon } from "@/types/template";
+import type { DecorativeIcon, IconSlotSpec } from "@/types/template";
 import { IconPickerFull } from "@/components/admin/studio/IconPickerFull";
+import IconPickerContextual from "@/components/admin/studio/IconPickerContextual";
 import PropertyPanel from "@/components/admin/studio/PropertyPanel";
 import type { DecorativeIconWithId } from "@/components/admin/studio/DecorativeIconLayer";
+import * as Lucide from "lucide-react";
 import matricesData from "@/data/matrices.json";
 import { getAllStates, markInProduction, subscribe as subscribeMatrice } from "@/lib/matriceLibrary";
 import { toast } from "sonner";
