@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useRef, useState, type DragEvent } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight, ArrowLeftCircle, Copy, Loader2, RotateCcw, Save, Trash2, Upload, X, Rocket, MousePointer2, Square as SquareIcon, Plus, Library, Sparkles } from "lucide-react";
-import type { DecorativeIcon } from "@/types/template";
+import type { DecorativeIcon, IconSlotSpec } from "@/types/template";
 import { IconPickerFull } from "@/components/admin/studio/IconPickerFull";
+import IconPickerContextual from "@/components/admin/studio/IconPickerContextual";
 import PropertyPanel from "@/components/admin/studio/PropertyPanel";
 import type { DecorativeIconWithId } from "@/components/admin/studio/DecorativeIconLayer";
+import * as Lucide from "lucide-react";
 import matricesData from "@/data/matrices.json";
 import { getAllStates, markInProduction, subscribe as subscribeMatrice } from "@/lib/matriceLibrary";
 import { toast } from "sonner";
@@ -119,6 +121,28 @@ export default function AdminStudioPage() {
   const [decorativeIcons, setDecorativeIcons] = useState<DecorativeIconWithId[]>([]);
   const [selectedDecorativeIconId, setSelectedDecorativeIconId] = useState<string | null>(null);
   const [iconPickerOpen, setIconPickerOpen] = useState(false);
+
+  // Phase 5 — Slot icons (dynamiques, résolus au runtime)
+  const [iconSlots, setIconSlots] = useState<Record<string, IconSlotSpec>>({});
+  const [contextualPickerSlot, setContextualPickerSlot] = useState<string | null>(null);
+
+  const toggleSlotIconographable = (slotKey: string) => {
+    setIconSlots((prev) => {
+      const next = { ...prev };
+      if (slotKey in next) {
+        delete next[slotKey];
+      } else {
+        next[slotKey] = { size: 48, default_icon: null, position_x: 0, position_y: 0 };
+      }
+      return next;
+    });
+  };
+  const updateIconSlotSpec = (slotKey: string, partial: Partial<IconSlotSpec>) => {
+    setIconSlots((prev) => {
+      if (!(slotKey in prev)) return prev;
+      return { ...prev, [slotKey]: { ...prev[slotKey], ...partial } };
+    });
+  };
 
   // Phase 3 — Palette
   const [detectedColors, setDetectedColors] = useState<Array<{ hex_value: string; occurrences: number; is_neutral: boolean }>>([]);
@@ -246,6 +270,7 @@ export default function AdminStudioPage() {
         }
         if (d.editingExistingId !== undefined) setEditingExistingId(d.editingExistingId);
         if (Array.isArray(d.decorativeIcons)) setDecorativeIcons(d.decorativeIcons);
+        if (d.iconSlots && typeof d.iconSlots === "object") setIconSlots(d.iconSlots);
         toast.info("Brouillon Studio restauré", { duration: 3000 });
       }
     } catch { /* ignore */ }
@@ -282,6 +307,7 @@ export default function AdminStudioPage() {
         _id: "dec_" + Math.random().toString(36).slice(2, 10),
       })),
     );
+    setIconSlots(snap.icon_slots ?? {});
     setSelectedDecorativeIconId(null);
     setSelectedId(null);
     setPhase(snap.upload ? jumpTo : 1);
@@ -854,6 +880,8 @@ export default function AdminStudioPage() {
     setAutoPaletteMapping({});
     setTplId(""); setTplName(""); setTplDescription(""); setTplMarkers([]); setTplTestText("");
     setEditingExistingId(null);
+    setDecorativeIcons([]);
+    setIconSlots({});
     try { localStorage.removeItem(STUDIO_DRAFT_KEY); } catch { /* ignore */ }
     setResetOpen(false);
   };
@@ -867,7 +895,7 @@ export default function AdminStudioPage() {
           phase, templateType, canonicalPresetId, upload, anchors, cardinality,
           matchingIds, otherChecked, otherText, tplId, tplName, tplCategory,
           tplDescription, tplMarkers, tplTestText, detectedColors, paletteMapping,
-          editingExistingId, decorativeIcons, saved_at: new Date().toISOString(),
+          editingExistingId, decorativeIcons, iconSlots, saved_at: new Date().toISOString(),
         };
         localStorage.setItem(STUDIO_DRAFT_KEY, JSON.stringify(draft));
       } catch { /* quota / ignore */ }
@@ -877,7 +905,7 @@ export default function AdminStudioPage() {
     phase, templateType, canonicalPresetId, upload, anchors, cardinality,
     matchingIds, otherChecked, otherText, tplId, tplName, tplCategory,
     tplDescription, tplMarkers, tplTestText, detectedColors, paletteMapping,
-    editingExistingId, decorativeIcons,
+    editingExistingId, decorativeIcons, iconSlots,
   ]);
 
   // Compte des ancres par clé sémantique du preset (canonique uniquement).
@@ -953,6 +981,7 @@ export default function AdminStudioPage() {
       add_to_test_suite: tplTestText.trim().length > 0,
       palette_mapping: paletteMapping,
       decorative_icons: decorativeIcons.map(({ _id, ...rest }) => rest as DecorativeIcon),
+      icon_slots: iconSlots,
       approved_by: "admin",
       // Phase 8 : flag canonique + preset id + slot_definitions sémantiques
       canonical: templateType === "canonical",
@@ -1040,6 +1069,7 @@ export default function AdminStudioPage() {
           paletteMapping,
           detectedColors,
           decorative_icons: decorativeIcons.map(({ _id, ...rest }) => rest as DecorativeIcon),
+          icon_slots: iconSlots,
           saved_at: new Date().toISOString(),
         });
       } catch {
@@ -1481,6 +1511,8 @@ export default function AdminStudioPage() {
                 setDecorativeIcons={setDecorativeIcons}
                 selectedDecorativeIconId={selectedDecorativeIconId}
                 setSelectedDecorativeIconId={setSelectedDecorativeIconId}
+                iconSlots={iconSlots}
+                onSlotIconClick={(slotName) => setContextualPickerSlot(slotName)}
               />
               <p className="text-xs text-muted-foreground">
                 Astuce : dessine la première instance d'un slot répété, sélectionne-la et utilise « Dupliquer » pour les suivantes.
@@ -1496,6 +1528,17 @@ export default function AdminStudioPage() {
                 {slotGroups.map((g) => {
                   const c = colorForSlot(g.name, allNames);
                   const isUnique = g.items.length === 1;
+                  const iconSpec = iconSlots[g.name];
+                  const isIconographable = !!iconSpec;
+                  const DefaultIconCmp = iconSpec?.default_icon
+                    ? (Lucide as unknown as Record<string, React.ComponentType<{ size?: number }>>)[
+                        iconSpec.default_icon
+                          .split(/[-_\s]/)
+                          .filter(Boolean)
+                          .map((s) => s[0].toUpperCase() + s.slice(1).toLowerCase())
+                          .join("")
+                      ]
+                    : null;
                   return (
                     <div key={g.name} className="border rounded-md p-2 space-y-1">
                       <div className="flex items-center gap-2">
@@ -1515,6 +1558,83 @@ export default function AdminStudioPage() {
                           onClick={() => deleteGroup(g.name)}>
                           <Trash2 className="w-3 h-3" />
                         </Button>
+                      </div>
+
+                      <div className="pt-2 mt-1 border-t space-y-2">
+                        <div className="flex items-center justify-between">
+                          <Label htmlFor={`iconographable-${g.name}`} className="text-xs">
+                            Slot iconographable
+                          </Label>
+                          <Switch
+                            id={`iconographable-${g.name}`}
+                            checked={isIconographable}
+                            onCheckedChange={() => toggleSlotIconographable(g.name)}
+                          />
+                        </div>
+                        {isIconographable && iconSpec && (
+                          <div className="space-y-2">
+                            <div className="grid grid-cols-2 gap-2">
+                              <div>
+                                <Label className="text-[10px] text-muted-foreground">Offset X</Label>
+                                <Input
+                                  type="number"
+                                  className="h-7 text-xs"
+                                  value={iconSpec.position_x ?? 0}
+                                  onChange={(e) => updateIconSlotSpec(g.name, { position_x: Number(e.target.value) || 0 })}
+                                />
+                              </div>
+                              <div>
+                                <Label className="text-[10px] text-muted-foreground">Offset Y</Label>
+                                <Input
+                                  type="number"
+                                  className="h-7 text-xs"
+                                  value={iconSpec.position_y ?? 0}
+                                  onChange={(e) => updateIconSlotSpec(g.name, { position_y: Number(e.target.value) || 0 })}
+                                />
+                              </div>
+                            </div>
+                            <div>
+                              <Label className="text-[10px] text-muted-foreground">Taille (px)</Label>
+                              <Input
+                                type="number"
+                                min={16}
+                                max={256}
+                                className="h-7 text-xs"
+                                value={iconSpec.size}
+                                onChange={(e) => updateIconSlotSpec(g.name, { size: Math.max(16, Math.min(256, Number(e.target.value) || 48)) })}
+                              />
+                            </div>
+                            <div>
+                              <Label className="text-[10px] text-muted-foreground">Icône par défaut</Label>
+                              {iconSpec.default_icon ? (
+                                <div className="flex items-center gap-2 mt-1">
+                                  <div className="w-8 h-8 rounded border flex items-center justify-center bg-muted/40">
+                                    {DefaultIconCmp ? <DefaultIconCmp size={20} /> : <span className="text-[9px] font-mono">?</span>}
+                                  </div>
+                                  <span className="font-mono text-xs flex-1 truncate">{iconSpec.default_icon}</span>
+                                  <Button size="sm" variant="ghost" className="h-7 px-2 text-xs"
+                                    onClick={() => setContextualPickerSlot(g.name)}>
+                                    Changer
+                                  </Button>
+                                  <Button size="sm" variant="ghost" className="h-7 px-2 text-xs"
+                                    onClick={() => updateIconSlotSpec(g.name, { default_icon: null })}>
+                                    <X className="w-3 h-3" />
+                                  </Button>
+                                </div>
+                              ) : (
+                                <div className="space-y-1 mt-1">
+                                  <p className="text-[10px] text-muted-foreground italic">
+                                    Aucune (l'IconResolver choisira au runtime)
+                                  </p>
+                                  <Button size="sm" variant="outline" className="h-7 text-xs w-full"
+                                    onClick={() => setContextualPickerSlot(g.name)}>
+                                    Choisir une icône par défaut…
+                                  </Button>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   );
@@ -2095,6 +2215,21 @@ export default function AdminStudioPage() {
         onClose={() => setIconPickerOpen(false)}
         onSelect={(name) => addDecorativeIcon(name)}
       />
+
+      {/* Picker contextuel pour slot iconographable (Phase 5) */}
+      {contextualPickerSlot && (
+        <IconPickerContextual
+          open={!!contextualPickerSlot}
+          onClose={() => setContextualPickerSlot(null)}
+          onSelect={(name) => {
+            if (contextualPickerSlot) {
+              updateIconSlotSpec(contextualPickerSlot, { default_icon: name });
+            }
+          }}
+          slotKey={contextualPickerSlot}
+          slotPlaceholderText={contextualPickerSlot.replace(/_/g, " ")}
+        />
+      )}
     </div>
   );
 }
