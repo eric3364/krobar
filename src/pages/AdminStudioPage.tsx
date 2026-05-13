@@ -1443,6 +1443,9 @@ export default function AdminStudioPage() {
                 <Button size="sm" variant="outline" onClick={deleteSelected} disabled={!selectedId}>
                   <Trash2 className="w-4 h-4" /> Supprimer
                 </Button>
+                <Button size="sm" variant="outline" onClick={() => setIconPickerOpen(true)}>
+                  <Sparkles className="w-4 h-4" /> Icône décorative
+                </Button>
                 <div className="ml-auto flex items-center gap-2 text-sm">
                   <Button size="icon" variant="ghost" onClick={() => setZoom((z) => Math.max(0.5, z - 0.25))}>−</Button>
                   <span className="w-12 text-center">{Math.round(zoom * 100)}%</span>
@@ -1464,6 +1467,10 @@ export default function AdminStudioPage() {
                 zoom={zoom}
                 onPromptName={onPromptName}
                 onRenameSlot={(name) => { setRenameTarget(name); setRenameValue(name); }}
+                decorativeIcons={decorativeIcons}
+                setDecorativeIcons={setDecorativeIcons}
+                selectedDecorativeIconId={selectedDecorativeIconId}
+                setSelectedDecorativeIconId={setSelectedDecorativeIconId}
               />
               <p className="text-xs text-muted-foreground">
                 Astuce : dessine la première instance d'un slot répété, sélectionne-la et utilise « Dupliquer » pour les suivantes.
