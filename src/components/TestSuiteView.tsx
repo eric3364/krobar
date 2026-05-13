@@ -67,6 +67,7 @@ type TestResult = {
   failureCategory: FailureCategory | null;
   failureDetail: string | null;
   forced: boolean;
+  renderedSlots?: Record<string, string> | null;
 };
 
 const RESULTS_STORAGE = "kroki-last-test-run";
@@ -102,6 +103,7 @@ function emptyResult(id: number): TestResult {
     failureCategory: null,
     failureDetail: null,
     forced: false,
+    renderedSlots: null,
   };
 }
 
@@ -562,6 +564,7 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
       matchKind,
       latencyMs,
       svgString,
+      renderedSlots: suggestions.length > 0 ? (test.premium ? remapPremiumRenderSlots(suggestions[0].template_id, suggestions[0].slots) : suggestions[0].slots) : null,
       slotsLengthOk,
       slotsOffenders,
       paletteOk,
