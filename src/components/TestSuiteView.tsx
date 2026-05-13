@@ -1117,10 +1117,87 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
               onResetText={() => resetTestText(test.id, test.expected_template)}
               canEditTemplate={test.premium}
               onEditTemplate={() => navigate(`/admin/studio?edit=${encodeURIComponent(test.expected_template)}`)}
+              onDeleteTemplate={() => openDeleteModal(test.expected_template)}
             />
           );
         })}
       </main>
+
+      {/* Delete confirmation modal */}
+      <Dialog
+        open={deleteModal.open}
+        onOpenChange={(o) => {
+          if (!o && deleteModal.status !== "deleting") {
+            setDeleteModal({ open: false, templateId: null, typedConfirmation: "", status: "idle" });
+          }
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="text-destructive">
+              ⚠️ Supprimer définitivement « {deleteModal.templateId} » ?
+            </DialogTitle>
+          </DialogHeader>
+          <div className="text-sm space-y-2">
+            <p>Cette action est <strong>IRRÉVERSIBLE</strong>. Elle va :</p>
+            <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
+              <li>Supprimer le fichier SVG du serveur</li>
+              <li>Retirer l'entrée du manifest des templates</li>
+              <li>Vider les caches d'analyse associés</li>
+            </ul>
+            <p className="text-xs text-muted-foreground">
+              Un backup automatique du manifest sera créé côté serveur avant la suppression.
+            </p>
+            <div className="pt-2">
+              <Label className="text-xs">
+                Pour confirmer, tape : <code className="font-mono">{deleteModal.templateId}</code>
+              </Label>
+              <Input
+                className="mt-1 font-mono text-xs"
+                value={deleteModal.typedConfirmation}
+                disabled={deleteModal.status === "deleting"}
+                onChange={(e) =>
+                  setDeleteModal((m) => ({ ...m, typedConfirmation: e.target.value }))
+                }
+                placeholder={deleteModal.templateId ?? ""}
+              />
+            </div>
+            {deleteModal.status === "error" && (
+              <p className="text-xs text-destructive">
+                ❌ Échec de la suppression. Détail : {deleteModal.errorMessage}
+              </p>
+            )}
+          </div>
+          <div className="flex justify-end gap-2 pt-2">
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={deleteModal.status === "deleting"}
+              onClick={() =>
+                setDeleteModal({ open: false, templateId: null, typedConfirmation: "", status: "idle" })
+              }
+            >
+              Annuler
+            </Button>
+            <Button
+              variant="destructive"
+              size="sm"
+              disabled={
+                deleteModal.status === "deleting" ||
+                deleteModal.typedConfirmation !== deleteModal.templateId
+              }
+              onClick={performDelete}
+            >
+              {deleteModal.status === "deleting" ? (
+                <><Loader2 className="w-3 h-3 mr-1 animate-spin" /> Suppression…</>
+              ) : (
+                <><Trash2 className="w-3 h-3 mr-1" /> Supprimer</>
+              )}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
 
       {/* Zoom modal */}
       <Dialog open={!!zoom} onOpenChange={(o) => !o && setZoom(null)}>
