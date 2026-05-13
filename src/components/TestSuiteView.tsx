@@ -1259,9 +1259,10 @@ interface CardProps {
   onResetText: () => void;
   canEditTemplate?: boolean;
   onEditTemplate?: () => void;
+  onDeleteTemplate?: () => void;
 }
 
-function TestCard({ test, result, note, selected, isTextOverridden, onToggleSelect, onReplay, onZoom, onShowFullText, onAnnotate, onUpdateText, onResetText, canEditTemplate = false, onEditTemplate }: CardProps) {
+function TestCard({ test, result, note, selected, isTextOverridden, onToggleSelect, onReplay, onZoom, onShowFullText, onAnnotate, onUpdateText, onResetText, canEditTemplate = false, onEditTemplate, onDeleteTemplate }: CardProps) {
   const [textOpen, setTextOpen] = useState(false);
   const [editing, setEditing] = useState(false);
   const [draftText, setDraftText] = useState(test.text);
