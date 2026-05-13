@@ -272,6 +272,7 @@ const Index = () => {
   const [detailLevel, setDetailLevel] = useState<DetailLevel>(() => loadStoredDetailLevel());
 
   const previewRef = useRef<HTMLDivElement>(null);
+  const [renderedIcons, setRenderedIcons] = useState<Record<string, import("@/types/analyze").SlotIcon> | undefined>(undefined);
   const thumbRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // In-place editing state
