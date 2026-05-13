@@ -2,8 +2,18 @@
 // Coordonnées stockées dans le repère image original (imageWidth × imageHeight).
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import * as Lucide from "lucide-react";
 import KrobarSvg from "@/components/KrobarSvg";
 import DecorativeIconLayer, { type DecorativeIconWithId } from "@/components/admin/studio/DecorativeIconLayer";
+import type { IconSlotSpec } from "@/types/template";
+
+function toPascalCase(name: string): string {
+  return name
+    .split(/[-_\s]/)
+    .filter(Boolean)
+    .map((s) => s[0].toUpperCase() + s.slice(1).toLowerCase())
+    .join("");
+}
 
 export type Anchor = {
   id: string;
@@ -44,6 +54,9 @@ type Props = {
   setDecorativeIcons?: (next: DecorativeIconWithId[]) => void;
   selectedDecorativeIconId?: string | null;
   setSelectedDecorativeIconId?: (id: string | null) => void;
+  // Phase 5 — slot icons (dynamic, resolved at runtime)
+  iconSlots?: Record<string, IconSlotSpec>;
+  onSlotIconClick?: (slotName: string) => void;
 };
 
 const HANDLE = 8;
@@ -52,6 +65,7 @@ export default function StudioCanvas({
   imageUrl, imageSvg, imageWidth, imageHeight, anchors, setAnchors,
   tool, setTool, selectedId, setSelectedId, snap, zoom, onPromptName, onRenameSlot,
   decorativeIcons, setDecorativeIcons, selectedDecorativeIconId, setSelectedDecorativeIconId,
+  iconSlots, onSlotIconClick,
 }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
