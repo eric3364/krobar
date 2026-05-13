@@ -2078,6 +2078,13 @@ export default function AdminStudioPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Picker Lucide pour icônes décoratives (Phase 4) */}
+      <IconPickerFull
+        open={iconPickerOpen}
+        onClose={() => setIconPickerOpen(false)}
+        onSelect={(name) => addDecorativeIcon(name)}
+      />
     </div>
   );
 }
