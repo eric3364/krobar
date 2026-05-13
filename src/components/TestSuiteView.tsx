@@ -266,6 +266,59 @@ export default function TestSuiteView({ manifest, onBack }: Props) {
   const [notes, setNotes] = useState<Record<number, string>>(() => loadNotes());
   const [annotateId, setAnnotateId] = useState<number | null>(null);
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
+  const [deleteModal, setDeleteModal] = useState<{
+    open: boolean;
+    templateId: string | null;
+    typedConfirmation: string;
+    status: "idle" | "deleting" | "error";
+    errorMessage?: string;
+  }>({ open: false, templateId: null, typedConfirmation: "", status: "idle" });
+
+  const openDeleteModal = (templateId: string) => {
+    setDeleteModal({ open: true, templateId, typedConfirmation: "", status: "idle" });
+  };
+
+  const performDelete = async () => {
+    if (!deleteModal.templateId) return;
+    const tplId = deleteModal.templateId;
+    setDeleteModal((m) => ({ ...m, status: "deleting", errorMessage: undefined }));
+    try {
+      const { data, error } = await supabase.functions.invoke("krobar-proxy", {
+        body: { path: `/admin/studio/templates/${tplId}`, method: "DELETE" },
+      });
+      if (error) {
+        const ctx = (error as unknown as { context?: Response }).context;
+        let detail = error.message;
+        if (ctx instanceof Response) {
+          try {
+            const body = (await ctx.clone().json()) as { error?: string };
+            if (body?.error) detail = body.error;
+          } catch { /* ignore */ }
+        }
+        throw new Error(detail || "Échec de la suppression");
+      }
+      const payload = data as { error?: string; status?: number } | null;
+      if (payload?.error) {
+        if (payload.status === 404) {
+          toast.warning("Le template n'existait déjà plus côté serveur. La liste a été rafraîchie.");
+          setTestSuite((prev) => prev.filter((t) => t.expected_template !== tplId));
+          setDeleteModal({ open: false, templateId: null, typedConfirmation: "", status: "idle" });
+          return;
+        }
+        throw new Error(payload.error);
+      }
+      setTestSuite((prev) => prev.filter((t) => t.expected_template !== tplId));
+      toast.success(`Template « ${tplId} » supprimé. Backup du manifest créé côté serveur.`);
+      setDeleteModal({ open: false, templateId: null, typedConfirmation: "", status: "idle" });
+    } catch (e) {
+      setDeleteModal((m) => ({
+        ...m,
+        status: "error",
+        errorMessage: e instanceof Error ? e.message : String(e),
+      }));
+    }
+  };
+
 
   const toggleSelected = (id: number) => {
     setSelectedIds((prev) => {
