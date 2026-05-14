@@ -139,17 +139,12 @@ export function IconPickerFull({ open, onClose, onSelect, keepOpenAfterSelect = 
 
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) onClose(); }}>
-      <DialogContent className="max-w-3xl p-0 gap-0" style={{ width: "min(800px, 95vw)" }}>
-        <DialogHeader className="p-4 border-b">
-          <div className="flex items-center justify-between">
-            <DialogTitle>Choisir une icône</DialogTitle>
-            <Button variant="ghost" size="icon" onClick={onClose} aria-label="Fermer">
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
+      <DialogContent className="p-0 gap-0 overflow-hidden w-[95vw] sm:max-w-[820px] max-h-[90vh] flex flex-col">
+        <DialogHeader className="p-4 border-b shrink-0">
+          <DialogTitle>Choisir une icône</DialogTitle>
         </DialogHeader>
 
-        <div className="p-4 space-y-3 border-b">
+        <div className="p-4 space-y-3 border-b shrink-0">
           <Input
             autoFocus
             value={query}
@@ -168,7 +163,7 @@ export function IconPickerFull({ open, onClose, onSelect, keepOpenAfterSelect = 
           </div>
         </div>
 
-        <div ref={containerRef} className="relative" style={{ height: "55vh" }}>
+        <div ref={containerRef} className="relative flex-1 min-h-[300px] overflow-hidden">
           {isLoading && (
             <div className="absolute inset-0 flex items-center justify-center">
               <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
@@ -193,7 +188,7 @@ export function IconPickerFull({ open, onClose, onSelect, keepOpenAfterSelect = 
               columnWidth={Math.floor(containerWidth / columnCount)}
               rowCount={rowCount}
               rowHeight={CELL_H}
-              defaultHeight={Math.floor(window.innerHeight * 0.55)}
+              defaultHeight={400}
               defaultWidth={containerWidth}
               style={{ height: "100%", width: "100%" }}
               overscanCount={2}
@@ -201,7 +196,7 @@ export function IconPickerFull({ open, onClose, onSelect, keepOpenAfterSelect = 
           )}
         </div>
 
-        <div className="p-4 border-t flex items-center justify-between">
+        <div className="p-4 border-t flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2">
             <Checkbox
               id="keep-open"
