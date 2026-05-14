@@ -55,6 +55,9 @@ export function useSlotIconInteractivity(
   slotTexts: Record<string, string> | undefined,
 ) {
   const [menu, setMenu] = useState<MenuState | null>(null);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [pickerSlotKey, setPickerSlotKey] = useState<string | null>(null);
+  const [pickerInitial, setPickerInitial] = useState<string | null>(null);
   // Conserve la version vivante des icônes (mise à jour après substitution).
   const iconsRef = useRef<Record<string, SlotIcon>>({});
 
