@@ -11,6 +11,7 @@ import type { SlotIcon } from "@/types/analyze";
 import { getLucideIconSvg } from "@/api/lucide";
 import { suggestIcon } from "@/api/studio";
 import IconContextMenu from "@/components/render/IconContextMenu";
+import { LucidePicker } from "@/components/lucide/LucidePicker";
 import { toast } from "sonner";
 
 type MenuState = {
