@@ -1815,31 +1815,73 @@ const Index = () => {
     </section>
   );
 
-  const renderPreviewSection = () => (
-    <section className="flex flex-col gap-3 h-full overflow-hidden">
-      <Card className="p-4 flex flex-col gap-3 flex-1">
-        <div className="flex items-center justify-between gap-2">
-          <Label className="text-sm font-semibold">Aperçu</Label>
-          {selectedTemplate && (
-            <span className="text-xs text-muted-foreground truncate">{selectedTemplate.name}</span>
+  const renderPreviewSection = () => {
+    const iconEntries = selectedSuggestion?.icons
+      ? Object.entries(selectedSuggestion.icons).filter(
+          ([key, choice]) =>
+            (choice?.default || (choice?.alternatives?.length ?? 0) > 0) &&
+            (selectedSuggestion?.slots?.[key] ?? "").trim() !== "",
+        )
+      : [];
+    const rankerMode = selectedSuggestion?.icons_ranker_mode;
+    return (
+      <section className="flex flex-col gap-3 h-full overflow-hidden">
+        <Card className="p-4 flex flex-col gap-3 flex-1">
+          <div className="flex items-center justify-between gap-2">
+            <Label className="text-sm font-semibold">Aperçu</Label>
+            {selectedTemplate && (
+              <span className="text-xs text-muted-foreground truncate">{selectedTemplate.name}</span>
+            )}
+          </div>
+
+          {iconEntries.length > 0 && (
+            <div className="flex items-start gap-2 flex-wrap p-2 rounded-md border border-dashed border-border bg-muted/30">
+              <span className="text-[11px] font-medium text-muted-foreground self-center mr-1">
+                Icônes :
+              </span>
+              {iconEntries.map(([slotKey, choice]) => (
+                <div key={slotKey} className="flex flex-col items-center gap-0.5">
+                  <SlotIconBadge
+                    slotKey={slotKey}
+                    iconChoice={choice}
+                    selectedIconName={selectedIcons[slotKey] ?? choice.default ?? null}
+                    onChange={(name) =>
+                      setSelectedIcons((prev) => ({ ...prev, [slotKey]: name }))
+                    }
+                  />
+                  <span className="text-[9px] text-muted-foreground font-mono leading-none truncate max-w-[60px]">
+                    {slotKey}
+                  </span>
+                </div>
+              ))}
+            </div>
           )}
-        </div>
-        <div
-          ref={previewRef}
-          className="flex-1 min-h-[300px] border rounded-lg bg-card overflow-hidden flex items-center justify-center [&_[data-slot]]:cursor-pointer"
-        >
-          {!selectedSuggestion && (
-            <span className="text-sm text-muted-foreground">
-              Sélectionnez une suggestion
-            </span>
-          )}
-        </div>
-        <div className="grid grid-cols-2 gap-2">
-          <Button onClick={downloadSVG} disabled={!selectedSuggestion} variant="outline">
-            <Download className="w-4 h-4 mr-2" /> SVG
-          </Button>
-          <Button onClick={downloadPNG} disabled={!selectedSuggestion} variant="outline">
-            <Download className="w-4 h-4 mr-2" /> PNG
+
+          <div
+            ref={previewRef}
+            className="flex-1 min-h-[300px] border rounded-lg bg-card overflow-hidden flex items-center justify-center [&_[data-slot]]:cursor-pointer relative"
+          >
+            {!selectedSuggestion && (
+              <span className="text-sm text-muted-foreground">
+                Sélectionnez une suggestion
+              </span>
+            )}
+            {rankerMode && (
+              <Badge
+                variant="secondary"
+                className="absolute bottom-2 right-2 text-[10px] font-mono opacity-70 hover:opacity-100"
+                title="Mode de classement des icônes"
+              >
+                {rankerMode === "algo_plus_llm" ? "Algo + LLM" : "Algo"}
+              </Badge>
+            )}
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <Button onClick={downloadSVG} disabled={!selectedSuggestion} variant="outline">
+              <Download className="w-4 h-4 mr-2" /> SVG
+            </Button>
+            <Button onClick={downloadPNG} disabled={!selectedSuggestion} variant="outline">
+              <Download className="w-4 h-4 mr-2" /> PNG
           </Button>
         </div>
       </Card>
