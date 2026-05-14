@@ -36,7 +36,10 @@ export type IconContextMenuProps = {
   alternatives: string[];
   slotText: string;
   onSelect: (iconName: string) => void;
-  onRequestMore: (excludeIcons: string[]) => Promise<string[]>;
+  /** Cycle d'alternatives suggérées (optionnel — bouton "Suggérer d'autres"). */
+  onRequestMore?: (excludeIcons: string[]) => Promise<string[]>;
+  /** Ouvre le picker complet Lucide (P2) — bouton "Plus d'options". */
+  onMoreOptions?: () => void;
   onClose: () => void;
 };
 
