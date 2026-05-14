@@ -100,6 +100,7 @@ export default function IconContextMenu({
   if (!open) return null;
 
   const handleMore = async () => {
+    if (!onRequestMore) return;
     setLoadingMore(true);
     try {
       const next = await onRequestMore(Array.from(seenRef.current));
