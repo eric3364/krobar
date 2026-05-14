@@ -1882,11 +1882,12 @@ const Index = () => {
             </Button>
             <Button onClick={downloadPNG} disabled={!selectedSuggestion} variant="outline">
               <Download className="w-4 h-4 mr-2" /> PNG
-          </Button>
-        </div>
-      </Card>
-    </section>
-  );
+            </Button>
+          </div>
+        </Card>
+      </section>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
