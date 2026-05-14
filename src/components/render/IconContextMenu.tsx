@@ -50,6 +50,7 @@ export default function IconContextMenu({
   alternatives,
   onSelect,
   onRequestMore,
+  onMoreOptions,
   onClose,
 }: IconContextMenuProps) {
   const [items, setItems] = useState<string[]>(alternatives);
