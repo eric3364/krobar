@@ -1,100 +1,127 @@
-// Catalogue Lucide & rendu SVG : implémentation client-side basée sur le
-// paquet `lucide-react` (pas d'appel réseau). Le backend krobar.online n'expose
-// pas encore /lucide/catalog ni /lucide/icon/{name}, donc on les simule
-// localement en gardant le même contrat de type que la spec.
+// Catalogue Lucide & rendu SVG : appels au backend krobar.online via le proxy
+// edge `krobar-proxy`.
+//
+// Endpoints :
+//   GET /api/lucide/catalog       → JSON { version, icons: [...] }   (cache 24h)
+//   GET /api/lucide/icon/<name>   → SVG brut (proxy la wrappe en {svg})  (cache 7j)
 
-import * as LucideReact from "lucide-react";
-import { createElement } from "react";
-import { renderToStaticMarkup } from "react-dom/server";
+import { supabase } from "@/integrations/supabase/client";
 import type { LucideCatalog, LucideIconMetadata } from "@/types/lucide";
 
-type AnyComp = React.ComponentType<Record<string, unknown>>;
+const CATALOG_LS_KEY = "krobar:lucide:catalog:v1";
+const SVG_LS_PREFIX = "krobar:lucide:svg:";
+const CATALOG_TTL_MS = 24 * 60 * 60 * 1000; // 24 h
 
-const EXCLUDED = new Set([
-  "Icon",
-  "createLucideIcon",
-  "LucideProvider",
-  "default",
-  "icons",
-  "dynamicIconImports",
-]);
+type BackendCatalog = {
+  version?: string;
+  icons?: Array<{ name: string; tags?: string[]; categories?: string[]; aliases?: string[] }>;
+  synonyms_fr?: Record<string, unknown>;
+};
 
-function pascalToKebab(name: string): string {
-  return name
-    .replace(/([a-z0-9])([A-Z])/g, "$1-$2")
-    .replace(/([A-Z]+)([A-Z][a-z])/g, "$1-$2")
-    .toLowerCase();
-}
+let _catalogCached: LucideCatalog | null = null;
+let _catalogPromise: Promise<LucideCatalog> | null = null;
 
-function kebabToPascal(name: string): string {
-  return name
-    .split("-")
-    .filter(Boolean)
-    .map((s) => s[0].toUpperCase() + s.slice(1))
-    .join("");
-}
-
-// Catégorisation simple par mots-clés présents dans le nom.
-const CATEGORY_RULES: { cat: string; tokens: string[] }[] = [
-  { cat: "Arrows", tokens: ["arrow", "chevron", "move", "corner"] },
-  { cat: "Charts", tokens: ["chart", "trending", "activity", "pie", "bar-"] },
-  { cat: "Communication", tokens: ["mail", "message", "phone", "send", "chat", "bell"] },
-  { cat: "Files", tokens: ["file", "folder", "clipboard", "archive", "save"] },
-  { cat: "Media", tokens: ["play", "pause", "music", "video", "camera", "image", "film", "mic"] },
-  { cat: "Devices", tokens: ["laptop", "phone", "monitor", "tablet", "tv", "watch", "printer"] },
-  { cat: "Weather", tokens: ["sun", "moon", "cloud", "rain", "snow", "wind", "storm"] },
-  { cat: "Nature", tokens: ["tree", "leaf", "flower", "mountain", "sprout", "flame"] },
-  { cat: "Shapes", tokens: ["circle", "square", "triangle", "hexagon", "diamond", "shapes"] },
-  { cat: "Money", tokens: ["dollar", "euro", "coin", "wallet", "credit", "banknote", "gem"] },
-  { cat: "People", tokens: ["user", "users", "person", "baby", "smile"] },
-  { cat: "Brands", tokens: ["github", "twitter", "facebook", "linkedin", "youtube", "instagram", "apple", "chrome", "figma", "slack"] },
-  { cat: "Navigation", tokens: ["map", "navigation", "compass", "pin", "globe", "route"] },
-  { cat: "UI", tokens: ["menu", "settings", "search", "filter", "edit", "trash", "plus", "minus", "x", "check"] },
-];
-
-function categorize(kebabName: string): string[] {
-  const cats: string[] = [];
-  for (const rule of CATEGORY_RULES) {
-    if (rule.tokens.some((t) => kebabName.includes(t))) cats.push(rule.cat);
+async function proxyGet<T = unknown>(path: string): Promise<T> {
+  const { data, error } = await supabase.functions.invoke("krobar-proxy", {
+    body: { path, method: "GET" },
+  });
+  if (error) throw new Error(error.message ?? "Erreur de communication avec le proxy");
+  if (data && typeof data === "object" && "error" in (data as Record<string, unknown>)) {
+    const err = (data as { error?: string }).error;
+    if (err) throw new Error(err);
   }
-  if (cats.length === 0) cats.push("Other");
-  return cats;
+  return data as T;
 }
 
-let _catalog: LucideCatalog | null = null;
-const _svgCache = new Map<string, string>();
-
-function buildCatalog(): LucideCatalog {
-  if (_catalog) return _catalog;
-  const keys = Object.keys(LucideReact).filter(
-    (k) => /^[A-Z]/.test(k) && !k.endsWith("Icon") && !EXCLUDED.has(k),
-  );
-  const icons: Record<string, LucideIconMetadata> = {};
-  for (const pascal of keys) {
-    const kebab = pascalToKebab(pascal);
-    const tokens = kebab.split("-").filter(Boolean);
-    icons[kebab] = {
-      name: kebab,
-      tags: tokens,
-      categories: categorize(kebab),
-      aliases: [],
-    };
+function loadCatalogFromLs(): LucideCatalog | null {
+  try {
+    const raw = localStorage.getItem(CATALOG_LS_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as { ts: number; catalog: LucideCatalog };
+    if (!parsed?.catalog || Date.now() - parsed.ts > CATALOG_TTL_MS) return null;
+    return parsed.catalog;
+  } catch {
+    return null;
   }
-  _catalog = { version: "client-lucide-react", icons };
-  return _catalog;
 }
 
-export function getLucideCatalog(): Promise<LucideCatalog> {
-  return Promise.resolve(buildCatalog());
+function saveCatalogToLs(catalog: LucideCatalog) {
+  try {
+    localStorage.setItem(CATALOG_LS_KEY, JSON.stringify({ ts: Date.now(), catalog }));
+  } catch {
+    /* quota — ignore */
+  }
 }
+
+export async function getLucideCatalog(): Promise<LucideCatalog> {
+  if (_catalogCached) return _catalogCached;
+  const fromLs = loadCatalogFromLs();
+  if (fromLs) {
+    _catalogCached = fromLs;
+    return fromLs;
+  }
+  if (_catalogPromise) return _catalogPromise;
+  _catalogPromise = (async () => {
+    const data = await proxyGet<BackendCatalog>("/lucide/catalog");
+    const map: Record<string, LucideIconMetadata> = {};
+    for (const ic of data.icons ?? []) {
+      if (!ic?.name) continue;
+      map[ic.name] = {
+        name: ic.name,
+        tags: ic.tags ?? [],
+        categories: ic.categories ?? [],
+        aliases: ic.aliases ?? [],
+      };
+    }
+    const catalog: LucideCatalog = { version: data.version ?? "unknown", icons: map };
+    _catalogCached = catalog;
+    saveCatalogToLs(catalog);
+    return catalog;
+  })();
+  try {
+    return await _catalogPromise;
+  } catch (err) {
+    _catalogPromise = null;
+    throw err;
+  }
+}
+
+const _svgMem = new Map<string, string>();
+const _svgPromises = new Map<string, Promise<string>>();
 
 export async function getLucideIconSvg(name: string): Promise<string> {
-  const hit = _svgCache.get(name);
-  if (hit) return hit;
-  const pascal = kebabToPascal(name);
-  const Comp = (LucideReact as unknown as Record<string, AnyComp>)[pascal];
-  if (!Comp) throw new Error(`Icône Lucide inconnue : ${name}`);
-  const svg = renderToStaticMarkup(createElement(Comp));
-  _svgCache.set(name, svg);
-  return svg;
+  if (!/^[a-z0-9-]+$/.test(name)) {
+    throw new Error(`Nom d'icône Lucide invalide : ${name}`);
+  }
+  const memHit = _svgMem.get(name);
+  if (memHit) return memHit;
+  try {
+    const ls = localStorage.getItem(SVG_LS_PREFIX + name);
+    if (ls) {
+      _svgMem.set(name, ls);
+      return ls;
+    }
+  } catch {
+    /* */
+  }
+  const inflight = _svgPromises.get(name);
+  if (inflight) return inflight;
+
+  const p = (async () => {
+    const data = await proxyGet<{ svg?: string }>(`/lucide/icon/${name}`);
+    if (!data?.svg) throw new Error(`Icône Lucide inconnue : ${name}`);
+    _svgMem.set(name, data.svg);
+    try {
+      localStorage.setItem(SVG_LS_PREFIX + name, data.svg);
+    } catch {
+      /* quota */
+    }
+    return data.svg;
+  })();
+  _svgPromises.set(name, p);
+  try {
+    return await p;
+  } finally {
+    _svgPromises.delete(name);
+  }
 }
