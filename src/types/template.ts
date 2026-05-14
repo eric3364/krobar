@@ -3,6 +3,7 @@ export type IconSlotSpec = {
   default_icon: string | null;
   position_x?: number;
   position_y?: number;
+  stroke?: string;
 };
 
 export type DecorativeIcon = {

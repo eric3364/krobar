@@ -980,8 +980,24 @@ export default function AdminStudioPage() {
       test_text: tplTestText.trim(),
       add_to_test_suite: tplTestText.trim().length > 0,
       palette_mapping: paletteMapping,
-      decorative_icons: decorativeIcons.map(({ _id, ...rest }) => rest as DecorativeIcon),
-      icon_slots: iconSlots,
+      // Format P3 (14 mai 2026) : { icon_name, x, y, size, stroke }
+      decorative_icons: decorativeIcons.map((d) => ({
+        icon_name: d.name,
+        x: Math.round(d.x),
+        y: Math.round(d.y),
+        size: d.size,
+        stroke: d.stroke ?? "currentColor",
+      })),
+      // Format P3 : tableau [{ slot_name, x, y, size, default_icon, stroke }].
+      // Le state interne reste un Record pour les besoins du Studio.
+      icon_slots: Object.entries(iconSlots).map(([slot_name, spec]) => ({
+        slot_name,
+        x: Math.round(spec.position_x ?? 0),
+        y: Math.round(spec.position_y ?? 0),
+        size: spec.size,
+        default_icon: spec.default_icon,
+        stroke: spec.stroke ?? "currentColor",
+      })),
       approved_by: "admin",
       // Phase 8 : flag canonique + preset id + slot_definitions sémantiques
       canonical: templateType === "canonical",
