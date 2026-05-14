@@ -20,10 +20,15 @@ export type ApiSuggestion = {
   score: number;
   reasoning: string;
   slots: Record<string, string>;
+  // P4 — icônes Lucide proposées par l'IconResolver (présent uniquement si
+  // lucide_enabled=true ET source="multi_agents"). Optionnel partout ailleurs.
+  icons?: Record<string, import("@/types/analyze").SlotIcon>;
+  icons_ranker_mode?: "algo_only" | "algo_plus_llm";
 };
 
 export type AnalyzeResponse = {
   suggestions: ApiSuggestion[];
+  source?: string;
   latency_ms?: number;
 };
 
@@ -111,8 +116,11 @@ export async function renderTemplate(
   template_id: string,
   slots: Record<string, string>,
   palette: Record<string, string>,
+  icons?: Record<string, { default: string }>,
 ): Promise<RenderResponse> {
-  return invokeKrobar<RenderResponse>("render", { template_id, slots, palette });
+  const payload: Record<string, unknown> = { template_id, slots, palette };
+  if (icons && Object.keys(icons).length > 0) payload.icons = icons;
+  return invokeKrobar<RenderResponse>("render", payload);
 }
 
 export async function getTemplates(): Promise<TemplatesResponse> {

@@ -22,6 +22,8 @@ import { formatScorePct, normalizeScore } from "@/lib/kroki";
 import { filterDeletedTemplates } from "@/lib/deletedTemplates";
 import { analyzeText, renderTemplate, getTemplates } from "@/lib/api";
 import { useSlotIconInteractivity } from "@/hooks/useSlotIconInteractivity";
+import SlotIconBadge from "@/components/render/SlotIconBadge";
+import { Badge } from "@/components/ui/badge";
 import AccountMenu from "@/components/AccountMenu";
 import { useQuota } from "@/hooks/useQuota";
 import { useAuth } from "@/hooks/useAuth";
@@ -44,6 +46,9 @@ type Suggestion = {
   score: number;
   reasoning: string;
   slots: Record<string, string>;
+  // P4 — icônes proposées par l'IconResolver (optionnel)
+  icons?: Record<string, import("@/types/analyze").SlotIcon>;
+  icons_ranker_mode?: "algo_only" | "algo_plus_llm";
 };
 
 // Plus de clé API côté client : la communication avec Claude passe par le backend.
@@ -239,9 +244,15 @@ async function loadRenderedSvg(
   templateId: string,
   slots: Record<string, string>,
   palette: Palette,
-): Promise<{ svg: SVGElement; icons?: import("@/types/analyze").SlotIcon extends never ? never : Record<string, import("@/types/analyze").SlotIcon> }> {
+  icons?: Record<string, { default: string }>,
+): Promise<{ svg: SVGElement; icons?: Record<string, import("@/types/analyze").SlotIcon> }> {
   const paletteColors = palette.colors;
-  const result = await renderTemplate(templateId, slots, paletteColors as unknown as Record<string, string>);
+  const result = await renderTemplate(
+    templateId,
+    slots,
+    paletteColors as unknown as Record<string, string>,
+    icons,
+  );
   return { svg: parseSvgString(result.svg), icons: result.icons };
 }
 
@@ -274,6 +285,8 @@ const Index = () => {
 
   const previewRef = useRef<HTMLDivElement>(null);
   const [renderedIcons, setRenderedIcons] = useState<Record<string, import("@/types/analyze").SlotIcon> | undefined>(undefined);
+  // P4 — choix d'icône utilisateur par slot (override du `default` proposé par l'IA).
+  const [selectedIcons, setSelectedIcons] = useState<Record<string, string>>({});
   const { menu: slotIconMenu } = useSlotIconInteractivity(previewRef, renderedIcons, undefined);
   const thumbRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -460,6 +473,7 @@ const Index = () => {
     setSelectedSlotKey(null);
     setSelectedRect(null);
     setEdit(null);
+    setSelectedIcons({});
     historyRef.current = [];
   }, [selectedSuggestion]);
 
@@ -902,11 +916,30 @@ const Index = () => {
     });
   };
 
+  // P4 — payload `icons` envoyé à /api/render : combine les `default` proposés
+  // par /api/analyze et les overrides cliqués par l'utilisateur. Mémoïsé pour
+  // que la valeur ne change que quand un choix change réellement.
+  const renderIconsPayload = useMemo<Record<string, { default: string }> | undefined>(() => {
+    const src = selectedSuggestion?.icons;
+    if (!src || Object.keys(src).length === 0) return undefined;
+    const out: Record<string, { default: string }> = {};
+    for (const [key, choice] of Object.entries(src)) {
+      const name = selectedIcons[key] ?? choice.default;
+      if (name) out[key] = { default: name };
+    }
+    return Object.keys(out).length > 0 ? out : undefined;
+  }, [selectedSuggestion, selectedIcons]);
+
   // Render big preview
   useEffect(() => {
     if (!selectedSuggestion || !previewRef.current) return;
     (async () => {
-      const { svg, icons } = await loadRenderedSvg(selectedSuggestion.template_id, effectiveSlots, effectivePalette);
+      const { svg, icons } = await loadRenderedSvg(
+        selectedSuggestion.template_id,
+        effectiveSlots,
+        effectivePalette,
+        renderIconsPayload,
+      );
       applyTransforms(svg, slotTransforms);
       applySlotTextStyles(svg, slotTextStyles);
       svg.setAttribute("width", "100%");
@@ -930,7 +963,7 @@ const Index = () => {
         setExtraSelectedRects(next);
       }
     })();
-  }, [selectedSuggestion, effectivePalette, effectiveSlots, slotTransforms, slotTextStyles]);
+  }, [selectedSuggestion, effectivePalette, effectiveSlots, slotTransforms, slotTextStyles, renderIconsPayload]);
 
   // Convertit un delta viewport (px CSS) en unités SVG en se basant sur le viewBox
   // et la taille affichée réelle du SVG. Compatible avec les slots dans foreignObject.
@@ -1782,36 +1815,79 @@ const Index = () => {
     </section>
   );
 
-  const renderPreviewSection = () => (
-    <section className="flex flex-col gap-3 h-full overflow-hidden">
-      <Card className="p-4 flex flex-col gap-3 flex-1">
-        <div className="flex items-center justify-between gap-2">
-          <Label className="text-sm font-semibold">Aperçu</Label>
-          {selectedTemplate && (
-            <span className="text-xs text-muted-foreground truncate">{selectedTemplate.name}</span>
+  const renderPreviewSection = () => {
+    const iconEntries = selectedSuggestion?.icons
+      ? Object.entries(selectedSuggestion.icons).filter(
+          ([key, choice]) =>
+            (choice?.default || (choice?.alternatives?.length ?? 0) > 0) &&
+            (selectedSuggestion?.slots?.[key] ?? "").trim() !== "",
+        )
+      : [];
+    const rankerMode = selectedSuggestion?.icons_ranker_mode;
+    return (
+      <section className="flex flex-col gap-3 h-full overflow-hidden">
+        <Card className="p-4 flex flex-col gap-3 flex-1">
+          <div className="flex items-center justify-between gap-2">
+            <Label className="text-sm font-semibold">Aperçu</Label>
+            {selectedTemplate && (
+              <span className="text-xs text-muted-foreground truncate">{selectedTemplate.name}</span>
+            )}
+          </div>
+
+          {iconEntries.length > 0 && (
+            <div className="flex items-start gap-2 flex-wrap p-2 rounded-md border border-dashed border-border bg-muted/30">
+              <span className="text-[11px] font-medium text-muted-foreground self-center mr-1">
+                Icônes :
+              </span>
+              {iconEntries.map(([slotKey, choice]) => (
+                <div key={slotKey} className="flex flex-col items-center gap-0.5">
+                  <SlotIconBadge
+                    slotKey={slotKey}
+                    iconChoice={choice}
+                    selectedIconName={selectedIcons[slotKey] ?? choice.default ?? null}
+                    onChange={(name) =>
+                      setSelectedIcons((prev) => ({ ...prev, [slotKey]: name }))
+                    }
+                  />
+                  <span className="text-[9px] text-muted-foreground font-mono leading-none truncate max-w-[60px]">
+                    {slotKey}
+                  </span>
+                </div>
+              ))}
+            </div>
           )}
-        </div>
-        <div
-          ref={previewRef}
-          className="flex-1 min-h-[300px] border rounded-lg bg-card overflow-hidden flex items-center justify-center [&_[data-slot]]:cursor-pointer"
-        >
-          {!selectedSuggestion && (
-            <span className="text-sm text-muted-foreground">
-              Sélectionnez une suggestion
-            </span>
-          )}
-        </div>
-        <div className="grid grid-cols-2 gap-2">
-          <Button onClick={downloadSVG} disabled={!selectedSuggestion} variant="outline">
-            <Download className="w-4 h-4 mr-2" /> SVG
-          </Button>
-          <Button onClick={downloadPNG} disabled={!selectedSuggestion} variant="outline">
-            <Download className="w-4 h-4 mr-2" /> PNG
-          </Button>
-        </div>
-      </Card>
-    </section>
-  );
+
+          <div
+            ref={previewRef}
+            className="flex-1 min-h-[300px] border rounded-lg bg-card overflow-hidden flex items-center justify-center [&_[data-slot]]:cursor-pointer relative"
+          >
+            {!selectedSuggestion && (
+              <span className="text-sm text-muted-foreground">
+                Sélectionnez une suggestion
+              </span>
+            )}
+            {rankerMode && (
+              <Badge
+                variant="secondary"
+                className="absolute bottom-2 right-2 text-[10px] font-mono opacity-70 hover:opacity-100"
+                title="Mode de classement des icônes"
+              >
+                {rankerMode === "algo_plus_llm" ? "Algo + LLM" : "Algo"}
+              </Badge>
+            )}
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <Button onClick={downloadSVG} disabled={!selectedSuggestion} variant="outline">
+              <Download className="w-4 h-4 mr-2" /> SVG
+            </Button>
+            <Button onClick={downloadPNG} disabled={!selectedSuggestion} variant="outline">
+              <Download className="w-4 h-4 mr-2" /> PNG
+            </Button>
+          </div>
+        </Card>
+      </section>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
