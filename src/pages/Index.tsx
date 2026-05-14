@@ -44,6 +44,9 @@ type Suggestion = {
   score: number;
   reasoning: string;
   slots: Record<string, string>;
+  // P4 — icônes proposées par l'IconResolver (optionnel)
+  icons?: Record<string, import("@/types/analyze").SlotIcon>;
+  icons_ranker_mode?: "algo_only" | "algo_plus_llm";
 };
 
 // Plus de clé API côté client : la communication avec Claude passe par le backend.
@@ -239,9 +242,15 @@ async function loadRenderedSvg(
   templateId: string,
   slots: Record<string, string>,
   palette: Palette,
-): Promise<{ svg: SVGElement; icons?: import("@/types/analyze").SlotIcon extends never ? never : Record<string, import("@/types/analyze").SlotIcon> }> {
+  icons?: Record<string, { default: string }>,
+): Promise<{ svg: SVGElement; icons?: Record<string, import("@/types/analyze").SlotIcon> }> {
   const paletteColors = palette.colors;
-  const result = await renderTemplate(templateId, slots, paletteColors as unknown as Record<string, string>);
+  const result = await renderTemplate(
+    templateId,
+    slots,
+    paletteColors as unknown as Record<string, string>,
+    icons,
+  );
   return { svg: parseSvgString(result.svg), icons: result.icons };
 }
 
