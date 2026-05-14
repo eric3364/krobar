@@ -171,20 +171,37 @@ export default function IconContextMenu({
           ))}
         </div>
       </TooltipProvider>
-      <Button
-        variant="outline"
-        size="sm"
-        className="w-full"
-        onClick={handleMore}
-        disabled={loadingMore}
-      >
-        {loadingMore ? (
-          <Loader2 className="w-4 h-4 animate-spin" />
-        ) : (
-          <MoreHorizontal className="w-4 h-4" />
+      <div className="flex gap-2">
+        {onRequestMore && (
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex-1"
+            onClick={handleMore}
+            disabled={loadingMore}
+          >
+            {loadingMore ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <MoreHorizontal className="w-4 h-4" />
+            )}
+            Suggérer
+          </Button>
         )}
-        Plus d'options…
-      </Button>
+        {onMoreOptions && (
+          <Button
+            variant="default"
+            size="sm"
+            className="flex-1"
+            onClick={() => {
+              onMoreOptions();
+              onClose();
+            }}
+          >
+            Plus d'options…
+          </Button>
+        )}
+      </div>
     </div>
   );
 }
