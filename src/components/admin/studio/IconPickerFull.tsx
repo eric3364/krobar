@@ -144,7 +144,7 @@ export function IconPickerFull({ open, onClose, onSelect, keepOpenAfterSelect = 
           <DialogTitle>Choisir une icône</DialogTitle>
         </DialogHeader>
 
-        <div className="p-4 space-y-3 border-b">
+        <div className="p-4 space-y-3 border-b shrink-0">
           <Input
             autoFocus
             value={query}
@@ -163,7 +163,7 @@ export function IconPickerFull({ open, onClose, onSelect, keepOpenAfterSelect = 
           </div>
         </div>
 
-        <div ref={containerRef} className="relative" style={{ height: "55vh" }}>
+        <div ref={containerRef} className="relative flex-1 min-h-[300px] overflow-hidden">
           {isLoading && (
             <div className="absolute inset-0 flex items-center justify-center">
               <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
@@ -188,7 +188,7 @@ export function IconPickerFull({ open, onClose, onSelect, keepOpenAfterSelect = 
               columnWidth={Math.floor(containerWidth / columnCount)}
               rowCount={rowCount}
               rowHeight={CELL_H}
-              defaultHeight={Math.floor(window.innerHeight * 0.55)}
+              defaultHeight={400}
               defaultWidth={containerWidth}
               style={{ height: "100%", width: "100%" }}
               overscanCount={2}
@@ -196,7 +196,7 @@ export function IconPickerFull({ open, onClose, onSelect, keepOpenAfterSelect = 
           )}
         </div>
 
-        <div className="p-4 border-t flex items-center justify-between">
+        <div className="p-4 border-t flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2">
             <Checkbox
               id="keep-open"
