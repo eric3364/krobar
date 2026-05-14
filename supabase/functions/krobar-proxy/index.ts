@@ -75,6 +75,53 @@ Deno.serve(async (req) => {
       admin_token?: string;
     };
 
+    // Public Lucide endpoints — no admin token needed.
+    // /lucide/catalog → JSON, /lucide/icon/<name> → raw SVG (we wrap into {svg}).
+    if (path && path.startsWith("/lucide/")) {
+      const url = `${KROBAR_API_BASE}${path}`;
+      const httpMethod = (reqMethod ?? "GET").toUpperCase();
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 30000);
+      let upstream: Response;
+      try {
+        upstream = await fetch(url, {
+          method: httpMethod,
+          headers: {
+            Accept: path.startsWith("/lucide/icon/")
+              ? "image/svg+xml,*/*"
+              : "application/json",
+          },
+          signal: controller.signal,
+        });
+      } catch (fetchErr) {
+        clearTimeout(timer);
+        const msg = fetchErr instanceof DOMException && fetchErr.name === "AbortError"
+          ? "Le backend Krobar n'a pas répondu à temps."
+          : `Impossible de joindre le backend Krobar: ${fetchErr instanceof Error ? fetchErr.message : String(fetchErr)}`;
+        return jsonResponse({ error: msg }, 504);
+      }
+      clearTimeout(timer);
+
+      if (!upstream.ok) {
+        return jsonResponse(
+          { error: `Erreur Krobar Lucide (${upstream.status})`, status: upstream.status },
+          upstream.status === 404 ? 404 : 200,
+        );
+      }
+
+      if (path.startsWith("/lucide/icon/")) {
+        const svg = await upstream.text();
+        return jsonResponse({ svg }, 200);
+      }
+
+      const text = await upstream.text();
+      try {
+        return jsonResponse(JSON.parse(text), 200);
+      } catch {
+        return jsonResponse({ error: "Réponse Lucide non-JSON" }, 502);
+      }
+    }
+
     // Admin path mode: path like "/admin/template/create"
     if (path) {
       const url = `${KROBAR_API_BASE}${path}`;
