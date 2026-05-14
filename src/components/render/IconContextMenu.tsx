@@ -36,7 +36,10 @@ export type IconContextMenuProps = {
   alternatives: string[];
   slotText: string;
   onSelect: (iconName: string) => void;
-  onRequestMore: (excludeIcons: string[]) => Promise<string[]>;
+  /** Cycle d'alternatives suggérées (optionnel — bouton "Suggérer d'autres"). */
+  onRequestMore?: (excludeIcons: string[]) => Promise<string[]>;
+  /** Ouvre le picker complet Lucide (P2) — bouton "Plus d'options". */
+  onMoreOptions?: () => void;
   onClose: () => void;
 };
 
@@ -47,6 +50,7 @@ export default function IconContextMenu({
   alternatives,
   onSelect,
   onRequestMore,
+  onMoreOptions,
   onClose,
 }: IconContextMenuProps) {
   const [items, setItems] = useState<string[]>(alternatives);
@@ -96,6 +100,7 @@ export default function IconContextMenu({
   if (!open) return null;
 
   const handleMore = async () => {
+    if (!onRequestMore) return;
     setLoadingMore(true);
     try {
       const next = await onRequestMore(Array.from(seenRef.current));
@@ -166,20 +171,37 @@ export default function IconContextMenu({
           ))}
         </div>
       </TooltipProvider>
-      <Button
-        variant="outline"
-        size="sm"
-        className="w-full"
-        onClick={handleMore}
-        disabled={loadingMore}
-      >
-        {loadingMore ? (
-          <Loader2 className="w-4 h-4 animate-spin" />
-        ) : (
-          <MoreHorizontal className="w-4 h-4" />
+      <div className="flex gap-2">
+        {onRequestMore && (
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex-1"
+            onClick={handleMore}
+            disabled={loadingMore}
+          >
+            {loadingMore ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <MoreHorizontal className="w-4 h-4" />
+            )}
+            Suggérer
+          </Button>
         )}
-        Plus d'options…
-      </Button>
+        {onMoreOptions && (
+          <Button
+            variant="default"
+            size="sm"
+            className="flex-1"
+            onClick={() => {
+              onMoreOptions();
+              onClose();
+            }}
+          >
+            Plus d'options…
+          </Button>
+        )}
+      </div>
     </div>
   );
 }
