@@ -914,11 +914,30 @@ const Index = () => {
     });
   };
 
+  // P4 — payload `icons` envoyé à /api/render : combine les `default` proposés
+  // par /api/analyze et les overrides cliqués par l'utilisateur. Mémoïsé pour
+  // que la valeur ne change que quand un choix change réellement.
+  const renderIconsPayload = useMemo<Record<string, { default: string }> | undefined>(() => {
+    const src = selectedSuggestion?.icons;
+    if (!src || Object.keys(src).length === 0) return undefined;
+    const out: Record<string, { default: string }> = {};
+    for (const [key, choice] of Object.entries(src)) {
+      const name = selectedIcons[key] ?? choice.default;
+      if (name) out[key] = { default: name };
+    }
+    return Object.keys(out).length > 0 ? out : undefined;
+  }, [selectedSuggestion, selectedIcons]);
+
   // Render big preview
   useEffect(() => {
     if (!selectedSuggestion || !previewRef.current) return;
     (async () => {
-      const { svg, icons } = await loadRenderedSvg(selectedSuggestion.template_id, effectiveSlots, effectivePalette);
+      const { svg, icons } = await loadRenderedSvg(
+        selectedSuggestion.template_id,
+        effectiveSlots,
+        effectivePalette,
+        renderIconsPayload,
+      );
       applyTransforms(svg, slotTransforms);
       applySlotTextStyles(svg, slotTextStyles);
       svg.setAttribute("width", "100%");
@@ -942,7 +961,7 @@ const Index = () => {
         setExtraSelectedRects(next);
       }
     })();
-  }, [selectedSuggestion, effectivePalette, effectiveSlots, slotTransforms, slotTextStyles]);
+  }, [selectedSuggestion, effectivePalette, effectiveSlots, slotTransforms, slotTextStyles, renderIconsPayload]);
 
   // Convertit un delta viewport (px CSS) en unités SVG en se basant sur le viewBox
   // et la taille affichée réelle du SVG. Compatible avec les slots dans foreignObject.
