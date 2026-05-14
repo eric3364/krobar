@@ -22,6 +22,8 @@ import { formatScorePct, normalizeScore } from "@/lib/kroki";
 import { filterDeletedTemplates } from "@/lib/deletedTemplates";
 import { analyzeText, renderTemplate, getTemplates } from "@/lib/api";
 import { useSlotIconInteractivity } from "@/hooks/useSlotIconInteractivity";
+import SlotIconBadge from "@/components/render/SlotIconBadge";
+import { Badge } from "@/components/ui/badge";
 import AccountMenu from "@/components/AccountMenu";
 import { useQuota } from "@/hooks/useQuota";
 import { useAuth } from "@/hooks/useAuth";
