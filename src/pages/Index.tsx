@@ -283,6 +283,8 @@ const Index = () => {
 
   const previewRef = useRef<HTMLDivElement>(null);
   const [renderedIcons, setRenderedIcons] = useState<Record<string, import("@/types/analyze").SlotIcon> | undefined>(undefined);
+  // P4 — choix d'icône utilisateur par slot (override du `default` proposé par l'IA).
+  const [selectedIcons, setSelectedIcons] = useState<Record<string, string>>({});
   const { menu: slotIconMenu } = useSlotIconInteractivity(previewRef, renderedIcons, undefined);
   const thumbRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -469,6 +471,7 @@ const Index = () => {
     setSelectedSlotKey(null);
     setSelectedRect(null);
     setEdit(null);
+    setSelectedIcons({});
     historyRef.current = [];
   }, [selectedSuggestion]);
 
