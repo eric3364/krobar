@@ -139,14 +139,9 @@ export function IconPickerFull({ open, onClose, onSelect, keepOpenAfterSelect = 
 
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) onClose(); }}>
-      <DialogContent className="max-w-3xl p-0 gap-0" style={{ width: "min(800px, 95vw)" }}>
-        <DialogHeader className="p-4 border-b">
-          <div className="flex items-center justify-between">
-            <DialogTitle>Choisir une icône</DialogTitle>
-            <Button variant="ghost" size="icon" onClick={onClose} aria-label="Fermer">
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
+      <DialogContent className="p-0 gap-0 overflow-hidden w-[95vw] sm:max-w-[820px] max-h-[90vh] flex flex-col">
+        <DialogHeader className="p-4 border-b shrink-0">
+          <DialogTitle>Choisir une icône</DialogTitle>
         </DialogHeader>
 
         <div className="p-4 space-y-3 border-b">
