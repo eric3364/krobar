@@ -99,13 +99,12 @@ export function useSlotIconInteractivity(
     return () => container.removeEventListener("click", onClick);
   }, [containerRef, icons, slotTexts]);
 
-  const handleSelect = useCallback(
-    async (newName: string) => {
-      if (!menu) return;
+  const applyIcon = useCallback(
+    async (slotKey: string, newName: string) => {
       const container = containerRef.current;
       if (!container) return;
       const slotG = container.querySelector(
-        `.slot-icon[data-slot-icon-key="${CSS.escape(menu.slotKey)}"]`,
+        `.slot-icon[data-slot-icon-key="${CSS.escape(slotKey)}"]`,
       ) as SVGGElement | null;
       if (!slotG) {
         toast.error("Slot introuvable dans le rendu.");
@@ -114,20 +113,25 @@ export function useSlotIconInteractivity(
       try {
         const svg = await fetchSvgCached(newName);
         substituteIconInDom(slotG, svg, newName);
-        // Mise à jour de l'état local pour les prochaines ouvertures.
-        const prev = iconsRef.current[menu.slotKey];
-        if (prev) {
-          iconsRef.current = {
-            ...iconsRef.current,
-            [menu.slotKey]: { default: newName, alternatives: prev.alternatives },
-          };
-        }
+        const prev = iconsRef.current[slotKey];
+        iconsRef.current = {
+          ...iconsRef.current,
+          [slotKey]: { default: newName, alternatives: prev?.alternatives ?? [] },
+        };
       } catch (err) {
         const msg = err instanceof Error ? err.message : "Échec du remplacement";
         toast.error(msg);
       }
     },
-    [menu, containerRef],
+    [containerRef],
+  );
+
+  const handleSelect = useCallback(
+    async (newName: string) => {
+      if (!menu) return;
+      await applyIcon(menu.slotKey, newName);
+    },
+    [menu, applyIcon],
   );
 
   const handleRequestMore = useCallback(
@@ -140,18 +144,40 @@ export function useSlotIconInteractivity(
     [menu],
   );
 
-  const menuNode = menu ? (
-    <IconContextMenu
-      open={menu.open}
-      anchorPosition={menu.position}
-      currentIconName={menu.currentIconName}
-      alternatives={menu.alternatives}
-      slotText={menu.slotText}
-      onSelect={handleSelect}
-      onRequestMore={handleRequestMore}
-      onClose={() => setMenu(null)}
-    />
-  ) : null;
+  const handleMoreOptions = useCallback(() => {
+    if (!menu) return;
+    setPickerSlotKey(menu.slotKey);
+    setPickerInitial(menu.currentIconName || null);
+    setPickerOpen(true);
+  }, [menu]);
+
+  const menuNode = (
+    <>
+      {menu && (
+        <IconContextMenu
+          open={menu.open}
+          anchorPosition={menu.position}
+          currentIconName={menu.currentIconName}
+          alternatives={menu.alternatives}
+          slotText={menu.slotText}
+          onSelect={handleSelect}
+          onRequestMore={handleRequestMore}
+          onMoreOptions={handleMoreOptions}
+          onClose={() => setMenu(null)}
+        />
+      )}
+      <LucidePicker
+        open={pickerOpen}
+        onClose={() => setPickerOpen(false)}
+        initialValue={pickerInitial}
+        allowClear={false}
+        onSelect={(name) => {
+          if (name && pickerSlotKey) void applyIcon(pickerSlotKey, name);
+          setPickerOpen(false);
+        }}
+      />
+    </>
+  );
 
   return { menu: menuNode };
 }
