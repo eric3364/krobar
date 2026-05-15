@@ -66,9 +66,10 @@ export function useFeatureFlags() {
       // Backend POST renvoie { updated: true, flags: {...} }.
       // On n'écrit dans le cache que la portion `flags` (forme nouvelle),
       // sinon on garde la réponse telle quelle (ancien format avec _meta).
+      const raw = next as unknown;
       const payload =
-        next && typeof next === "object" && "flags" in (next as object)
-          ? ((next as { flags: unknown }).flags as typeof next)
+        raw && typeof raw === "object" && "flags" in (raw as Record<string, unknown>)
+          ? ((raw as { flags: unknown }).flags as typeof next)
           : next;
       qc.setQueryData(QUERY_KEY, payload);
       return payload;
