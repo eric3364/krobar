@@ -56,6 +56,7 @@ export function IconPickerFull({ open, onClose, onSelect, keepOpenAfterSelect = 
   const debouncedQuery = useDebounced(query, 150);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(720);
+  const [containerHeight, setContainerHeight] = useState(400);
 
   // Reset on open
   useEffect(() => {
@@ -70,11 +71,13 @@ export function IconPickerFull({ open, onClose, onSelect, keepOpenAfterSelect = 
     if (!open) return;
     const el = containerRef.current;
     if (!el) return;
-    const ro = new ResizeObserver(() => {
+    const update = () => {
       setContainerWidth(el.clientWidth);
-    });
+      setContainerHeight(el.clientHeight);
+    };
+    const ro = new ResizeObserver(update);
     ro.observe(el);
-    setContainerWidth(el.clientWidth);
+    update();
     return () => ro.disconnect();
   }, [open]);
 
@@ -188,9 +191,9 @@ export function IconPickerFull({ open, onClose, onSelect, keepOpenAfterSelect = 
               columnWidth={Math.floor(containerWidth / columnCount)}
               rowCount={rowCount}
               rowHeight={CELL_H}
-              defaultHeight={400}
+              defaultHeight={containerHeight}
               defaultWidth={containerWidth}
-              style={{ height: "100%", width: "100%" }}
+              style={{ height: containerHeight, width: containerWidth }}
               overscanCount={2}
             />
           )}

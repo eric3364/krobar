@@ -157,6 +157,7 @@ export function LucidePicker({
   const debouncedQuery = useDebounced(query, 150);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(720);
+  const [containerHeight, setContainerHeight] = useState(420);
   const [focusedIdx, setFocusedIdx] = useState(0);
 
   // Reset au ré-open.
@@ -173,9 +174,13 @@ export function LucidePicker({
     if (!open) return;
     const el = containerRef.current;
     if (!el) return;
-    const ro = new ResizeObserver(() => setContainerWidth(el.clientWidth));
+    const update = () => {
+      setContainerWidth(el.clientWidth);
+      setContainerHeight(el.clientHeight);
+    };
+    const ro = new ResizeObserver(update);
     ro.observe(el);
-    setContainerWidth(el.clientWidth);
+    update();
     return () => ro.disconnect();
   }, [open]);
 
@@ -312,9 +317,9 @@ export function LucidePicker({
                 columnWidth={Math.floor(containerWidth / columnCount)}
                 rowCount={rowCount}
                 rowHeight={CELL_H}
-                defaultHeight={420}
+                defaultHeight={containerHeight}
                 defaultWidth={containerWidth}
-                style={{ height: "100%", width: "100%" }}
+                style={{ height: containerHeight, width: containerWidth }}
                 overscanCount={2}
               />
             )}
