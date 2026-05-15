@@ -37,7 +37,7 @@ export function useFeatureFlags() {
 
   if (data) {
     if (isNewShape(data)) {
-      for (const [k, entry] of Object.entries(data)) {
+      for (const [k, entry] of Object.entries(data as Record<string, NewShapeEntry>)) {
         flags[k] = entry.value;
         meta[k] = {
           type: entry.type as FeatureFlagMeta["type"],
