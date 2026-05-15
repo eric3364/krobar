@@ -2479,6 +2479,34 @@ export default function AdminStudioPage() {
           slotPlaceholderText={contextualPickerSlot.replace(/_/g, " ")}
         />
       )}
+
+      {/* Picker Lucide pour la Phase 5 (decorative-icons add/change) */}
+      <LucidePicker
+        open={decoPickerOpen}
+        onClose={() => { setDecoPickerOpen(false); setDecoPickerEditId(null); }}
+        onSelect={(name) => {
+          if (!name) return;
+          if (decoPickerEditId) {
+            updateDecorativeIcon(decoPickerEditId, { name });
+          } else {
+            addDecorativeIcon(name);
+          }
+          setDecoPickerOpen(false);
+          setDecoPickerEditId(null);
+        }}
+      />
+
+      {/* Picker Lucide pour la Phase 6 (slot icons default_icon) */}
+      <LucidePicker
+        open={!!slotPickerKey}
+        onClose={() => setSlotPickerKey(null)}
+        allowClear
+        initialValue={slotPickerKey ? iconSlots[slotPickerKey]?.default_icon ?? null : null}
+        onSelect={(name) => {
+          if (slotPickerKey) updateIconSlotSpec(slotPickerKey, { default_icon: name });
+          setSlotPickerKey(null);
+        }}
+      />
     </div>
   );
 }
