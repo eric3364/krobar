@@ -1888,6 +1888,232 @@ export default function AdminStudioPage() {
           </div>
         )}
 
+        {/* PHASE 5 — Decorative icons (figées au build) */}
+        {phase === 5 && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card className="p-4 space-y-3">
+              <h3 className="text-sm font-semibold">Aperçu du template</h3>
+              {upload?.cleaned_svg ? (
+                <div className="relative w-full border rounded overflow-hidden bg-muted/20">
+                  <div
+                    className="w-full"
+                    dangerouslySetInnerHTML={{
+                      __html: applyPaletteToSvg(upload.cleaned_svg, paletteMapping, palettes[previewPaletteKey]),
+                    }}
+                  />
+                  {/* Overlay des positions decorative */}
+                  <svg
+                    viewBox={`0 0 ${upload.image_width} ${upload.image_height}`}
+                    className="absolute inset-0 w-full h-full pointer-events-none"
+                  >
+                    {decorativeIcons.map((d) => (
+                      <g key={d._id}>
+                        <circle cx={d.x} cy={d.y} r={Math.max(6, d.size / 2)} fill="hsl(var(--primary) / 0.2)" stroke="hsl(var(--primary))" strokeWidth={1.5} />
+                        <text x={d.x} y={d.y - d.size / 2 - 4} fontSize={10} textAnchor="middle" fill="hsl(var(--primary))" className="font-mono">
+                          {d.name}
+                        </text>
+                      </g>
+                    ))}
+                  </svg>
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground">Aucun template chargé.</p>
+              )}
+            </Card>
+
+            <Card className="p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-semibold">Icônes décoratives ({decorativeIcons.length})</h3>
+                <Button
+                  size="sm"
+                  onClick={() => { setDecoPickerEditId(null); setDecoPickerOpen(true); }}
+                >
+                  <Plus className="w-4 h-4" /> Ajouter une icône
+                </Button>
+              </div>
+              {decorativeIcons.length === 0 ? (
+                <p className="text-sm text-muted-foreground italic">
+                  Aucune icône décorative. Vous pouvez en ajouter via le bouton ci-dessus.
+                </p>
+              ) : (
+                <ul className="space-y-2 max-h-[60vh] overflow-y-auto">
+                  {decorativeIcons.map((d) => (
+                    <li key={d._id} className="border rounded p-3 space-y-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="font-mono text-sm">{d.name}</span>
+                        <div className="flex gap-1">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => { setDecoPickerEditId(d._id); setDecoPickerOpen(true); }}
+                          >
+                            Changer
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => setDecorativeIcons(decorativeIcons.filter((x) => x._id !== d._id))}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-4 gap-2 text-xs">
+                        <div>
+                          <Label>x</Label>
+                          <Input
+                            type="number"
+                            value={d.x}
+                            onChange={(e) => setDecorativeIcons(
+                              decorativeIcons.map((x) => x._id === d._id ? { ...x, x: Number(e.target.value) } : x),
+                            )}
+                          />
+                        </div>
+                        <div>
+                          <Label>y</Label>
+                          <Input
+                            type="number"
+                            value={d.y}
+                            onChange={(e) => setDecorativeIcons(
+                              decorativeIcons.map((x) => x._id === d._id ? { ...x, y: Number(e.target.value) } : x),
+                            )}
+                          />
+                        </div>
+                        <div>
+                          <Label>size</Label>
+                          <Input
+                            type="number"
+                            min={8}
+                            max={256}
+                            value={d.size}
+                            onChange={(e) => setDecorativeIcons(
+                              decorativeIcons.map((x) => x._id === d._id ? { ...x, size: Math.min(256, Math.max(8, Number(e.target.value))) } : x),
+                            )}
+                          />
+                        </div>
+                        <div>
+                          <Label>stroke</Label>
+                          <Input
+                            value={d.stroke ?? "currentColor"}
+                            onChange={(e) => setDecorativeIcons(
+                              decorativeIcons.map((x) => x._id === d._id ? { ...x, stroke: e.target.value } : x),
+                            )}
+                          />
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </Card>
+          </div>
+        )}
+
+        {/* PHASE 6 — Slot icons (résolues à l'analyse) */}
+        {phase === 6 && (
+          <div className="max-w-3xl mx-auto space-y-4">
+            <div>
+              <h2 className="text-xl font-semibold">Icônes liées à un slot textuel</h2>
+              <p className="text-sm text-muted-foreground">
+                Active une icône sur un slot pour qu'elle soit positionnée à côté du texte.
+                L'icône sera choisie automatiquement par l'IA en fonction du contenu (ou figée si tu renseignes une icône par défaut).
+              </p>
+            </div>
+            {slotGroups.length === 0 ? (
+              <Card className="p-8 text-center text-muted-foreground">
+                Aucun slot textuel défini. Reviens à l'étape Ancres pour en créer.
+              </Card>
+            ) : slotGroups.map((g) => {
+              const enabled = g.name in iconSlots;
+              const spec = iconSlots[g.name];
+              return (
+                <Card key={g.name} className="p-4 space-y-3">
+                  <div className="flex items-center justify-between gap-2">
+                    <div>
+                      <p className="font-semibold">Slot : <span className="font-mono">{g.name}</span></p>
+                      <p className="text-xs text-muted-foreground">
+                        {g.items.length === 1 ? "(unique)" : `(répété × ${g.items.length} — config unique appliquée à toutes les instances)`}
+                      </p>
+                    </div>
+                    <label className="flex items-center gap-2 text-sm cursor-pointer">
+                      <Switch checked={enabled} onCheckedChange={() => toggleSlotIconographable(g.name)} />
+                      Cette zone a une icône associée
+                    </label>
+                  </div>
+
+                  {enabled && spec && (
+                    <div className="space-y-3 pt-2 border-t">
+                      <div className="grid grid-cols-3 gap-2">
+                        <div>
+                          <Label>x (px)</Label>
+                          <Input
+                            type="number"
+                            value={spec.position_x ?? 0}
+                            onChange={(e) => updateIconSlotSpec(g.name, { position_x: Number(e.target.value) })}
+                          />
+                        </div>
+                        <div>
+                          <Label>y (px)</Label>
+                          <Input
+                            type="number"
+                            value={spec.position_y ?? 0}
+                            onChange={(e) => updateIconSlotSpec(g.name, { position_y: Number(e.target.value) })}
+                          />
+                        </div>
+                        <div>
+                          <Label>Taille (8–256)</Label>
+                          <Input
+                            type="number"
+                            min={8}
+                            max={256}
+                            value={spec.size}
+                            onChange={(e) => updateIconSlotSpec(g.name, { size: Math.min(256, Math.max(8, Number(e.target.value))) })}
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <Label>Couleur du trait</Label>
+                        <Input
+                          value={spec.stroke ?? "currentColor"}
+                          onChange={(e) => updateIconSlotSpec(g.name, { stroke: e.target.value })}
+                          placeholder="currentColor, #000, #fff…"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <Label>Icône par défaut (optionnel)</Label>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setSlotPickerKey(g.name)}
+                          >
+                            {spec.default_icon ? `Changer (${spec.default_icon})` : "Choisir une icône par défaut…"}
+                          </Button>
+                          {spec.default_icon && (
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => updateIconSlotSpec(g.name, { default_icon: null })}
+                            >
+                              Aucune (résolution dynamique)
+                            </Button>
+                          )}
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          Si vide : l'IA d'analyse choisira automatiquement une icône en fonction du texte de la zone.
+                          Si renseignée : l'icône choisie sera utilisée par défaut, mais l'utilisateur final pourra la changer via le menu contextuel sur le rendu.
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </Card>
+              );
+            })}
+          </div>
+        )}
+
         {/* PHASE 7 — Matching */}
         {phase === 7 && (
           <div className="max-w-2xl mx-auto space-y-4">
