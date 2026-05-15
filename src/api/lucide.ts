@@ -12,9 +12,17 @@ const CATALOG_LS_KEY = "krobar:lucide:catalog:v1";
 const SVG_LS_PREFIX = "krobar:lucide:svg:";
 const CATALOG_TTL_MS = 24 * 60 * 60 * 1000; // 24 h
 
+type BackendIconMeta = {
+  tags?: string[];
+  categories?: string[];
+  aliases?: string[];
+};
+
 type BackendCatalog = {
   version?: string;
-  icons?: Array<{ name: string; tags?: string[]; categories?: string[]; aliases?: string[] }>;
+  total?: number;
+  // Le backend renvoie un OBJET { name: meta }, pas un tableau.
+  icons?: Record<string, BackendIconMeta>;
   synonyms_fr?: Record<string, unknown>;
 };
 
