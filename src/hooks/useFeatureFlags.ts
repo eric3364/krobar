@@ -1,8 +1,28 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getFeatureFlags, updateFeatureFlags } from "@/api/featureFlags";
-import type { FeatureFlagMeta, FeatureFlagsResponse } from "@/types/featureFlags";
+import type { FeatureFlagMeta } from "@/types/featureFlags";
 
 const QUERY_KEY = ["feature-flags"] as const;
+
+type NewShapeEntry = {
+  value: unknown;
+  type: string;
+  description?: string;
+  values?: string[];
+};
+
+function isNewShape(data: unknown): data is Record<string, NewShapeEntry> {
+  if (!data || typeof data !== "object") return false;
+  const obj = data as Record<string, unknown>;
+  // New shape : pas de _meta, et au moins une entrée { value, type }
+  if ("_meta" in obj) return false;
+  for (const v of Object.values(obj)) {
+    if (v && typeof v === "object" && "value" in (v as object) && "type" in (v as object)) {
+      return true;
+    }
+  }
+  return false;
+}
 
 export function useFeatureFlags() {
   const qc = useQueryClient();
@@ -12,12 +32,28 @@ export function useFeatureFlags() {
     staleTime: 30_000,
   });
 
-  const meta: Record<string, FeatureFlagMeta> = data?._meta ?? {};
-  const flags: Record<string, unknown> = (() => {
-    if (!data) return {};
-    const { _meta: _m, ...rest } = data as FeatureFlagsResponse;
-    return rest;
-  })();
+  let flags: Record<string, unknown> = {};
+  let meta: Record<string, FeatureFlagMeta> = {};
+
+  if (data) {
+    if (isNewShape(data)) {
+      for (const [k, entry] of Object.entries(data as Record<string, NewShapeEntry>)) {
+        flags[k] = entry.value;
+        meta[k] = {
+          type: entry.type as FeatureFlagMeta["type"],
+          values: entry.values,
+          default: entry.value,
+          description: entry.description ?? "",
+        };
+      }
+    } else {
+      // Ancien format avec _meta
+      const d = data as Record<string, unknown> & { _meta?: Record<string, FeatureFlagMeta> };
+      meta = d._meta ?? {};
+      const { _meta: _m, ...rest } = d;
+      flags = rest as Record<string, unknown>;
+    }
+  }
 
   return {
     flags,
