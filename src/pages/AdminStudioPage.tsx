@@ -50,7 +50,7 @@ import { applyPaletteToSvg, PALETTE_ROLES, detectColorsInSvg, autoMapDetectedCol
 import KrobarSvg from "@/components/KrobarSvg";
 import { fetchCanonicalPresets, type CanonicalPreset } from "@/lib/canonicalPresets";
 
-type Phase = 1 | 2 | 3 | 4 | 5 | 6;
+type Phase = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 type TemplateType = "narrative" | "canonical";
 
 type CardinalityConfig = {
