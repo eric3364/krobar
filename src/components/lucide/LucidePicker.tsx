@@ -157,6 +157,7 @@ export function LucidePicker({
   const debouncedQuery = useDebounced(query, 150);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(720);
+  const [containerHeight, setContainerHeight] = useState(420);
   const [focusedIdx, setFocusedIdx] = useState(0);
 
   // Reset au ré-open.
