@@ -839,11 +839,11 @@ export default function AdminStudioPage() {
   const goNext = () => {
     if (phase === 1 && !upload) return;
     if (phase === 2 && anchors.length === 0) return;
-    if (phase === 5 && matchingIds.length === 0) {
+    if (phase === 7 && matchingIds.length === 0) {
       toast.error("Coche au moins une intention pour continuer.");
       return;
     }
-    if (phase === 5 && otherChecked && !otherText.trim()) {
+    if (phase === 7 && otherChecked && !otherText.trim()) {
       toast.error("Précise le texte « Autre » ou décoche la case.");
       return;
     }
@@ -856,7 +856,7 @@ export default function AdminStudioPage() {
       toast("Pas de cardinalité à configurer, on passe à la suite.");
       next = 5;
     }
-    if (next > 6) return;
+    if (next > 8) return;
     setPhase(next);
   };
   const goPrev = () => {
