@@ -12,9 +12,17 @@ const CATALOG_LS_KEY = "krobar:lucide:catalog:v1";
 const SVG_LS_PREFIX = "krobar:lucide:svg:";
 const CATALOG_TTL_MS = 24 * 60 * 60 * 1000; // 24 h
 
+type BackendIconMeta = {
+  tags?: string[];
+  categories?: string[];
+  aliases?: string[];
+};
+
 type BackendCatalog = {
   version?: string;
-  icons?: Array<{ name: string; tags?: string[]; categories?: string[]; aliases?: string[] }>;
+  total?: number;
+  // Le backend renvoie un OBJET { name: meta }, pas un tableau.
+  icons?: Record<string, BackendIconMeta>;
   synonyms_fr?: Record<string, unknown>;
 };
 
@@ -64,13 +72,13 @@ export async function getLucideCatalog(): Promise<LucideCatalog> {
   _catalogPromise = (async () => {
     const data = await proxyGet<BackendCatalog>("/lucide/catalog");
     const map: Record<string, LucideIconMetadata> = {};
-    for (const ic of data.icons ?? []) {
-      if (!ic?.name) continue;
-      map[ic.name] = {
-        name: ic.name,
-        tags: ic.tags ?? [],
-        categories: ic.categories ?? [],
-        aliases: ic.aliases ?? [],
+    for (const [name, meta] of Object.entries(data.icons ?? {})) {
+      if (!name) continue;
+      map[name] = {
+        name,
+        tags: meta?.tags ?? [],
+        categories: meta?.categories ?? [],
+        aliases: meta?.aliases ?? [],
       };
     }
     const catalog: LucideCatalog = { version: data.version ?? "unknown", icons: map };
