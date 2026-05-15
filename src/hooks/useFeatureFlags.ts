@@ -63,8 +63,15 @@ export function useFeatureFlags() {
     refresh: () => refetch(),
     update: async (partial: Record<string, unknown>) => {
       const next = await updateFeatureFlags(partial);
-      qc.setQueryData(QUERY_KEY, next);
-      return next;
+      // Backend POST renvoie { updated: true, flags: {...} }.
+      // On n'écrit dans le cache que la portion `flags` (forme nouvelle),
+      // sinon on garde la réponse telle quelle (ancien format avec _meta).
+      const payload =
+        next && typeof next === "object" && "flags" in (next as object)
+          ? ((next as { flags: unknown }).flags as typeof next)
+          : next;
+      qc.setQueryData(QUERY_KEY, payload);
+      return payload;
     },
   };
 }
