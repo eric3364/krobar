@@ -174,9 +174,13 @@ export function LucidePicker({
     if (!open) return;
     const el = containerRef.current;
     if (!el) return;
-    const ro = new ResizeObserver(() => setContainerWidth(el.clientWidth));
+    const update = () => {
+      setContainerWidth(el.clientWidth);
+      setContainerHeight(el.clientHeight);
+    };
+    const ro = new ResizeObserver(update);
     ro.observe(el);
-    setContainerWidth(el.clientWidth);
+    update();
     return () => ro.disconnect();
   }, [open]);
 
