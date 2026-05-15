@@ -72,13 +72,13 @@ export async function getLucideCatalog(): Promise<LucideCatalog> {
   _catalogPromise = (async () => {
     const data = await proxyGet<BackendCatalog>("/lucide/catalog");
     const map: Record<string, LucideIconMetadata> = {};
-    for (const ic of data.icons ?? []) {
-      if (!ic?.name) continue;
-      map[ic.name] = {
-        name: ic.name,
-        tags: ic.tags ?? [],
-        categories: ic.categories ?? [],
-        aliases: ic.aliases ?? [],
+    for (const [name, meta] of Object.entries(data.icons ?? {})) {
+      if (!name) continue;
+      map[name] = {
+        name,
+        tags: meta?.tags ?? [],
+        categories: meta?.categories ?? [],
+        aliases: meta?.aliases ?? [],
       };
     }
     const catalog: LucideCatalog = { version: data.version ?? "unknown", icons: map };
