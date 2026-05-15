@@ -71,11 +71,13 @@ export function IconPickerFull({ open, onClose, onSelect, keepOpenAfterSelect = 
     if (!open) return;
     const el = containerRef.current;
     if (!el) return;
-    const ro = new ResizeObserver(() => {
+    const update = () => {
       setContainerWidth(el.clientWidth);
-    });
+      setContainerHeight(el.clientHeight);
+    };
+    const ro = new ResizeObserver(update);
     ro.observe(el);
-    setContainerWidth(el.clientWidth);
+    update();
     return () => ro.disconnect();
   }, [open]);
 
