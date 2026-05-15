@@ -1883,8 +1883,8 @@ export default function AdminStudioPage() {
           </div>
         )}
 
-        {/* PHASE 5 — Matching */}
-        {phase === 5 && (
+        {/* PHASE 7 — Matching */}
+        {phase === 7 && (
           <div className="max-w-2xl mx-auto space-y-4">
             <div>
               <h2 className="text-xl font-semibold">Pour quels textes ton template est-il pertinent ?</h2>
