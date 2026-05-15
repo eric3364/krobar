@@ -3,6 +3,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight, ArrowLeftCircle, Copy, Loader2, RotateCcw, Save, Trash2, Upload, X, Rocket, MousePointer2, Square as SquareIcon, Plus, Library, Sparkles } from "lucide-react";
 import type { DecorativeIcon, IconSlotSpec } from "@/types/template";
 import { IconPickerFull } from "@/components/admin/studio/IconPickerFull";
+import { LucidePicker } from "@/components/lucide/LucidePicker";
 import IconPickerContextual from "@/components/admin/studio/IconPickerContextual";
 import PropertyPanel from "@/components/admin/studio/PropertyPanel";
 import type { DecorativeIconWithId } from "@/components/admin/studio/DecorativeIconLayer";
