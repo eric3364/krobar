@@ -56,6 +56,7 @@ export function IconPickerFull({ open, onClose, onSelect, keepOpenAfterSelect = 
   const debouncedQuery = useDebounced(query, 150);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(720);
+  const [containerHeight, setContainerHeight] = useState(400);
 
   // Reset on open
   useEffect(() => {
