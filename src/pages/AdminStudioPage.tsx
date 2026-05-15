@@ -1957,8 +1957,8 @@ export default function AdminStudioPage() {
           </div>
         )}
 
-        {/* PHASE 6 — Méta + go */}
-        {phase === 6 && upload && (
+        {/* PHASE 8 — Méta + go */}
+        {phase === 8 && upload && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card className="p-4 space-y-3">
               <h3 className="text-sm font-semibold">Prévisualisation</h3>
