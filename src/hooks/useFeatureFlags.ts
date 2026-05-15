@@ -51,7 +51,7 @@ export function useFeatureFlags() {
       const d = data as Record<string, unknown> & { _meta?: Record<string, FeatureFlagMeta> };
       meta = d._meta ?? {};
       const { _meta: _m, ...rest } = d;
-      flags = rest;
+      flags = rest as Record<string, unknown>;
     }
   }
 
