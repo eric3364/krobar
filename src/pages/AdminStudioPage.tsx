@@ -146,6 +146,11 @@ export default function AdminStudioPage() {
     });
   };
 
+  // Wizard P3 — pickers Lucide pour Decorative & Slot icons
+  const [decoPickerOpen, setDecoPickerOpen] = useState(false);
+  const [decoPickerEditId, setDecoPickerEditId] = useState<string | null>(null);
+  const [slotPickerKey, setSlotPickerKey] = useState<string | null>(null);
+
   // Phase 3 — Palette
   const [detectedColors, setDetectedColors] = useState<Array<{ hex_value: string; occurrences: number; is_neutral: boolean }>>([]);
   const [paletteMapping, setPaletteMapping] = useState<Record<string, string | null>>({});
