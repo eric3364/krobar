@@ -275,6 +275,47 @@ const Index = () => {
   const navigate = useNavigate();
   const [manifest, setManifest] = useState<Manifest | null>(null);
   const [text, setText] = useState("");
+
+  // ─── Persistance du brouillon (localStorage, debounce 300ms) ───
+  const DRAFT_KEY = "krobar:workspace-draft";
+  const draftHydratedRef = useRef(false);
+  const [draftStatus, setDraftStatus] = useState<"idle" | "editing" | "saved">("idle");
+  useEffect(() => {
+    if (draftHydratedRef.current) return;
+    draftHydratedRef.current = true;
+    try {
+      const saved = localStorage.getItem(DRAFT_KEY);
+      // Ne pas écraser une saisie en cours.
+      if (saved && saved.length > 0) {
+        setText((cur) => (cur.length === 0 ? saved : cur));
+      }
+    } catch { /* ignore */ }
+  }, []);
+  useEffect(() => {
+    if (!draftHydratedRef.current) return;
+    if (text.length === 0) {
+      try { localStorage.removeItem(DRAFT_KEY); } catch { /* ignore */ }
+      setDraftStatus("idle");
+      return;
+    }
+    setDraftStatus("editing");
+    const t = setTimeout(() => {
+      try { localStorage.setItem(DRAFT_KEY, text); } catch { /* ignore */ }
+      setDraftStatus("saved");
+    }, 300);
+    return () => clearTimeout(t);
+  }, [text]);
+  useEffect(() => {
+    if (draftStatus !== "saved") return;
+    const t = setTimeout(() => setDraftStatus("idle"), 2000);
+    return () => clearTimeout(t);
+  }, [draftStatus]);
+  const clearDraft = () => {
+    if (!window.confirm("Effacer le brouillon en cours ?")) return;
+    try { localStorage.removeItem(DRAFT_KEY); } catch { /* ignore */ }
+    setText("");
+    setDraftStatus("idle");
+  };
   const [paletteKey, setPaletteKey] = useState<keyof typeof palettes>("ocean");
   const [whiteBackground, setWhiteBackground] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -1719,6 +1760,21 @@ const Index = () => {
           }}
           className="flex-1 resize-none min-h-[260px] font-mono text-sm"
         />
+        {text.length > 0 && (
+          <div className="flex items-center justify-between text-xs text-muted-foreground -mt-1">
+            <span>
+              {draftStatus === "editing" && "Modification…"}
+              {draftStatus === "saved" && "✓ Brouillon enregistré"}
+            </span>
+            <button
+              type="button"
+              onClick={clearDraft}
+              className="underline hover:text-foreground transition-colors"
+            >
+              Effacer le brouillon
+            </button>
+          </div>
+        )}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <Label className="text-sm font-semibold">Palette</Label>
