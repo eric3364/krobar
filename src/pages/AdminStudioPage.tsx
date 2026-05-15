@@ -814,16 +814,16 @@ export default function AdminStudioPage() {
     return Array.from(counts.entries()).filter(([, n]) => n > 1).map(([r]) => r);
   }, [paletteMapping]);
 
-  // ─── Init phase 6 fields when entering ────────────────────────────────
-  const phase6Initialized = useRef(false);
+  // ─── Init phase 8 fields when entering ────────────────────────────────
+  const phase8Initialized = useRef(false);
   useEffect(() => {
-    if (phase === 6 && !phase6Initialized.current) {
+    if (phase === 8 && !phase8Initialized.current) {
       setTplCategory(derivedPrimaryIntent);
       if (!tplDescription) setTplDescription(derivedBestFor.slice(0, 250));
       if (tplMarkers.length === 0) setTplMarkers(derivedMarkers);
-      phase6Initialized.current = true;
+      phase8Initialized.current = true;
     }
-    if (phase !== 6) phase6Initialized.current = false;
+    if (phase !== 8) phase8Initialized.current = false;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase]);
 
