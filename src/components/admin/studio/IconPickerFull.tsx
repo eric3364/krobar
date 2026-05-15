@@ -191,9 +191,9 @@ export function IconPickerFull({ open, onClose, onSelect, keepOpenAfterSelect = 
               columnWidth={Math.floor(containerWidth / columnCount)}
               rowCount={rowCount}
               rowHeight={CELL_H}
-              defaultHeight={400}
+              defaultHeight={containerHeight}
               defaultWidth={containerWidth}
-              style={{ height: "100%", width: "100%" }}
+              style={{ height: containerHeight, width: containerWidth }}
               overscanCount={2}
             />
           )}
