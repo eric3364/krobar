@@ -1130,15 +1130,15 @@ export default function AdminStudioPage() {
           </Button>
         </div>
         {/* Progress bar */}
-        <div className="max-w-7xl mx-auto px-6 pb-4 grid grid-cols-6 gap-2">
-          {([1, 2, 3, 4, 5, 6] as Phase[]).map((p) => {
+        <div className="max-w-7xl mx-auto px-6 pb-4 grid grid-cols-4 md:grid-cols-8 gap-2">
+          {([1, 2, 3, 4, 5, 6, 7, 8] as Phase[]).map((p) => {
             const done = p < phase;
             const current = p === phase;
             return (
               <div key={p} className="space-y-1">
                 <div className={`h-1.5 rounded-full ${done ? "bg-primary" : current ? "bg-primary/60" : "bg-muted"}`} />
                 <p className={`text-xs ${current ? "font-medium text-foreground" : "text-muted-foreground"}`}>
-                  {p}/6 · {PHASE_LABELS[p]}
+                  {p}/8 · {PHASE_LABELS[p]}
                 </p>
               </div>
             );
