@@ -1760,6 +1760,21 @@ const Index = () => {
           }}
           className="flex-1 resize-none min-h-[260px] font-mono text-sm"
         />
+        {text.length > 0 && (
+          <div className="flex items-center justify-between text-xs text-muted-foreground -mt-1">
+            <span>
+              {draftStatus === "editing" && "Modification…"}
+              {draftStatus === "saved" && "✓ Brouillon enregistré"}
+            </span>
+            <button
+              type="button"
+              onClick={clearDraft}
+              className="underline hover:text-foreground transition-colors"
+            >
+              Effacer le brouillon
+            </button>
+          </div>
+        )}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <Label className="text-sm font-semibold">Palette</Label>
