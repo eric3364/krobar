@@ -286,7 +286,7 @@ export default function AdminStudioPage() {
   const [dragMessage, setDragMessage] = useState<string | null>(null);
 
   // ─── Restauration d'un template existant ──────────────────────────────
-  const restoreSnapshot = (snap: StudioSnapshot, jumpTo: Phase = 6) => {
+  const restoreSnapshot = (snap: StudioSnapshot, jumpTo: Phase = 8) => {
     setUpload(snap.upload);
     setAnchors(snap.anchors ?? []);
     setCardinality(snap.cardinality ?? []);
