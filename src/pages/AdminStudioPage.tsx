@@ -2389,6 +2389,20 @@ export default function AdminStudioPage() {
                   {otherChecked && otherText && <li>· Autre : {otherText}</li>}
                 </ul>
               </div>
+              {svgKrInfo && svgKrInfo.decorations && svgKrInfo.decorations.length > 0 && (
+                <div className="space-y-1">
+                  <Label>Décorations conservées <span className="text-xs text-muted-foreground font-normal">(pré-rempli depuis SVG-KR)</span></Label>
+                  <ul className="text-sm text-muted-foreground space-y-0.5">
+                    {svgKrInfo.decorations.map((d, i) => (
+                      <li key={i} className="font-mono text-xs">
+                        ▸ <span className="text-foreground">{d.class}</span>
+                        {d.data_index ? ` [${d.data_index}]` : ""} — {d.content}
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="text-xs text-muted-foreground">Ces éléments sont préservés tels quels dans le SVG déployé.</p>
+                </div>
+              )}
             </Card>
           </div>
         )}
