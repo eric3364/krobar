@@ -50,6 +50,8 @@ import { palettes, defaultPalette, type PaletteKey } from "@/palettes";
 import { applyPaletteToSvg, PALETTE_ROLES, detectColorsInSvg, autoMapDetectedColors } from "@/lib/paletteRemap";
 import KrobarSvg from "@/components/KrobarSvg";
 import { fetchCanonicalPresets, type CanonicalPreset } from "@/lib/canonicalPresets";
+import { hydrateFromSvgKr } from "@/lib/svgKrHydrator";
+import { isSvgKrVersionSupported, type SvgKrData } from "@/types/svgKr";
 
 type Phase = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 type TemplateType = "narrative" | "canonical";
@@ -105,6 +107,8 @@ export default function AdminStudioPage() {
   // Phase 1
   const [uploading, setUploading] = useState(false);
   const [upload, setUpload] = useState<UploadResponse | null>(null);
+  // Métadonnées SVG-KR détectées dans le dernier upload (null si SVG classique).
+  const [svgKrInfo, setSvgKrInfo] = useState<SvgKrData | null>(null);
 
   // Phase 2
   const [anchors, setAnchors] = useState<Anchor[]>([]);
@@ -486,6 +490,51 @@ export default function AdminStudioPage() {
     }
   };
 
+  const applySvgKrHydration = (kr: SvgKrData, imgW: number, imgH: number) => {
+    const result = hydrateFromSvgKr(kr, imgW, imgH);
+    if (result.anchors.length === 0) {
+      toast.warning("SVG-KR détecté mais aucun slot exploitable — wizard manuel.");
+      setSvgKrInfo(null);
+      return;
+    }
+    setSvgKrInfo(kr);
+    setAnchors(result.anchors);
+    setIconSlots(result.iconSlots);
+    setCardinality(result.cardinality);
+    if (result.metadata.tplId) setTplId(result.metadata.tplId);
+    if (result.metadata.tplName) setTplName(result.metadata.tplName);
+    if (result.metadata.tplCategory) {
+      setTplCategory(result.metadata.tplCategory as typeof tplCategory);
+    }
+    if (result.metadata.tplDescription) {
+      setTplDescription(result.metadata.tplDescription.slice(0, 250));
+    }
+    if (result.metadata.tplTestText) setTplTestText(result.metadata.tplTestText.slice(0, 1000));
+    if (result.metadata.tplMarkers.length > 0) setTplMarkers(result.metadata.tplMarkers);
+    if (result.matchingTypeIds.length > 0) setMatchingIds(result.matchingTypeIds);
+    if (result.metadata.canonicalPreset) {
+      setTemplateType("canonical");
+      setCanonicalPresetId(result.metadata.canonicalPreset);
+    }
+    for (const w of result.warnings) toast.warning(w);
+    toast.success(`✓ SVG-KR v${kr.version} détecté — wizard pré-rempli (${result.anchors.length} ancres)`);
+  };
+
+  const clearSvgKrHydration = () => {
+    setSvgKrInfo(null);
+    setAnchors([]);
+    setIconSlots({});
+    setCardinality([]);
+    setMatchingIds([]);
+    setTplId("");
+    setTplName("");
+    setTplDescription("");
+    setTplMarkers([]);
+    setTplTestText("");
+    setCanonicalPresetId(null);
+    toast("Pré-remplissage annulé — wizard manuel.");
+  };
+
   const handleFile = async (file: File) => {
     if (!/\.(svg|eps|ai|pdf)$/i.test(file.name)) {
       toast.error("Format non supporté. Utilisez SVG, EPS, AI ou PDF.");
@@ -502,7 +551,17 @@ export default function AdminStudioPage() {
     try {
       const res = await studioApi.upload(file);
       setUpload(res);
-      toast.success("Fichier accepté");
+      // Pré-remplissage automatique si le SVG est conforme SVG-KR
+      const kr = res.svg_kr ?? null;
+      if (kr && isSvgKrVersionSupported(kr.version)) {
+        applySvgKrHydration(kr, res.image_width, res.image_height);
+      } else {
+        setSvgKrInfo(null);
+        if (kr && !isSvgKrVersionSupported(kr.version)) {
+          toast.warning(`SVG-KR v${kr.version} non supporté — wizard manuel.`);
+        }
+        toast.success("Fichier accepté");
+      }
     } catch (e: any) {
       toast.error(e?.message ?? "Échec de l'upload");
     } finally {
@@ -876,6 +935,7 @@ export default function AdminStudioPage() {
     setTemplateType(null);
     setCanonicalPresetId(null);
     setUpload(null);
+    setSvgKrInfo(null);
     setAnchors([]);
     setSelectedId(null);
     setCardinality([]);
@@ -1160,6 +1220,29 @@ export default function AdminStudioPage() {
             </div>
             <Button size="sm" variant="ghost" onClick={() => setReconstructedBanner(null)}>
               <X className="w-4 h-4" />
+            </Button>
+          </Card>
+        )}
+        {svgKrInfo && (
+          <Card className="mb-6 p-4 border-teal-500/50 bg-teal-500/5 flex items-start justify-between gap-3">
+            <div className="text-sm">
+              <p className="font-medium text-teal-700 dark:text-teal-400">
+                ✓ SVG-KR v{svgKrInfo.version} détecté — wizard pré-rempli
+              </p>
+              <p className="text-muted-foreground">
+                Métadonnées, slots, ancres et icônes ont été extraits du SVG. Parcours les étapes pour vérifier puis déploie.
+              </p>
+            </div>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                if (window.confirm("Repartir de zéro et ignorer le pré-remplissage SVG-KR ?")) {
+                  clearSvgKrHydration();
+                }
+              }}
+            >
+              Repartir de zéro
             </Button>
           </Card>
         )}
@@ -2306,6 +2389,20 @@ export default function AdminStudioPage() {
                   {otherChecked && otherText && <li>· Autre : {otherText}</li>}
                 </ul>
               </div>
+              {svgKrInfo && svgKrInfo.decorations && svgKrInfo.decorations.length > 0 && (
+                <div className="space-y-1">
+                  <Label>Décorations conservées <span className="text-xs text-muted-foreground font-normal">(pré-rempli depuis SVG-KR)</span></Label>
+                  <ul className="text-sm text-muted-foreground space-y-0.5">
+                    {svgKrInfo.decorations.map((d, i) => (
+                      <li key={i} className="font-mono text-xs">
+                        ▸ <span className="text-foreground">{d.class}</span>
+                        {d.data_index ? ` [${d.data_index}]` : ""} — {d.content}
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="text-xs text-muted-foreground">Ces éléments sont préservés tels quels dans le SVG déployé.</p>
+                </div>
+              )}
             </Card>
           </div>
         )}
