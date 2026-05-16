@@ -506,7 +506,17 @@ export default function AdminStudioPage() {
     try {
       const res = await studioApi.upload(file);
       setUpload(res);
-      toast.success("Fichier accepté");
+      // Pré-remplissage automatique si le SVG est conforme SVG-KR
+      const kr = res.svg_kr ?? null;
+      if (kr && isSvgKrVersionSupported(kr.version)) {
+        applySvgKrHydration(kr, res.image_width, res.image_height);
+      } else {
+        setSvgKrInfo(null);
+        if (kr && !isSvgKrVersionSupported(kr.version)) {
+          toast.warning(`SVG-KR v${kr.version} non supporté — wizard manuel.`);
+        }
+        toast.success("Fichier accepté");
+      }
     } catch (e: any) {
       toast.error(e?.message ?? "Échec de l'upload");
     } finally {
