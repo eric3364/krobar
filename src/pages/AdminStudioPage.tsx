@@ -490,6 +490,51 @@ export default function AdminStudioPage() {
     }
   };
 
+  const applySvgKrHydration = (kr: SvgKrData, imgW: number, imgH: number) => {
+    const result = hydrateFromSvgKr(kr, imgW, imgH);
+    if (result.anchors.length === 0) {
+      toast.warning("SVG-KR détecté mais aucun slot exploitable — wizard manuel.");
+      setSvgKrInfo(null);
+      return;
+    }
+    setSvgKrInfo(kr);
+    setAnchors(result.anchors);
+    setIconSlots(result.iconSlots);
+    setCardinality(result.cardinality);
+    if (result.metadata.tplId) setTplId(result.metadata.tplId);
+    if (result.metadata.tplName) setTplName(result.metadata.tplName);
+    if (result.metadata.tplCategory) {
+      setTplCategory(result.metadata.tplCategory as typeof tplCategory);
+    }
+    if (result.metadata.tplDescription) {
+      setTplDescription(result.metadata.tplDescription.slice(0, 250));
+    }
+    if (result.metadata.tplTestText) setTplTestText(result.metadata.tplTestText.slice(0, 1000));
+    if (result.metadata.tplMarkers.length > 0) setTplMarkers(result.metadata.tplMarkers);
+    if (result.matchingTypeIds.length > 0) setMatchingIds(result.matchingTypeIds);
+    if (result.metadata.canonicalPreset) {
+      setTemplateType("canonical");
+      setCanonicalPresetId(result.metadata.canonicalPreset);
+    }
+    for (const w of result.warnings) toast.warning(w);
+    toast.success(`✓ SVG-KR v${kr.version} détecté — wizard pré-rempli (${result.anchors.length} ancres)`);
+  };
+
+  const clearSvgKrHydration = () => {
+    setSvgKrInfo(null);
+    setAnchors([]);
+    setIconSlots({});
+    setCardinality([]);
+    setMatchingIds([]);
+    setTplId("");
+    setTplName("");
+    setTplDescription("");
+    setTplMarkers([]);
+    setTplTestText("");
+    setCanonicalPresetId(null);
+    toast("Pré-remplissage annulé — wizard manuel.");
+  };
+
   const handleFile = async (file: File) => {
     if (!/\.(svg|eps|ai|pdf)$/i.test(file.name)) {
       toast.error("Format non supporté. Utilisez SVG, EPS, AI ou PDF.");
