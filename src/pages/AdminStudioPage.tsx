@@ -107,6 +107,8 @@ export default function AdminStudioPage() {
   // Phase 1
   const [uploading, setUploading] = useState(false);
   const [upload, setUpload] = useState<UploadResponse | null>(null);
+  // Métadonnées SVG-KR détectées dans le dernier upload (null si SVG classique).
+  const [svgKrInfo, setSvgKrInfo] = useState<SvgKrData | null>(null);
 
   // Phase 2
   const [anchors, setAnchors] = useState<Anchor[]>([]);
