@@ -550,15 +550,24 @@ export default function AdminStudioPage() {
     setUploading(true);
     try {
       const res = await studioApi.upload(file);
+      // Debug: log la réponse pour vérifier la présence et le format de svg_kr
+      console.log("[Studio Upload] response keys:", Object.keys(res ?? {}));
+      console.log("[Studio Upload] svg_kr:", (res as any)?.svg_kr);
       setUpload(res);
       // Pré-remplissage automatique si le SVG est conforme SVG-KR
       const kr = res.svg_kr ?? null;
       if (kr && isSvgKrVersionSupported(kr.version)) {
+        console.log("[Studio Upload] SVG-KR detecté, hydratation en cours…", {
+          version: kr.version,
+          slots: kr.slots?.length ?? 0,
+        });
         applySvgKrHydration(kr, res.image_width, res.image_height);
       } else {
         setSvgKrInfo(null);
         if (kr && !isSvgKrVersionSupported(kr.version)) {
           toast.warning(`SVG-KR v${kr.version} non supporté — wizard manuel.`);
+        } else {
+          console.log("[Studio Upload] Pas de champ svg_kr dans la réponse — wizard manuel.");
         }
         toast.success("Fichier accepté");
       }
