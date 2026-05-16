@@ -935,6 +935,7 @@ export default function AdminStudioPage() {
     setTemplateType(null);
     setCanonicalPresetId(null);
     setUpload(null);
+    setSvgKrInfo(null);
     setAnchors([]);
     setSelectedId(null);
     setCardinality([]);
