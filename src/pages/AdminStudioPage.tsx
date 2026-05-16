@@ -1223,6 +1223,29 @@ export default function AdminStudioPage() {
             </Button>
           </Card>
         )}
+        {svgKrInfo && (
+          <Card className="mb-6 p-4 border-teal-500/50 bg-teal-500/5 flex items-start justify-between gap-3">
+            <div className="text-sm">
+              <p className="font-medium text-teal-700 dark:text-teal-400">
+                ✓ SVG-KR v{svgKrInfo.version} détecté — wizard pré-rempli
+              </p>
+              <p className="text-muted-foreground">
+                Métadonnées, slots, ancres et icônes ont été extraits du SVG. Parcours les étapes pour vérifier puis déploie.
+              </p>
+            </div>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                if (window.confirm("Repartir de zéro et ignorer le pré-remplissage SVG-KR ?")) {
+                  clearSvgKrHydration();
+                }
+              }}
+            >
+              Repartir de zéro
+            </Button>
+          </Card>
+        )}
         {/* PHASE 0 — Type chooser (gate) */}
         {phase === 1 && !templateType && (
           <div className="max-w-3xl mx-auto space-y-6">
