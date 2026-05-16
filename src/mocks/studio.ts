@@ -1,5 +1,7 @@
 // Mocks du Krobar Studio. Activés via VITE_USE_STUDIO_MOCKS (par défaut true).
 
+import type { SvgKrData } from "@/types/svgKr";
+
 export type UploadResponse = {
   session_id: string;
   source_format: "svg" | "eps" | "ai" | "pdf";
@@ -9,6 +11,9 @@ export type UploadResponse = {
   cleaned_svg: string;
   native_text_count: number;
   sanitization: { elements_removed: number; attributes_removed: number; external_refs_blocked: number };
+  // Présent uniquement si le SVG uploadé est conforme à la convention SVG-KR.
+  // null sinon (comportement wizard manuel inchangé).
+  svg_kr?: SvgKrData | null;
 };
 
 export type MatchingType = {
