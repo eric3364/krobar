@@ -20,6 +20,8 @@ import AdminFamiliesPage from "./pages/AdminFamiliesPage.tsx";
 import AdminMatricePage from "./pages/AdminMatricePage.tsx";
 import AdminFeatureFlagsPage from "./pages/AdminFeatureFlagsPage.tsx";
 import AdminIconsDemo from "./pages/AdminIconsDemo.tsx";
+import AdminLibraryPage from "./pages/AdminLibraryPage.tsx";
+import AdminLibraryTemplatePage from "./pages/AdminLibraryTemplatePage.tsx";
 import AuthPage from "./pages/Auth.tsx";
 import ResetPassword from "./pages/ResetPassword.tsx";
 
