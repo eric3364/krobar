@@ -193,6 +193,8 @@ export default function AdminStudioPage() {
   } | null>(null);
   const [finalPreviewLoading, setFinalPreviewLoading] = useState(false);
   const [finalPreviewError, setFinalPreviewError] = useState<string | null>(null);
+  // Fix 3 — Marque l'aperçu final comme obsolète quand un champ influent change.
+  const [previewStale, setPreviewStale] = useState(false);
   const [deployOpen, setDeployOpen] = useState(false);
   const [deploying, setDeploying] = useState(false);
   const [existingIds, setExistingIds] = useState<Set<string>>(new Set());
@@ -336,6 +338,29 @@ export default function AdminStudioPage() {
     setSelectedId(null);
     setPhase(snap.upload ? jumpTo : 1);
     toast.success(`Template « ${snap.tplName || snap.template_id} » chargé pour modification`);
+
+    // Fix 2 — Si le template est déjà déployé, la cardinalité du manifest backend
+    // fait foi (l'admin a pu l'éditer manuellement). On override le snapshot local.
+    const deployedId = snap.template_id || snap.tplId;
+    if (deployedId) {
+      (async () => {
+        try {
+          const res = await studioApi.getStudioParams(deployedId);
+          const fresh = res?.studio_params?.cardinality_configs;
+          if (Array.isArray(fresh) && fresh.length > 0) {
+            const mapped: CardinalityConfig[] = fresh.map((c) => ({
+              slotName: c.slot_name,
+              mode: c.mode,
+              min: c.min,
+              max: c.max,
+            }));
+            setCardinality(mapped);
+          }
+        } catch {
+          /* template non déployé ou backend indispo : on garde le snapshot local */
+        }
+      })();
+    }
   };
 
   // ─── Reconnecter un template historique via le backend Krobar ────────
@@ -928,7 +953,12 @@ export default function AdminStudioPage() {
   const phase8Initialized = useRef(false);
   useEffect(() => {
     if (phase === 8 && !phase8Initialized.current) {
-      setTplCategory(derivedPrimaryIntent);
+      // Fix 1 — Ne pas écraser la catégorie quand on édite un draft/template existant.
+      // L'utilisateur a déjà choisi (ou restauré) sa catégorie ; la dérivation
+      // automatique ne doit s'appliquer qu'en flux de création fraîche.
+      if (!editingExistingId) {
+        setTplCategory(derivedPrimaryIntent);
+      }
       if (!tplDescription) setTplDescription(derivedBestFor.slice(0, 250));
       if (tplMarkers.length === 0) setTplMarkers(derivedMarkers);
       phase8Initialized.current = true;
@@ -1180,6 +1210,7 @@ export default function AdminStudioPage() {
         costUsd: res.cost_usd,
         cacheKey,
       });
+      setPreviewStale(false);
     } catch (e: any) {
       const msg = e?.message ?? "Échec de la génération de l'aperçu";
       setFinalPreviewError(msg);
@@ -1188,6 +1219,13 @@ export default function AdminStudioPage() {
       setFinalPreviewLoading(false);
     }
   };
+
+  // Fix 3 — Marque l'aperçu obsolète dès qu'un champ influant le rendu change.
+  // Pas d'auto-regen (coût ~$0.01 + ~10s). On laisse l'admin cliquer « Régénérer ».
+  useEffect(() => {
+    if (finalPreview) setPreviewStale(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tplDescription, tplCategory, tplMarkers, tplTestText, matchingIds, preserveBackground, backgroundHex, paletteMapping]);
   const confirmDeploy = async () => {
     setDeploying(true);
     try {
@@ -2420,9 +2458,10 @@ export default function AdminStudioPage() {
                   <h3 className="text-sm font-semibold">Aperçu final avec le texte de test</h3>
                   <Button
                     size="sm"
-                    variant={finalPreview ? "outline" : "default"}
+                    variant={finalPreview && previewStale ? "default" : finalPreview ? "outline" : "default"}
                     onClick={() => generateFinalPreview(!!finalPreview)}
                     disabled={finalPreviewLoading || tplTestText.trim().length < 20}
+                    className={finalPreview && previewStale ? "bg-amber-500 hover:bg-amber-600 text-white" : undefined}
                   >
                     {finalPreviewLoading ? (
                       <><Loader2 className="w-3 h-3 animate-spin" /> Génération…</>
@@ -2433,6 +2472,13 @@ export default function AdminStudioPage() {
                     )}
                   </Button>
                 </div>
+
+                {finalPreview && previewStale && !finalPreviewLoading && (
+                  <div className="flex items-start gap-2 rounded-md border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-xs text-amber-900 dark:text-amber-200">
+                    <span className="font-semibold">⚠️ Aperçu obsolète</span>
+                    <span>— modifications non répercutées. Clique « Regénérer » pour rafraîchir.</span>
+                  </div>
+                )}
 
                 {!finalPreview && !finalPreviewLoading && !finalPreviewError && (
                   <p className="text-xs text-muted-foreground">
