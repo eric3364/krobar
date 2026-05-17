@@ -157,6 +157,18 @@ export const studioApi = {
     if (USE_MOCKS) return mockDeploy(payload);
     return adminFetch<{ deployed: boolean; template_id: string }>("/admin/studio/deploy", { body: payload });
   },
+  // Fix 5 (17 mai 2026) — Aperçu final avec le texte de test, sans déploiement.
+  // Le backend construit un template temporaire en mémoire et lance le pipeline
+  // multi-agents en forçant ce template comme cible (bypass matcher).
+  previewWithText(payload: unknown) {
+    return adminFetch<{
+      rendered_svg?: string;
+      rendered_png_url?: string;
+      latency_ms?: number;
+      cost_usd?: number;
+      slots_filled?: unknown[];
+    }>("/admin/studio/preview-with-text", { body: payload });
+  },
   updateTemplate(templateId: string, payload: unknown) {
     if (USE_MOCKS) return mockDeploy(payload);
     return adminFetch<{ deployed: boolean; template_id: string }>(`/admin/studio/templates/${encodeURIComponent(templateId)}`, {
