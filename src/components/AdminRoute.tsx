@@ -1,23 +1,18 @@
 import { ReactNode } from "react";
 import { Navigate, Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { Loader2, LogOut, LayoutDashboard, FlaskConical, FolderOpen, Plus, Wand2, Palette, ListChecks, Users, Pencil, Grid3x3, Flag, Sparkles } from "lucide-react";
+import { Loader2, LayoutDashboard, Palette, Users, Pencil, Grid3x3, Flag, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BYPASS_AUTH } from "@/lib/devAuth";
 import { Helmet } from "react-helmet-async";
 
 const navItems = [
   { label: "Back-office", path: "/admin", icon: LayoutDashboard },
-  { label: "Nouveau template", path: "/admin/templates/new", icon: Plus },
-  { label: "Atelier IA", path: "/admin/templates/atelier", icon: Wand2 },
   { label: "Studio", path: "/admin/studio", icon: Palette },
-  { label: "Feature flags", path: "/admin/feature-flags", icon: Flag },
-  { label: "Démo icônes", path: "/admin/icons-demo", icon: Sparkles },
-  { label: "Drafts", path: "/admin/templates/drafts", icon: FolderOpen },
-  { label: "Suite de tests", path: "/admin/test-suite", icon: ListChecks },
+  { label: "Bibliothèque", path: "/admin/library", icon: BookOpen },
   { label: "Familles", path: "/admin/familles", icon: Users },
+  { label: "Feature flags", path: "/admin/feature-flags", icon: Flag },
   { label: "Matrice", path: "/admin/matrice", icon: Grid3x3 },
-  { label: "Benchmark", path: "/admin/benchmark", icon: FlaskConical },
 ];
 
 function AdminLayoutInner({ children }: { children: ReactNode }) {
