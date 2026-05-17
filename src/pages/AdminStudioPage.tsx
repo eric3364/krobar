@@ -32,7 +32,7 @@ import {
 
 import StudioCanvas, { type Anchor, colorForSlot, type Tool } from "@/components/studio/StudioCanvas";
 import { studioApi, type MatchingType, type UploadResponse, validateStudioUploadFile } from "@/lib/studioApi";
-import { clearDeletedTemplate, filterDeletedTemplates } from "@/lib/deletedTemplates";
+import { clearDeletedTemplate, filterDeletedTemplates, markTemplateDeleted } from "@/lib/deletedTemplates";
 import { getTemplates, type TemplateMetadata } from "@/lib/api";
 import { supabase } from "@/integrations/supabase/client";
 import { STUDIO_RECENT_DEPLOYS_STORAGE } from "@/data/test-suite";
@@ -47,7 +47,7 @@ import {
   type StudioSnapshot,
 } from "@/lib/studioSnapshots";
 import { palettes, defaultPalette, type PaletteKey } from "@/palettes";
-import { applyPaletteToSvg, PALETTE_ROLES, detectColorsInSvg, autoMapDetectedColors } from "@/lib/paletteRemap";
+import { applyPaletteToSvg, PALETTE_ROLES, detectColorsInSvg, autoMapDetectedColors, detectBackgroundHex } from "@/lib/paletteRemap";
 import KrobarSvg from "@/components/KrobarSvg";
 import { fetchCanonicalPresets, type CanonicalPreset } from "@/lib/canonicalPresets";
 import { hydrateFromSvgKr } from "@/lib/svgKrHydrator";
@@ -161,6 +161,9 @@ export default function AdminStudioPage() {
   const [autoPaletteMapping, setAutoPaletteMapping] = useState<Record<string, string | null>>({});
   const [paletteLoading, setPaletteLoading] = useState(false);
   const [previewPaletteKey, setPreviewPaletteKey] = useState<PaletteKey>(defaultPalette);
+  // Fix 3 (17 mai 2026) — fond du template
+  const [backgroundHex, setBackgroundHex] = useState<string | null>(null);
+  const [preserveBackground, setPreserveBackground] = useState<boolean>(true);
 
   // Phase 4 — Cardinalité (ex-Phase 3)
   const [cardinality, setCardinality] = useState<CardinalityConfig[]>([]);
@@ -843,9 +846,10 @@ export default function AdminStudioPage() {
     if (detectedColors.length > 0) return; // déjà analysé (snapshot ou précédent)
     let cancelled = false;
     setPaletteLoading(true);
+    const detectedBg = backgroundHex;
     const applyLocal = () => {
       const local = detectColorsInSvg(upload.cleaned_svg);
-      const auto = autoMapDetectedColors(local);
+      const auto = autoMapDetectedColors(local, detectedBg);
       setDetectedColors(local);
       setAutoPaletteMapping(auto);
       setPaletteMapping((prev) => Object.keys(prev).length > 0 ? prev : auto);
@@ -858,9 +862,12 @@ export default function AdminStudioPage() {
           applyLocal();
           return;
         }
+        // On recalcule l'auto-mapping côté client pour bénéficier des règles
+        // Fix 2 (isolées → null, dominante → primary, fond → background).
+        const auto = autoMapDetectedColors(colors, detectedBg);
         setDetectedColors(colors);
-        setAutoPaletteMapping(res.auto_mapping ?? {});
-        setPaletteMapping((prev) => Object.keys(prev).length > 0 ? prev : (res.auto_mapping ?? {}));
+        setAutoPaletteMapping(auto);
+        setPaletteMapping((prev) => Object.keys(prev).length > 0 ? prev : auto);
       })
       .catch(() => {
         if (cancelled) return;
@@ -871,6 +878,26 @@ export default function AdminStudioPage() {
     return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase, upload?.cleaned_svg]);
+
+  // Sync mapping ↔ preserveBackground (Fix 3)
+  useEffect(() => {
+    if (!backgroundHex) return;
+    setPaletteMapping((prev) => {
+      const cur = prev[backgroundHex] ?? null;
+      const desired = preserveBackground ? null : "background";
+      if (cur === desired) return prev;
+      return { ...prev, [backgroundHex]: desired };
+    });
+  }, [preserveBackground, backgroundHex]);
+
+  // Détection du fond (Fix 3) — recalculée à chaque changement d'upload,
+  // y compris lors d'un restore de snapshot.
+  useEffect(() => {
+    if (!upload?.cleaned_svg) { setBackgroundHex(null); return; }
+    const bg = detectBackgroundHex(upload.cleaned_svg, upload.image_width, upload.image_height);
+    setBackgroundHex(bg);
+    if (bg) setPreserveBackground(true);
+  }, [upload?.cleaned_svg, upload?.image_width, upload?.image_height]);
 
   const previewPalette = palettes[previewPaletteKey];
   const previewSvg = useMemo(() => {
@@ -1056,6 +1083,9 @@ export default function AdminStudioPage() {
       test_text: tplTestText.trim(),
       add_to_test_suite: tplTestText.trim().length > 0,
       palette_mapping: paletteMapping,
+      // Fix 3 (17 mai 2026) — fond préservé : le backend doit conserver le rect
+      // de fond avec son hex original (pas de remplacement var(--background)).
+      preserve_background_hex: preserveBackground ? backgroundHex : null,
       // Format P3 (14 mai 2026) : { icon_name, x, y, size, stroke }
       decorative_icons: decorativeIcons.map((d) => ({
         icon_name: d.name,
@@ -1538,23 +1568,45 @@ export default function AdminStudioPage() {
                               editable ? "Modifier" : "Reconnecter"
                             )}
                           </Button>
-                          {snap && (
-                            <Button
-                              size="icon"
-                              variant="ghost"
-                              className="h-7 w-7"
-                              onClick={async (e) => {
-                                e.stopPropagation();
-                                if (confirm(`Supprimer les paramètres Studio de « ${snap.tplName || snap.template_id} » ? Le template déployé n'est pas affecté.`)) {
-                                  try { await deleteSnapshot(snap.template_id); }
-                                  catch { toast.error("Échec de la suppression"); }
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            className="h-7 w-7 hover:text-destructive"
+                            onClick={async (e) => {
+                              e.stopPropagation();
+                              const ok = confirm(
+                                `Cette suppression est définitive. L'ID « ${tpl.id} » sera à nouveau disponible pour un nouveau template. Continuer ?`,
+                              );
+                              if (!ok) return;
+                              try {
+                                // 1. Suppression backend (manifest + fichier SVG sur VPS)
+                                try { await studioApi.deleteTemplate(tpl.id); }
+                                catch (err: any) {
+                                  // 404 = déjà absent côté VPS, on continue le nettoyage local
+                                  if (!/404|introuvable|not.?found/i.test(err?.message ?? "")) throw err;
                                 }
-                              }}
-                              aria-label="Supprimer le snapshot"
-                            >
-                              <Trash2 className="w-3.5 h-3.5" />
-                            </Button>
-                          )}
+                                // 2. Snapshot Studio (Supabase template_studio_params)
+                                if (snap) {
+                                  try { await deleteSnapshot(snap.template_id); } catch { /* déjà supprimé */ }
+                                }
+                                // 3. Filtre UI local + libération de l'ID
+                                markTemplateDeleted(tpl.id);
+                                setKnownPremiumTemplates((prev) => prev.filter((t) => t.id !== tpl.id));
+                                setExistingIds((prev) => {
+                                  const next = new Set(prev);
+                                  next.delete(tpl.id);
+                                  return next;
+                                });
+                                toast.success(`Template « ${tpl.id} » supprimé. L'ID est à nouveau libre.`);
+                              } catch (err: any) {
+                                toast.error(err?.message ?? "Échec de la suppression du template");
+                              }
+                            }}
+                            aria-label="Supprimer définitivement ce template"
+                            title="Supprimer définitivement"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </Button>
                         </div>
                       </li>
                     );
@@ -1814,6 +1866,35 @@ export default function AdminStudioPage() {
               <Card className="p-4 flex items-center gap-3">
                 <Loader2 className="w-4 h-4 animate-spin" />
                 <p className="text-sm">Détection des couleurs dominantes…</p>
+              </Card>
+            )}
+
+            {backgroundHex && (
+              <Card className="p-3 border-primary/30 bg-primary/5 space-y-2">
+                <div className="flex items-center justify-between gap-3 flex-wrap">
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="w-6 h-6 rounded border shrink-0"
+                      style={{ background: backgroundHex }}
+                      aria-label={`Fond ${backgroundHex}`}
+                    />
+                    <div>
+                      <p className="text-sm font-medium">Fond du template</p>
+                      <p className="text-xs text-muted-foreground">
+                        Fond détecté : <span className="font-mono">{backgroundHex}</span>
+                      </p>
+                    </div>
+                  </div>
+                  <label className="flex items-center gap-2 text-sm cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      checked={preserveBackground}
+                      onChange={(e) => setPreserveBackground(e.target.checked)}
+                      className="h-4 w-4"
+                    />
+                    <span>Garder le fond tel quel <span className="text-muted-foreground">(recommandé)</span></span>
+                  </label>
+                </div>
               </Card>
             )}
 

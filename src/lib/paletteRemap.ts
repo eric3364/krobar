@@ -76,22 +76,75 @@ export function detectColorsInSvg(svg: string): DetectedColor[] {
     .sort((a, b) => b.occurrences - a.occurrences);
 }
 
-export function autoMapDetectedColors(colors: DetectedColor[]): Record<string, string | null> {
-  const mapping: Record<string, string | null> = {};
-  const nonNeutral = colors.filter((c) => !c.is_neutral);
-  const neutral = colors.filter((c) => c.is_neutral);
-  const order: PaletteRole[] = ["primary", "accent", "secondary", "neutral", "surface", "background", "text"];
-  let i = 0;
-  for (const c of nonNeutral) {
-    mapping[c.hex_value] = order[i] ?? null;
-    i++;
+// Détection du fond du SVG. Heuristiques par ordre de priorité :
+//  1. `<rect class="krobar-background">` (annotation explicite SVG-KR).
+//  2. Premier `<rect>` avec width="100%" height="100%".
+//  3. Premier `<rect>` couvrant l'intégralité du viewBox (x=0,y=0, w=W, h=H).
+// Retourne le hex du `fill` détecté, normalisé, ou null.
+export function detectBackgroundHex(svg: string, viewBoxW?: number, viewBoxH?: number): string | null {
+  const rectRx = /<rect\b[^>]*>/gi;
+  const fillRx = /fill\s*=\s*"([^"]+)"/i;
+  const widthRx = /\swidth\s*=\s*"([^"]+)"/i;
+  const heightRx = /\sheight\s*=\s*"([^"]+)"/i;
+  const xRx = /\sx\s*=\s*"([^"]+)"/i;
+  const yRx = /\sy\s*=\s*"([^"]+)"/i;
+  const classRx = /\sclass\s*=\s*"([^"]*)"/i;
+
+  const candidates: { score: number; hex: string }[] = [];
+  for (const tag of svg.match(rectRx) ?? []) {
+    const fillM = tag.match(fillRx);
+    if (!fillM) continue;
+    const hex = normalizeHex(fillM[1]);
+    if (!hex) continue;
+    const cls = tag.match(classRx)?.[1] ?? "";
+    const w = tag.match(widthRx)?.[1] ?? "";
+    const h = tag.match(heightRx)?.[1] ?? "";
+    const x = parseFloat(tag.match(xRx)?.[1] ?? "0");
+    const y = parseFloat(tag.match(yRx)?.[1] ?? "0");
+
+    if (/\bkrobar-background\b/.test(cls)) {
+      return hex;
+    }
+    if (w === "100%" && h === "100%") candidates.push({ score: 90, hex });
+    else if (viewBoxW && viewBoxH && x === 0 && y === 0 && parseFloat(w) === viewBoxW && parseFloat(h) === viewBoxH) {
+      candidates.push({ score: 80, hex });
+    }
   }
+  candidates.sort((a, b) => b.score - a.score);
+  return candidates[0]?.hex ?? null;
+}
+
+// Auto-mapping intelligent (Fix 17 mai 2026) :
+//  - dominante (la plus utilisée, non-neutre) → primary
+//  - secondaire (occ > 1, non-dominante, non-neutre) → accent
+//  - tertiaire et + (occ > 1) → secondary puis surface
+//  - isolée (1 occ, non-neutre) → null (« garder telle quelle »)
+//  - fond détecté (param backgroundHex) → background
+//  - autres neutres : blanc / très clair → neutral, noir → text, gris → neutral
+export function autoMapDetectedColors(
+  colors: DetectedColor[],
+  backgroundHex?: string | null,
+): Record<string, string | null> {
+  const mapping: Record<string, string | null> = {};
+  const bg = backgroundHex ? normalizeHex(backgroundHex) : null;
+
+  const nonNeutralMulti = colors.filter((c) => !c.is_neutral && c.occurrences > 1 && c.hex_value !== bg);
+  const nonNeutralIsolated = colors.filter((c) => !c.is_neutral && c.occurrences === 1 && c.hex_value !== bg);
+  const neutral = colors.filter((c) => c.is_neutral && c.hex_value !== bg);
+
+  const fallbackOrder: PaletteRole[] = ["primary", "accent", "secondary", "surface"];
+  nonNeutralMulti.forEach((c, i) => {
+    mapping[c.hex_value] = fallbackOrder[i] ?? null;
+  });
+  // Les couleurs isolées restent « garder telle quelle » par défaut.
+  for (const c of nonNeutralIsolated) mapping[c.hex_value] = null;
+
   for (const c of neutral) {
-    // blanc → background, noir → text, gris → neutral
-    if (c.hex_value === "#ffffff") mapping[c.hex_value] = "background";
-    else if (c.hex_value === "#000000") mapping[c.hex_value] = "text";
+    if (c.hex_value === "#000000") mapping[c.hex_value] = "text";
     else mapping[c.hex_value] = "neutral";
   }
+
+  if (bg) mapping[bg] = "background";
   return mapping;
 }
 
