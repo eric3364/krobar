@@ -1219,6 +1219,13 @@ export default function AdminStudioPage() {
       setFinalPreviewLoading(false);
     }
   };
+
+  // Fix 3 — Marque l'aperçu obsolète dès qu'un champ influant le rendu change.
+  // Pas d'auto-regen (coût ~$0.01 + ~10s). On laisse l'admin cliquer « Régénérer ».
+  useEffect(() => {
+    if (finalPreview) setPreviewStale(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tplDescription, tplCategory, tplMarkers, tplTestText, matchingIds, preserveBackground, backgroundHex, paletteMapping]);
   const confirmDeploy = async () => {
     setDeploying(true);
     try {
