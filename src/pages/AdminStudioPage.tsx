@@ -32,7 +32,7 @@ import {
 
 import StudioCanvas, { type Anchor, colorForSlot, type Tool } from "@/components/studio/StudioCanvas";
 import { studioApi, type MatchingType, type UploadResponse, validateStudioUploadFile } from "@/lib/studioApi";
-import { clearDeletedTemplate, filterDeletedTemplates } from "@/lib/deletedTemplates";
+import { clearDeletedTemplate, filterDeletedTemplates, markTemplateDeleted } from "@/lib/deletedTemplates";
 import { getTemplates, type TemplateMetadata } from "@/lib/api";
 import { supabase } from "@/integrations/supabase/client";
 import { STUDIO_RECENT_DEPLOYS_STORAGE } from "@/data/test-suite";
