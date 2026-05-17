@@ -1156,6 +1156,38 @@ export default function AdminStudioPage() {
     if (err) { toast.error(err); return; }
     setDeployOpen(true);
   };
+
+  // Fix 5 — Génère un aperçu final via le pipeline IA, sans déploiement.
+  const generateFinalPreview = async (force = false) => {
+    const text = tplTestText.trim();
+    if (text.length < 20) {
+      toast.error("Saisis d'abord un texte de test (min 20 caractères).");
+      return;
+    }
+    const payload = buildPayload();
+    const cacheKey = `${tplId}|${text.length}|${text.slice(0, 80)}`;
+    if (!force && finalPreview && finalPreview.cacheKey === cacheKey) {
+      return; // cache hit
+    }
+    setFinalPreviewLoading(true);
+    setFinalPreviewError(null);
+    try {
+      const res = await studioApi.previewWithText(payload);
+      setFinalPreview({
+        svg: res.rendered_svg,
+        pngUrl: res.rendered_png_url,
+        latencyMs: res.latency_ms,
+        costUsd: res.cost_usd,
+        cacheKey,
+      });
+    } catch (e: any) {
+      const msg = e?.message ?? "Échec de la génération de l'aperçu";
+      setFinalPreviewError(msg);
+      toast.error(msg);
+    } finally {
+      setFinalPreviewLoading(false);
+    }
+  };
   const confirmDeploy = async () => {
     setDeploying(true);
     try {
