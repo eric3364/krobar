@@ -164,6 +164,15 @@ export const studioApi = {
       body: payload,
     });
   },
+  // Suppression définitive d'un template Premium déployé.
+  // Le backend retire l'entrée du manifest + supprime le fichier SVG sur le VPS.
+  // L'ID redevient ensuite disponible pour un nouveau template.
+  deleteTemplate(templateId: string) {
+    if (USE_MOCKS) return Promise.resolve({ deleted: true, template_id: templateId });
+    return adminFetch<{ deleted: boolean; template_id: string }>(`/admin/studio/templates/${encodeURIComponent(templateId)}`, {
+      method: "DELETE",
+    });
+  },
   // Analyse les couleurs présentes dans un SVG nettoyé et retourne un mapping
   // automatique vers les rôles CSS Krobar (--primary, --secondary, etc.).
   analyzePalette(cleaned_svg: string) {
