@@ -35,7 +35,7 @@ import { studioApi, type MatchingType, type UploadResponse, validateStudioUpload
 import { clearDeletedTemplate, filterDeletedTemplates, markTemplateDeleted } from "@/lib/deletedTemplates";
 import { getTemplates, type TemplateMetadata } from "@/lib/api";
 import { supabase } from "@/integrations/supabase/client";
-import { STUDIO_RECENT_DEPLOYS_STORAGE } from "@/data/test-suite";
+const STUDIO_RECENT_DEPLOYS_STORAGE = "studio_recent_deploys_v1";
 import {
   deleteSnapshot,
   hydrateSnapshots,
