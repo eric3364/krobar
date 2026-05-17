@@ -47,7 +47,7 @@ import {
   type StudioSnapshot,
 } from "@/lib/studioSnapshots";
 import { palettes, defaultPalette, type PaletteKey } from "@/palettes";
-import { applyPaletteToSvg, PALETTE_ROLES, detectColorsInSvg, autoMapDetectedColors } from "@/lib/paletteRemap";
+import { applyPaletteToSvg, PALETTE_ROLES, detectColorsInSvg, autoMapDetectedColors, detectBackgroundHex } from "@/lib/paletteRemap";
 import KrobarSvg from "@/components/KrobarSvg";
 import { fetchCanonicalPresets, type CanonicalPreset } from "@/lib/canonicalPresets";
 import { hydrateFromSvgKr } from "@/lib/svgKrHydrator";
