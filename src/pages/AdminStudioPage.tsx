@@ -1081,6 +1081,9 @@ export default function AdminStudioPage() {
       test_text: tplTestText.trim(),
       add_to_test_suite: tplTestText.trim().length > 0,
       palette_mapping: paletteMapping,
+      // Fix 3 (17 mai 2026) — fond préservé : le backend doit conserver le rect
+      // de fond avec son hex original (pas de remplacement var(--background)).
+      preserve_background_hex: preserveBackground ? backgroundHex : null,
       // Format P3 (14 mai 2026) : { icon_name, x, y, size, stroke }
       decorative_icons: decorativeIcons.map((d) => ({
         icon_name: d.name,
