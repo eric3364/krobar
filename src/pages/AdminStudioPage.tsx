@@ -161,6 +161,9 @@ export default function AdminStudioPage() {
   const [autoPaletteMapping, setAutoPaletteMapping] = useState<Record<string, string | null>>({});
   const [paletteLoading, setPaletteLoading] = useState(false);
   const [previewPaletteKey, setPreviewPaletteKey] = useState<PaletteKey>(defaultPalette);
+  // Fix 3 (17 mai 2026) — fond du template
+  const [backgroundHex, setBackgroundHex] = useState<string | null>(null);
+  const [preserveBackground, setPreserveBackground] = useState<boolean>(true);
 
   // Phase 4 — Cardinalité (ex-Phase 3)
   const [cardinality, setCardinality] = useState<CardinalityConfig[]>([]);
