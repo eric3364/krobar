@@ -846,14 +846,7 @@ export default function AdminStudioPage() {
     if (detectedColors.length > 0) return; // déjà analysé (snapshot ou précédent)
     let cancelled = false;
     setPaletteLoading(true);
-    // Détection du fond (Fix 3) — heuristique sur le SVG nettoyé
-    const detectedBg = detectBackgroundHex(upload.cleaned_svg, upload.image_width, upload.image_height);
-    if (detectedBg) {
-      setBackgroundHex(detectedBg);
-      setPreserveBackground(true);
-    } else {
-      setBackgroundHex(null);
-    }
+    const detectedBg = backgroundHex;
     const applyLocal = () => {
       const local = detectColorsInSvg(upload.cleaned_svg);
       const auto = autoMapDetectedColors(local, detectedBg);
