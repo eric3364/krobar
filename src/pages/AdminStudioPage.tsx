@@ -183,6 +183,16 @@ export default function AdminStudioPage() {
   const [tplMarkers, setTplMarkers] = useState<string[]>([]);
   const [newMarker, setNewMarker] = useState("");
   const [tplTestText, setTplTestText] = useState("");
+  // Fix 5 — Aperçu final IA avec le texte de test (étape 8/8)
+  const [finalPreview, setFinalPreview] = useState<{
+    svg?: string;
+    pngUrl?: string;
+    latencyMs?: number;
+    costUsd?: number;
+    cacheKey: string;
+  } | null>(null);
+  const [finalPreviewLoading, setFinalPreviewLoading] = useState(false);
+  const [finalPreviewError, setFinalPreviewError] = useState<string | null>(null);
   const [deployOpen, setDeployOpen] = useState(false);
   const [deploying, setDeploying] = useState(false);
   const [existingIds, setExistingIds] = useState<Set<string>>(new Set());
@@ -1145,6 +1155,38 @@ export default function AdminStudioPage() {
     const err = validateBeforeDeploy();
     if (err) { toast.error(err); return; }
     setDeployOpen(true);
+  };
+
+  // Fix 5 — Génère un aperçu final via le pipeline IA, sans déploiement.
+  const generateFinalPreview = async (force = false) => {
+    const text = tplTestText.trim();
+    if (text.length < 20) {
+      toast.error("Saisis d'abord un texte de test (min 20 caractères).");
+      return;
+    }
+    const payload = buildPayload();
+    const cacheKey = `${tplId}|${text.length}|${text.slice(0, 80)}`;
+    if (!force && finalPreview && finalPreview.cacheKey === cacheKey) {
+      return; // cache hit
+    }
+    setFinalPreviewLoading(true);
+    setFinalPreviewError(null);
+    try {
+      const res = await studioApi.previewWithText(payload);
+      setFinalPreview({
+        svg: res.rendered_svg,
+        pngUrl: res.rendered_png_url,
+        latencyMs: res.latency_ms,
+        costUsd: res.cost_usd,
+        cacheKey,
+      });
+    } catch (e: any) {
+      const msg = e?.message ?? "Échec de la génération de l'aperçu";
+      setFinalPreviewError(msg);
+      toast.error(msg);
+    } finally {
+      setFinalPreviewLoading(false);
+    }
   };
   const confirmDeploy = async () => {
     setDeploying(true);
@@ -2364,13 +2406,76 @@ export default function AdminStudioPage() {
         {/* PHASE 8 — Méta + go */}
         {phase === 8 && upload && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card className="p-4 space-y-3">
-              <h3 className="text-sm font-semibold">Prévisualisation</h3>
-              <img src={upload.rendered_png_url} alt="Aperçu" className="w-full rounded border" />
-              <p className="text-xs text-muted-foreground">
-                Cet aperçu utilise l'image source. Au rendu final, les slots seront remplis par le pipeline multi-agents.
-              </p>
-            </Card>
+            <div className="space-y-4">
+              <Card className="p-4 space-y-3">
+                <h3 className="text-sm font-semibold">Prévisualisation source</h3>
+                <img src={upload.rendered_png_url} alt="Aperçu" className="w-full rounded border" />
+                <p className="text-xs text-muted-foreground">
+                  Image source (slots vides). Au rendu final, les slots seront remplis par le pipeline multi-agents.
+                </p>
+              </Card>
+
+              <Card className="p-4 space-y-3">
+                <div className="flex items-center justify-between gap-2">
+                  <h3 className="text-sm font-semibold">Aperçu final avec le texte de test</h3>
+                  <Button
+                    size="sm"
+                    variant={finalPreview ? "outline" : "default"}
+                    onClick={() => generateFinalPreview(!!finalPreview)}
+                    disabled={finalPreviewLoading || tplTestText.trim().length < 20}
+                  >
+                    {finalPreviewLoading ? (
+                      <><Loader2 className="w-3 h-3 animate-spin" /> Génération…</>
+                    ) : finalPreview ? (
+                      <><RotateCcw className="w-3 h-3" /> Regénérer</>
+                    ) : (
+                      <><Sparkles className="w-3 h-3" /> Générer l'aperçu final</>
+                    )}
+                  </Button>
+                </div>
+
+                {!finalPreview && !finalPreviewLoading && !finalPreviewError && (
+                  <p className="text-xs text-muted-foreground">
+                    Lance le pipeline IA sur le texte de test pour visualiser le rendu réel
+                    avant déploiement (~8-12s, ~$0.008). Pratique pour repérer un débordement de texte.
+                  </p>
+                )}
+
+                {finalPreviewLoading && (
+                  <div className="flex items-center justify-center py-12 text-sm text-muted-foreground">
+                    <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                    Pipeline IA en cours (8-12s)…
+                  </div>
+                )}
+
+                {finalPreviewError && !finalPreviewLoading && (
+                  <p className="text-xs text-destructive">{finalPreviewError}</p>
+                )}
+
+                {finalPreview && !finalPreviewLoading && (
+                  <>
+                    {finalPreview.svg ? (
+                      <div
+                        className="w-full rounded border overflow-hidden bg-background [&_svg]:w-full [&_svg]:h-auto"
+                        dangerouslySetInnerHTML={{ __html: finalPreview.svg }}
+                      />
+                    ) : finalPreview.pngUrl ? (
+                      <img src={finalPreview.pngUrl} alt="Aperçu final" className="w-full rounded border" />
+                    ) : (
+                      <p className="text-xs text-muted-foreground">Aucun rendu retourné par le backend.</p>
+                    )}
+                    <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                      {typeof finalPreview.latencyMs === "number" && (
+                        <span>Latence : {(finalPreview.latencyMs / 1000).toFixed(1)}s</span>
+                      )}
+                      {typeof finalPreview.costUsd === "number" && (
+                        <span>· Coût : ${finalPreview.costUsd.toFixed(4)}</span>
+                      )}
+                    </div>
+                  </>
+                )}
+              </Card>
+            </div>
 
             <Card className="p-4 space-y-4">
               <div className="space-y-1">
