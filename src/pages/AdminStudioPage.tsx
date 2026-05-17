@@ -2458,9 +2458,10 @@ export default function AdminStudioPage() {
                   <h3 className="text-sm font-semibold">Aperçu final avec le texte de test</h3>
                   <Button
                     size="sm"
-                    variant={finalPreview ? "outline" : "default"}
+                    variant={finalPreview && previewStale ? "default" : finalPreview ? "outline" : "default"}
                     onClick={() => generateFinalPreview(!!finalPreview)}
                     disabled={finalPreviewLoading || tplTestText.trim().length < 20}
+                    className={finalPreview && previewStale ? "bg-amber-500 hover:bg-amber-600 text-white" : undefined}
                   >
                     {finalPreviewLoading ? (
                       <><Loader2 className="w-3 h-3 animate-spin" /> Génération…</>
@@ -2471,6 +2472,13 @@ export default function AdminStudioPage() {
                     )}
                   </Button>
                 </div>
+
+                {finalPreview && previewStale && !finalPreviewLoading && (
+                  <div className="flex items-start gap-2 rounded-md border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-xs text-amber-900 dark:text-amber-200">
+                    <span className="font-semibold">⚠️ Aperçu obsolète</span>
+                    <span>— modifications non répercutées. Clique « Regénérer » pour rafraîchir.</span>
+                  </div>
+                )}
 
                 {!finalPreview && !finalPreviewLoading && !finalPreviewError && (
                   <p className="text-xs text-muted-foreground">
