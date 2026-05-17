@@ -336,6 +336,29 @@ export default function AdminStudioPage() {
     setSelectedId(null);
     setPhase(snap.upload ? jumpTo : 1);
     toast.success(`Template « ${snap.tplName || snap.template_id} » chargé pour modification`);
+
+    // Fix 2 — Si le template est déjà déployé, la cardinalité du manifest backend
+    // fait foi (l'admin a pu l'éditer manuellement). On override le snapshot local.
+    const deployedId = snap.template_id || snap.tplId;
+    if (deployedId) {
+      (async () => {
+        try {
+          const res = await studioApi.getStudioParams(deployedId);
+          const fresh = res?.studio_params?.cardinality_configs;
+          if (Array.isArray(fresh) && fresh.length > 0) {
+            const mapped: CardinalityConfig[] = fresh.map((c) => ({
+              slotName: c.slot_name,
+              mode: c.mode,
+              min: c.min,
+              max: c.max,
+            }));
+            setCardinality(mapped);
+          }
+        } catch {
+          /* template non déployé ou backend indispo : on garde le snapshot local */
+        }
+      })();
+    }
   };
 
   // ─── Reconnecter un template historique via le backend Krobar ────────
