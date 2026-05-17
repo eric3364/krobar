@@ -1561,8 +1561,15 @@ const Index = () => {
       const data = await analyzeText(text, detailLevel);
       const rawSug: Suggestion[] = data.suggestions ?? [];
       if (rawSug.length === 0) throw new Error("Aucune suggestion");
-      // Tous les templates sont gérés par le backend — pas de filtre local
-      const sug = rawSug.map((s) => ({ ...s, score: normalizeScore(s.score) }));
+      // Fix 4 — Filtre les suggestions dont le template_id n'existe plus
+      // dans le manifest courant (template supprimé entre-temps, cache backend
+      // pas invalidé). Évite l'affichage d'IDs bruts avec aperçu vide.
+      const validIds = new Set(manifest.templates.map((t) => t.id));
+      const filtered = rawSug.filter((s) => validIds.has(s.template_id));
+      if (filtered.length === 0) {
+        throw new Error("Aucune suggestion valide — les templates proposés n'existent plus.");
+      }
+      const sug = filtered.map((s) => ({ ...s, score: normalizeScore(s.score) }));
       setSuggestions(sug);
       setSelectedIdx(0);
       try {
