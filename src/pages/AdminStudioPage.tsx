@@ -1566,23 +1566,45 @@ export default function AdminStudioPage() {
                               editable ? "Modifier" : "Reconnecter"
                             )}
                           </Button>
-                          {snap && (
-                            <Button
-                              size="icon"
-                              variant="ghost"
-                              className="h-7 w-7"
-                              onClick={async (e) => {
-                                e.stopPropagation();
-                                if (confirm(`Supprimer les paramètres Studio de « ${snap.tplName || snap.template_id} » ? Le template déployé n'est pas affecté.`)) {
-                                  try { await deleteSnapshot(snap.template_id); }
-                                  catch { toast.error("Échec de la suppression"); }
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            className="h-7 w-7 hover:text-destructive"
+                            onClick={async (e) => {
+                              e.stopPropagation();
+                              const ok = confirm(
+                                `Cette suppression est définitive. L'ID « ${tpl.id} » sera à nouveau disponible pour un nouveau template. Continuer ?`,
+                              );
+                              if (!ok) return;
+                              try {
+                                // 1. Suppression backend (manifest + fichier SVG sur VPS)
+                                try { await studioApi.deleteTemplate(tpl.id); }
+                                catch (err: any) {
+                                  // 404 = déjà absent côté VPS, on continue le nettoyage local
+                                  if (!/404|introuvable|not.?found/i.test(err?.message ?? "")) throw err;
                                 }
-                              }}
-                              aria-label="Supprimer le snapshot"
-                            >
-                              <Trash2 className="w-3.5 h-3.5" />
-                            </Button>
-                          )}
+                                // 2. Snapshot Studio (Supabase template_studio_params)
+                                if (snap) {
+                                  try { await deleteSnapshot(snap.template_id); } catch { /* déjà supprimé */ }
+                                }
+                                // 3. Filtre UI local + libération de l'ID
+                                markTemplateDeleted(tpl.id);
+                                setKnownPremiumTemplates((prev) => prev.filter((t) => t.id !== tpl.id));
+                                setExistingIds((prev) => {
+                                  const next = new Set(prev);
+                                  next.delete(tpl.id);
+                                  return next;
+                                });
+                                toast.success(`Template « ${tpl.id} » supprimé. L'ID est à nouveau libre.`);
+                              } catch (err: any) {
+                                toast.error(err?.message ?? "Échec de la suppression du template");
+                              }
+                            }}
+                            aria-label="Supprimer définitivement ce template"
+                            title="Supprimer définitivement"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </Button>
                         </div>
                       </li>
                     );
