@@ -1837,8 +1837,22 @@ const Index = () => {
           </div>
         )}
         {loading && (
-          <div className="flex-1 flex items-center justify-center">
-            <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+          // Fix 5 — Skeleton 3 cartes pour signaler clairement qu'une nouvelle
+          // analyse est en cours (plus visible qu'un simple spinner).
+          <div className="space-y-3">
+            {[0, 1, 2].map((i) => (
+              <div
+                key={i}
+                className="w-full rounded-lg border-2 border-border p-3 animate-pulse"
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <div className="h-3 w-32 bg-muted rounded" />
+                  <div className="h-3 w-10 bg-muted rounded" />
+                </div>
+                <div className="w-full aspect-[4/3] bg-muted rounded" />
+                <div className="h-2 w-3/4 bg-muted rounded mt-2" />
+              </div>
+            ))}
           </div>
         )}
         <div className="space-y-3">
