@@ -1210,6 +1210,7 @@ export default function AdminStudioPage() {
         costUsd: res.cost_usd,
         cacheKey,
       });
+      setPreviewStale(false);
     } catch (e: any) {
       const msg = e?.message ?? "Échec de la génération de l'aperçu";
       setFinalPreviewError(msg);
