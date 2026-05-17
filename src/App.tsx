@@ -9,17 +9,11 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Index from "./pages/Index.tsx";
 import Landing from "./pages/Landing.tsx";
 import NotFound from "./pages/NotFound.tsx";
-import BenchmarkPage from "./pages/BenchmarkPage.tsx";
 import Admin from "./pages/Admin.tsx";
-import AdminTemplateCreatePage from "./pages/AdminTemplateCreatePage.tsx";
-import AdminTemplateAtelierPage from "./pages/AdminTemplateAtelierPage.tsx";
-import AdminTestSuitePage from "./pages/AdminTestSuitePage.tsx";
-import AdminDraftsPage from "./pages/AdminDraftsPage.tsx";
 import AdminStudioPage from "./pages/AdminStudioPage.tsx";
 import AdminFamiliesPage from "./pages/AdminFamiliesPage.tsx";
 import AdminMatricePage from "./pages/AdminMatricePage.tsx";
 import AdminFeatureFlagsPage from "./pages/AdminFeatureFlagsPage.tsx";
-import AdminIconsDemo from "./pages/AdminIconsDemo.tsx";
 import AdminLibraryPage from "./pages/AdminLibraryPage.tsx";
 import AdminLibraryTemplatePage from "./pages/AdminLibraryTemplatePage.tsx";
 import AuthPage from "./pages/Auth.tsx";
@@ -42,18 +36,12 @@ const App = () => (
 
             {/* Admin routes */}
             <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
-            <Route path="/admin/benchmark" element={<AdminRoute><BenchmarkPage /></AdminRoute>} />
-            <Route path="/admin/templates/new" element={<AdminRoute><AdminTemplateCreatePage /></AdminRoute>} />
-            <Route path="/admin/templates/atelier" element={<AdminRoute><AdminTemplateAtelierPage /></AdminRoute>} />
-            <Route path="/admin/test-suite" element={<AdminRoute><AdminTestSuitePage /></AdminRoute>} />
-            <Route path="/admin/templates/drafts" element={<AdminRoute><AdminDraftsPage /></AdminRoute>} />
             <Route path="/admin/studio" element={<AdminRoute><AdminStudioPage /></AdminRoute>} />
-            <Route path="/admin/familles" element={<AdminRoute><AdminFamiliesPage /></AdminRoute>} />
-            <Route path="/admin/matrice" element={<AdminRoute><AdminMatricePage /></AdminRoute>} />
-            <Route path="/admin/feature-flags" element={<AdminRoute><AdminFeatureFlagsPage /></AdminRoute>} />
-            <Route path="/admin/icons-demo" element={<AdminRoute><AdminIconsDemo /></AdminRoute>} />
             <Route path="/admin/library" element={<AdminRoute><AdminLibraryPage /></AdminRoute>} />
             <Route path="/admin/library/:templateId" element={<AdminRoute><AdminLibraryTemplatePage /></AdminRoute>} />
+            <Route path="/admin/familles" element={<AdminRoute><AdminFamiliesPage /></AdminRoute>} />
+            <Route path="/admin/feature-flags" element={<AdminRoute><AdminFeatureFlagsPage /></AdminRoute>} />
+            <Route path="/admin/matrice" element={<AdminRoute><AdminMatricePage /></AdminRoute>} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>
