@@ -20,6 +20,8 @@ import AdminFamiliesPage from "./pages/AdminFamiliesPage.tsx";
 import AdminMatricePage from "./pages/AdminMatricePage.tsx";
 import AdminFeatureFlagsPage from "./pages/AdminFeatureFlagsPage.tsx";
 import AdminIconsDemo from "./pages/AdminIconsDemo.tsx";
+import AdminLibraryPage from "./pages/AdminLibraryPage.tsx";
+import AdminLibraryTemplatePage from "./pages/AdminLibraryTemplatePage.tsx";
 import AuthPage from "./pages/Auth.tsx";
 import ResetPassword from "./pages/ResetPassword.tsx";
 
@@ -50,6 +52,8 @@ const App = () => (
             <Route path="/admin/matrice" element={<AdminRoute><AdminMatricePage /></AdminRoute>} />
             <Route path="/admin/feature-flags" element={<AdminRoute><AdminFeatureFlagsPage /></AdminRoute>} />
             <Route path="/admin/icons-demo" element={<AdminRoute><AdminIconsDemo /></AdminRoute>} />
+            <Route path="/admin/library" element={<AdminRoute><AdminLibraryPage /></AdminRoute>} />
+            <Route path="/admin/library/:templateId" element={<AdminRoute><AdminLibraryTemplatePage /></AdminRoute>} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>
