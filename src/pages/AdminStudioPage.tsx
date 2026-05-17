@@ -846,9 +846,17 @@ export default function AdminStudioPage() {
     if (detectedColors.length > 0) return; // déjà analysé (snapshot ou précédent)
     let cancelled = false;
     setPaletteLoading(true);
+    // Détection du fond (Fix 3) — heuristique sur le SVG nettoyé
+    const detectedBg = detectBackgroundHex(upload.cleaned_svg, upload.image_width, upload.image_height);
+    if (detectedBg) {
+      setBackgroundHex(detectedBg);
+      setPreserveBackground(true);
+    } else {
+      setBackgroundHex(null);
+    }
     const applyLocal = () => {
       const local = detectColorsInSvg(upload.cleaned_svg);
-      const auto = autoMapDetectedColors(local);
+      const auto = autoMapDetectedColors(local, detectedBg);
       setDetectedColors(local);
       setAutoPaletteMapping(auto);
       setPaletteMapping((prev) => Object.keys(prev).length > 0 ? prev : auto);
@@ -861,9 +869,12 @@ export default function AdminStudioPage() {
           applyLocal();
           return;
         }
+        // On recalcule l'auto-mapping côté client pour bénéficier des règles
+        // Fix 2 (isolées → null, dominante → primary, fond → background).
+        const auto = autoMapDetectedColors(colors, detectedBg);
         setDetectedColors(colors);
-        setAutoPaletteMapping(res.auto_mapping ?? {});
-        setPaletteMapping((prev) => Object.keys(prev).length > 0 ? prev : (res.auto_mapping ?? {}));
+        setAutoPaletteMapping(auto);
+        setPaletteMapping((prev) => Object.keys(prev).length > 0 ? prev : auto);
       })
       .catch(() => {
         if (cancelled) return;
