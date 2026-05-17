@@ -1842,6 +1842,35 @@ export default function AdminStudioPage() {
               </Card>
             )}
 
+            {backgroundHex && (
+              <Card className="p-3 border-primary/30 bg-primary/5 space-y-2">
+                <div className="flex items-center justify-between gap-3 flex-wrap">
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="w-6 h-6 rounded border shrink-0"
+                      style={{ background: backgroundHex }}
+                      aria-label={`Fond ${backgroundHex}`}
+                    />
+                    <div>
+                      <p className="text-sm font-medium">Fond du template</p>
+                      <p className="text-xs text-muted-foreground">
+                        Fond détecté : <span className="font-mono">{backgroundHex}</span>
+                      </p>
+                    </div>
+                  </div>
+                  <label className="flex items-center gap-2 text-sm cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      checked={preserveBackground}
+                      onChange={(e) => setPreserveBackground(e.target.checked)}
+                      className="h-4 w-4"
+                    />
+                    <span>Garder le fond tel quel <span className="text-muted-foreground">(recommandé)</span></span>
+                  </label>
+                </div>
+              </Card>
+            )}
+
             {detectedColors.length > 0 && (
               <>
                 <div className="flex items-center justify-between">
