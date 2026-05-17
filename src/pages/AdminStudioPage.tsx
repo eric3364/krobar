@@ -183,6 +183,16 @@ export default function AdminStudioPage() {
   const [tplMarkers, setTplMarkers] = useState<string[]>([]);
   const [newMarker, setNewMarker] = useState("");
   const [tplTestText, setTplTestText] = useState("");
+  // Fix 5 — Aperçu final IA avec le texte de test (étape 8/8)
+  const [finalPreview, setFinalPreview] = useState<{
+    svg?: string;
+    pngUrl?: string;
+    latencyMs?: number;
+    costUsd?: number;
+    cacheKey: string;
+  } | null>(null);
+  const [finalPreviewLoading, setFinalPreviewLoading] = useState(false);
+  const [finalPreviewError, setFinalPreviewError] = useState<string | null>(null);
   const [deployOpen, setDeployOpen] = useState(false);
   const [deploying, setDeploying] = useState(false);
   const [existingIds, setExistingIds] = useState<Set<string>>(new Set());
