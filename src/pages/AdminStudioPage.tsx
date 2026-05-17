@@ -886,6 +886,17 @@ export default function AdminStudioPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase, upload?.cleaned_svg]);
 
+  // Sync mapping ↔ preserveBackground (Fix 3)
+  useEffect(() => {
+    if (!backgroundHex) return;
+    setPaletteMapping((prev) => {
+      const cur = prev[backgroundHex] ?? null;
+      const desired = preserveBackground ? null : "background";
+      if (cur === desired) return prev;
+      return { ...prev, [backgroundHex]: desired };
+    });
+  }, [preserveBackground, backgroundHex]);
+
   const previewPalette = palettes[previewPaletteKey];
   const previewSvg = useMemo(() => {
     if (!upload?.cleaned_svg) return "";
