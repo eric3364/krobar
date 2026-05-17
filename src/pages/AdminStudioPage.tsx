@@ -890,6 +890,15 @@ export default function AdminStudioPage() {
     });
   }, [preserveBackground, backgroundHex]);
 
+  // Détection du fond (Fix 3) — recalculée à chaque changement d'upload,
+  // y compris lors d'un restore de snapshot.
+  useEffect(() => {
+    if (!upload?.cleaned_svg) { setBackgroundHex(null); return; }
+    const bg = detectBackgroundHex(upload.cleaned_svg, upload.image_width, upload.image_height);
+    setBackgroundHex(bg);
+    if (bg) setPreserveBackground(true);
+  }, [upload?.cleaned_svg, upload?.image_width, upload?.image_height]);
+
   const previewPalette = palettes[previewPaletteKey];
   const previewSvg = useMemo(() => {
     if (!upload?.cleaned_svg) return "";
