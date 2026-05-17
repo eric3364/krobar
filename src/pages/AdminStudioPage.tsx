@@ -35,7 +35,7 @@ import { studioApi, type MatchingType, type UploadResponse, validateStudioUpload
 import { clearDeletedTemplate, filterDeletedTemplates, markTemplateDeleted } from "@/lib/deletedTemplates";
 import { getTemplates, type TemplateMetadata } from "@/lib/api";
 import { supabase } from "@/integrations/supabase/client";
-import { STUDIO_RECENT_DEPLOYS_STORAGE } from "@/data/test-suite";
+const STUDIO_RECENT_DEPLOYS_STORAGE = "studio_recent_deploys_v1";
 import {
   deleteSnapshot,
   hydrateSnapshots,
@@ -2597,7 +2597,7 @@ export default function AdminStudioPage() {
                   placeholder="Texte représentatif qui doit matcher ce template (utilisé dans la suite de test canonique)…"
                 />
                 <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>Sera ajouté au corpus /admin/test-suite après déploiement.</span>
+                  <span>Sera ajouté au corpus de test après déploiement.</span>
                   <span>{tplTestText.length}/1000</span>
                 </div>
                 {tplTestText.trim().length > 0 && tplTestText.trim().length < 20 && (
