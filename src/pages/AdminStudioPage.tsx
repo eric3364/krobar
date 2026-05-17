@@ -193,6 +193,8 @@ export default function AdminStudioPage() {
   } | null>(null);
   const [finalPreviewLoading, setFinalPreviewLoading] = useState(false);
   const [finalPreviewError, setFinalPreviewError] = useState<string | null>(null);
+  // Fix 3 — Marque l'aperçu final comme obsolète quand un champ influent change.
+  const [previewStale, setPreviewStale] = useState(false);
   const [deployOpen, setDeployOpen] = useState(false);
   const [deploying, setDeploying] = useState(false);
   const [existingIds, setExistingIds] = useState<Set<string>>(new Set());
