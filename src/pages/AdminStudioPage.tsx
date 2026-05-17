@@ -928,7 +928,12 @@ export default function AdminStudioPage() {
   const phase8Initialized = useRef(false);
   useEffect(() => {
     if (phase === 8 && !phase8Initialized.current) {
-      setTplCategory(derivedPrimaryIntent);
+      // Fix 1 — Ne pas écraser la catégorie quand on édite un draft/template existant.
+      // L'utilisateur a déjà choisi (ou restauré) sa catégorie ; la dérivation
+      // automatique ne doit s'appliquer qu'en flux de création fraîche.
+      if (!editingExistingId) {
+        setTplCategory(derivedPrimaryIntent);
+      }
       if (!tplDescription) setTplDescription(derivedBestFor.slice(0, 250));
       if (tplMarkers.length === 0) setTplMarkers(derivedMarkers);
       phase8Initialized.current = true;
