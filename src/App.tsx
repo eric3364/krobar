@@ -52,6 +52,8 @@ const App = () => (
             <Route path="/admin/matrice" element={<AdminRoute><AdminMatricePage /></AdminRoute>} />
             <Route path="/admin/feature-flags" element={<AdminRoute><AdminFeatureFlagsPage /></AdminRoute>} />
             <Route path="/admin/icons-demo" element={<AdminRoute><AdminIconsDemo /></AdminRoute>} />
+            <Route path="/admin/library" element={<AdminRoute><AdminLibraryPage /></AdminRoute>} />
+            <Route path="/admin/library/:templateId" element={<AdminRoute><AdminLibraryTemplatePage /></AdminRoute>} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>
