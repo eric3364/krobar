@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { BookOpen, ArrowRight } from "lucide-react";
 import {
-  Download, Eye, FileJson, FileSpreadsheet, FileText, Loader2,
-  Pencil, Plus, Trash2,
+  ArrowRight, BookOpen, Download, Eye, FileJson, FileSpreadsheet, FileText,
+  Loader2, Pencil, Play, Plus, Search, Trash2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -23,6 +22,9 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import {
+  Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
+} from "@/components/ui/dialog";
 import {
   sicaiApi, type SicaiAnalysis, type SicaiDocument, type SicaiParagraph, type SicaiSource,
 } from "@/lib/sicaiApi";
@@ -43,6 +45,9 @@ function pickStr(o: unknown, key: string): string {
 export default function SicaiAnalysesPage() {
   const navigate = useNavigate();
   const [pickDocId, setPickDocId] = useState<string>("");
+  const [libOpen, setLibOpen] = useState(false);
+  const [libSearch, setLibSearch] = useState("");
+  const [launchingId, setLaunchingId] = useState<string | null>(null);
   const [analyses, setAnalyses] = useState<SicaiAnalysis[]>([]);
   const [documents, setDocuments] = useState<Map<string, SicaiDocument>>(new Map());
   const [paragraphs, setParagraphs] = useState<Map<string, SicaiParagraph>>(new Map());
@@ -210,8 +215,8 @@ export default function SicaiAnalysesPage() {
           )}
 
           <div className="flex flex-wrap justify-center gap-2 pt-2">
-            <Button asChild variant="outline">
-              <Link to="/admin/sicai/library"><BookOpen className="h-4 w-4 mr-2" /> Bibliothèque</Link>
+            <Button onClick={() => setLibOpen(true)}>
+              <BookOpen className="h-4 w-4 mr-2" /> Bibliothèque
             </Button>
             <Button asChild variant="outline">
               <Link to="/admin/sicai/documents"><FileText className="h-4 w-4 mr-2" /> Documents</Link>
@@ -352,6 +357,112 @@ export default function SicaiAnalysesPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <Dialog open={libOpen} onOpenChange={setLibOpen}>
+        <DialogContent className="max-w-3xl">
+          <DialogHeader>
+            <DialogTitle>Choisir un document de la bibliothèque</DialogTitle>
+            <DialogDescription>
+              Sélectionnez un document existant pour lancer son analyse globale,
+              ou ouvrez sa fiche pour l'analyse par paragraphe.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="relative">
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              value={libSearch}
+              onChange={(e) => setLibSearch(e.target.value)}
+              placeholder="Rechercher par titre ou source…"
+              className="pl-8"
+            />
+          </div>
+
+          <div className="max-h-[55vh] overflow-y-auto border rounded-md divide-y">
+            {(() => {
+              const q = libSearch.trim().toLowerCase();
+              const list = Array.from(documents.values())
+                .filter((d) => {
+                  if (!q) return true;
+                  const src = d.source_id ? sources.get(d.source_id) : null;
+                  return [d.title, src?.source_id, src?.source_name]
+                    .filter(Boolean).join(" ").toLowerCase().includes(q);
+                })
+                .sort((a, b) => (a.title ?? "").localeCompare(b.title ?? ""));
+              if (list.length === 0) {
+                return (
+                  <div className="p-8 text-center text-sm text-muted-foreground">
+                    Aucun document trouvé.
+                  </div>
+                );
+              }
+              return list.map((d) => {
+                const src = d.source_id ? sources.get(d.source_id) : null;
+                const canAnalyze = !!d.raw_text && d.raw_text.trim().length > 0;
+                const launching = launchingId === d.id;
+                return (
+                  <div key={d.id} className="flex items-center gap-3 p-3">
+                    <div className="flex-1 min-w-0">
+                      <div className="font-medium text-sm truncate">{d.title}</div>
+                      <div className="text-xs text-muted-foreground truncate">
+                        {src ? `${src.source_id} · ${src.source_name ?? "—"}` : "Sans source"}
+                        {" · "}
+                        <Badge variant="outline" className="text-[10px]">{d.document_status ?? "draft"}</Badge>
+                        {" · "}{d.word_count ?? 0} mots
+                      </div>
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => { setLibOpen(false); navigate(`/admin/sicai/documents/${d.id}`); }}
+                    >
+                      Ouvrir
+                    </Button>
+                    <Button
+                      size="sm"
+                      disabled={!canAnalyze || launching}
+                      onClick={async () => {
+                        if (!d.raw_text) return;
+                        setLaunchingId(d.id);
+                        try {
+                          await sicaiApi.runAnalysis({
+                            document_id: d.id,
+                            analysis_level: "global",
+                            text_to_analyze: d.raw_text,
+                          });
+                          toast.success(`Analyse lancée : ${d.title}`);
+                          setLibOpen(false);
+                          await load();
+                        } catch (e) {
+                          toast.error(e instanceof Error ? e.message : "Erreur d'analyse");
+                        } finally {
+                          setLaunchingId(null);
+                        }
+                      }}
+                    >
+                      {launching
+                        ? <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+                        : <Play className="h-4 w-4 mr-1" />}
+                      Lancer l'analyse
+                    </Button>
+                  </div>
+                );
+              });
+            })()}
+          </div>
+
+          <DialogFooter className="flex sm:justify-between gap-2">
+            <Button variant="ghost" asChild>
+              <Link to="/admin/sicai/library">
+                <BookOpen className="h-4 w-4 mr-2" /> Gérer la bibliothèque
+              </Link>
+            </Button>
+            <Button asChild>
+              <Link to="/admin/sicai/new"><Plus className="h-4 w-4 mr-2" /> Nouveau texte</Link>
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
