@@ -25,6 +25,8 @@ function uniq(arr: (string | null)[]): string[] {
 }
 
 export default function SicaiDocumentsPage() {
+  const [params, setParams] = useSearchParams();
+  const sourceFilter = params.get("source");
   const [docs, setDocs] = useState<SicaiDocument[]>([]);
   const [sources, setSources] = useState<Map<string, SicaiSource>>(new Map());
   const [loading, setLoading] = useState(true);
