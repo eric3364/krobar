@@ -41,6 +41,7 @@ export default function SicaiLibraryPage() {
   const [fLang, setFLang] = useState(ALL);
   const [fStatus, setFStatus] = useState(ALL);
   const [fProfile, setFProfile] = useState(ALL);
+  const [fCorpus, setFCorpus] = useState<"all" | "initial" | "fr">("all");
 
   // dialog
   const [openDetail, setOpenDetail] = useState<SicaiSource | null>(null);
