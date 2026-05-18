@@ -226,21 +226,65 @@ Deno.serve(async (req) => {
     return json({ error: "text_to_analyze must not be empty" }, 400);
   }
 
-  // --- Optional override model from sicai_settings ---
-  let model = "gpt-4o-mini";
-  const { data: settingRow } = await admin
-    .from("sicai_settings")
-    .select("setting_value")
-    .eq("setting_key", "openai_model")
-    .maybeSingle();
-  const settingVal = (settingRow?.setting_value as { model?: string } | null)?.model;
-  if (settingVal && typeof settingVal === "string") model = settingVal;
+  // --- Load AI config from sicai_settings (key=ai_config) with defaults ---
+  const cfg = {
+    model: "gpt-4o-mini",
+    temperature: 0.2,
+    max_tokens: 2000,
+    thresholds: { ...DEFAULT_THRESHOLDS },
+  };
+  {
+    const { data: settingRow } = await admin
+      .from("sicai_settings")
+      .select("setting_value")
+      .eq("setting_key", "ai_config")
+      .maybeSingle();
+    const v = (settingRow?.setting_value ?? null) as Partial<typeof cfg> | null;
+    if (v && typeof v === "object") {
+      if (typeof v.model === "string" && v.model.trim()) cfg.model = v.model.trim();
+      if (typeof v.temperature === "number" && v.temperature >= 0 && v.temperature <= 2) {
+        cfg.temperature = v.temperature;
+      }
+      if (typeof v.max_tokens === "number" && v.max_tokens >= 256 && v.max_tokens <= 8000) {
+        cfg.max_tokens = Math.floor(v.max_tokens);
+      }
+      const t = (v.thresholds ?? {}) as Partial<Thresholds>;
+      for (const k of ["exclusive_gap", "nuance_gap_min", "nuance_gap_max", "hybrid_score_min"] as const) {
+        const n = t[k];
+        if (typeof n === "number" && n >= 1 && n <= 100) cfg.thresholds[k] = n;
+      }
+    }
+  }
 
   // --- Call OpenAI ---
   let raw = "";
   let parsed: unknown | null = null;
   try {
-    const first = await callOpenAI(OPENAI_API_KEY, model, text_to_analyze);
+    const first = await callOpenAI(OPENAI_API_KEY, cfg, text_to_analyze);
+    raw = first.raw;
+    parsed = first.parsed;
+
+    let check = validateAnalysis(parsed);
+    if (!check.ok) {
+      const repairPrompt =
+        `Le JSON suivant est invalide ou incomplet. Champs manquants : ${check.missing.join(", ")}.\n` +
+        `Régénère un JSON SICAI strict, complet et valide à partir du texte ci-dessous.\n\n` +
+        `Texte :\n${text_to_analyze}`;
+      const retry = await callOpenAI(OPENAI_API_KEY, cfg, repairPrompt);
+      raw = retry.raw;
+      parsed = retry.parsed;
+      check = validateAnalysis(parsed);
+      if (!check.ok) {
+        return json({
+          error: "Réponse IA invalide après réparation",
+          missing_fields: check.missing,
+          raw_preview: raw.slice(0, 1000),
+        }, 422);
+      }
+    }
+  } catch (e) {
+    return json({ error: e instanceof Error ? e.message : "OpenAI call failed" }, 502);
+  }
     raw = first.raw;
     parsed = first.parsed;
 
