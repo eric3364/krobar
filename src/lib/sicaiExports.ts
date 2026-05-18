@@ -218,6 +218,143 @@ export function analysesToFullReport(rows: SicaiAnalysis[], ctx: AnalysisExportC
   return out.join("\n");
 }
 
+/**
+ * Catalogue de référence paragraphe-par-paragraphe, conçu pour le matching
+ * d'illustrations à partir d'un catalogue externe.
+ * Chaque entrée = une "carte" exploitable : texte + ID + toutes les caractéristiques
+ * sémantiques/visuelles + signaux de matching (motifs, brief, prompt).
+ */
+export function analysesToParagraphCatalog(rows: SicaiAnalysis[], ctx: AnalysisExportContext): string {
+  // Garde uniquement les analyses paragraphe avec un paragraph_id valide
+  const paraRows = rows
+    .filter((a) => a.analysis_level !== "document" && a.paragraph_id)
+    .sort((a, b) => {
+      const da = a.document_id ?? "";
+      const db = b.document_id ?? "";
+      if (da !== db) {
+        const ta = ctx.documents.get(da)?.title ?? "";
+        const tb = ctx.documents.get(db)?.title ?? "";
+        return ta.localeCompare(tb);
+      }
+      const ai = ctx.paragraphs.get(a.paragraph_id ?? "")?.paragraph_index ?? 0;
+      const bi = ctx.paragraphs.get(b.paragraph_id ?? "")?.paragraph_index ?? 0;
+      return ai - bi;
+    });
+
+  const out: string[] = [];
+  out.push(`# Catalogue SICAI — paragraphes (matching illustrations)`);
+  out.push(`\n_Généré le ${new Date().toLocaleString()} — ${paraRows.length} paragraphe(s) analysé(s)._`);
+  out.push(`\nChaque entrée est une fiche autonome : identifiant stable, texte intégral du paragraphe et caractéristiques SICAI complètes utilisables pour matcher une illustration depuis un catalogue externe.\n`);
+
+  for (const a of paraRows) {
+    const doc = a.document_id ? ctx.documents.get(a.document_id) : null;
+    const src = doc?.source_id && ctx.sources ? ctx.sources.get(doc.source_id) : null;
+    const p = ctx.paragraphs.get(a.paragraph_id ?? "");
+    const card = a.cardinality as Record<string, unknown> | null;
+    const aff = a.iconic_affordance as Record<string, unknown> | null;
+
+    const matchKey = `${src?.source_id ?? "DOC"}-${(doc?.id ?? "").slice(0, 8)}-P${p?.paragraph_index ?? "?"}`;
+
+    out.push(`\n---\n`);
+    out.push(`## ${matchKey}`);
+    out.push(`\n- **Document** : ${doc?.title ?? "—"}`);
+    if (src) out.push(`- **Source** : ${src.source_id}${src.source_name ? ` — ${src.source_name}` : ""}`);
+    if (doc?.url) out.push(`- **URL** : ${doc.url}`);
+    out.push(`- **Paragraphe** : #${p?.paragraph_index ?? "?"} · ${p?.word_count ?? "?"} mots`);
+    out.push(`- **IDs techniques** : analysis=\`${a.id}\` · paragraph=\`${a.paragraph_id}\` · document=\`${a.document_id}\``);
+
+    out.push(`\n### Texte\n`);
+    if (p?.paragraph_text) out.push(`> ${p.paragraph_text.replace(/\n/g, "\n> ")}`);
+    else out.push(`_(texte indisponible)_`);
+
+    out.push(`\n### Caractéristiques SICAI\n`);
+    out.push(renderCharacteristics(a));
+
+    out.push(`\n### Signaux de matching\n`);
+    out.push(`- **Famille graphique** : ${a.graphic_family ?? "—"}`);
+    out.push(`- **Archétype** : ${a.sicai_archetype_id ?? "—"}`);
+    out.push(`- **Cardinalité type** : ${get<string>(card, "type") ?? get<string>(card, "cardinality_type") ?? "—"}`);
+    out.push(`- **Nombre d'éléments** : ${get<number>(card, "number_of_elements") ?? get<number>(card, "count") ?? "—"}`);
+    out.push(`- **Affordance iconique primaire** : ${get<string>(aff, "primary") ?? "—"}`);
+    const motifs = get<unknown[]>(aff, "motifs") ?? get<unknown[]>(a.visual_brief, "visual_motifs");
+    if (motifs && Array.isArray(motifs) && motifs.length) {
+      out.push(`- **Motifs visuels** : ${motifs.map((m) => j(m)).join(", ")}`);
+    }
+    if (a.visual_brief && Object.keys(a.visual_brief as Record<string, unknown>).length) {
+      out.push(`\n**Brief visuel (JSON)**\n\n\`\`\`json\n${JSON.stringify(a.visual_brief, null, 2)}\n\`\`\``);
+    }
+    if (a.image_prompt) {
+      out.push(`\n**Prompt image**\n\n> ${a.image_prompt.replace(/\n/g, "\n> ")}`);
+    }
+  }
+
+  return out.join("\n");
+}
+
+/**
+ * Variante CSV du catalogue paragraphe : une ligne = un paragraphe analysé,
+ * avec texte + toutes les caractéristiques. Idéal pour brancher un moteur
+ * de matching ou un tableur.
+ */
+export function paragraphCatalogToCSV(rows: SicaiAnalysis[], ctx: AnalysisExportContext): string {
+  const headers = [
+    "match_key", "source_id", "document_title", "document_url",
+    "paragraph_index", "word_count", "paragraph_text",
+    "dominant_textual_function", "secondary_categories",
+    "graphic_family", "sicai_archetype_id", "classification_status",
+    "intensities",
+    "cardinality_type", "base_cardinality_for_archetype", "number_of_elements",
+    "temporality", "spatiality", "agency", "tension", "transformation",
+    "iconic_affordance_primary", "visual_motifs",
+    "abstraction_level", "image_prompt",
+    "analysis_id", "paragraph_id", "document_id",
+  ];
+  const lines = [headers.join(",")];
+
+  const paraRows = rows.filter((a) => a.analysis_level !== "document" && a.paragraph_id);
+  for (const a of paraRows) {
+    const doc = a.document_id ? ctx.documents.get(a.document_id) : null;
+    const src = doc?.source_id && ctx.sources ? ctx.sources.get(doc.source_id) : null;
+    const p = ctx.paragraphs.get(a.paragraph_id ?? "");
+    const card = a.cardinality as Record<string, unknown> | null;
+    const aff = a.iconic_affordance as Record<string, unknown> | null;
+    const motifs = get<unknown[]>(aff, "motifs") ?? get<unknown[]>(a.visual_brief, "visual_motifs");
+    const matchKey = `${src?.source_id ?? "DOC"}-${(doc?.id ?? "").slice(0, 8)}-P${p?.paragraph_index ?? "?"}`;
+
+    lines.push([
+      matchKey,
+      src?.source_id ?? "",
+      doc?.title ?? "",
+      doc?.url ?? "",
+      p?.paragraph_index ?? "",
+      p?.word_count ?? "",
+      p?.paragraph_text ?? "",
+      a.dominant_textual_function ?? "",
+      a.secondary_categories,
+      a.graphic_family ?? "",
+      a.sicai_archetype_id ?? "",
+      a.classification_status ?? "",
+      a.intensities,
+      get<string>(card, "type") ?? get<string>(card, "cardinality_type") ?? "",
+      get<string>(card, "base_cardinality_for_archetype") ?? "",
+      get<number>(card, "number_of_elements") ?? get<number>(card, "count") ?? "",
+      a.temporality ?? "",
+      a.spatiality ?? "",
+      a.agency ?? "",
+      a.tension ?? "",
+      a.transformation ?? "",
+      get<string>(aff, "primary") ?? "",
+      motifs && Array.isArray(motifs) ? motifs.map((m) => j(m)).join(" | ") : "",
+      a.abstraction_level ?? "",
+      a.image_prompt ?? "",
+      a.id,
+      a.paragraph_id ?? "",
+      a.document_id ?? "",
+    ].map(csvEscape).join(","));
+  }
+  return lines.join("\n");
+}
+
 export function downloadFile(filename: string, content: string, mime: string) {
   const blob = new Blob([content], { type: `${mime};charset=utf-8` });
   const url = URL.createObjectURL(blob);

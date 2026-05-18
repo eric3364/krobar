@@ -165,6 +165,72 @@ export default function SicaiLibraryPage() {
     toast.success(`Automatisation terminée : ${okCount}/${targets.length} sources traitées`);
   }
 
+  // ---------- Automation : analyser les paragraphes ≥100 mots ----------
+  async function runParagraphAutomation() {
+    setAutoRunning(true);
+    setAutoLog([]);
+    const log: typeof autoLog = [];
+    try {
+      const docs = await sicaiApi.listDocuments();
+      const eligibleDocs = docs.filter((d) => d.raw_text && d.raw_text.length > 0);
+      setAutoProgress({ done: 0, total: eligibleDocs.length, current: "" });
+
+      for (let i = 0; i < eligibleDocs.length; i++) {
+        const doc = eligibleDocs[i];
+        setAutoProgress({ done: i, total: eligibleDocs.length, current: doc.title });
+        try {
+          // 1. Segmenter si pas encore fait
+          let paras = await sicaiApi.listParagraphs(doc.id);
+          if (paras.length === 0 && doc.raw_text) {
+            paras = await sicaiApi.segmentDocument(doc.id, doc.raw_text);
+          }
+          // 2. Filtrer ≥100 mots
+          const targets = paras.filter((p) => (p.word_count ?? 0) >= 100);
+          if (targets.length === 0) {
+            log.push({ source: doc.title.slice(0, 40), status: "skip", message: "aucun paragraphe ≥100 mots" });
+            setAutoLog([...log]);
+            continue;
+          }
+          // 3. Skip paragraphes déjà analysés
+          const existing = await sicaiApi.listAnalysesByDocument(doc.id);
+          const analyzedIds = new Set(existing.filter((a) => a.paragraph_id).map((a) => a.paragraph_id));
+          const todo = targets.filter((p) => !analyzedIds.has(p.id));
+          if (todo.length === 0) {
+            log.push({ source: doc.title.slice(0, 40), status: "skip", message: `${targets.length} paragraphes déjà analysés` });
+            setAutoLog([...log]);
+            continue;
+          }
+          // 4. Analyser chaque paragraphe
+          let ok = 0;
+          for (const p of todo) {
+            try {
+              await sicaiApi.runAnalysis({
+                document_id: doc.id,
+                analysis_level: "paragraph",
+                paragraph_id: p.id,
+                text_to_analyze: p.paragraph_text,
+              });
+              ok++;
+            } catch (e) {
+              log.push({ source: `${doc.title.slice(0, 30)} §${p.paragraph_index}`, status: "error", message: e instanceof Error ? e.message : "Erreur" });
+              setAutoLog([...log]);
+            }
+          }
+          log.push({ source: doc.title.slice(0, 40), status: ok > 0 ? "ok" : "error", message: `${ok}/${todo.length} paragraphes analysés` });
+          setAutoLog([...log]);
+        } catch (e) {
+          log.push({ source: doc.title.slice(0, 40), status: "error", message: e instanceof Error ? e.message : "Erreur" });
+          setAutoLog([...log]);
+        }
+      }
+      setAutoProgress({ done: eligibleDocs.length, total: eligibleDocs.length, current: "" });
+      const okCount = log.filter((l) => l.status === "ok").length;
+      toast.success(`Analyse paragraphes terminée : ${okCount}/${eligibleDocs.length} documents`);
+    } finally {
+      setAutoRunning(false);
+    }
+  }
+
   return (
     <div className="max-w-7xl mx-auto space-y-6">
       <div className="flex items-start justify-between gap-4 flex-wrap">
@@ -189,6 +255,14 @@ export default function SicaiLibraryPage() {
           >
             {autoRunning ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Zap className="h-4 w-4 mr-2" />}
             Auto : toutes les sources avec URL
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={runParagraphAutomation}
+            disabled={autoRunning || loading}
+          >
+            {autoRunning ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Zap className="h-4 w-4 mr-2" />}
+            Auto : paragraphes ≥100 mots
           </Button>
           {autoLog.some((l) => l.status === "error") && !autoRunning && (
             <Button

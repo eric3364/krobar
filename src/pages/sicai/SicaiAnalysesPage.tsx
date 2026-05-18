@@ -29,7 +29,8 @@ import {
   sicaiApi, type SicaiAnalysis, type SicaiDocument, type SicaiParagraph, type SicaiSource,
 } from "@/lib/sicaiApi";
 import {
-  analysesToCSV, analysesToJSON, analysesToMarkdown, analysesToFullReport, downloadFile,
+  analysesToCSV, analysesToJSON, analysesToMarkdown, analysesToFullReport,
+  analysesToParagraphCatalog, paragraphCatalogToCSV, downloadFile,
 } from "@/lib/sicaiExports";
 
 const ALL = "__all__";
@@ -120,12 +121,14 @@ export default function SicaiAnalysesPage() {
   }, [analyses, documents, search, fDoc, fLevel, fFunc, fFamily, fArch, fClass]);
 
   const stamp = () => new Date().toISOString().slice(0, 10);
-  const exportAll = (format: "json" | "csv" | "md" | "report") => {
+  const exportAll = (format: "json" | "csv" | "md" | "report" | "catalog-md" | "catalog-csv") => {
     if (filtered.length === 0) return toast.error("Aucune analyse à exporter");
     const base = `sicai-analyses-${stamp()}`;
     if (format === "json") downloadFile(`${base}.json`, analysesToJSON(filtered, ctx), "application/json");
     else if (format === "csv") downloadFile(`${base}.csv`, analysesToCSV(filtered, ctx), "text/csv");
     else if (format === "report") downloadFile(`sicai-rapport-global-${stamp()}.md`, analysesToFullReport(filtered, ctx), "text/markdown");
+    else if (format === "catalog-md") downloadFile(`sicai-catalogue-paragraphes-${stamp()}.md`, analysesToParagraphCatalog(filtered, ctx), "text/markdown");
+    else if (format === "catalog-csv") downloadFile(`sicai-catalogue-paragraphes-${stamp()}.csv`, paragraphCatalogToCSV(filtered, ctx), "text/csv");
     else downloadFile(`${base}.md`, analysesToMarkdown(filtered, ctx), "text/markdown");
     toast.success(`Export ${format.toUpperCase()} : ${filtered.length} analyse(s)`);
   };
@@ -174,6 +177,12 @@ export default function SicaiAnalysesPage() {
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => exportAll("report")}>
               <BookOpen className="h-4 w-4 mr-2" /> Rapport global (textes + caractéristiques)
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => exportAll("catalog-md")}>
+              <BookOpen className="h-4 w-4 mr-2" /> Catalogue paragraphes (Markdown)
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => exportAll("catalog-csv")}>
+              <FileSpreadsheet className="h-4 w-4 mr-2" /> Catalogue paragraphes (CSV matching)
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
