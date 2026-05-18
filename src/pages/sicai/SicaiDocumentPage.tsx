@@ -429,20 +429,66 @@ export default function SicaiDocumentPage() {
         </TabsContent>
 
         <TabsContent value="global" className="mt-4">
-          <Card className="p-10 text-center text-muted-foreground">
-            Aucune analyse globale. {AI_DISABLED_MSG}
-          </Card>
+          {existingGlobal ? (
+            <div className="space-y-3">
+              <div className="flex justify-end">
+                <Button asChild size="sm" variant="outline">
+                  <Link to={`/admin/sicai/analyses/${existingGlobal.id}`}>
+                    <Pencil className="h-4 w-4 mr-2" /> Éditer la carte
+                  </Link>
+                </Button>
+              </div>
+              <SicaiIdentityCard analysis={existingGlobal} />
+            </div>
+          ) : (
+            <Card className="p-10 text-center text-muted-foreground">
+              Aucune analyse globale. Utilisez le bouton « Analyser le document global » ci-dessus.
+            </Card>
+          )}
         </TabsContent>
 
-        <TabsContent value="per-para" className="mt-4">
-          <Card className="p-10 text-center text-muted-foreground">
-            Aucune analyse par paragraphe. {AI_DISABLED_MSG}
-          </Card>
+        <TabsContent value="per-para" className="mt-4 space-y-4">
+          {paragraphs.length === 0 ? (
+            <Card className="p-10 text-center text-muted-foreground">
+              Segmentez d'abord le document en paragraphes.
+            </Card>
+          ) : paragraphAnalyses.size === 0 ? (
+            <Card className="p-10 text-center text-muted-foreground">
+              Aucune analyse par paragraphe. Utilisez « Analyser tous les paragraphes » ou les boutons
+              individuels dans l'onglet Paragraphes.
+            </Card>
+          ) : (
+            paragraphs.map((p) => {
+              const an = paragraphAnalyses.get(p.id);
+              return (
+                <div key={p.id} className="space-y-2">
+                  <div className="flex items-start gap-3">
+                    <Badge variant="outline" className="font-mono mt-1">#{p.paragraph_index}</Badge>
+                    <p className="text-sm text-muted-foreground line-clamp-2 flex-1">{p.paragraph_text}</p>
+                    {an && (
+                      <Button asChild size="sm" variant="ghost" className="shrink-0">
+                        <Link to={`/admin/sicai/analyses/${an.id}`}>
+                          <Pencil className="h-4 w-4 mr-1" /> Éditer
+                        </Link>
+                      </Button>
+                    )}
+                  </div>
+                  {an ? (
+                    <SicaiIdentityCard analysis={an} />
+                  ) : (
+                    <Card className="p-4 text-xs text-muted-foreground">
+                      Paragraphe non analysé.
+                    </Card>
+                  )}
+                </div>
+              );
+            })
+          )}
         </TabsContent>
 
         <TabsContent value="briefs" className="mt-4">
           <Card className="p-10 text-center text-muted-foreground">
-            Aucun brief visuel généré. {AI_DISABLED_MSG}
+            Briefs visuels groupés (à venir) — chaque carte SICAI ci-dessus expose son brief.
           </Card>
         </TabsContent>
       </Tabs>
