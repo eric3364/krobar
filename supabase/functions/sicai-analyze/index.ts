@@ -10,7 +10,22 @@ const corsHeaders = {
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
-const SYSTEM_PROMPT = `Tu es un expert en sémantique, narratologie, analyse littéraire, analyse de discours, direction artistique et conception d'infographies.
+type Thresholds = {
+  exclusive_gap: number;
+  nuance_gap_min: number;
+  nuance_gap_max: number;
+  hybrid_score_min: number;
+};
+
+const DEFAULT_THRESHOLDS: Thresholds = {
+  exclusive_gap: 25,
+  nuance_gap_min: 10,
+  nuance_gap_max: 25,
+  hybrid_score_min: 60,
+};
+
+function buildSystemPrompt(t: Thresholds): string {
+  return `Tu es un expert en sémantique, narratologie, analyse littéraire, analyse de discours, direction artistique et conception d'infographies.
 
 Tu dois analyser le texte fourni selon la méthode SICAI :
 Sémantique — Intensité — Cardinalité — Affordance Iconique.
@@ -23,10 +38,10 @@ N'utilise pas de Markdown.
 
 Tu dois évaluer les dimensions suivantes avec des scores de 0 à 100 : narration, description, explication, argumentation, emotion, conceptualisation, procedure, opposition, transformation, synthese.
 
-Règles de classification :
-- exclusive : une dimension dépasse toutes les autres d'au moins 25 points.
-- dominante_avec_nuance : une dimension domine avec un écart compris entre 10 et 25 points.
-- hybride_stable : deux ou trois dimensions fortes sont proches et supérieures à 60.
+Règles de classification (seuils administrateur) :
+- exclusive : une dimension dépasse toutes les autres d'au moins ${t.exclusive_gap} points.
+- dominante_avec_nuance : une dimension domine avec un écart compris entre ${t.nuance_gap_min} et ${t.nuance_gap_max} points.
+- hybride_stable : deux ou trois dimensions fortes sont proches et toutes supérieures à ${t.hybrid_score_min}.
 - ambigue : aucune dimension ne domine clairement ou les scores sont dispersés.
 
 Tu dois identifier la cardinalité : unitaire, binaire, ternaire, multiple, sequentielle, causale, cyclique, hierarchique, reseau.
@@ -85,6 +100,7 @@ Le JSON attendu doit respecter exactement cette structure :
   "image_prompt": "",
   "confidence": { "score": 0, "comment": "" }
 }`;
+}
 
 const REQUIRED_FIELDS = [
   "dominant_textual_function",
