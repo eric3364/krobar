@@ -357,8 +357,16 @@ export default function SicaiDocumentPage() {
                       </TableCell>
                       <TableCell className="text-right text-sm">{p.detected_items_count ?? 0}</TableCell>
                       <TableCell className="text-right">
-                        <Button size="sm" variant="ghost" onClick={aiDisabled} title={AI_DISABLED_MSG}>
-                          <Sparkles className="h-4 w-4 mr-1" /> Analyser
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => runParagraph(p)}
+                          disabled={analyzing !== null}
+                        >
+                          {analyzing === p.id
+                            ? <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+                            : <Sparkles className="h-4 w-4 mr-1" />}
+                          Analyser
                         </Button>
                       </TableCell>
                     </TableRow>
