@@ -182,6 +182,13 @@ export default function SicaiLibraryPage() {
                         {r.content_status ?? "—"}
                       </Badge>
                     </TableCell>
+                    <TableCell className="text-center">
+                      {docCount > 0 ? (
+                        <Badge variant="default">{docCount}</Badge>
+                      ) : (
+                        <span className="text-xs text-muted-foreground">0</span>
+                      )}
+                    </TableCell>
                     <TableCell className="text-right">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -191,20 +198,32 @@ export default function SicaiLibraryPage() {
                           <DropdownMenuItem onClick={() => setOpenDetail(r)}>
                             <Eye className="h-4 w-4 mr-2" /> Voir la fiche
                           </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => goCreateDoc(r)}>
-                            <FileText className="h-4 w-4 mr-2" /> Ajouter / coller le texte
-                          </DropdownMenuItem>
+                          {r.url && (
+                            <DropdownMenuItem asChild>
+                              <a href={r.url} target="_blank" rel="noreferrer">
+                                <ExternalLink className="h-4 w-4 mr-2" /> Ouvrir l'URL externe
+                              </a>
+                            </DropdownMenuItem>
+                          )}
                           <DropdownMenuItem onClick={() => goCreateDoc(r)}>
                             <FilePlus2 className="h-4 w-4 mr-2" /> Créer un document
                           </DropdownMenuItem>
+                          {docCount > 0 && (
+                            <DropdownMenuItem
+                              onClick={() => navigate(`/admin/sicai/documents?source=${encodeURIComponent(r.id)}`)}
+                            >
+                              <Files className="h-4 w-4 mr-2" /> Voir les {docCount} document{docCount > 1 ? "s" : ""}
+                            </DropdownMenuItem>
+                          )}
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>
                   </TableRow>
-                ))}
+                  );
+                })}
                 {filtered.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={9} className="text-center py-10 text-muted-foreground">
+                    <TableCell colSpan={10} className="text-center py-10 text-muted-foreground">
                       Aucune source ne correspond aux filtres.
                     </TableCell>
                   </TableRow>
