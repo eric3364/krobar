@@ -29,6 +29,7 @@ function uniq(arr: (string | null)[]): string[] {
 export default function SicaiLibraryPage() {
   const navigate = useNavigate();
   const [rows, setRows] = useState<SicaiSource[] | null>(null);
+  const [docCounts, setDocCounts] = useState<Map<string, number>>(new Map());
   const [loading, setLoading] = useState(true);
 
   // filters
@@ -47,8 +48,11 @@ export default function SicaiLibraryPage() {
     (async () => {
       setLoading(true);
       try {
-        const data = await sicaiApi.listSources();
-        if (alive) setRows(data);
+        const [data, counts] = await Promise.all([
+          sicaiApi.listSources(),
+          sicaiApi.countDocumentsBySource(),
+        ]);
+        if (alive) { setRows(data); setDocCounts(counts); }
       } catch (e) {
         toast.error(e instanceof Error ? e.message : "Erreur de chargement");
         if (alive) setRows([]);
