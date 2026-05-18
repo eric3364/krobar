@@ -148,7 +148,7 @@ export function SicaiIdentityCard({ analysis }: { analysis: SicaiAnalysis }) {
           <span>
             Confiance IA :{" "}
             <span className="font-mono tabular-nums text-foreground">
-              {confidence.score ?? "—"}
+              {typeof confidence.score === "number" ? confidence.score : "—"}
             </span>
           </span>
           {typeof confidence.comment === "string" && confidence.comment && (
