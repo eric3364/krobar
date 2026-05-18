@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, Loader2, Save } from "lucide-react";
+import { ArrowLeft, Download, Loader2, Save } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -31,6 +32,32 @@ export default function SicaiNewPage() {
   const [summary, setSummary] = useState("");
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
+  const [fetchingUrl, setFetchingUrl] = useState(false);
+
+  const handleFetchUrl = async () => {
+    if (!url.trim()) {
+      toast.error("Renseignez d'abord une URL");
+      return;
+    }
+    setFetchingUrl(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("sicai-fetch-url", { body: { url } });
+      if (error) throw error;
+      const payload = data as { text?: string; title?: string; error?: string };
+      if (payload.error) throw new Error(payload.error);
+      if (!payload.text || payload.text.length < 50) {
+        toast.error("Texte introuvable ou trop court à cette URL");
+        return;
+      }
+      setRawText(payload.text);
+      if (!title.trim() && payload.title) setTitle(payload.title);
+      toast.success(`Texte importé (${countWords(payload.text)} mots)`);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Erreur de récupération de l'URL");
+    } finally {
+      setFetchingUrl(false);
+    }
+  };
 
   useEffect(() => {
     let alive = true;
@@ -157,7 +184,22 @@ export default function SicaiNewPage() {
 
             <div className="md:col-span-2 space-y-1.5">
               <Label htmlFor="url">URL</Label>
-              <Input id="url" type="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://…" />
+              <div className="flex gap-2">
+                <Input id="url" type="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://…" />
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleFetchUrl}
+                  disabled={fetchingUrl || !url.trim()}
+                  title="Récupérer le texte depuis l'URL et le coller dans Texte complet"
+                >
+                  {fetchingUrl ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+                  <span className="ml-2 hidden sm:inline">Récupérer le texte</span>
+                </Button>
+              </div>
+              <p className="text-[11px] text-muted-foreground">
+                Le contenu de l'URL sera extrait et collé dans « Texte complet ». Certains sites (paywall, JS-only) peuvent ne renvoyer aucun texte exploitable.
+              </p>
             </div>
 
             <div className="space-y-1.5">
