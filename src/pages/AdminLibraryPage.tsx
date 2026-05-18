@@ -116,40 +116,60 @@ export default function AdminLibraryPage() {
         </Card>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {sorted.map((t) => (
-            <Link key={t.id} to={`/admin/library/${encodeURIComponent(t.id)}`} className="block">
-              <Card className="p-5 h-full hover:border-primary transition-colors space-y-3">
-                <div>
-                  <h3 className="font-semibold text-lg leading-tight">{t.name}</h3>
-                  <Badge variant="secondary" className="mt-1">{t.category || "—"}</Badge>
-                </div>
-                {t.description && (
-                  <p className="text-sm text-muted-foreground line-clamp-2">{t.description}</p>
-                )}
-                <div className="flex items-baseline gap-2 pt-1">
-                  <span className="text-2xl font-bold">{t.preview_count}</span>
-                  <span className="text-sm text-muted-foreground">
-                    {t.preview_count > 1 ? "aperçus" : "aperçu"}
-                  </span>
-                </div>
-                <div className="flex items-center gap-1 text-sm">
-                  {t.validated_count > 0 ? (
-                    <>
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                      <span className="text-emerald-700 dark:text-emerald-400 font-medium">
-                        {t.validated_count} validé{t.validated_count > 1 ? "s" : ""}
+          {sorted.map((t) => {
+            const th = thumbs[t.id];
+            return (
+              <Link key={t.id} to={`/admin/library/${encodeURIComponent(t.id)}`} className="block">
+                <Card className="h-full hover:border-primary transition-colors overflow-hidden flex flex-col">
+                  <div className="aspect-[16/10] w-full bg-muted/30 border-b flex items-center justify-center overflow-hidden">
+                    {th?.svg ? (
+                      <div
+                        className="w-full h-full [&>svg]:w-full [&>svg]:h-full [&>svg]:block"
+                        dangerouslySetInnerHTML={{ __html: th.svg }}
+                      />
+                    ) : th?.empty ? (
+                      <div className="flex flex-col items-center gap-1 text-muted-foreground">
+                        <ImageOff className="w-6 h-6" />
+                        <span className="text-xs">aucun aperçu</span>
+                      </div>
+                    ) : (
+                      <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
+                    )}
+                  </div>
+                  <div className="p-5 space-y-3 flex-1">
+                    <div>
+                      <h3 className="font-semibold text-lg leading-tight">{t.name}</h3>
+                      <Badge variant="secondary" className="mt-1">{t.category || "—"}</Badge>
+                    </div>
+                    {t.description && (
+                      <p className="text-sm text-muted-foreground line-clamp-2">{t.description}</p>
+                    )}
+                    <div className="flex items-baseline gap-2 pt-1">
+                      <span className="text-2xl font-bold">{t.preview_count}</span>
+                      <span className="text-sm text-muted-foreground">
+                        {t.preview_count > 1 ? "aperçus" : "aperçu"}
                       </span>
-                    </>
-                  ) : (
-                    <span className="text-muted-foreground">aucun validé</span>
-                  )}
-                </div>
-                <div className="text-xs text-muted-foreground pt-1 border-t">
-                  Dernier : {relativeDate(t.last_preview_at)}
-                </div>
-              </Card>
-            </Link>
-          ))}
+                    </div>
+                    <div className="flex items-center gap-1 text-sm">
+                      {t.validated_count > 0 ? (
+                        <>
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                          <span className="text-emerald-700 dark:text-emerald-400 font-medium">
+                            {t.validated_count} validé{t.validated_count > 1 ? "s" : ""}
+                          </span>
+                        </>
+                      ) : (
+                        <span className="text-muted-foreground">aucun validé</span>
+                      )}
+                    </div>
+                    <div className="text-xs text-muted-foreground pt-1 border-t">
+                      Dernier : {relativeDate(t.last_preview_at)}
+                    </div>
+                  </div>
+                </Card>
+              </Link>
+            );
+          })}
         </div>
       )}
     </div>
