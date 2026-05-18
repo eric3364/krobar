@@ -309,7 +309,7 @@ Deno.serve(async (req) => {
     sicai_archetype_id: (a.sicai_archetype_id as string) ?? null,
     visual_brief: a.visual_brief ?? {},
     image_prompt: (a.image_prompt as string) ?? null,
-    ai_model: model,
+    ai_model: cfg.model,
     ai_raw_response: parsed,
   };
 
