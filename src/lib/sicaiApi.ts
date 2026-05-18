@@ -141,16 +141,16 @@ export const sicaiApi = {
     id: string,
     patch: Partial<Pick<SicaiDocument, "title" | "raw_text" | "summary" | "language" | "url" | "source_type" | "internal_notes" | "document_status" | "word_count" | "paragraph_count">>,
   ): Promise<SicaiDocument> {
-    const body: Record<string, unknown> = { ...patch, updated_at: new Date().toISOString() };
     const { data, error } = await supabase
       .from("sicai_documents")
-      .update(body)
+      .update({ ...patch, updated_at: new Date().toISOString() })
       .eq("id", id)
       .select()
       .single();
     if (error) throw new Error(error.message);
     return data as SicaiDocument;
   },
+
 
   async deleteDocument(id: string): Promise<void> {
     // Cascade: paragraphs and analyses linked to this document
