@@ -29,7 +29,8 @@ import {
   sicaiApi, type SicaiAnalysis, type SicaiDocument, type SicaiParagraph, type SicaiSource,
 } from "@/lib/sicaiApi";
 import {
-  analysesToCSV, analysesToJSON, analysesToMarkdown, analysesToFullReport, downloadFile,
+  analysesToCSV, analysesToJSON, analysesToMarkdown, analysesToFullReport,
+  analysesToParagraphCatalog, paragraphCatalogToCSV, downloadFile,
 } from "@/lib/sicaiExports";
 
 const ALL = "__all__";
