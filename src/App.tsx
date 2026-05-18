@@ -18,7 +18,7 @@ import AdminLibraryPage from "./pages/AdminLibraryPage.tsx";
 import AdminLibraryTemplatePage from "./pages/AdminLibraryTemplatePage.tsx";
 import AuthPage from "./pages/Auth.tsx";
 import ResetPassword from "./pages/ResetPassword.tsx";
-import SicaiHome from "./pages/sicai/SicaiPlaceholder.tsx";
+import SicaiHome from "./pages/sicai/SicaiHomePage.tsx";
 import SicaiLibraryPage from "./pages/sicai/SicaiLibraryPage.tsx";
 import SicaiNewPage from "./pages/sicai/SicaiNewPage.tsx";
 import SicaiAnalysesPage from "./pages/sicai/SicaiAnalysesPage.tsx";
