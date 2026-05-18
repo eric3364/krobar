@@ -29,7 +29,7 @@ import {
   sicaiApi, type SicaiAnalysis, type SicaiDocument, type SicaiParagraph, type SicaiSource,
 } from "@/lib/sicaiApi";
 import {
-  analysesToCSV, analysesToJSON, analysesToMarkdown, downloadFile,
+  analysesToCSV, analysesToJSON, analysesToMarkdown, analysesToFullReport, downloadFile,
 } from "@/lib/sicaiExports";
 
 const ALL = "__all__";
@@ -120,11 +120,12 @@ export default function SicaiAnalysesPage() {
   }, [analyses, documents, search, fDoc, fLevel, fFunc, fFamily, fArch, fClass]);
 
   const stamp = () => new Date().toISOString().slice(0, 10);
-  const exportAll = (format: "json" | "csv" | "md") => {
+  const exportAll = (format: "json" | "csv" | "md" | "report") => {
     if (filtered.length === 0) return toast.error("Aucune analyse à exporter");
     const base = `sicai-analyses-${stamp()}`;
     if (format === "json") downloadFile(`${base}.json`, analysesToJSON(filtered, ctx), "application/json");
     else if (format === "csv") downloadFile(`${base}.csv`, analysesToCSV(filtered, ctx), "text/csv");
+    else if (format === "report") downloadFile(`sicai-rapport-global-${stamp()}.md`, analysesToFullReport(filtered, ctx), "text/markdown");
     else downloadFile(`${base}.md`, analysesToMarkdown(filtered, ctx), "text/markdown");
     toast.success(`Export ${format.toUpperCase()} : ${filtered.length} analyse(s)`);
   };
@@ -170,6 +171,9 @@ export default function SicaiAnalysesPage() {
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => exportAll("md")}>
               <FileText className="h-4 w-4 mr-2" /> Markdown
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => exportAll("report")}>
+              <BookOpen className="h-4 w-4 mr-2" /> Rapport global (textes + caractéristiques)
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
