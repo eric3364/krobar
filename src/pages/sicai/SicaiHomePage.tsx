@@ -10,6 +10,8 @@ import { Card } from "@/components/ui/card";
 
 type Stats = {
   sources: number;
+  sourcesFr: number;
+  sourcesInitial: number;
   documents: number;
   segmented: number;
   analysesGlobal: number;
