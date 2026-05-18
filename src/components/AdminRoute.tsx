@@ -21,6 +21,7 @@ const sicaiNav = {
   icon: Brain,
   children: [
     { label: "Bibliothèque", path: "/admin/sicai/library", icon: Library },
+    { label: "Documents", path: "/admin/sicai/documents", icon: FileText },
     { label: "Nouveau texte", path: "/admin/sicai/new", icon: FilePlus2 },
     { label: "Analyses", path: "/admin/sicai/analyses", icon: BarChart3 },
     { label: "Archétypes graphiques", path: "/admin/sicai/archetypes", icon: Shapes },
