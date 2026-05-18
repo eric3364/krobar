@@ -147,11 +147,14 @@ export default function SicaiLibraryPage() {
                   <TableHead>Profil attendu</TableHead>
                   <TableHead>Intérêt</TableHead>
                   <TableHead>Statut</TableHead>
+                  <TableHead className="w-16 text-center">Docs</TableHead>
                   <TableHead className="w-[80px] text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filtered.map((r) => (
+                {filtered.map((r) => {
+                  const docCount = docCounts.get(r.id) ?? 0;
+                  return (
                   <TableRow key={r.id}>
                     <TableCell className="font-mono text-xs">{r.source_id}</TableCell>
                     <TableCell>
