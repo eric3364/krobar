@@ -10,7 +10,22 @@ const corsHeaders = {
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
-const SYSTEM_PROMPT = `Tu es un expert en sémantique, narratologie, analyse littéraire, analyse de discours, direction artistique et conception d'infographies.
+type Thresholds = {
+  exclusive_gap: number;
+  nuance_gap_min: number;
+  nuance_gap_max: number;
+  hybrid_score_min: number;
+};
+
+const DEFAULT_THRESHOLDS: Thresholds = {
+  exclusive_gap: 25,
+  nuance_gap_min: 10,
+  nuance_gap_max: 25,
+  hybrid_score_min: 60,
+};
+
+function buildSystemPrompt(t: Thresholds): string {
+  return `Tu es un expert en sémantique, narratologie, analyse littéraire, analyse de discours, direction artistique et conception d'infographies.
 
 Tu dois analyser le texte fourni selon la méthode SICAI :
 Sémantique — Intensité — Cardinalité — Affordance Iconique.
@@ -23,10 +38,10 @@ N'utilise pas de Markdown.
 
 Tu dois évaluer les dimensions suivantes avec des scores de 0 à 100 : narration, description, explication, argumentation, emotion, conceptualisation, procedure, opposition, transformation, synthese.
 
-Règles de classification :
-- exclusive : une dimension dépasse toutes les autres d'au moins 25 points.
-- dominante_avec_nuance : une dimension domine avec un écart compris entre 10 et 25 points.
-- hybride_stable : deux ou trois dimensions fortes sont proches et supérieures à 60.
+Règles de classification (seuils administrateur) :
+- exclusive : une dimension dépasse toutes les autres d'au moins ${t.exclusive_gap} points.
+- dominante_avec_nuance : une dimension domine avec un écart compris entre ${t.nuance_gap_min} et ${t.nuance_gap_max} points.
+- hybride_stable : deux ou trois dimensions fortes sont proches et toutes supérieures à ${t.hybrid_score_min}.
 - ambigue : aucune dimension ne domine clairement ou les scores sont dispersés.
 
 Tu dois identifier la cardinalité : unitaire, binaire, ternaire, multiple, sequentielle, causale, cyclique, hierarchique, reseau.
@@ -85,6 +100,7 @@ Le JSON attendu doit respecter exactement cette structure :
   "image_prompt": "",
   "confidence": { "score": 0, "comment": "" }
 }`;
+}
 
 const REQUIRED_FIELDS = [
   "dominant_textual_function",
@@ -124,7 +140,11 @@ function validateAnalysis(obj: unknown): { ok: true } | { ok: false; missing: st
   return missing.length ? { ok: false, missing } : { ok: true };
 }
 
-async function callOpenAI(apiKey: string, model: string, text: string): Promise<{ raw: string; parsed: unknown | null }> {
+async function callOpenAI(
+  apiKey: string,
+  cfg: { model: string; temperature: number; max_tokens: number; thresholds: Thresholds },
+  text: string,
+): Promise<{ raw: string; parsed: unknown | null }> {
   const resp = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -132,11 +152,12 @@ async function callOpenAI(apiKey: string, model: string, text: string): Promise<
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model,
+      model: cfg.model,
       response_format: { type: "json_object" },
-      temperature: 0.2,
+      temperature: cfg.temperature,
+      max_tokens: cfg.max_tokens,
       messages: [
-        { role: "system", content: SYSTEM_PROMPT },
+        { role: "system", content: buildSystemPrompt(cfg.thresholds) },
         { role: "user", content: `Texte à analyser :\n${text}` },
       ],
     }),
@@ -205,32 +226,51 @@ Deno.serve(async (req) => {
     return json({ error: "text_to_analyze must not be empty" }, 400);
   }
 
-  // --- Optional override model from sicai_settings ---
-  let model = "gpt-4o-mini";
-  const { data: settingRow } = await admin
-    .from("sicai_settings")
-    .select("setting_value")
-    .eq("setting_key", "openai_model")
-    .maybeSingle();
-  const settingVal = (settingRow?.setting_value as { model?: string } | null)?.model;
-  if (settingVal && typeof settingVal === "string") model = settingVal;
+  // --- Load AI config from sicai_settings (key=ai_config) with defaults ---
+  const cfg = {
+    model: "gpt-4o-mini",
+    temperature: 0.2,
+    max_tokens: 2000,
+    thresholds: { ...DEFAULT_THRESHOLDS },
+  };
+  {
+    const { data: settingRow } = await admin
+      .from("sicai_settings")
+      .select("setting_value")
+      .eq("setting_key", "ai_config")
+      .maybeSingle();
+    const v = (settingRow?.setting_value ?? null) as Partial<typeof cfg> | null;
+    if (v && typeof v === "object") {
+      if (typeof v.model === "string" && v.model.trim()) cfg.model = v.model.trim();
+      if (typeof v.temperature === "number" && v.temperature >= 0 && v.temperature <= 2) {
+        cfg.temperature = v.temperature;
+      }
+      if (typeof v.max_tokens === "number" && v.max_tokens >= 256 && v.max_tokens <= 8000) {
+        cfg.max_tokens = Math.floor(v.max_tokens);
+      }
+      const t = (v.thresholds ?? {}) as Partial<Thresholds>;
+      for (const k of ["exclusive_gap", "nuance_gap_min", "nuance_gap_max", "hybrid_score_min"] as const) {
+        const n = t[k];
+        if (typeof n === "number" && n >= 1 && n <= 100) cfg.thresholds[k] = n;
+      }
+    }
+  }
 
   // --- Call OpenAI ---
   let raw = "";
   let parsed: unknown | null = null;
   try {
-    const first = await callOpenAI(OPENAI_API_KEY, model, text_to_analyze);
+    const first = await callOpenAI(OPENAI_API_KEY, cfg, text_to_analyze);
     raw = first.raw;
     parsed = first.parsed;
 
     let check = validateAnalysis(parsed);
     if (!check.ok) {
-      // single repair retry
       const repairPrompt =
         `Le JSON suivant est invalide ou incomplet. Champs manquants : ${check.missing.join(", ")}.\n` +
         `Régénère un JSON SICAI strict, complet et valide à partir du texte ci-dessous.\n\n` +
         `Texte :\n${text_to_analyze}`;
-      const retry = await callOpenAI(OPENAI_API_KEY, model, repairPrompt);
+      const retry = await callOpenAI(OPENAI_API_KEY, cfg, repairPrompt);
       raw = retry.raw;
       parsed = retry.parsed;
       check = validateAnalysis(parsed);
@@ -269,7 +309,7 @@ Deno.serve(async (req) => {
     sicai_archetype_id: (a.sicai_archetype_id as string) ?? null,
     visual_brief: a.visual_brief ?? {},
     image_prompt: (a.image_prompt as string) ?? null,
-    ai_model: model,
+    ai_model: cfg.model,
     ai_raw_response: parsed,
   };
 
