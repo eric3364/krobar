@@ -163,6 +163,79 @@ export const sicaiApi = {
       (a, b) => a.paragraph_index - b.paragraph_index,
     );
   },
+
+  // ---------- Analyses ----------
+  async listAnalyses(): Promise<SicaiAnalysis[]> {
+    const { data, error } = await supabase
+      .from("sicai_analyses")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (error) throw new Error(error.message);
+    return (data ?? []) as SicaiAnalysis[];
+  },
+  async getAnalysis(id: string): Promise<SicaiAnalysis | null> {
+    const { data, error } = await supabase
+      .from("sicai_analyses")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    return (data as SicaiAnalysis) ?? null;
+  },
+  async updateAnalysis(id: string, patch: Partial<SicaiAnalysis>): Promise<SicaiAnalysis> {
+    // never overwrite ai_raw_response from a human edit
+    const { ai_raw_response: _ignored, id: _id, created_at: _c, ...safe } = patch as Record<string, unknown>;
+    void _ignored; void _id; void _c;
+    const { data, error } = await supabase
+      .from("sicai_analyses")
+      .update({ ...safe, updated_at: new Date().toISOString() })
+      .eq("id", id)
+      .select()
+      .single();
+    if (error) throw new Error(error.message);
+    return data as SicaiAnalysis;
+  },
+  async listDocumentsMap(): Promise<Map<string, SicaiDocument>> {
+    const { data, error } = await supabase.from("sicai_documents").select("*");
+    if (error) throw new Error(error.message);
+    const map = new Map<string, SicaiDocument>();
+    for (const d of (data ?? []) as SicaiDocument[]) map.set(d.id, d);
+    return map;
+  },
+  async listParagraphsMap(): Promise<Map<string, SicaiParagraph>> {
+    const { data, error } = await supabase.from("sicai_paragraphs").select("*");
+    if (error) throw new Error(error.message);
+    const map = new Map<string, SicaiParagraph>();
+    for (const p of (data ?? []) as SicaiParagraph[]) map.set(p.id, p);
+    return map;
+  },
+};
+
+export type SicaiAnalysis = {
+  id: string;
+  document_id: string | null;
+  paragraph_id: string | null;
+  analysis_level: string;
+  classification_status: string | null;
+  dominant_textual_function: string | null;
+  secondary_categories: unknown;
+  intensities: Record<string, number> | unknown;
+  cardinality: Record<string, unknown> | unknown;
+  temporality: string | null;
+  spatiality: string | null;
+  agency: string | null;
+  tension: string | null;
+  transformation: string | null;
+  iconic_affordance: Record<string, unknown> | unknown;
+  abstraction_level: string | null;
+  graphic_family: string | null;
+  sicai_archetype_id: string | null;
+  visual_brief: Record<string, unknown> | unknown;
+  image_prompt: string | null;
+  ai_model: string | null;
+  ai_raw_response: unknown;
+  created_at: string;
+  updated_at: string;
 };
 
 export type SicaiParagraph = {
