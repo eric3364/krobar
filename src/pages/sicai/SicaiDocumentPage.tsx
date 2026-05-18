@@ -114,7 +114,68 @@ export default function SicaiDocumentPage() {
     }
   };
 
-  const aiDisabled = () => toast.info(AI_DISABLED_MSG);
+  const [analyzing, setAnalyzing] = useState<"global" | "all" | string | null>(null);
+
+  const runGlobal = async () => {
+    if (!doc?.raw_text?.trim()) return toast.error("Le document n'a pas de texte.");
+    setAnalyzing("global");
+    try {
+      await sicaiApi.runAnalysis({
+        document_id: doc.id,
+        analysis_level: "global",
+        text_to_analyze: doc.raw_text,
+      });
+      toast.success("Analyse globale terminée");
+      const fresh = await sicaiApi.getDocument(doc.id);
+      setDoc(fresh);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Échec de l'analyse");
+    } finally {
+      setAnalyzing(null);
+    }
+  };
+
+  const runParagraph = async (p: SicaiParagraph) => {
+    if (!doc) return;
+    setAnalyzing(p.id);
+    try {
+      await sicaiApi.runAnalysis({
+        document_id: doc.id,
+        analysis_level: "paragraph",
+        paragraph_id: p.id,
+        text_to_analyze: p.paragraph_text,
+      });
+      toast.success(`Paragraphe ${p.paragraph_index} analysé`);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Échec de l'analyse");
+    } finally {
+      setAnalyzing(null);
+    }
+  };
+
+  const runAllParagraphs = async () => {
+    if (!doc || paragraphs.length === 0) return toast.error("Aucun paragraphe à analyser.");
+    setAnalyzing("all");
+    let ok = 0;
+    try {
+      for (const p of paragraphs) {
+        try {
+          await sicaiApi.runAnalysis({
+            document_id: doc.id,
+            analysis_level: "paragraph",
+            paragraph_id: p.id,
+            text_to_analyze: p.paragraph_text,
+          });
+          ok += 1;
+        } catch (e) {
+          toast.error(`Paragraphe ${p.paragraph_index} : ${e instanceof Error ? e.message : "échec"}`);
+        }
+      }
+      toast.success(`${ok}/${paragraphs.length} paragraphes analysés`);
+    } finally {
+      setAnalyzing(null);
+    }
+  };
 
   if (loading) {
     return <div className="py-16 flex justify-center"><Loader2 className="animate-spin" /></div>;
@@ -158,18 +219,33 @@ export default function SicaiDocumentPage() {
               : <Scissors className="h-4 w-4 mr-2" />}
             Segmenter en paragraphes
           </Button>
-          <Button onClick={aiDisabled} variant="outline" size="sm" title={AI_DISABLED_MSG}>
-            <Sparkles className="h-4 w-4 mr-2" /> Analyser le document global
+          <Button onClick={runGlobal} variant="outline" size="sm" disabled={analyzing !== null}>
+            {analyzing === "global"
+              ? <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              : <Sparkles className="h-4 w-4 mr-2" />}
+            Analyser le document global
           </Button>
-          <Button onClick={aiDisabled} variant="outline" size="sm" title={AI_DISABLED_MSG}>
-            <Sparkles className="h-4 w-4 mr-2" /> Analyser tous les paragraphes
+          <Button
+            onClick={runAllParagraphs}
+            variant="outline"
+            size="sm"
+            disabled={analyzing !== null || paragraphs.length === 0}
+          >
+            {analyzing === "all"
+              ? <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              : <Sparkles className="h-4 w-4 mr-2" />}
+            Analyser tous les paragraphes
           </Button>
           <Button asChild variant="ghost" size="sm">
             <Link to={`/admin/sicai/analyses?document=${doc.id}`}>
               <Eye className="h-4 w-4 mr-2" /> Voir les analyses
             </Link>
           </Button>
-          <Button onClick={aiDisabled} variant="ghost" size="sm" title={AI_DISABLED_MSG}>
+          <Button
+            onClick={() => toast.info("Export disponible depuis la liste des analyses.")}
+            variant="ghost"
+            size="sm"
+          >
             <Download className="h-4 w-4 mr-2" /> Exporter
           </Button>
         </div>
@@ -281,8 +357,16 @@ export default function SicaiDocumentPage() {
                       </TableCell>
                       <TableCell className="text-right text-sm">{p.detected_items_count ?? 0}</TableCell>
                       <TableCell className="text-right">
-                        <Button size="sm" variant="ghost" onClick={aiDisabled} title={AI_DISABLED_MSG}>
-                          <Sparkles className="h-4 w-4 mr-1" /> Analyser
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => runParagraph(p)}
+                          disabled={analyzing !== null}
+                        >
+                          {analyzing === p.id
+                            ? <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+                            : <Sparkles className="h-4 w-4 mr-1" />}
+                          Analyser
                         </Button>
                       </TableCell>
                     </TableRow>
