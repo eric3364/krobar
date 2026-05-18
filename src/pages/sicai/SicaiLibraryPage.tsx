@@ -174,22 +174,35 @@ export default function SicaiLibraryPage() {
             {loading ? "Chargement…" : `${filtered.length} / ${rows?.length ?? 0} sources`}
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
           <Button
             variant="outline"
-            onClick={() => runAutomation(true)}
+            onClick={() => runAutomation("missing")}
             disabled={autoRunning || loading}
           >
             {autoRunning ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Zap className="h-4 w-4 mr-2" />}
             Auto : sources sans document
           </Button>
           <Button
-            onClick={() => runAutomation(false)}
+            onClick={() => runAutomation("all")}
             disabled={autoRunning || loading}
           >
             {autoRunning ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Zap className="h-4 w-4 mr-2" />}
             Auto : toutes les sources avec URL
           </Button>
+          {autoLog.some((l) => l.status === "error") && !autoRunning && (
+            <Button
+              variant="destructive"
+              onClick={() => {
+                const ids = new Set(autoLog.filter((l) => l.status === "error").map((l) => l.source));
+                runAutomation("errors", ids);
+              }}
+              disabled={autoRunning || loading}
+            >
+              <Zap className="h-4 w-4 mr-2" />
+              Relancer les erreurs ({autoLog.filter((l) => l.status === "error").length})
+            </Button>
+          )}
         </div>
       </div>
 
