@@ -1,9 +1,20 @@
 // Fetch URL and extract readable text for SICAI document import
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
+import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+import { request as httpsRequest } from "node:https";
+import { Buffer } from "node:buffer";
+
+const REQUEST_HEADERS = {
+  "User-Agent": "Mozilla/5.0 (compatible; KrobarSICAI/1.0)",
+  "Accept": "text/html,application/xhtml+xml",
+  "Accept-Language": "fr-FR,fr;q=0.9,en;q=0.8",
 };
+
+function jsonResponse(body: unknown, status = 200) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
+}
 
 function stripHtml(html: string): string {
   // Remove scripts/styles
@@ -48,36 +59,162 @@ function extractTitle(html: string): string | null {
   return t ? t[1].trim() : null;
 }
 
-Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+function normalizeError(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
+function isLikelyHttp2Error(message: string): boolean {
+  return /http2 error|stream error|sendrequest|unexpected internal error encountered/i.test(message);
+}
+
+function isLikelyBlockedPage(status: number, html: string): boolean {
+  if (status === 401 || status === 403 || status === 429) return true;
+  return /access denied|forbidden|captcha|verify you are human|bot detection|request unsuccessful|errors\.edgesuite\.net/i.test(html);
+}
+
+async function fetchWithNative(url: string) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 30000);
   try {
-    const { url } = await req.json();
-    if (!url || typeof url !== "string") {
-      return new Response(JSON.stringify({ error: "url requis" }), {
-        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
     const res = await fetch(url, {
-      headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; KrobarSICAI/1.0)",
-        "Accept": "text/html,application/xhtml+xml",
-      },
+      headers: REQUEST_HEADERS,
       redirect: "follow",
+      signal: controller.signal,
     });
-    if (!res.ok) {
-      return new Response(JSON.stringify({ error: `HTTP ${res.status}` }), {
-        status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    const html = await res.text();
+    return { status: res.status, html };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function fetchWithHttpsFallback(url: string, redirectCount = 0): Promise<{ status: number; html: string }> {
+  if (redirectCount > 5) {
+    throw new Error("Trop de redirections lors de la récupération de l'URL");
+  }
+
+  return await new Promise((resolve, reject) => {
+    const req = httpsRequest(url, {
+      method: "GET",
+      headers: {
+        ...REQUEST_HEADERS,
+        "Accept-Encoding": "identity",
+      },
+    }, (res) => {
+      const status = res.statusCode ?? 0;
+      const location = res.headers.location;
+
+      if ([301, 302, 303, 307, 308].includes(status) && typeof location === "string") {
+        res.resume();
+        const nextUrl = new URL(location, url).toString();
+        fetchWithHttpsFallback(nextUrl, redirectCount + 1).then(resolve).catch(reject);
+        return;
+      }
+
+      const chunks: Buffer[] = [];
+      res.on("data", (chunk) => {
+        chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+      });
+      res.on("end", () => {
+        resolve({
+          status,
+          html: Buffer.concat(chunks).toString("utf8"),
+        });
+      });
+      res.on("error", reject);
+    });
+
+    req.setTimeout(30000, () => {
+      req.destroy(new Error("Timeout lors de la récupération de l'URL"));
+    });
+    req.on("error", reject);
+    req.end();
+  });
+}
+
+Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  try {
+    const body = await req.json().catch(() => null);
+    const url = body?.url;
+    if (!url || typeof url !== "string") {
+      return jsonResponse({ error: "url requis" }, 400);
+    }
+
+    let parsedUrl: URL;
+    try {
+      parsedUrl = new URL(url);
+    } catch {
+      return jsonResponse({ error: "URL invalide" }, 400);
+    }
+
+    if (!["http:", "https:"].includes(parsedUrl.protocol)) {
+      return jsonResponse({ error: "Seules les URL http(s) sont acceptées" }, 400);
+    }
+
+    let status = 0;
+    let html = "";
+
+    try {
+      const nativeResult = await fetchWithNative(parsedUrl.toString());
+      status = nativeResult.status;
+      html = nativeResult.html;
+    } catch (error) {
+      const message = normalizeError(error);
+
+      if (!isLikelyHttp2Error(message)) {
+        return jsonResponse({
+          error: `Impossible de récupérer cette URL automatiquement: ${message}`,
+        });
+      }
+
+      try {
+        const fallbackResult = await fetchWithHttpsFallback(parsedUrl.toString());
+        status = fallbackResult.status;
+        html = fallbackResult.html;
+      } catch (fallbackError) {
+        return jsonResponse({
+          error: `Impossible de récupérer cette URL automatiquement: ${normalizeError(fallbackError)}`,
+          technical_error: message,
+        });
+      }
+    }
+
+    if (!html.trim()) {
+      return jsonResponse({ error: "La source n'a renvoyé aucun contenu exploitable" });
+    }
+
+    if (status >= 400) {
+      if (isLikelyBlockedPage(status, html)) {
+        return jsonResponse({
+          error: "Le site source bloque l'extraction automatique depuis le backend (anti-bot / accès refusé). Ouvrez l'article puis collez le texte manuellement dans SICAI.",
+          blocked: true,
+          source_status: status,
+        });
+      }
+
+      return jsonResponse({
+        error: `Le site source a répondu HTTP ${status}.`,
+        source_status: status,
       });
     }
-    const html = await res.text();
+
     const text = stripHtml(html);
+    if (!text || text.split(/\s+/).filter(Boolean).length < 30) {
+      if (isLikelyBlockedPage(status, html)) {
+        return jsonResponse({
+          error: "Le site source bloque l'extraction automatique depuis le backend (anti-bot / accès refusé). Ouvrez l'article puis collez le texte manuellement dans SICAI.",
+          blocked: true,
+          source_status: status,
+        });
+      }
+
+      return jsonResponse({ error: "Aucun texte exploitable n'a pu être extrait depuis cette URL." });
+    }
+
     const title = extractTitle(html);
-    return new Response(JSON.stringify({ text, title, word_count: text.split(/\s+/).filter(Boolean).length }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return jsonResponse({ text, title, word_count: text.split(/\s+/).filter(Boolean).length });
   } catch (e) {
-    return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "Erreur inconnue" }), {
-      status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return jsonResponse({ error: e instanceof Error ? e.message : "Erreur inconnue" }, 500);
   }
 });
