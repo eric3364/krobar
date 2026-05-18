@@ -147,7 +147,7 @@ export default function SicaiLibraryPage() {
           text_to_analyze: text,
         });
 
-        log.push({ source: s.source_id, status: "ok", message: `${countWordsApprox(text)} mots, analyse OK` });
+        log.push({ source: s.source_id, status: "ok", message: `${text.split(/\s+/).filter(Boolean).length} mots, analyse OK` });
       } catch (e) {
         log.push({ source: s.source_id, status: "error", message: e instanceof Error ? e.message : "Erreur" });
       }
