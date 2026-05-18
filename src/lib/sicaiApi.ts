@@ -252,6 +252,19 @@ export const sicaiApi = {
     if (error) throw new Error(error.message);
     return data as SicaiAnalysis;
   },
+  async deleteAnalysis(id: string): Promise<void> {
+    const { error } = await supabase.from("sicai_analyses").delete().eq("id", id);
+    if (error) throw new Error(error.message);
+  },
+  async listAnalysesByDocument(documentId: string): Promise<SicaiAnalysis[]> {
+    const { data, error } = await supabase
+      .from("sicai_analyses")
+      .select("*")
+      .eq("document_id", documentId)
+      .order("created_at", { ascending: false });
+    if (error) throw new Error(error.message);
+    return (data ?? []) as SicaiAnalysis[];
+  },
   async listDocumentsMap(): Promise<Map<string, SicaiDocument>> {
     const { data, error } = await supabase.from("sicai_documents").select("*");
     if (error) throw new Error(error.message);

@@ -18,6 +18,7 @@ import {
 import {
   analysesToCSV, analysesToJSON, analysesToMarkdown, downloadFile,
 } from "@/lib/sicaiExports";
+import { SicaiIdentityCard } from "@/components/SicaiIdentityCard";
 
 type Form = {
   dominant_textual_function: string;
@@ -210,11 +211,17 @@ export default function SicaiAnalysisEditPage() {
         </div>
       </div>
 
-      <Tabs defaultValue="edit">
+      <Tabs defaultValue="card">
         <TabsList>
+          <TabsTrigger value="card">Carte SICAI</TabsTrigger>
           <TabsTrigger value="edit">Édition manuelle</TabsTrigger>
-          <TabsTrigger value="raw">Réponse IA brute (lecture seule)</TabsTrigger>
+          <TabsTrigger value="raw">Réponse IA brute</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="card" className="mt-4">
+          <SicaiIdentityCard analysis={analysis} />
+        </TabsContent>
+
 
         <TabsContent value="edit" className="mt-4 space-y-4">
           <Card className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">

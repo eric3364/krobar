@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import {
   ArrowLeft, Loader2, Scissors, AlertTriangle, ListOrdered, FileText,
-  Sparkles, Download, Eye, Save, ImageIcon,
+  Sparkles, Download, Eye, Save, ImageIcon, Pencil,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -17,7 +17,8 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { sicaiApi, type SicaiDocument, type SicaiParagraph, countWords } from "@/lib/sicaiApi";
+import { sicaiApi, type SicaiAnalysis, type SicaiDocument, type SicaiParagraph, countWords } from "@/lib/sicaiApi";
+import { SicaiIdentityCard } from "@/components/SicaiIdentityCard";
 
 const AI_DISABLED_MSG = "Pipeline IA non encore configuré.";
 
@@ -34,18 +35,33 @@ export default function SicaiDocumentPage() {
   const [savingText, setSavingText] = useState(false);
   const [confirmEditOpen, setConfirmEditOpen] = useState(false);
 
+  const [analyses, setAnalyses] = useState<SicaiAnalysis[]>([]);
+  const [confirmReanalyze, setConfirmReanalyze] = useState(false);
+  const [batchProgress, setBatchProgress] = useState<{ done: number; total: number } | null>(null);
+
+  const reloadAnalyses = async (docId: string) => {
+    try {
+      const list = await sicaiApi.listAnalysesByDocument(docId);
+      setAnalyses(list);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Erreur de chargement des analyses");
+    }
+  };
+
   useEffect(() => {
     let alive = true;
     (async () => {
       setLoading(true);
       try {
-        const [d, ps] = await Promise.all([
+        const [d, ps, ans] = await Promise.all([
           sicaiApi.getDocument(id),
           sicaiApi.listParagraphs(id),
+          sicaiApi.listAnalysesByDocument(id),
         ]);
         if (!alive) return;
         setDoc(d);
         setParagraphs(ps);
+        setAnalyses(ans);
         setEditText(d?.raw_text ?? "");
       } catch (e) {
         toast.error(e instanceof Error ? e.message : "Erreur de chargement");
@@ -116,9 +132,16 @@ export default function SicaiDocumentPage() {
 
   const [analyzing, setAnalyzing] = useState<"global" | "all" | string | null>(null);
 
-  const runGlobal = async () => {
+  const existingGlobal = analyses.find((a) => a.analysis_level === "global") ?? null;
+  const paragraphAnalyses = new Map(
+    analyses.filter((a) => a.analysis_level === "paragraph" && a.paragraph_id)
+      .map((a) => [a.paragraph_id as string, a] as const),
+  );
+
+  const runGlobalCore = async () => {
     if (!doc?.raw_text?.trim()) return toast.error("Le document n'a pas de texte.");
     setAnalyzing("global");
+    setConfirmReanalyze(false);
     try {
       await sicaiApi.runAnalysis({
         document_id: doc.id,
@@ -126,13 +149,18 @@ export default function SicaiDocumentPage() {
         text_to_analyze: doc.raw_text,
       });
       toast.success("Analyse globale terminée");
-      const fresh = await sicaiApi.getDocument(doc.id);
+      const [fresh] = await Promise.all([sicaiApi.getDocument(doc.id), reloadAnalyses(doc.id)]);
       setDoc(fresh);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Échec de l'analyse");
     } finally {
       setAnalyzing(null);
     }
+  };
+
+  const runGlobal = () => {
+    if (existingGlobal) setConfirmReanalyze(true);
+    else void runGlobalCore();
   };
 
   const runParagraph = async (p: SicaiParagraph) => {
@@ -145,6 +173,7 @@ export default function SicaiDocumentPage() {
         paragraph_id: p.id,
         text_to_analyze: p.paragraph_text,
       });
+      await reloadAnalyses(doc.id);
       toast.success(`Paragraphe ${p.paragraph_index} analysé`);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Échec de l'analyse");
@@ -156,6 +185,7 @@ export default function SicaiDocumentPage() {
   const runAllParagraphs = async () => {
     if (!doc || paragraphs.length === 0) return toast.error("Aucun paragraphe à analyser.");
     setAnalyzing("all");
+    setBatchProgress({ done: 0, total: paragraphs.length });
     let ok = 0;
     try {
       for (const p of paragraphs) {
@@ -170,10 +200,13 @@ export default function SicaiDocumentPage() {
         } catch (e) {
           toast.error(`Paragraphe ${p.paragraph_index} : ${e instanceof Error ? e.message : "échec"}`);
         }
+        setBatchProgress({ done: ok, total: paragraphs.length });
       }
+      await reloadAnalyses(doc.id);
       toast.success(`${ok}/${paragraphs.length} paragraphes analysés`);
     } finally {
       setAnalyzing(null);
+      setTimeout(() => setBatchProgress(null), 2500);
     }
   };
 
@@ -223,7 +256,7 @@ export default function SicaiDocumentPage() {
             {analyzing === "global"
               ? <Loader2 className="h-4 w-4 mr-2 animate-spin" />
               : <Sparkles className="h-4 w-4 mr-2" />}
-            Analyser le document global
+            {existingGlobal ? "Réanalyser le document global" : "Analyser le document global"}
           </Button>
           <Button
             onClick={runAllParagraphs}
@@ -341,36 +374,54 @@ export default function SicaiDocumentPage() {
                     <TableHead className="w-20 text-right">Mots</TableHead>
                     <TableHead className="w-20 text-center">Liste</TableHead>
                     <TableHead className="w-20 text-right">Items</TableHead>
-                    <TableHead className="w-32 text-right">Action</TableHead>
+                    <TableHead className="w-24 text-center">Analyse</TableHead>
+                    <TableHead className="w-44 text-right">Action</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {paragraphs.map((p) => (
-                    <TableRow key={p.id}>
-                      <TableCell className="font-mono text-xs">{p.paragraph_index}</TableCell>
-                      <TableCell>
-                        <p className="text-sm line-clamp-3">{p.paragraph_text}</p>
-                      </TableCell>
-                      <TableCell className="text-right text-sm">{p.word_count ?? 0}</TableCell>
-                      <TableCell className="text-center">
-                        {p.has_list ? <Badge variant="secondary">oui</Badge> : <span className="text-muted-foreground">—</span>}
-                      </TableCell>
-                      <TableCell className="text-right text-sm">{p.detected_items_count ?? 0}</TableCell>
-                      <TableCell className="text-right">
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => runParagraph(p)}
-                          disabled={analyzing !== null}
-                        >
-                          {analyzing === p.id
-                            ? <Loader2 className="h-4 w-4 mr-1 animate-spin" />
-                            : <Sparkles className="h-4 w-4 mr-1" />}
-                          Analyser
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {paragraphs.map((p) => {
+                    const an = paragraphAnalyses.get(p.id);
+                    return (
+                      <TableRow key={p.id}>
+                        <TableCell className="font-mono text-xs">{p.paragraph_index}</TableCell>
+                        <TableCell>
+                          <p className="text-sm line-clamp-3">{p.paragraph_text}</p>
+                        </TableCell>
+                        <TableCell className="text-right text-sm">{p.word_count ?? 0}</TableCell>
+                        <TableCell className="text-center">
+                          {p.has_list ? <Badge variant="secondary">oui</Badge> : <span className="text-muted-foreground">—</span>}
+                        </TableCell>
+                        <TableCell className="text-right text-sm">{p.detected_items_count ?? 0}</TableCell>
+                        <TableCell className="text-center">
+                          {an
+                            ? <Badge variant="secondary">analysé</Badge>
+                            : <span className="text-xs text-muted-foreground">—</span>}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex justify-end gap-1">
+                            {an && (
+                              <Button asChild size="sm" variant="ghost" title="Voir la carte SICAI">
+                                <Link to={`/admin/sicai/analyses/${an.id}`}>
+                                  <Eye className="h-4 w-4" />
+                                </Link>
+                              </Button>
+                            )}
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => runParagraph(p)}
+                              disabled={analyzing !== null}
+                            >
+                              {analyzing === p.id
+                                ? <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+                                : <Sparkles className="h-4 w-4 mr-1" />}
+                              {an ? "Réanalyser" : "Analyser"}
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </Card>
@@ -378,20 +429,66 @@ export default function SicaiDocumentPage() {
         </TabsContent>
 
         <TabsContent value="global" className="mt-4">
-          <Card className="p-10 text-center text-muted-foreground">
-            Aucune analyse globale. {AI_DISABLED_MSG}
-          </Card>
+          {existingGlobal ? (
+            <div className="space-y-3">
+              <div className="flex justify-end">
+                <Button asChild size="sm" variant="outline">
+                  <Link to={`/admin/sicai/analyses/${existingGlobal.id}`}>
+                    <Pencil className="h-4 w-4 mr-2" /> Éditer la carte
+                  </Link>
+                </Button>
+              </div>
+              <SicaiIdentityCard analysis={existingGlobal} />
+            </div>
+          ) : (
+            <Card className="p-10 text-center text-muted-foreground">
+              Aucune analyse globale. Utilisez le bouton « Analyser le document global » ci-dessus.
+            </Card>
+          )}
         </TabsContent>
 
-        <TabsContent value="per-para" className="mt-4">
-          <Card className="p-10 text-center text-muted-foreground">
-            Aucune analyse par paragraphe. {AI_DISABLED_MSG}
-          </Card>
+        <TabsContent value="per-para" className="mt-4 space-y-4">
+          {paragraphs.length === 0 ? (
+            <Card className="p-10 text-center text-muted-foreground">
+              Segmentez d'abord le document en paragraphes.
+            </Card>
+          ) : paragraphAnalyses.size === 0 ? (
+            <Card className="p-10 text-center text-muted-foreground">
+              Aucune analyse par paragraphe. Utilisez « Analyser tous les paragraphes » ou les boutons
+              individuels dans l'onglet Paragraphes.
+            </Card>
+          ) : (
+            paragraphs.map((p) => {
+              const an = paragraphAnalyses.get(p.id);
+              return (
+                <div key={p.id} className="space-y-2">
+                  <div className="flex items-start gap-3">
+                    <Badge variant="outline" className="font-mono mt-1">#{p.paragraph_index}</Badge>
+                    <p className="text-sm text-muted-foreground line-clamp-2 flex-1">{p.paragraph_text}</p>
+                    {an && (
+                      <Button asChild size="sm" variant="ghost" className="shrink-0">
+                        <Link to={`/admin/sicai/analyses/${an.id}`}>
+                          <Pencil className="h-4 w-4 mr-1" /> Éditer
+                        </Link>
+                      </Button>
+                    )}
+                  </div>
+                  {an ? (
+                    <SicaiIdentityCard analysis={an} />
+                  ) : (
+                    <Card className="p-4 text-xs text-muted-foreground">
+                      Paragraphe non analysé.
+                    </Card>
+                  )}
+                </div>
+              );
+            })
+          )}
         </TabsContent>
 
         <TabsContent value="briefs" className="mt-4">
           <Card className="p-10 text-center text-muted-foreground">
-            Aucun brief visuel généré. {AI_DISABLED_MSG}
+            Briefs visuels groupés (à venir) — chaque carte SICAI ci-dessus expose son brief.
           </Card>
         </TabsContent>
       </Tabs>
@@ -429,6 +526,31 @@ export default function SicaiDocumentPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <AlertDialog open={confirmReanalyze} onOpenChange={setConfirmReanalyze}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Réanalyser le document ?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Une analyse globale existe déjà. Une nouvelle analyse sera créée en parallèle ;
+              l'ancienne reste consultable dans la liste des analyses.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction onClick={runGlobalCore}>Réanalyser</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {batchProgress && (
+        <div className="fixed bottom-4 right-4 z-50 bg-background border rounded-md shadow-lg px-4 py-3 text-sm flex items-center gap-3">
+          {batchProgress.done < batchProgress.total
+            ? <Loader2 className="h-4 w-4 animate-spin" />
+            : <Sparkles className="h-4 w-4" />}
+          {batchProgress.done} / {batchProgress.total} paragraphes analysés
+        </div>
+      )}
     </div>
   );
 }
