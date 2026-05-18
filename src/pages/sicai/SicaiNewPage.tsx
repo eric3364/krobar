@@ -100,7 +100,7 @@ export default function SicaiNewPage() {
         internal_notes: notes,
       });
       toast.success(`Document créé (${doc.word_count} mots) — statut : draft`);
-      navigate("/admin/sicai/library");
+      navigate(`/admin/sicai/documents/${doc.id}`);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Erreur à l'enregistrement");
     } finally {
