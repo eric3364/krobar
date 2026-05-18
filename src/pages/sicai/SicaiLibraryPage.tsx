@@ -102,15 +102,16 @@ export default function SicaiLibraryPage() {
   const [autoProgress, setAutoProgress] = useState({ done: 0, total: 0, current: "" });
   const [autoLog, setAutoLog] = useState<{ source: string; status: "ok" | "skip" | "error"; message: string }[]>([]);
 
-  async function runAutomation(onlyMissing: boolean) {
+  async function runAutomation(mode: "missing" | "all" | "errors", retryIds?: Set<string>) {
     if (!rows) return;
     const targets = rows.filter((r) => {
       if (!r.url) return false;
-      if (onlyMissing && (docCounts.get(r.id) ?? 0) > 0) return false;
+      if (mode === "missing" && (docCounts.get(r.id) ?? 0) > 0) return false;
+      if (mode === "errors" && (!retryIds || !retryIds.has(r.source_id))) return false;
       return true;
     });
     if (targets.length === 0) {
-      toast.info("Aucune source à traiter (URL manquante ou déjà traitée).");
+      toast.info("Aucune source à traiter.");
       return;
     }
     setAutoRunning(true);
@@ -173,22 +174,35 @@ export default function SicaiLibraryPage() {
             {loading ? "Chargement…" : `${filtered.length} / ${rows?.length ?? 0} sources`}
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
           <Button
             variant="outline"
-            onClick={() => runAutomation(true)}
+            onClick={() => runAutomation("missing")}
             disabled={autoRunning || loading}
           >
             {autoRunning ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Zap className="h-4 w-4 mr-2" />}
             Auto : sources sans document
           </Button>
           <Button
-            onClick={() => runAutomation(false)}
+            onClick={() => runAutomation("all")}
             disabled={autoRunning || loading}
           >
             {autoRunning ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Zap className="h-4 w-4 mr-2" />}
             Auto : toutes les sources avec URL
           </Button>
+          {autoLog.some((l) => l.status === "error") && !autoRunning && (
+            <Button
+              variant="destructive"
+              onClick={() => {
+                const ids = new Set(autoLog.filter((l) => l.status === "error").map((l) => l.source));
+                runAutomation("errors", ids);
+              }}
+              disabled={autoRunning || loading}
+            >
+              <Zap className="h-4 w-4 mr-2" />
+              Relancer les erreurs ({autoLog.filter((l) => l.status === "error").length})
+            </Button>
+          )}
         </div>
       </div>
 
