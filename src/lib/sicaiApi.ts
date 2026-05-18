@@ -200,44 +200,9 @@ export const sicaiApi = {
         word_count: countWords(text),
         has_list: list.has_list,
         detected_items_count: list.items_count,
-  // ---------- Archetypes ----------
-  async listArchetypes(): Promise<SicaiArchetype[]> {
-    const { data, error } = await supabase
-      .from("sicai_archetypes")
-      .select("*")
-      .order("archetype_id", { ascending: true });
-    if (error) throw new Error(error.message);
-    return (data ?? []) as SicaiArchetype[];
-  },
-  async updateArchetype(id: string, patch: Partial<SicaiArchetype>): Promise<SicaiArchetype> {
-    const { id: _id, archetype_id: _aid, created_at: _c, ...safe } = patch as Record<string, unknown>;
-    void _id; void _aid; void _c;
-    const { data, error } = await supabase
-      .from("sicai_archetypes")
-      .update(safe)
-      .eq("id", id)
-      .select()
-      .single();
-    if (error) throw new Error(error.message);
-    return data as SicaiArchetype;
-  },
-};
-
-export type SicaiArchetype = {
-  id: string;
-  archetype_id: string;
-  graphic_family: string;
-  cardinality: string;
-  representation_regime: string;
-  description: string | null;
-  composition_principle: string | null;
-  visual_motifs: string[] | unknown;
-  possible_tones: string[] | unknown;
-  best_for: string[] | unknown;
-  avoid_for: string[] | unknown;
-  created_at: string;
-};
+      };
     });
+
 
     const { data, error } = await supabase
       .from("sicai_paragraphs")
