@@ -1,0 +1,150 @@
+import type { SicaiAnalysis, SicaiDocument, SicaiParagraph, SicaiSource } from "@/lib/sicaiApi";
+
+const j = (v: unknown): string => {
+  if (v == null) return "";
+  if (typeof v === "string") return v;
+  try { return JSON.stringify(v); } catch { return String(v); }
+};
+
+const csvEscape = (v: unknown): string => {
+  const s = j(v);
+  if (s === "") return "";
+  if (/[",\n;]/.test(s)) return `"${s.replace(/"/g, '""')}"`;
+  return s;
+};
+
+export type AnalysisExportContext = {
+  documents: Map<string, SicaiDocument>;
+  paragraphs: Map<string, SicaiParagraph>;
+  sources?: Map<string, SicaiSource>;
+};
+
+const get = <T,>(v: unknown, k: string): T | undefined => {
+  if (v && typeof v === "object") return (v as Record<string, unknown>)[k] as T | undefined;
+  return undefined;
+};
+
+export function analysesToJSON(rows: SicaiAnalysis[], ctx: AnalysisExportContext): string {
+  const enriched = rows.map((a) => {
+    const doc = a.document_id ? ctx.documents.get(a.document_id) : null;
+    const para = a.paragraph_id ? ctx.paragraphs.get(a.paragraph_id) : null;
+    const src = doc?.source_id && ctx.sources ? ctx.sources.get(doc.source_id) : null;
+    return {
+      ...a,
+      _document_title: doc?.title ?? null,
+      _source_id: src?.source_id ?? null,
+      _paragraph_index: para?.paragraph_index ?? null,
+    };
+  });
+  return JSON.stringify(enriched, null, 2);
+}
+
+const CSV_HEADERS = [
+  "source_id", "document_title", "paragraph_index",
+  "analysis_level", "dominant_textual_function", "secondary_categories",
+  "intensities", "classification_status",
+  "cardinality_type", "number_of_elements",
+  "temporality", "spatiality", "agency", "tension",
+  "transformation_type",
+  "iconic_affordance_primary", "abstraction_level",
+  "graphic_family", "sicai_archetype_id", "image_prompt",
+];
+
+export function analysesToCSV(rows: SicaiAnalysis[], ctx: AnalysisExportContext): string {
+  const lines = [CSV_HEADERS.join(",")];
+  for (const a of rows) {
+    const doc = a.document_id ? ctx.documents.get(a.document_id) : null;
+    const para = a.paragraph_id ? ctx.paragraphs.get(a.paragraph_id) : null;
+    const src = doc?.source_id && ctx.sources ? ctx.sources.get(doc.source_id) : null;
+    const row = [
+      src?.source_id ?? "",
+      doc?.title ?? "",
+      para?.paragraph_index ?? "",
+      a.analysis_level ?? "",
+      a.dominant_textual_function ?? "",
+      a.secondary_categories,
+      a.intensities,
+      a.classification_status ?? "",
+      get<string>(a.cardinality, "type") ?? get<string>(a.cardinality, "cardinality_type") ?? "",
+      get<number>(a.cardinality, "number_of_elements") ?? get<number>(a.cardinality, "count") ?? "",
+      a.temporality ?? "",
+      a.spatiality ?? "",
+      a.agency ?? "",
+      a.tension ?? "",
+      a.transformation ?? "",
+      get<string>(a.iconic_affordance, "primary") ?? "",
+      a.abstraction_level ?? "",
+      a.graphic_family ?? "",
+      a.sicai_archetype_id ?? "",
+      a.image_prompt ?? "",
+    ];
+    lines.push(row.map(csvEscape).join(","));
+  }
+  return lines.join("\n");
+}
+
+export function analysesToMarkdown(rows: SicaiAnalysis[], ctx: AnalysisExportContext): string {
+  // group by document
+  const byDoc = new Map<string, SicaiAnalysis[]>();
+  for (const a of rows) {
+    const k = a.document_id ?? "_orphans";
+    if (!byDoc.has(k)) byDoc.set(k, []);
+    byDoc.get(k)!.push(a);
+  }
+  const out: string[] = ["# Export analyses SICAI\n"];
+  for (const [docId, list] of byDoc) {
+    const doc = docId !== "_orphans" ? ctx.documents.get(docId) : null;
+    out.push(`## ${doc?.title ?? "(document inconnu)"}`);
+    const globals = list.filter((a) => a.analysis_level === "document");
+    const paras = list.filter((a) => a.analysis_level !== "document");
+    if (globals.length) {
+      out.push("\n### Analyse globale\n");
+      for (const a of globals) out.push(renderAnalysisMd(a));
+    }
+    if (paras.length) {
+      out.push("\n### Analyses par paragraphe\n");
+      paras
+        .sort((a, b) => {
+          const ai = ctx.paragraphs.get(a.paragraph_id ?? "")?.paragraph_index ?? 0;
+          const bi = ctx.paragraphs.get(b.paragraph_id ?? "")?.paragraph_index ?? 0;
+          return ai - bi;
+        })
+        .forEach((a) => {
+          const p = ctx.paragraphs.get(a.paragraph_id ?? "");
+          out.push(`\n#### Paragraphe ${p?.paragraph_index ?? "?"}\n`);
+          out.push(renderAnalysisMd(a));
+        });
+    }
+    out.push("\n---\n");
+  }
+  return out.join("\n");
+}
+
+function renderAnalysisMd(a: SicaiAnalysis): string {
+  const lines: string[] = [];
+  lines.push(`- **Fonction dominante** : ${a.dominant_textual_function ?? "—"}`);
+  lines.push(`- **Statut** : ${a.classification_status ?? "—"}`);
+  lines.push(`- **Cardinalité** : ${j(a.cardinality) || "—"}`);
+  lines.push(`- **Intensités** : ${j(a.intensities) || "—"}`);
+  lines.push(`- **Tension / transformation** : ${a.tension ?? "—"} / ${a.transformation ?? "—"}`);
+  lines.push(`- **Famille graphique** : ${a.graphic_family ?? "—"}  ·  **Archétype** : ${a.sicai_archetype_id ?? "—"}`);
+  if (a.visual_brief && Object.keys(a.visual_brief as Record<string, unknown>).length) {
+    lines.push(`\n**Brief visuel** :\n\n\`\`\`json\n${JSON.stringify(a.visual_brief, null, 2)}\n\`\`\``);
+  }
+  if (a.image_prompt) {
+    lines.push(`\n**Prompt image** :\n\n> ${a.image_prompt.replace(/\n/g, "\n> ")}`);
+  }
+  return lines.join("\n");
+}
+
+export function downloadFile(filename: string, content: string, mime: string) {
+  const blob = new Blob([content], { type: `${mime};charset=utf-8` });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 500);
+}
