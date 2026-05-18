@@ -390,9 +390,28 @@ export default function SicaiAnalysesPage() {
                 })
                 .sort((a, b) => (a.title ?? "").localeCompare(b.title ?? ""));
               if (list.length === 0) {
+                const totalDocs = documents.size;
                 return (
-                  <div className="p-8 text-center text-sm text-muted-foreground">
-                    Aucun document trouvé.
+                  <div className="p-8 text-center space-y-4">
+                    <p className="text-sm text-muted-foreground">
+                      {totalDocs === 0
+                        ? "La bibliothèque ne contient encore aucun document analysable. Créez un nouveau texte ou attachez du contenu à une source existante."
+                        : "Aucun document ne correspond à votre recherche."}
+                    </p>
+                    {totalDocs === 0 && (
+                      <div className="flex flex-wrap justify-center gap-2">
+                        <Button asChild size="sm" onClick={() => setLibOpen(false)}>
+                          <Link to="/admin/sicai/new">
+                            <Plus className="h-4 w-4 mr-1" /> Nouveau texte
+                          </Link>
+                        </Button>
+                        <Button asChild size="sm" variant="outline" onClick={() => setLibOpen(false)}>
+                          <Link to="/admin/sicai/library">
+                            <BookOpen className="h-4 w-4 mr-1" /> Ouvrir la bibliothèque
+                          </Link>
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 );
               }
