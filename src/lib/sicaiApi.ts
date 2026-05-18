@@ -341,7 +341,7 @@ export const sicaiApi = {
     const { error } = await supabase
       .from("sicai_settings")
       .upsert(
-        { setting_key: key, setting_value: value as object, updated_at: new Date().toISOString() },
+        [{ setting_key: key, setting_value: value as never, updated_at: new Date().toISOString() }],
         { onConflict: "setting_key" },
       );
     if (error) throw new Error(error.message);
