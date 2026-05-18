@@ -178,6 +178,12 @@ export default function SicaiAnalysesPage() {
             <DropdownMenuItem onClick={() => exportAll("report")}>
               <BookOpen className="h-4 w-4 mr-2" /> Rapport global (textes + caractéristiques)
             </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => exportAll("catalog-md")}>
+              <BookOpen className="h-4 w-4 mr-2" /> Catalogue paragraphes (Markdown)
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => exportAll("catalog-csv")}>
+              <FileSpreadsheet className="h-4 w-4 mr-2" /> Catalogue paragraphes (CSV matching)
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
