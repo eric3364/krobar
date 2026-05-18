@@ -275,6 +275,14 @@ export default function SicaiLibraryPage() {
             Auto : toutes les sources avec URL
           </Button>
           <Button
+            variant="outline"
+            onClick={() => runAutomation("fr-missing", undefined, { skipAnalysis: true })}
+            disabled={autoRunning || loading}
+            title="Récupère le texte via sicai-fetch-url et crée le document, sans lancer l'analyse"
+          >
+            {autoRunning ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Zap className="h-4 w-4 mr-2" />}
+            Auto FR : fetch + créer doc (sans analyse)
+          <Button
             variant="secondary"
             onClick={runParagraphAutomation}
             disabled={autoRunning || loading}
