@@ -109,11 +109,11 @@ export default function SicaiAnalysisEditPage() {
     setSaving(true);
     try {
       let intensities: unknown, cardinality: unknown, visual_brief: unknown;
-      try { intensities = fromJson(form.intensitiesText, {}); }
+      try { intensities = fromJson(form.intensitiesText); }
       catch { throw new Error("Champ Intensités : JSON invalide"); }
-      try { cardinality = fromJson(form.cardinalityText, {}); }
+      try { cardinality = fromJson(form.cardinalityText); }
       catch { throw new Error("Champ Cardinalité : JSON invalide"); }
-      try { visual_brief = fromJson(form.visualBriefText, {}); }
+      try { visual_brief = fromJson(form.visualBriefText); }
       catch { throw new Error("Champ Brief visuel : JSON invalide"); }
 
       const updated = await sicaiApi.updateAnalysis(analysis.id, {
