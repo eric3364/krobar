@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Eye, FilePlus2, FileText, ExternalLink, Loader2, Search, Files, Play } from "lucide-react";
+import { Eye, FilePlus2, FileText, ExternalLink, Loader2, Search, Files, Play, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
@@ -19,6 +20,7 @@ import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { sicaiApi, type SicaiSource } from "@/lib/sicaiApi";
+import { supabase } from "@/integrations/supabase/client";
 
 const ALL = "__all__";
 
