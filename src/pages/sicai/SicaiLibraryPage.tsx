@@ -256,6 +256,14 @@ export default function SicaiLibraryPage() {
             {autoRunning ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Zap className="h-4 w-4 mr-2" />}
             Auto : toutes les sources avec URL
           </Button>
+          <Button
+            variant="secondary"
+            onClick={runParagraphAutomation}
+            disabled={autoRunning || loading}
+          >
+            {autoRunning ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Zap className="h-4 w-4 mr-2" />}
+            Auto : paragraphes ≥100 mots
+          </Button>
           {autoLog.some((l) => l.status === "error") && !autoRunning && (
             <Button
               variant="destructive"
