@@ -256,7 +256,7 @@ export default function SicaiDocumentPage() {
             {analyzing === "global"
               ? <Loader2 className="h-4 w-4 mr-2 animate-spin" />
               : <Sparkles className="h-4 w-4 mr-2" />}
-            Analyser le document global
+            {existingGlobal ? "Réanalyser le document global" : "Analyser le document global"}
           </Button>
           <Button
             onClick={runAllParagraphs}
