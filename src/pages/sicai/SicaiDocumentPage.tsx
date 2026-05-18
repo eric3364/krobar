@@ -17,7 +17,8 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { sicaiApi, type SicaiDocument, type SicaiParagraph, countWords } from "@/lib/sicaiApi";
+import { sicaiApi, type SicaiAnalysis, type SicaiDocument, type SicaiParagraph, countWords } from "@/lib/sicaiApi";
+import { SicaiIdentityCard } from "@/components/SicaiIdentityCard";
 
 const AI_DISABLED_MSG = "Pipeline IA non encore configuré.";
 
