@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Eye, FilePlus2, FileText, ExternalLink, Loader2, Search } from "lucide-react";
+import { Eye, FilePlus2, FileText, ExternalLink, Loader2, Search, Files } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
