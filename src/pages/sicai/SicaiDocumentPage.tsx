@@ -114,7 +114,68 @@ export default function SicaiDocumentPage() {
     }
   };
 
-  const aiDisabled = () => toast.info(AI_DISABLED_MSG);
+  const [analyzing, setAnalyzing] = useState<"global" | "all" | string | null>(null);
+
+  const runGlobal = async () => {
+    if (!doc?.raw_text?.trim()) return toast.error("Le document n'a pas de texte.");
+    setAnalyzing("global");
+    try {
+      await sicaiApi.runAnalysis({
+        document_id: doc.id,
+        analysis_level: "global",
+        text_to_analyze: doc.raw_text,
+      });
+      toast.success("Analyse globale terminée");
+      const fresh = await sicaiApi.getDocument(doc.id);
+      setDoc(fresh);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Échec de l'analyse");
+    } finally {
+      setAnalyzing(null);
+    }
+  };
+
+  const runParagraph = async (p: SicaiParagraph) => {
+    if (!doc) return;
+    setAnalyzing(p.id);
+    try {
+      await sicaiApi.runAnalysis({
+        document_id: doc.id,
+        analysis_level: "paragraph",
+        paragraph_id: p.id,
+        text_to_analyze: p.paragraph_text,
+      });
+      toast.success(`Paragraphe ${p.paragraph_index} analysé`);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Échec de l'analyse");
+    } finally {
+      setAnalyzing(null);
+    }
+  };
+
+  const runAllParagraphs = async () => {
+    if (!doc || paragraphs.length === 0) return toast.error("Aucun paragraphe à analyser.");
+    setAnalyzing("all");
+    let ok = 0;
+    try {
+      for (const p of paragraphs) {
+        try {
+          await sicaiApi.runAnalysis({
+            document_id: doc.id,
+            analysis_level: "paragraph",
+            paragraph_id: p.id,
+            text_to_analyze: p.paragraph_text,
+          });
+          ok += 1;
+        } catch (e) {
+          toast.error(`Paragraphe ${p.paragraph_index} : ${e instanceof Error ? e.message : "échec"}`);
+        }
+      }
+      toast.success(`${ok}/${paragraphs.length} paragraphes analysés`);
+    } finally {
+      setAnalyzing(null);
+    }
+  };
 
   if (loading) {
     return <div className="py-16 flex justify-center"><Loader2 className="animate-spin" /></div>;
