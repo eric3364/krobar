@@ -172,6 +172,9 @@ export default function SicaiAnalysesPage() {
             <DropdownMenuItem onClick={() => exportAll("md")}>
               <FileText className="h-4 w-4 mr-2" /> Markdown
             </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => exportAll("report")}>
+              <BookOpen className="h-4 w-4 mr-2" /> Rapport global (textes + caractéristiques)
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
