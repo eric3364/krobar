@@ -374,36 +374,54 @@ export default function SicaiDocumentPage() {
                     <TableHead className="w-20 text-right">Mots</TableHead>
                     <TableHead className="w-20 text-center">Liste</TableHead>
                     <TableHead className="w-20 text-right">Items</TableHead>
-                    <TableHead className="w-32 text-right">Action</TableHead>
+                    <TableHead className="w-24 text-center">Analyse</TableHead>
+                    <TableHead className="w-44 text-right">Action</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {paragraphs.map((p) => (
-                    <TableRow key={p.id}>
-                      <TableCell className="font-mono text-xs">{p.paragraph_index}</TableCell>
-                      <TableCell>
-                        <p className="text-sm line-clamp-3">{p.paragraph_text}</p>
-                      </TableCell>
-                      <TableCell className="text-right text-sm">{p.word_count ?? 0}</TableCell>
-                      <TableCell className="text-center">
-                        {p.has_list ? <Badge variant="secondary">oui</Badge> : <span className="text-muted-foreground">—</span>}
-                      </TableCell>
-                      <TableCell className="text-right text-sm">{p.detected_items_count ?? 0}</TableCell>
-                      <TableCell className="text-right">
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => runParagraph(p)}
-                          disabled={analyzing !== null}
-                        >
-                          {analyzing === p.id
-                            ? <Loader2 className="h-4 w-4 mr-1 animate-spin" />
-                            : <Sparkles className="h-4 w-4 mr-1" />}
-                          Analyser
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {paragraphs.map((p) => {
+                    const an = paragraphAnalyses.get(p.id);
+                    return (
+                      <TableRow key={p.id}>
+                        <TableCell className="font-mono text-xs">{p.paragraph_index}</TableCell>
+                        <TableCell>
+                          <p className="text-sm line-clamp-3">{p.paragraph_text}</p>
+                        </TableCell>
+                        <TableCell className="text-right text-sm">{p.word_count ?? 0}</TableCell>
+                        <TableCell className="text-center">
+                          {p.has_list ? <Badge variant="secondary">oui</Badge> : <span className="text-muted-foreground">—</span>}
+                        </TableCell>
+                        <TableCell className="text-right text-sm">{p.detected_items_count ?? 0}</TableCell>
+                        <TableCell className="text-center">
+                          {an
+                            ? <Badge variant="secondary">analysé</Badge>
+                            : <span className="text-xs text-muted-foreground">—</span>}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex justify-end gap-1">
+                            {an && (
+                              <Button asChild size="sm" variant="ghost" title="Voir la carte SICAI">
+                                <Link to={`/admin/sicai/analyses/${an.id}`}>
+                                  <Eye className="h-4 w-4" />
+                                </Link>
+                              </Button>
+                            )}
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => runParagraph(p)}
+                              disabled={analyzing !== null}
+                            >
+                              {analyzing === p.id
+                                ? <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+                                : <Sparkles className="h-4 w-4 mr-1" />}
+                              {an ? "Réanalyser" : "Analyser"}
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </Card>
