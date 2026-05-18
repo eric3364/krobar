@@ -1,8 +1,6 @@
 import { ReactNode } from "react";
 import { Navigate, Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { ReactNode } from "react";
-// (line above kept) - extending imports below
 import { Loader2, LayoutDashboard, Palette, Users, Pencil, Grid3x3, Flag, BookOpen, Brain, Library, FilePlus2, BarChart3, Shapes, Settings, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BYPASS_AUTH } from "@/lib/devAuth";
