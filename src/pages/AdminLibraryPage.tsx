@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, CheckCircle2, Loader2 } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ImageOff, Loader2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
@@ -21,9 +21,12 @@ function relativeDate(iso: string | null): string {
   }
 }
 
+type ThumbState = { svg?: string; loading: boolean; empty?: boolean };
+
 export default function AdminLibraryPage() {
   const [templates, setTemplates] = useState<LibraryTemplate[] | null>(null);
   const [loading, setLoading] = useState(true);
+  const [thumbs, setThumbs] = useState<Record<string, ThumbState>>({});
 
   useEffect(() => {
     let alive = true;
@@ -43,6 +46,37 @@ export default function AdminLibraryPage() {
     })();
     return () => { alive = false; };
   }, []);
+
+  // Lazy-load une miniature (dernier aperçu) pour chaque template ayant au moins 1 aperçu.
+  useEffect(() => {
+    if (!templates) return;
+    let cancelled = false;
+    (async () => {
+      for (const t of templates) {
+        if (cancelled) return;
+        if (thumbs[t.id]) continue;
+        if (t.preview_count === 0) {
+          setThumbs((s) => ({ ...s, [t.id]: { loading: false, empty: true } }));
+          continue;
+        }
+        setThumbs((s) => ({ ...s, [t.id]: { loading: true } }));
+        try {
+          const list = await libraryApi.listPreviews(t.id);
+          const first = list.previews?.[0];
+          if (!first) {
+            if (!cancelled) setThumbs((s) => ({ ...s, [t.id]: { loading: false, empty: true } }));
+            continue;
+          }
+          const full = await libraryApi.getPreview(first.id);
+          if (!cancelled) setThumbs((s) => ({ ...s, [t.id]: { loading: false, svg: full.rendered_svg } }));
+        } catch {
+          if (!cancelled) setThumbs((s) => ({ ...s, [t.id]: { loading: false, empty: true } }));
+        }
+      }
+    })();
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [templates]);
 
   const sorted = useMemo(() => {
     if (!templates) return [];
