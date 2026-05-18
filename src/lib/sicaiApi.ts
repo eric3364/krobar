@@ -326,6 +326,31 @@ export const sicaiApi = {
     if (!payload?.analysis) throw new Error("Réponse inattendue de sicai-analyze");
     return payload.analysis;
   },
+
+  // ---------- Settings ----------
+  async getSetting<T = unknown>(key: string): Promise<T | null> {
+    const { data, error } = await supabase
+      .from("sicai_settings")
+      .select("setting_value")
+      .eq("setting_key", key)
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    return (data?.setting_value as T) ?? null;
+  },
+  async upsertSetting(key: string, value: unknown): Promise<void> {
+    const { error } = await supabase
+      .from("sicai_settings")
+      .upsert(
+        [{ setting_key: key, setting_value: value as never, updated_at: new Date().toISOString() }],
+        { onConflict: "setting_key" },
+      );
+    if (error) throw new Error(error.message);
+  },
+  async getOpenAiStatus(): Promise<{ openai_configured: boolean }> {
+    const { data, error } = await supabase.functions.invoke("sicai-secrets-status", { body: {} });
+    if (error) throw new Error(error.message);
+    return data as { openai_configured: boolean };
+  },
 };
 
 export type SicaiArchetype = {
