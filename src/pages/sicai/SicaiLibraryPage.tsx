@@ -105,11 +105,19 @@ export default function SicaiLibraryPage() {
   const [autoProgress, setAutoProgress] = useState({ done: 0, total: 0, current: "" });
   const [autoLog, setAutoLog] = useState<{ source: string; status: "ok" | "skip" | "error"; message: string }[]>([]);
 
-  async function runAutomation(mode: "missing" | "all" | "errors", retryIds?: Set<string>) {
+  async function runAutomation(
+    mode: "missing" | "all" | "errors" | "fr-missing",
+    retryIds?: Set<string>,
+    options?: { skipAnalysis?: boolean },
+  ) {
     if (!rows) return;
     const targets = rows.filter((r) => {
       if (!r.url) return false;
       if (mode === "missing" && (docCounts.get(r.id) ?? 0) > 0) return false;
+      if (mode === "fr-missing") {
+        if (!r.source_id?.startsWith("SICAI-FR-")) return false;
+        if ((docCounts.get(r.id) ?? 0) > 0) return false;
+      }
       if (mode === "errors" && (!retryIds || !retryIds.has(r.source_id))) return false;
       return true;
     });
