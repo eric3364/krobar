@@ -278,7 +278,14 @@ export const sicaiApi = {
   },
   async updateArchetype(
     id: string,
-    patch: Partial<Pick<SicaiArchetype, "description" | "composition_principle" | "visual_motifs" | "possible_tones" | "best_for" | "avoid_for">>,
+    patch: {
+      description?: string | null;
+      composition_principle?: string | null;
+      visual_motifs?: string[];
+      possible_tones?: string[];
+      best_for?: string[];
+      avoid_for?: string[];
+    },
   ): Promise<SicaiArchetype> {
     const { data, error } = await supabase
       .from("sicai_archetypes")
