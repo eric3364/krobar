@@ -266,6 +266,44 @@ export const sicaiApi = {
     for (const p of (data ?? []) as SicaiParagraph[]) map.set(p.id, p);
     return map;
   },
+
+  // ---------- Archetypes ----------
+  async listArchetypes(): Promise<SicaiArchetype[]> {
+    const { data, error } = await supabase
+      .from("sicai_archetypes")
+      .select("*")
+      .order("archetype_id", { ascending: true });
+    if (error) throw new Error(error.message);
+    return (data ?? []) as SicaiArchetype[];
+  },
+  async updateArchetype(
+    id: string,
+    patch: Partial<Pick<SicaiArchetype, "description" | "composition_principle" | "visual_motifs" | "possible_tones" | "best_for" | "avoid_for">>,
+  ): Promise<SicaiArchetype> {
+    const { data, error } = await supabase
+      .from("sicai_archetypes")
+      .update(patch)
+      .eq("id", id)
+      .select()
+      .single();
+    if (error) throw new Error(error.message);
+    return data as SicaiArchetype;
+  },
+};
+
+export type SicaiArchetype = {
+  id: string;
+  archetype_id: string;
+  graphic_family: string;
+  cardinality: string;
+  representation_regime: string;
+  description: string | null;
+  composition_principle: string | null;
+  visual_motifs: unknown;
+  possible_tones: unknown;
+  best_for: unknown;
+  avoid_for: unknown;
+  created_at: string;
 };
 
 export type SicaiAnalysis = {
