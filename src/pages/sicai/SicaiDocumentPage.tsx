@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import {
   ArrowLeft, Loader2, Scissors, AlertTriangle, ListOrdered, FileText,
-  Sparkles, Download, Eye, Save, ImageIcon,
+  Sparkles, Download, Eye, Save, ImageIcon, Pencil,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
