@@ -121,12 +121,14 @@ export default function SicaiAnalysesPage() {
   }, [analyses, documents, search, fDoc, fLevel, fFunc, fFamily, fArch, fClass]);
 
   const stamp = () => new Date().toISOString().slice(0, 10);
-  const exportAll = (format: "json" | "csv" | "md" | "report") => {
+  const exportAll = (format: "json" | "csv" | "md" | "report" | "catalog-md" | "catalog-csv") => {
     if (filtered.length === 0) return toast.error("Aucune analyse à exporter");
     const base = `sicai-analyses-${stamp()}`;
     if (format === "json") downloadFile(`${base}.json`, analysesToJSON(filtered, ctx), "application/json");
     else if (format === "csv") downloadFile(`${base}.csv`, analysesToCSV(filtered, ctx), "text/csv");
     else if (format === "report") downloadFile(`sicai-rapport-global-${stamp()}.md`, analysesToFullReport(filtered, ctx), "text/markdown");
+    else if (format === "catalog-md") downloadFile(`sicai-catalogue-paragraphes-${stamp()}.md`, analysesToParagraphCatalog(filtered, ctx), "text/markdown");
+    else if (format === "catalog-csv") downloadFile(`sicai-catalogue-paragraphes-${stamp()}.csv`, paragraphCatalogToCSV(filtered, ctx), "text/csv");
     else downloadFile(`${base}.md`, analysesToMarkdown(filtered, ctx), "text/markdown");
     toast.success(`Export ${format.toUpperCase()} : ${filtered.length} analyse(s)`);
   };
