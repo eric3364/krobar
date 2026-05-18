@@ -18,6 +18,12 @@ import AdminLibraryPage from "./pages/AdminLibraryPage.tsx";
 import AdminLibraryTemplatePage from "./pages/AdminLibraryTemplatePage.tsx";
 import AuthPage from "./pages/Auth.tsx";
 import ResetPassword from "./pages/ResetPassword.tsx";
+import SicaiHome from "./pages/sicai/SicaiPlaceholder.tsx";
+import SicaiLibraryPage from "./pages/sicai/SicaiLibraryPage.tsx";
+import SicaiNewPage from "./pages/sicai/SicaiNewPage.tsx";
+import SicaiAnalysesPage from "./pages/sicai/SicaiAnalysesPage.tsx";
+import SicaiArchetypesPage from "./pages/sicai/SicaiArchetypesPage.tsx";
+import SicaiSettingsPage from "./pages/sicai/SicaiSettingsPage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +48,14 @@ const App = () => (
             <Route path="/admin/familles" element={<AdminRoute><AdminFamiliesPage /></AdminRoute>} />
             <Route path="/admin/feature-flags" element={<AdminRoute><AdminFeatureFlagsPage /></AdminRoute>} />
             <Route path="/admin/matrice" element={<AdminRoute><AdminMatricePage /></AdminRoute>} />
+
+            {/* SICAI */}
+            <Route path="/admin/sicai" element={<AdminRoute><SicaiHome /></AdminRoute>} />
+            <Route path="/admin/sicai/library" element={<AdminRoute><SicaiLibraryPage /></AdminRoute>} />
+            <Route path="/admin/sicai/new" element={<AdminRoute><SicaiNewPage /></AdminRoute>} />
+            <Route path="/admin/sicai/analyses" element={<AdminRoute><SicaiAnalysesPage /></AdminRoute>} />
+            <Route path="/admin/sicai/archetypes" element={<AdminRoute><SicaiArchetypesPage /></AdminRoute>} />
+            <Route path="/admin/sicai/settings" element={<AdminRoute><SicaiSettingsPage /></AdminRoute>} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>
