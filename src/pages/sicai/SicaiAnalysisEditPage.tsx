@@ -42,7 +42,7 @@ const toText = (v: unknown): string => {
   try { return JSON.stringify(v, null, 2); } catch { return String(v); }
 };
 
-const fromJson = (s: string, fallback: unknown): unknown => {
+const fromJson = (s: string): unknown => {
   const t = s.trim();
   if (!t) return {};
   try { return JSON.parse(t); } catch { throw new Error("JSON invalide"); }
