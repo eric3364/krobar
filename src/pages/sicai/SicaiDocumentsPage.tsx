@@ -64,13 +64,14 @@ export default function SicaiDocumentsPage() {
   const filtered = useMemo(() => {
     const term = q.trim().toLowerCase();
     return docs.filter((d) => {
+      if (sourceFilter && d.source_id !== sourceFilter) return false;
       if (fStatus !== ALL && d.document_status !== fStatus) return false;
       if (fLang !== ALL && d.language !== fLang) return false;
       if (fType !== ALL && d.source_type !== fType) return false;
       if (term && !d.title.toLowerCase().includes(term)) return false;
       return true;
     });
-  }, [docs, q, fStatus, fLang, fType]);
+  }, [docs, q, fStatus, fLang, fType, sourceFilter]);
 
   const confirmDelete = async () => {
     if (!toDelete) return;
