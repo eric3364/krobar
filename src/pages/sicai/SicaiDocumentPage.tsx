@@ -526,6 +526,31 @@ export default function SicaiDocumentPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <AlertDialog open={confirmReanalyze} onOpenChange={setConfirmReanalyze}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Réanalyser le document ?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Une analyse globale existe déjà. Une nouvelle analyse sera créée en parallèle ;
+              l'ancienne reste consultable dans la liste des analyses.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction onClick={runGlobalCore}>Réanalyser</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {batchProgress && (
+        <div className="fixed bottom-4 right-4 z-50 bg-background border rounded-md shadow-lg px-4 py-3 text-sm flex items-center gap-3">
+          {batchProgress.done < batchProgress.total
+            ? <Loader2 className="h-4 w-4 animate-spin" />
+            : <Sparkles className="h-4 w-4" />}
+          {batchProgress.done} / {batchProgress.total} paragraphes analysés
+        </div>
+      )}
     </div>
   );
 }
