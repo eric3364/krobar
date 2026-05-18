@@ -140,7 +140,11 @@ function validateAnalysis(obj: unknown): { ok: true } | { ok: false; missing: st
   return missing.length ? { ok: false, missing } : { ok: true };
 }
 
-async function callOpenAI(apiKey: string, model: string, text: string): Promise<{ raw: string; parsed: unknown | null }> {
+async function callOpenAI(
+  apiKey: string,
+  cfg: { model: string; temperature: number; max_tokens: number; thresholds: Thresholds },
+  text: string,
+): Promise<{ raw: string; parsed: unknown | null }> {
   const resp = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -148,11 +152,12 @@ async function callOpenAI(apiKey: string, model: string, text: string): Promise<
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model,
+      model: cfg.model,
       response_format: { type: "json_object" },
-      temperature: 0.2,
+      temperature: cfg.temperature,
+      max_tokens: cfg.max_tokens,
       messages: [
-        { role: "system", content: SYSTEM_PROMPT },
+        { role: "system", content: buildSystemPrompt(cfg.thresholds) },
         { role: "user", content: `Texte à analyser :\n${text}` },
       ],
     }),
