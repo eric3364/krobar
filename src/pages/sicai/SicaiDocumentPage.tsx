@@ -219,18 +219,33 @@ export default function SicaiDocumentPage() {
               : <Scissors className="h-4 w-4 mr-2" />}
             Segmenter en paragraphes
           </Button>
-          <Button onClick={aiDisabled} variant="outline" size="sm" title={AI_DISABLED_MSG}>
-            <Sparkles className="h-4 w-4 mr-2" /> Analyser le document global
+          <Button onClick={runGlobal} variant="outline" size="sm" disabled={analyzing !== null}>
+            {analyzing === "global"
+              ? <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              : <Sparkles className="h-4 w-4 mr-2" />}
+            Analyser le document global
           </Button>
-          <Button onClick={aiDisabled} variant="outline" size="sm" title={AI_DISABLED_MSG}>
-            <Sparkles className="h-4 w-4 mr-2" /> Analyser tous les paragraphes
+          <Button
+            onClick={runAllParagraphs}
+            variant="outline"
+            size="sm"
+            disabled={analyzing !== null || paragraphs.length === 0}
+          >
+            {analyzing === "all"
+              ? <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              : <Sparkles className="h-4 w-4 mr-2" />}
+            Analyser tous les paragraphes
           </Button>
           <Button asChild variant="ghost" size="sm">
             <Link to={`/admin/sicai/analyses?document=${doc.id}`}>
               <Eye className="h-4 w-4 mr-2" /> Voir les analyses
             </Link>
           </Button>
-          <Button onClick={aiDisabled} variant="ghost" size="sm" title={AI_DISABLED_MSG}>
+          <Button
+            onClick={() => toast.info("Export disponible depuis la liste des analyses.")}
+            variant="ghost"
+            size="sm"
+          >
             <Download className="h-4 w-4 mr-2" /> Exporter
           </Button>
         </div>
