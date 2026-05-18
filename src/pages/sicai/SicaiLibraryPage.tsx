@@ -78,6 +78,8 @@ export default function SicaiLibraryPage() {
     if (!rows) return [];
     const term = q.trim().toLowerCase();
     return rows.filter((r) => {
+      if (fCorpus === "fr" && !r.source_id?.startsWith("SICAI-FR-")) return false;
+      if (fCorpus === "initial" && (!r.source_id?.startsWith("SICAI-") || r.source_id.startsWith("SICAI-FR-"))) return false;
       if (fType !== ALL && r.source_type !== fType) return false;
       if (fName !== ALL && r.source_name !== fName) return false;
       if (fLang !== ALL && r.language !== fLang) return false;
@@ -89,10 +91,10 @@ export default function SicaiLibraryPage() {
       }
       return true;
     });
-  }, [rows, q, fType, fName, fLang, fStatus, fProfile]);
+  }, [rows, q, fType, fName, fLang, fStatus, fProfile, fCorpus]);
 
   const resetFilters = () => {
-    setQ(""); setFType(ALL); setFName(ALL); setFLang(ALL); setFStatus(ALL); setFProfile(ALL);
+    setQ(""); setFType(ALL); setFName(ALL); setFLang(ALL); setFStatus(ALL); setFProfile(ALL); setFCorpus("all");
   };
 
   const goCreateDoc = (s: SicaiSource) =>
