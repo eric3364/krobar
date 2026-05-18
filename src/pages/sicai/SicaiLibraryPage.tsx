@@ -151,15 +151,22 @@ export default function SicaiLibraryPage() {
           language: s.language,
         });
 
-        // 3. Global analysis
-        await sicaiApi.runAnalysis({
-          document_id: doc.id,
-          analysis_level: "global",
-          paragraph_id: null,
-          text_to_analyze: text,
-        });
+        // 3. Global analysis (skippable)
+        if (!options?.skipAnalysis) {
+          await sicaiApi.runAnalysis({
+            document_id: doc.id,
+            analysis_level: "global",
+            paragraph_id: null,
+            text_to_analyze: text,
+          });
+        }
 
-        log.push({ source: s.source_id, status: "ok", message: `${text.split(/\s+/).filter(Boolean).length} mots, analyse OK` });
+        const wordCount = text.split(/\s+/).filter(Boolean).length;
+        log.push({
+          source: s.source_id,
+          status: "ok",
+          message: options?.skipAnalysis ? `doc créé (${wordCount} mots)` : `${wordCount} mots, analyse OK`,
+        });
       } catch (e) {
         log.push({ source: s.source_id, status: "error", message: e instanceof Error ? e.message : "Erreur" });
       }
