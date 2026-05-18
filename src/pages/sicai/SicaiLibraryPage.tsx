@@ -105,11 +105,19 @@ export default function SicaiLibraryPage() {
   const [autoProgress, setAutoProgress] = useState({ done: 0, total: 0, current: "" });
   const [autoLog, setAutoLog] = useState<{ source: string; status: "ok" | "skip" | "error"; message: string }[]>([]);
 
-  async function runAutomation(mode: "missing" | "all" | "errors", retryIds?: Set<string>) {
+  async function runAutomation(
+    mode: "missing" | "all" | "errors" | "fr-missing",
+    retryIds?: Set<string>,
+    options?: { skipAnalysis?: boolean },
+  ) {
     if (!rows) return;
     const targets = rows.filter((r) => {
       if (!r.url) return false;
       if (mode === "missing" && (docCounts.get(r.id) ?? 0) > 0) return false;
+      if (mode === "fr-missing") {
+        if (!r.source_id?.startsWith("SICAI-FR-")) return false;
+        if ((docCounts.get(r.id) ?? 0) > 0) return false;
+      }
       if (mode === "errors" && (!retryIds || !retryIds.has(r.source_id))) return false;
       return true;
     });
@@ -143,15 +151,22 @@ export default function SicaiLibraryPage() {
           language: s.language,
         });
 
-        // 3. Global analysis
-        await sicaiApi.runAnalysis({
-          document_id: doc.id,
-          analysis_level: "global",
-          paragraph_id: null,
-          text_to_analyze: text,
-        });
+        // 3. Global analysis (skippable)
+        if (!options?.skipAnalysis) {
+          await sicaiApi.runAnalysis({
+            document_id: doc.id,
+            analysis_level: "global",
+            paragraph_id: null,
+            text_to_analyze: text,
+          });
+        }
 
-        log.push({ source: s.source_id, status: "ok", message: `${text.split(/\s+/).filter(Boolean).length} mots, analyse OK` });
+        const wordCount = text.split(/\s+/).filter(Boolean).length;
+        log.push({
+          source: s.source_id,
+          status: "ok",
+          message: options?.skipAnalysis ? `doc créé (${wordCount} mots)` : `${wordCount} mots, analyse OK`,
+        });
       } catch (e) {
         log.push({ source: s.source_id, status: "error", message: e instanceof Error ? e.message : "Erreur" });
       }
@@ -258,6 +273,15 @@ export default function SicaiLibraryPage() {
           >
             {autoRunning ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Zap className="h-4 w-4 mr-2" />}
             Auto : toutes les sources avec URL
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => runAutomation("fr-missing", undefined, { skipAnalysis: true })}
+            disabled={autoRunning || loading}
+            title="Récupère le texte via sicai-fetch-url et crée le document, sans lancer l'analyse"
+          >
+            {autoRunning ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Zap className="h-4 w-4 mr-2" />}
+            Auto FR : fetch + créer doc (sans analyse)
           </Button>
           <Button
             variant="secondary"
