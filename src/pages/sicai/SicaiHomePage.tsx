@@ -38,19 +38,21 @@ export default function SicaiHomePage() {
   useEffect(() => {
     (async () => {
       try {
-        const [sources, documents, segmented, analysesGlobal, analysesParagraph, archetypes] =
+        const [sources, sourcesFr, sourcesInitial, documents, segmented, analysesGlobal, analysesParagraph, archetypes] =
           await Promise.all([
             countRows("sicai_sources"),
+            countRows("sicai_sources", (q) => q.like("source_id", "SICAI-FR-%")),
+            countRows("sicai_sources", (q) => q.like("source_id", "SICAI-%").not("source_id", "like", "SICAI-FR-%")),
             countRows("sicai_documents"),
             countRows("sicai_documents", (q) => q.eq("document_status", "segmented")),
             countRows("sicai_analyses", (q) => q.eq("analysis_level", "global")),
             countRows("sicai_analyses", (q) => q.eq("analysis_level", "paragraph")),
             countRows("sicai_archetypes"),
           ]);
-        setStats({ sources, documents, segmented, analysesGlobal, analysesParagraph, archetypes });
+        setStats({ sources, sourcesFr, sourcesInitial, documents, segmented, analysesGlobal, analysesParagraph, archetypes });
       } catch (e) {
         toast.error(e instanceof Error ? e.message : "Erreur de chargement des statistiques");
-        setStats({ sources: 0, documents: 0, segmented: 0, analysesGlobal: 0, analysesParagraph: 0, archetypes: 0 });
+        setStats({ sources: 0, sourcesFr: 0, sourcesInitial: 0, documents: 0, segmented: 0, analysesGlobal: 0, analysesParagraph: 0, archetypes: 0 });
       } finally {
         setLoading(false);
       }
