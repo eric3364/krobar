@@ -74,7 +74,9 @@ export default function SicaiHomePage() {
       ) : (
         <>
           <section className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <StatCard label="Sources (bibliothèque)" value={stats.sources} to="/admin/sicai/library" icon={<BookOpen className="h-4 w-4" />} />
+            <StatCard label="Sources (total)" value={stats.sources} to="/admin/sicai/library" icon={<BookOpen className="h-4 w-4" />} />
+            <StatCard label="Sources — corpus initial" value={stats.sourcesInitial} to="/admin/sicai/library" icon={<BookOpen className="h-4 w-4" />} />
+            <StatCard label="Sources — corpus FR" value={stats.sourcesFr} to="/admin/sicai/library" icon={<BookOpen className="h-4 w-4" />} />
             <StatCard label="Documents créés" value={stats.documents} to="/admin/sicai/library" icon={<FileText className="h-4 w-4" />} />
             <StatCard label="Documents segmentés" value={stats.segmented} to="/admin/sicai/library" icon={<Layers className="h-4 w-4" />} />
             <StatCard label="Analyses globales" value={stats.analysesGlobal} to="/admin/sicai/analyses" icon={<Sparkles className="h-4 w-4" />} />
