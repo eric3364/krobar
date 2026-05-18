@@ -112,6 +112,7 @@ export default function SicaiDocumentsPage() {
         </Card>
       )}
 
+      <Card className="p-4 space-y-3">
         <div className="relative max-w-md">
           <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher par titre…" className="pl-8" />
