@@ -18,6 +18,7 @@ import {
 import {
   analysesToCSV, analysesToJSON, analysesToMarkdown, downloadFile,
 } from "@/lib/sicaiExports";
+import { SicaiIdentityCard } from "@/components/SicaiIdentityCard";
 
 type Form = {
   dominant_textual_function: string;
