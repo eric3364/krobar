@@ -242,13 +242,16 @@ export type Database = {
           created_by: string | null
           document_status: string | null
           id: string
+          internal_notes: string | null
           language: string | null
           paragraph_count: number | null
           raw_text: string | null
           source_id: string | null
+          source_type: string | null
           summary: string | null
           title: string
           updated_at: string
+          url: string | null
           word_count: number | null
         }
         Insert: {
@@ -256,13 +259,16 @@ export type Database = {
           created_by?: string | null
           document_status?: string | null
           id?: string
+          internal_notes?: string | null
           language?: string | null
           paragraph_count?: number | null
           raw_text?: string | null
           source_id?: string | null
+          source_type?: string | null
           summary?: string | null
           title: string
           updated_at?: string
+          url?: string | null
           word_count?: number | null
         }
         Update: {
@@ -270,13 +276,16 @@ export type Database = {
           created_by?: string | null
           document_status?: string | null
           id?: string
+          internal_notes?: string | null
           language?: string | null
           paragraph_count?: number | null
           raw_text?: string | null
           source_id?: string | null
+          source_type?: string | null
           summary?: string | null
           title?: string
           updated_at?: string
+          url?: string | null
           word_count?: number | null
         }
         Relationships: [
