@@ -285,31 +285,6 @@ Deno.serve(async (req) => {
   } catch (e) {
     return json({ error: e instanceof Error ? e.message : "OpenAI call failed" }, 502);
   }
-    raw = first.raw;
-    parsed = first.parsed;
-
-    let check = validateAnalysis(parsed);
-    if (!check.ok) {
-      // single repair retry
-      const repairPrompt =
-        `Le JSON suivant est invalide ou incomplet. Champs manquants : ${check.missing.join(", ")}.\n` +
-        `Régénère un JSON SICAI strict, complet et valide à partir du texte ci-dessous.\n\n` +
-        `Texte :\n${text_to_analyze}`;
-      const retry = await callOpenAI(OPENAI_API_KEY, model, repairPrompt);
-      raw = retry.raw;
-      parsed = retry.parsed;
-      check = validateAnalysis(parsed);
-      if (!check.ok) {
-        return json({
-          error: "Réponse IA invalide après réparation",
-          missing_fields: check.missing,
-          raw_preview: raw.slice(0, 1000),
-        }, 422);
-      }
-    }
-  } catch (e) {
-    return json({ error: e instanceof Error ? e.message : "OpenAI call failed" }, 502);
-  }
 
   const a = parsed as Record<string, unknown>;
 
