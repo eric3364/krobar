@@ -29,7 +29,7 @@ import {
   sicaiApi, type SicaiAnalysis, type SicaiDocument, type SicaiParagraph, type SicaiSource,
 } from "@/lib/sicaiApi";
 import {
-  analysesToCSV, analysesToJSON, analysesToMarkdown, downloadFile,
+  analysesToCSV, analysesToJSON, analysesToMarkdown, analysesToFullReport, downloadFile,
 } from "@/lib/sicaiExports";
 
 const ALL = "__all__";
