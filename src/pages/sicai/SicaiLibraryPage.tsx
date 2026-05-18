@@ -327,7 +327,18 @@ export default function SicaiLibraryPage() {
         </div>
 
         {/* Filters */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-muted-foreground">Corpus</label>
+            <Select value={fCorpus} onValueChange={(v) => setFCorpus(v as "all" | "initial" | "fr")}>
+              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Tous</SelectItem>
+                <SelectItem value="initial">Corpus initial</SelectItem>
+                <SelectItem value="fr">Corpus francophone</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
           <FilterSelect label="Type de source" value={fType} onChange={setFType} options={options.types} />
           <FilterSelect label="Source" value={fName} onChange={setFName} options={options.names} />
           <FilterSelect label="Langue" value={fLang} onChange={setFLang} options={options.langs} />
