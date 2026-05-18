@@ -34,18 +34,33 @@ export default function SicaiDocumentPage() {
   const [savingText, setSavingText] = useState(false);
   const [confirmEditOpen, setConfirmEditOpen] = useState(false);
 
+  const [analyses, setAnalyses] = useState<SicaiAnalysis[]>([]);
+  const [confirmReanalyze, setConfirmReanalyze] = useState(false);
+  const [batchProgress, setBatchProgress] = useState<{ done: number; total: number } | null>(null);
+
+  const reloadAnalyses = async (docId: string) => {
+    try {
+      const list = await sicaiApi.listAnalysesByDocument(docId);
+      setAnalyses(list);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Erreur de chargement des analyses");
+    }
+  };
+
   useEffect(() => {
     let alive = true;
     (async () => {
       setLoading(true);
       try {
-        const [d, ps] = await Promise.all([
+        const [d, ps, ans] = await Promise.all([
           sicaiApi.getDocument(id),
           sicaiApi.listParagraphs(id),
+          sicaiApi.listAnalysesByDocument(id),
         ]);
         if (!alive) return;
         setDoc(d);
         setParagraphs(ps);
+        setAnalyses(ans);
         setEditText(d?.raw_text ?? "");
       } catch (e) {
         toast.error(e instanceof Error ? e.message : "Erreur de chargement");
