@@ -137,6 +137,87 @@ function renderAnalysisMd(a: SicaiAnalysis): string {
   return lines.join("\n");
 }
 
+function renderCharacteristics(a: SicaiAnalysis): string {
+  const card = a.cardinality as Record<string, unknown> | null;
+  const cardType = get<string>(card, "type") ?? get<string>(card, "cardinality_type") ?? "—";
+  const cardBase = get<string>(card, "base_cardinality_for_archetype") ?? "—";
+  const lines: string[] = [];
+  lines.push(`- **Fonction dominante** : ${a.dominant_textual_function ?? "—"}`);
+  lines.push(`- **Famille graphique** : ${a.graphic_family ?? "—"}`);
+  lines.push(`- **Archétype SICAI** : ${a.sicai_archetype_id ?? "—"}`);
+  lines.push(`- **Classification** : ${a.classification_status ?? "—"}`);
+  lines.push(`- **Intensités sémantiques** : ${j(a.intensities) || "—"}`);
+  lines.push(`- **Cardinalité (type)** : ${cardType}`);
+  lines.push(`- **Cardinalité de base** : ${cardBase}`);
+  lines.push(`- **Temporalité** : ${a.temporality ?? "—"}`);
+  lines.push(`- **Spatialité** : ${a.spatiality ?? "—"}`);
+  lines.push(`- **Agency** : ${a.agency ?? "—"}`);
+  lines.push(`- **Tension** : ${a.tension ?? "—"}`);
+  lines.push(`- **Transformation** : ${a.transformation ?? "—"}`);
+  lines.push(`- **Niveau d'abstraction** : ${a.abstraction_level ?? "—"}`);
+  return lines.join("\n");
+}
+
+export function analysesToFullReport(rows: SicaiAnalysis[], ctx: AnalysisExportContext): string {
+  // Group analyses by document
+  const byDoc = new Map<string, SicaiAnalysis[]>();
+  for (const a of rows) {
+    const k = a.document_id ?? "_orphans";
+    if (!byDoc.has(k)) byDoc.set(k, []);
+    byDoc.get(k)!.push(a);
+  }
+
+  const out: string[] = [];
+  out.push(`# Rapport global SICAI`);
+  out.push(`\n_Généré le ${new Date().toLocaleString()} — ${rows.length} analyse(s), ${byDoc.size} document(s)._\n`);
+
+  for (const [docId, list] of byDoc) {
+    const doc = docId !== "_orphans" ? ctx.documents.get(docId) : null;
+    const src = doc?.source_id && ctx.sources ? ctx.sources.get(doc.source_id) : null;
+
+    out.push(`\n---\n`);
+    out.push(`## ${doc?.title ?? "(document inconnu)"}`);
+    if (src) out.push(`\n_Source : ${src.source_id}${src.source_name ? ` — ${src.source_name}` : ""}_`);
+    if (doc?.url) out.push(`\n_URL : ${doc.url}_`);
+
+    // Full document text
+    if (doc?.raw_text) {
+      out.push(`\n### Texte intégral\n`);
+      out.push(doc.raw_text);
+    }
+
+    // Global analyses
+    const globals = list.filter((a) => a.analysis_level === "document");
+    if (globals.length) {
+      out.push(`\n### Analyse globale — caractéristiques\n`);
+      for (const a of globals) out.push(renderCharacteristics(a));
+    }
+
+    // Paragraph analyses
+    const paras = list
+      .filter((a) => a.analysis_level !== "document")
+      .sort((a, b) => {
+        const ai = ctx.paragraphs.get(a.paragraph_id ?? "")?.paragraph_index ?? 0;
+        const bi = ctx.paragraphs.get(b.paragraph_id ?? "")?.paragraph_index ?? 0;
+        return ai - bi;
+      });
+
+    if (paras.length) {
+      out.push(`\n### Analyses par paragraphe\n`);
+      for (const a of paras) {
+        const p = ctx.paragraphs.get(a.paragraph_id ?? "");
+        out.push(`\n#### Paragraphe ${p?.paragraph_index ?? "?"}\n`);
+        if (p?.paragraph_text) {
+          out.push(`> ${p.paragraph_text.replace(/\n/g, "\n> ")}\n`);
+        }
+        out.push(renderCharacteristics(a));
+      }
+    }
+  }
+
+  return out.join("\n");
+}
+
 export function downloadFile(filename: string, content: string, mime: string) {
   const blob = new Blob([content], { type: `${mime};charset=utf-8` });
   const url = URL.createObjectURL(blob);
