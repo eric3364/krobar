@@ -97,14 +97,128 @@ export default function SicaiLibraryPage() {
   const goCreateDoc = (s: SicaiSource) =>
     navigate(`/admin/sicai/new?source=${encodeURIComponent(s.id)}`);
 
+  // ---------- Automation : fetch + analyse globale en masse ----------
+  const [autoRunning, setAutoRunning] = useState(false);
+  const [autoProgress, setAutoProgress] = useState({ done: 0, total: 0, current: "" });
+  const [autoLog, setAutoLog] = useState<{ source: string; status: "ok" | "skip" | "error"; message: string }[]>([]);
+
+  async function runAutomation(onlyMissing: boolean) {
+    if (!rows) return;
+    const targets = rows.filter((r) => {
+      if (!r.url) return false;
+      if (onlyMissing && (docCounts.get(r.id) ?? 0) > 0) return false;
+      return true;
+    });
+    if (targets.length === 0) {
+      toast.info("Aucune source à traiter (URL manquante ou déjà traitée).");
+      return;
+    }
+    setAutoRunning(true);
+    setAutoLog([]);
+    setAutoProgress({ done: 0, total: targets.length, current: "" });
+    const log: typeof autoLog = [];
+    for (let i = 0; i < targets.length; i++) {
+      const s = targets[i];
+      setAutoProgress({ done: i, total: targets.length, current: s.title });
+      try {
+        // 1. Fetch
+        const { data, error } = await supabase.functions.invoke("sicai-fetch-url", { body: { url: s.url } });
+        if (error) throw new Error(error.message);
+        const payload = data as { text?: string; title?: string; error?: string };
+        if (payload?.error) throw new Error(payload.error);
+        const text = (payload?.text ?? "").trim();
+        if (!text || text.length < 50) throw new Error("Texte vide ou trop court");
+
+        // 2. Create document
+        const doc = await sicaiApi.createDocument({
+          title: payload.title?.trim() || s.title,
+          raw_text: text,
+          source_id: s.id,
+          source_type: s.source_type,
+          url: s.url,
+          language: s.language,
+        });
+
+        // 3. Global analysis
+        await sicaiApi.runAnalysis({
+          document_id: doc.id,
+          analysis_level: "global",
+          paragraph_id: null,
+          text_to_analyze: text,
+        });
+
+        log.push({ source: s.source_id, status: "ok", message: `${countWordsApprox(text)} mots, analyse OK` });
+      } catch (e) {
+        log.push({ source: s.source_id, status: "error", message: e instanceof Error ? e.message : "Erreur" });
+      }
+      setAutoLog([...log]);
+    }
+    setAutoProgress({ done: targets.length, total: targets.length, current: "" });
+    setAutoRunning(false);
+    // refresh
+    try {
+      const counts = await sicaiApi.countDocumentsBySource();
+      setDocCounts(counts);
+    } catch { /* ignore */ }
+    const okCount = log.filter((l) => l.status === "ok").length;
+    toast.success(`Automatisation terminée : ${okCount}/${targets.length} sources traitées`);
+  }
+
   return (
     <div className="max-w-7xl mx-auto space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Bibliothèque SICAI</h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          {loading ? "Chargement…" : `${filtered.length} / ${rows?.length ?? 0} sources`}
-        </p>
+      <div className="flex items-start justify-between gap-4 flex-wrap">
+        <div>
+          <h1 className="text-3xl font-bold">Bibliothèque SICAI</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            {loading ? "Chargement…" : `${filtered.length} / ${rows?.length ?? 0} sources`}
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            onClick={() => runAutomation(true)}
+            disabled={autoRunning || loading}
+          >
+            {autoRunning ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Zap className="h-4 w-4 mr-2" />}
+            Auto : sources sans document
+          </Button>
+          <Button
+            onClick={() => runAutomation(false)}
+            disabled={autoRunning || loading}
+          >
+            {autoRunning ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Zap className="h-4 w-4 mr-2" />}
+            Auto : toutes les sources avec URL
+          </Button>
+        </div>
       </div>
+
+      {(autoRunning || autoLog.length > 0) && (
+        <Card className="p-4 space-y-3">
+          <div className="flex items-center justify-between text-sm">
+            <div className="font-medium">
+              Automatisation : {autoProgress.done} / {autoProgress.total}
+            </div>
+            {autoProgress.current && (
+              <div className="text-muted-foreground truncate max-w-md">→ {autoProgress.current}</div>
+            )}
+          </div>
+          <Progress value={autoProgress.total ? (autoProgress.done / autoProgress.total) * 100 : 0} />
+          {autoLog.length > 0 && (
+            <div className="max-h-48 overflow-y-auto text-xs space-y-1 border rounded p-2">
+              {autoLog.map((l, i) => (
+                <div key={i} className="flex gap-2">
+                  <Badge variant={l.status === "ok" ? "default" : l.status === "skip" ? "secondary" : "destructive"}>
+                    {l.status}
+                  </Badge>
+                  <span className="font-mono">{l.source}</span>
+                  <span className="text-muted-foreground truncate">{l.message}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </Card>
+      )}
+
 
       <Card className="p-4 space-y-4">
         {/* Search */}
