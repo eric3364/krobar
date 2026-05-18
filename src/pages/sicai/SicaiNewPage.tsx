@@ -184,7 +184,22 @@ export default function SicaiNewPage() {
 
             <div className="md:col-span-2 space-y-1.5">
               <Label htmlFor="url">URL</Label>
-              <Input id="url" type="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://…" />
+              <div className="flex gap-2">
+                <Input id="url" type="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://…" />
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleFetchUrl}
+                  disabled={fetchingUrl || !url.trim()}
+                  title="Récupérer le texte depuis l'URL et le coller dans Texte complet"
+                >
+                  {fetchingUrl ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+                  <span className="ml-2 hidden sm:inline">Récupérer le texte</span>
+                </Button>
+              </div>
+              <p className="text-[11px] text-muted-foreground">
+                Le contenu de l'URL sera extrait et collé dans « Texte complet ». Certains sites (paywall, JS-only) peuvent ne renvoyer aucun texte exploitable.
+              </p>
             </div>
 
             <div className="space-y-1.5">
