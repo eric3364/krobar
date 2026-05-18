@@ -99,7 +99,19 @@ export default function SicaiDocumentsPage() {
         </Button>
       </div>
 
-      <Card className="p-4 space-y-3">
+      {sourceFilter && (
+        <Card className="p-3 flex items-center justify-between bg-muted/30">
+          <div className="text-sm">
+            Filtré sur la source{" "}
+            <span className="font-mono text-xs">{sources.get(sourceFilter)?.source_id ?? sourceFilter}</span>
+            {" — "}{sources.get(sourceFilter)?.title}
+          </div>
+          <Button size="sm" variant="ghost" onClick={() => { params.delete("source"); setParams(params); }}>
+            Retirer le filtre
+          </Button>
+        </Card>
+      )}
+
         <div className="relative max-w-md">
           <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher par titre…" className="pl-8" />
