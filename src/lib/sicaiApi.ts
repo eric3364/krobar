@@ -296,6 +296,23 @@ export const sicaiApi = {
     if (error) throw new Error(error.message);
     return data as SicaiArchetype;
   },
+
+  // ---------- AI analysis (edge function) ----------
+  async runAnalysis(input: {
+    document_id: string;
+    analysis_level: "global" | "paragraph";
+    paragraph_id?: string | null;
+    text_to_analyze: string;
+  }): Promise<SicaiAnalysis> {
+    const { data, error } = await supabase.functions.invoke("sicai-analyze", {
+      body: input,
+    });
+    if (error) throw new Error(error.message);
+    const payload = data as { analysis?: SicaiAnalysis; error?: string };
+    if (payload?.error) throw new Error(payload.error);
+    if (!payload?.analysis) throw new Error("Réponse inattendue de sicai-analyze");
+    return payload.analysis;
+  },
 };
 
 export type SicaiArchetype = {
