@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { BookOpen, ArrowRight } from "lucide-react";
 import {
   Download, Eye, FileJson, FileSpreadsheet, FileText, Loader2,
   Pencil, Plus, Trash2,
@@ -40,6 +41,8 @@ function pickStr(o: unknown, key: string): string {
 }
 
 export default function SicaiAnalysesPage() {
+  const navigate = useNavigate();
+  const [pickDocId, setPickDocId] = useState<string>("");
   const [analyses, setAnalyses] = useState<SicaiAnalysis[]>([]);
   const [documents, setDocuments] = useState<Map<string, SicaiDocument>>(new Map());
   const [paragraphs, setParagraphs] = useState<Map<string, SicaiParagraph>>(new Map());
@@ -168,14 +171,49 @@ export default function SicaiAnalysesPage() {
       </div>
 
       {isEmpty ? (
-        <Card className="p-12 text-center space-y-4">
-          <h2 className="text-lg font-semibold">Aucune analyse pour le moment</h2>
-          <p className="text-sm text-muted-foreground max-w-xl mx-auto">
-            Pour produire une analyse SICAI : créez un document, segmentez-le en paragraphes,
-            puis lancez l'analyse globale ou par paragraphe depuis la fiche du document.
-          </p>
-          <div className="flex justify-center gap-2">
-            <Button asChild>
+        <Card className="p-12 text-center space-y-6">
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">Aucune analyse pour le moment</h2>
+            <p className="text-sm text-muted-foreground max-w-xl mx-auto">
+              Pour produire une analyse SICAI : choisissez un document existant ci-dessous,
+              ou créez-en un nouveau depuis la bibliothèque.
+            </p>
+          </div>
+
+          {options.docs.length > 0 && (
+            <div className="max-w-xl mx-auto w-full space-y-2 text-left">
+              <label className="text-xs uppercase tracking-wide text-muted-foreground">
+                Choisir un document de la bibliothèque
+              </label>
+              <div className="flex gap-2">
+                <Select value={pickDocId} onValueChange={setPickDocId}>
+                  <SelectTrigger className="flex-1">
+                    <SelectValue placeholder="Sélectionner un document…" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {options.docs.map((d) => (
+                      <SelectItem key={d.id} value={d.id}>{d.title}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Button
+                  disabled={!pickDocId}
+                  onClick={() => navigate(`/admin/sicai/documents/${pickDocId}`)}
+                >
+                  Ouvrir <ArrowRight className="h-4 w-4 ml-1" />
+                </Button>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Vous lancerez l'analyse globale ou par paragraphe depuis la fiche du document.
+              </p>
+            </div>
+          )}
+
+          <div className="flex flex-wrap justify-center gap-2 pt-2">
+            <Button asChild variant="outline">
+              <Link to="/admin/sicai/library"><BookOpen className="h-4 w-4 mr-2" /> Bibliothèque</Link>
+            </Button>
+            <Button asChild variant="outline">
               <Link to="/admin/sicai/documents"><FileText className="h-4 w-4 mr-2" /> Documents</Link>
             </Button>
             <Button asChild variant="outline">
