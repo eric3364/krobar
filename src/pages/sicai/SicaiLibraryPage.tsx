@@ -190,33 +190,50 @@ export default function SicaiLibraryPage() {
                       )}
                     </TableCell>
                     <TableCell className="text-right">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm">Actions</Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => setOpenDetail(r)}>
-                            <Eye className="h-4 w-4 mr-2" /> Voir la fiche
-                          </DropdownMenuItem>
-                          {r.url && (
-                            <DropdownMenuItem asChild>
-                              <a href={r.url} target="_blank" rel="noreferrer">
-                                <ExternalLink className="h-4 w-4 mr-2" /> Ouvrir l'URL externe
-                              </a>
+                      <div className="flex justify-end gap-1">
+                        <Button
+                          size="sm"
+                          variant={docCount > 0 ? "default" : "outline"}
+                          onClick={() => {
+                            if (docCount > 0) {
+                              navigate(`/admin/sicai/documents?source=${encodeURIComponent(r.id)}`);
+                            } else {
+                              navigate(`/admin/sicai/new?source=${encodeURIComponent(r.id)}`);
+                            }
+                          }}
+                          title={docCount > 0 ? "Voir les documents et lancer l'analyse" : "Créer un document puis lancer l'analyse"}
+                        >
+                          <Play className="h-4 w-4 mr-1" />
+                          {docCount > 0 ? "Analyser" : "Préparer & analyser"}
+                        </Button>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="sm">…</Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={() => setOpenDetail(r)}>
+                              <Eye className="h-4 w-4 mr-2" /> Voir la fiche
                             </DropdownMenuItem>
-                          )}
-                          <DropdownMenuItem onClick={() => goCreateDoc(r)}>
-                            <FilePlus2 className="h-4 w-4 mr-2" /> Créer un document
-                          </DropdownMenuItem>
-                          {docCount > 0 && (
-                            <DropdownMenuItem
-                              onClick={() => navigate(`/admin/sicai/documents?source=${encodeURIComponent(r.id)}`)}
-                            >
-                              <Files className="h-4 w-4 mr-2" /> Voir les {docCount} document{docCount > 1 ? "s" : ""}
+                            {r.url && (
+                              <DropdownMenuItem asChild>
+                                <a href={r.url} target="_blank" rel="noreferrer">
+                                  <ExternalLink className="h-4 w-4 mr-2" /> Ouvrir l'URL externe
+                                </a>
+                              </DropdownMenuItem>
+                            )}
+                            <DropdownMenuItem onClick={() => goCreateDoc(r)}>
+                              <FilePlus2 className="h-4 w-4 mr-2" /> Créer un document
                             </DropdownMenuItem>
-                          )}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                            {docCount > 0 && (
+                              <DropdownMenuItem
+                                onClick={() => navigate(`/admin/sicai/documents?source=${encodeURIComponent(r.id)}`)}
+                              >
+                                <Files className="h-4 w-4 mr-2" /> Voir les {docCount} document{docCount > 1 ? "s" : ""}
+                              </DropdownMenuItem>
+                            )}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
                     </TableCell>
                   </TableRow>
                   );
