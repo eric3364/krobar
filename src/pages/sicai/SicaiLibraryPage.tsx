@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Eye, FilePlus2, FileText, ExternalLink, Loader2, Search } from "lucide-react";
+import { Eye, FilePlus2, FileText, ExternalLink, Loader2, Search, Files } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -29,6 +29,7 @@ function uniq(arr: (string | null)[]): string[] {
 export default function SicaiLibraryPage() {
   const navigate = useNavigate();
   const [rows, setRows] = useState<SicaiSource[] | null>(null);
+  const [docCounts, setDocCounts] = useState<Map<string, number>>(new Map());
   const [loading, setLoading] = useState(true);
 
   // filters
@@ -47,8 +48,11 @@ export default function SicaiLibraryPage() {
     (async () => {
       setLoading(true);
       try {
-        const data = await sicaiApi.listSources();
-        if (alive) setRows(data);
+        const [data, counts] = await Promise.all([
+          sicaiApi.listSources(),
+          sicaiApi.countDocumentsBySource(),
+        ]);
+        if (alive) { setRows(data); setDocCounts(counts); }
       } catch (e) {
         toast.error(e instanceof Error ? e.message : "Erreur de chargement");
         if (alive) setRows([]);
@@ -143,11 +147,14 @@ export default function SicaiLibraryPage() {
                   <TableHead>Profil attendu</TableHead>
                   <TableHead>Intérêt</TableHead>
                   <TableHead>Statut</TableHead>
+                  <TableHead className="w-16 text-center">Docs</TableHead>
                   <TableHead className="w-[80px] text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filtered.map((r) => (
+                {filtered.map((r) => {
+                  const docCount = docCounts.get(r.id) ?? 0;
+                  return (
                   <TableRow key={r.id}>
                     <TableCell className="font-mono text-xs">{r.source_id}</TableCell>
                     <TableCell>
@@ -175,6 +182,13 @@ export default function SicaiLibraryPage() {
                         {r.content_status ?? "—"}
                       </Badge>
                     </TableCell>
+                    <TableCell className="text-center">
+                      {docCount > 0 ? (
+                        <Badge variant="default">{docCount}</Badge>
+                      ) : (
+                        <span className="text-xs text-muted-foreground">0</span>
+                      )}
+                    </TableCell>
                     <TableCell className="text-right">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -184,20 +198,32 @@ export default function SicaiLibraryPage() {
                           <DropdownMenuItem onClick={() => setOpenDetail(r)}>
                             <Eye className="h-4 w-4 mr-2" /> Voir la fiche
                           </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => goCreateDoc(r)}>
-                            <FileText className="h-4 w-4 mr-2" /> Ajouter / coller le texte
-                          </DropdownMenuItem>
+                          {r.url && (
+                            <DropdownMenuItem asChild>
+                              <a href={r.url} target="_blank" rel="noreferrer">
+                                <ExternalLink className="h-4 w-4 mr-2" /> Ouvrir l'URL externe
+                              </a>
+                            </DropdownMenuItem>
+                          )}
                           <DropdownMenuItem onClick={() => goCreateDoc(r)}>
                             <FilePlus2 className="h-4 w-4 mr-2" /> Créer un document
                           </DropdownMenuItem>
+                          {docCount > 0 && (
+                            <DropdownMenuItem
+                              onClick={() => navigate(`/admin/sicai/documents?source=${encodeURIComponent(r.id)}`)}
+                            >
+                              <Files className="h-4 w-4 mr-2" /> Voir les {docCount} document{docCount > 1 ? "s" : ""}
+                            </DropdownMenuItem>
+                          )}
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>
                   </TableRow>
-                ))}
+                  );
+                })}
                 {filtered.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={9} className="text-center py-10 text-muted-foreground">
+                    <TableCell colSpan={10} className="text-center py-10 text-muted-foreground">
                       Aucune source ne correspond aux filtres.
                     </TableCell>
                   </TableRow>

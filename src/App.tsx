@@ -25,6 +25,7 @@ import SicaiAnalysesPage from "./pages/sicai/SicaiAnalysesPage.tsx";
 import SicaiArchetypesPage from "./pages/sicai/SicaiArchetypesPage.tsx";
 import SicaiSettingsPage from "./pages/sicai/SicaiSettingsPage.tsx";
 import SicaiDocumentPage from "./pages/sicai/SicaiDocumentPage.tsx";
+import SicaiDocumentsPage from "./pages/sicai/SicaiDocumentsPage.tsx";
 import SicaiAnalysisEditPage from "./pages/sicai/SicaiAnalysisEditPage.tsx";
 
 const queryClient = new QueryClient();
@@ -55,6 +56,7 @@ const App = () => (
             <Route path="/admin/sicai" element={<AdminRoute><SicaiHome /></AdminRoute>} />
             <Route path="/admin/sicai/library" element={<AdminRoute><SicaiLibraryPage /></AdminRoute>} />
             <Route path="/admin/sicai/new" element={<AdminRoute><SicaiNewPage /></AdminRoute>} />
+            <Route path="/admin/sicai/documents" element={<AdminRoute><SicaiDocumentsPage /></AdminRoute>} />
             <Route path="/admin/sicai/documents/:id" element={<AdminRoute><SicaiDocumentPage /></AdminRoute>} />
             <Route path="/admin/sicai/analyses" element={<AdminRoute><SicaiAnalysesPage /></AdminRoute>} />
             <Route path="/admin/sicai/analyses/:id" element={<AdminRoute><SicaiAnalysisEditPage /></AdminRoute>} />
