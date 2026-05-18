@@ -132,9 +132,16 @@ export default function SicaiDocumentPage() {
 
   const [analyzing, setAnalyzing] = useState<"global" | "all" | string | null>(null);
 
-  const runGlobal = async () => {
+  const existingGlobal = analyses.find((a) => a.analysis_level === "global") ?? null;
+  const paragraphAnalyses = new Map(
+    analyses.filter((a) => a.analysis_level === "paragraph" && a.paragraph_id)
+      .map((a) => [a.paragraph_id as string, a] as const),
+  );
+
+  const runGlobalCore = async () => {
     if (!doc?.raw_text?.trim()) return toast.error("Le document n'a pas de texte.");
     setAnalyzing("global");
+    setConfirmReanalyze(false);
     try {
       await sicaiApi.runAnalysis({
         document_id: doc.id,
@@ -142,13 +149,18 @@ export default function SicaiDocumentPage() {
         text_to_analyze: doc.raw_text,
       });
       toast.success("Analyse globale terminée");
-      const fresh = await sicaiApi.getDocument(doc.id);
+      const [fresh] = await Promise.all([sicaiApi.getDocument(doc.id), reloadAnalyses(doc.id)]);
       setDoc(fresh);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Échec de l'analyse");
     } finally {
       setAnalyzing(null);
     }
+  };
+
+  const runGlobal = () => {
+    if (existingGlobal) setConfirmReanalyze(true);
+    else void runGlobalCore();
   };
 
   const runParagraph = async (p: SicaiParagraph) => {
@@ -161,6 +173,7 @@ export default function SicaiDocumentPage() {
         paragraph_id: p.id,
         text_to_analyze: p.paragraph_text,
       });
+      await reloadAnalyses(doc.id);
       toast.success(`Paragraphe ${p.paragraph_index} analysé`);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Échec de l'analyse");
@@ -172,6 +185,7 @@ export default function SicaiDocumentPage() {
   const runAllParagraphs = async () => {
     if (!doc || paragraphs.length === 0) return toast.error("Aucun paragraphe à analyser.");
     setAnalyzing("all");
+    setBatchProgress({ done: 0, total: paragraphs.length });
     let ok = 0;
     try {
       for (const p of paragraphs) {
@@ -186,10 +200,13 @@ export default function SicaiDocumentPage() {
         } catch (e) {
           toast.error(`Paragraphe ${p.paragraph_index} : ${e instanceof Error ? e.message : "échec"}`);
         }
+        setBatchProgress({ done: ok, total: paragraphs.length });
       }
+      await reloadAnalyses(doc.id);
       toast.success(`${ok}/${paragraphs.length} paragraphes analysés`);
     } finally {
       setAnalyzing(null);
+      setTimeout(() => setBatchProgress(null), 2500);
     }
   };
 
