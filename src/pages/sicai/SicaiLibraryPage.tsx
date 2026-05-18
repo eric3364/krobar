@@ -102,15 +102,16 @@ export default function SicaiLibraryPage() {
   const [autoProgress, setAutoProgress] = useState({ done: 0, total: 0, current: "" });
   const [autoLog, setAutoLog] = useState<{ source: string; status: "ok" | "skip" | "error"; message: string }[]>([]);
 
-  async function runAutomation(onlyMissing: boolean) {
+  async function runAutomation(mode: "missing" | "all" | "errors", retryIds?: Set<string>) {
     if (!rows) return;
     const targets = rows.filter((r) => {
       if (!r.url) return false;
-      if (onlyMissing && (docCounts.get(r.id) ?? 0) > 0) return false;
+      if (mode === "missing" && (docCounts.get(r.id) ?? 0) > 0) return false;
+      if (mode === "errors" && (!retryIds || !retryIds.has(r.source_id))) return false;
       return true;
     });
     if (targets.length === 0) {
-      toast.info("Aucune source à traiter (URL manquante ou déjà traitée).");
+      toast.info("Aucune source à traiter.");
       return;
     }
     setAutoRunning(true);
