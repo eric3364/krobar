@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { BookOpen, ArrowRight } from "lucide-react";
 import {
-  Download, Eye, FileJson, FileSpreadsheet, FileText, Loader2,
-  Pencil, Plus, Trash2,
+  ArrowRight, BookOpen, Download, Eye, FileJson, FileSpreadsheet, FileText,
+  Loader2, Pencil, Play, Plus, Search, Trash2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -23,6 +22,9 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import {
+  Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
+} from "@/components/ui/dialog";
 import {
   sicaiApi, type SicaiAnalysis, type SicaiDocument, type SicaiParagraph, type SicaiSource,
 } from "@/lib/sicaiApi";
@@ -43,6 +45,9 @@ function pickStr(o: unknown, key: string): string {
 export default function SicaiAnalysesPage() {
   const navigate = useNavigate();
   const [pickDocId, setPickDocId] = useState<string>("");
+  const [libOpen, setLibOpen] = useState(false);
+  const [libSearch, setLibSearch] = useState("");
+  const [launchingId, setLaunchingId] = useState<string | null>(null);
   const [analyses, setAnalyses] = useState<SicaiAnalysis[]>([]);
   const [documents, setDocuments] = useState<Map<string, SicaiDocument>>(new Map());
   const [paragraphs, setParagraphs] = useState<Map<string, SicaiParagraph>>(new Map());
@@ -210,8 +215,8 @@ export default function SicaiAnalysesPage() {
           )}
 
           <div className="flex flex-wrap justify-center gap-2 pt-2">
-            <Button asChild variant="outline">
-              <Link to="/admin/sicai/library"><BookOpen className="h-4 w-4 mr-2" /> Bibliothèque</Link>
+            <Button onClick={() => setLibOpen(true)}>
+              <BookOpen className="h-4 w-4 mr-2" /> Bibliothèque
             </Button>
             <Button asChild variant="outline">
               <Link to="/admin/sicai/documents"><FileText className="h-4 w-4 mr-2" /> Documents</Link>
