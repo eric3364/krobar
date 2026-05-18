@@ -282,6 +282,7 @@ export default function SicaiLibraryPage() {
           >
             {autoRunning ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Zap className="h-4 w-4 mr-2" />}
             Auto FR : fetch + créer doc (sans analyse)
+          </Button>
           <Button
             variant="secondary"
             onClick={runParagraphAutomation}
