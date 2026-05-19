@@ -253,19 +253,25 @@ export function analysesToParagraphCatalog(rows: SicaiAnalysis[], ctx: AnalysisE
     const card = a.cardinality as Record<string, unknown> | null;
     const aff = a.iconic_affordance as Record<string, unknown> | null;
 
-    const matchKey = `${src?.source_id ?? "DOC"}-${(doc?.id ?? "").slice(0, 8)}-P${p?.paragraph_index ?? "?"}`;
+    const pIndex = p?.paragraph_index;
+    const pIndexStr = typeof pIndex === "number" ? `P${String(pIndex).padStart(3, "0")}` : "P???";
+    const matchKey = `${src?.source_id ?? "DOC"}-${(doc?.id ?? "").slice(0, 8)}-${pIndexStr}`;
+    const computedWordCount = p?.word_count ?? (p?.paragraph_text ? p.paragraph_text.trim().split(/\s+/).filter(Boolean).length : null);
 
     out.push(`\n---\n`);
     out.push(`## ${matchKey}`);
     out.push(`\n- **Document** : ${doc?.title ?? "—"}`);
     if (src) out.push(`- **Source** : ${src.source_id}${src.source_name ? ` — ${src.source_name}` : ""}`);
     if (doc?.url) out.push(`- **URL** : ${doc.url}`);
-    out.push(`- **Paragraphe** : #${p?.paragraph_index ?? "?"} · ${p?.word_count ?? "?"} mots`);
+    out.push(`- **Paragraphe** : #${typeof pIndex === "number" ? pIndex : "?"} · ${computedWordCount ?? "?"} mots`);
     out.push(`- **IDs techniques** : analysis=\`${a.id}\` · paragraph=\`${a.paragraph_id}\` · document=\`${a.document_id}\``);
 
     out.push(`\n### Texte\n`);
-    if (p?.paragraph_text) out.push(`> ${p.paragraph_text.replace(/\n/g, "\n> ")}`);
-    else out.push(`_(texte indisponible)_`);
+    if (p?.paragraph_text && p.paragraph_text.trim()) {
+      out.push(`> ${p.paragraph_text.replace(/\n/g, "\n> ")}`);
+    } else {
+      out.push(`_(texte indisponible — paragraph_text absent en base)_`);
+    }
 
     out.push(`\n### Caractéristiques SICAI\n`);
     out.push(renderCharacteristics(a));
@@ -299,7 +305,8 @@ export function analysesToParagraphCatalog(rows: SicaiAnalysis[], ctx: AnalysisE
 export function paragraphCatalogToCSV(rows: SicaiAnalysis[], ctx: AnalysisExportContext): string {
   const headers = [
     "match_key", "source_id", "document_title", "document_url",
-    "paragraph_index", "word_count", "paragraph_text",
+    "paragraph_index", "paragraph_word_count", "text_available",
+    "paragraph_excerpt", "paragraph_text",
     "dominant_textual_function", "secondary_categories",
     "graphic_family", "sicai_archetype_id", "classification_status",
     "intensities",
@@ -319,16 +326,24 @@ export function paragraphCatalogToCSV(rows: SicaiAnalysis[], ctx: AnalysisExport
     const card = a.cardinality as Record<string, unknown> | null;
     const aff = a.iconic_affordance as Record<string, unknown> | null;
     const motifs = get<unknown[]>(aff, "motifs") ?? get<unknown[]>(a.visual_brief, "visual_motifs");
-    const matchKey = `${src?.source_id ?? "DOC"}-${(doc?.id ?? "").slice(0, 8)}-P${p?.paragraph_index ?? "?"}`;
+    const pIndex = p?.paragraph_index;
+    const pIndexStr = typeof pIndex === "number" ? `P${String(pIndex).padStart(3, "0")}` : "P???";
+    const matchKey = `${src?.source_id ?? "DOC"}-${(doc?.id ?? "").slice(0, 8)}-${pIndexStr}`;
+    const text = p?.paragraph_text ?? "";
+    const textAvailable = !!(text && text.trim());
+    const wordCount = p?.word_count ?? (textAvailable ? text.trim().split(/\s+/).filter(Boolean).length : "");
+    const excerpt = textAvailable ? text.slice(0, 300) : "";
 
     lines.push([
       matchKey,
       src?.source_id ?? "",
       doc?.title ?? "",
       doc?.url ?? "",
-      p?.paragraph_index ?? "",
-      p?.word_count ?? "",
-      p?.paragraph_text ?? "",
+      pIndex ?? "",
+      wordCount,
+      textAvailable ? "true" : "false",
+      excerpt,
+      text,
       a.dominant_textual_function ?? "",
       a.secondary_categories,
       a.graphic_family ?? "",
