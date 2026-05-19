@@ -347,6 +347,11 @@ export default function SicaiLibraryPage() {
               className="pl-8"
             />
           </div>
+          <div className="text-sm text-muted-foreground whitespace-nowrap">
+            <span className="font-semibold text-foreground">{filtered.length}</span>
+            {" / "}
+            {rows?.length ?? 0} source{(rows?.length ?? 0) > 1 ? "s" : ""}
+          </div>
           <Button variant="outline" size="sm" onClick={resetFilters}>Réinitialiser</Button>
         </div>
 
