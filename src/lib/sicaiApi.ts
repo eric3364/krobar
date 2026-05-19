@@ -273,10 +273,25 @@ export const sicaiApi = {
     return map;
   },
   async listParagraphsMap(): Promise<Map<string, SicaiParagraph>> {
-    const { data, error } = await supabase.from("sicai_paragraphs").select("*");
-    if (error) throw new Error(error.message);
+    // Supabase default page size is 1000. Paginate to fetch ALL paragraphs,
+    // otherwise the catalog export shows "(texte indisponible)" for paragraphs
+    // whose row was not returned in the first page.
     const map = new Map<string, SicaiParagraph>();
-    for (const p of (data ?? []) as SicaiParagraph[]) map.set(p.id, p);
+    const pageSize = 1000;
+    let from = 0;
+    // hard safety cap
+    for (let i = 0; i < 100; i++) {
+      const { data, error } = await supabase
+        .from("sicai_paragraphs")
+        .select("*")
+        .order("id", { ascending: true })
+        .range(from, from + pageSize - 1);
+      if (error) throw new Error(error.message);
+      const rows = (data ?? []) as SicaiParagraph[];
+      for (const p of rows) map.set(p.id, p);
+      if (rows.length < pageSize) break;
+      from += pageSize;
+    }
     return map;
   },
 
