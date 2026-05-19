@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import { Navigate, Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Loader2, LayoutDashboard, Palette, Users, Pencil, Grid3x3, Flag, BookOpen, Brain, Library, FilePlus2, BarChart3, Shapes, Settings, FileText } from "lucide-react";
@@ -32,6 +32,17 @@ const sicaiNav = {
 function AdminLayoutInner({ children }: { children: ReactNode }) {
   const { signOut } = useAuth();
   const { pathname } = useLocation();
+  const mainRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      if (mainRef.current) {
+        mainRef.current.scrollLeft = 0;
+      }
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [pathname]);
 
   return (
     <>
@@ -96,7 +107,7 @@ function AdminLayoutInner({ children }: { children: ReactNode }) {
 
         {/* Main */}
         <div className="flex-1 flex flex-col min-w-0">
-          <main className="flex-1 overflow-auto p-6">
+          <main ref={mainRef} className="flex-1 overflow-y-auto overflow-x-hidden p-6">
             {children}
           </main>
         </div>
