@@ -50,20 +50,41 @@ ${comment ? `- Directives utilisateur : ${comment}` : ""}
 
 Réponds avec le code SVG uniquement.`;
 
-    const resp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${LOVABLE_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: model || "google/gemini-2.5-pro",
-        messages: [
-          { role: "system", content: sys },
-          { role: "user", content: user },
-        ],
-      }),
-    });
+    // Abort before the edge runtime kills us (150s IDLE_TIMEOUT)
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 140_000);
+
+    let resp: Response;
+    try {
+      resp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${LOVABLE_API_KEY}`,
+        },
+        body: JSON.stringify({
+          // Default to a fast model — "pro" routinely exceeds the 150s edge timeout for this prompt
+          model: model || "google/gemini-2.5-flash",
+          messages: [
+            { role: "system", content: sys },
+            { role: "user", content: user },
+          ],
+        }),
+        signal: controller.signal,
+      });
+    } catch (e) {
+      clearTimeout(timeoutId);
+      const aborted = (e as any)?.name === "AbortError";
+      return new Response(JSON.stringify({
+        error: aborted
+          ? "La génération IA a dépassé le délai (140s). Réessaie ou utilise un modèle plus rapide (ex. google/gemini-2.5-flash)."
+          : (e instanceof Error ? e.message : String(e)),
+      }), {
+        status: 504,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    clearTimeout(timeoutId);
 
     if (!resp.ok) {
       const t = await resp.text();
