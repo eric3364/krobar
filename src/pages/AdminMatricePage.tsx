@@ -174,7 +174,7 @@ export default function AdminMatricePage() {
           </div>
         </Card>
 
-        <Card>
+        <Card className="overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
