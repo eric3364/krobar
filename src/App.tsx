@@ -64,6 +64,7 @@ const App = () => (
             <Route path="/admin/sicai/analyses/:id" element={<AdminRoute><SicaiAnalysisEditPage /></AdminRoute>} />
             <Route path="/admin/sicai/archetypes" element={<AdminRoute><SicaiArchetypesPage /></AdminRoute>} />
             <Route path="/admin/sicai/templates" element={<AdminRoute><SicaiTemplatesPage /></AdminRoute>} />
+            <Route path="/admin/sicai/templates/batches/:id" element={<AdminRoute><SicaiBatchDetailPage /></AdminRoute>} />
             <Route path="/admin/sicai/settings" element={<AdminRoute><SicaiSettingsPage /></AdminRoute>} />
 
             <Route path="*" element={<NotFound />} />
