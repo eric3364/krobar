@@ -24,6 +24,8 @@ const COLUMN_ALIASES: Record<string, string> = {
   v4_visual_hierarchy_rule: "visual_hierarchy_rule",
   v4_composition_refinement_rule: "composition_refinement_rule",
   v4_svg_technical_constraints: "svg_technical_constraints",
+  representation_regime_code: "regime_code",
+  representation_regime_label: "regime_label",
 };
 
 function norm(k: string) {
