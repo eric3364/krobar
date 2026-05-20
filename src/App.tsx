@@ -29,6 +29,7 @@ import SicaiDocumentsPage from "./pages/sicai/SicaiDocumentsPage.tsx";
 import SicaiAnalysisEditPage from "./pages/sicai/SicaiAnalysisEditPage.tsx";
 import SicaiTemplatesPage from "./pages/sicai/SicaiTemplatesPage.tsx";
 import SicaiBatchDetailPage from "./pages/sicai/SicaiBatchDetailPage.tsx";
+import SicaiQcDashboardPage from "./pages/sicai/SicaiQcDashboardPage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -65,6 +66,7 @@ const App = () => (
             <Route path="/admin/sicai/archetypes" element={<AdminRoute><SicaiArchetypesPage /></AdminRoute>} />
             <Route path="/admin/sicai/templates" element={<AdminRoute><SicaiTemplatesPage /></AdminRoute>} />
             <Route path="/admin/sicai/templates/batches/:id" element={<AdminRoute><SicaiBatchDetailPage /></AdminRoute>} />
+            <Route path="/admin/sicai/templates/qc-dashboard" element={<AdminRoute><SicaiQcDashboardPage /></AdminRoute>} />
             <Route path="/admin/sicai/settings" element={<AdminRoute><SicaiSettingsPage /></AdminRoute>} />
 
             <Route path="*" element={<NotFound />} />
