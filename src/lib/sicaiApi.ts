@@ -381,6 +381,11 @@ export type SicaiArchetype = {
   best_for: unknown;
   avoid_for: unknown;
   created_at: string;
+  svg_storage_path?: string | null;
+  thumbnail_storage_path?: string | null;
+  is_published?: boolean | null;
+  published_at?: string | null;
+  source_job_id?: string | null;
 };
 
 export type SicaiAnalysis = {
