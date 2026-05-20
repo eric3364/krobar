@@ -59,6 +59,10 @@ Deno.serve(async (req) => {
       batch_mode,
     });
   } catch (e) {
-    return jsonResponse({ error: e instanceof Error ? e.message : String(e) }, 500);
+    const msg = e instanceof Error ? e.message
+      : (e && typeof e === "object") ? JSON.stringify(e)
+      : String(e);
+    console.error("sicai-create-generation-batch error:", msg, e);
+    return jsonResponse({ error: msg }, 500);
   }
 });
