@@ -1,8 +1,9 @@
 // Poll every SICAI batch currently running. Intended for an external scheduler (cron).
 import { adminClient, jsonResponse, corsHeaders } from "../_shared/sicai.ts";
-import { pollBatch } from "../sicai-poll-openai-batch/index.ts";
 
 const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY");
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
+const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
@@ -18,8 +19,17 @@ Deno.serve(async (req) => {
     const results: any[] = [];
     for (const b of batches ?? []) {
       try {
-        const r = await pollBatch(admin, b.id);
-        results.push(r);
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/sicai-poll-openai-batch`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${SERVICE_ROLE}`,
+            "x-internal-cron": "1",
+          },
+          body: JSON.stringify({ batch_id: b.id }),
+        });
+        const json = await res.json().catch(() => ({}));
+        results.push({ batch_id: b.id, ...json });
       } catch (e: any) {
         results.push({ batch_id: b.id, error: e?.message ?? String(e) });
       }
