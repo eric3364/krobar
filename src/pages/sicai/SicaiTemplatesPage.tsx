@@ -312,6 +312,10 @@ export default function SicaiTemplatesPage() {
               </Table>
             </Card>
           </TabsContent>
+
+          <TabsContent value="batches">
+            <SicaiBatchesTab />
+          </TabsContent>
         </Tabs>
       </div>
     </>
