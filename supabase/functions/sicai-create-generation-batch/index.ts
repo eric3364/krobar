@@ -1,7 +1,7 @@
 // Create a SICAI generation batch + queue all jobs with pre-computed OpenAI payloads.
 import {
   requireAdmin, jsonResponse, buildOpenAIBody, slugifyCustomId,
-  COST_SYNC, COST_BATCH,
+  COST_SYNC, COST_BATCH, corsHeaders,
 } from "../_shared/sicai.ts";
 
 Deno.serve(async (req) => {
