@@ -158,7 +158,7 @@ export default function SicaiQcDashboardPage() {
                             );
                             return (
                               <td key={reg} className="p-1">
-                                {j ? <Link to={`/admin/sicai/templates/jobs/${j.id}`}>{content}</Link> : content}
+                                {j?.template_id ? <Link to={`/admin/sicai/templates/detail/${j.template_id}`}>{content}</Link> : content}
                               </td>
                             );
                           })}
