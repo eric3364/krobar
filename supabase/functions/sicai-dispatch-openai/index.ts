@@ -71,7 +71,7 @@ async function runSyncJob(admin: any, batchId: string, jobIdHint?: string) {
       storage_path,
       checksum,
       width: 1536,
-      height: 864,
+      height: 1024,
       file_size_bytes: bytes.length,
     });
 
