@@ -27,6 +27,7 @@ import SicaiSettingsPage from "./pages/sicai/SicaiSettingsPage.tsx";
 import SicaiDocumentPage from "./pages/sicai/SicaiDocumentPage.tsx";
 import SicaiDocumentsPage from "./pages/sicai/SicaiDocumentsPage.tsx";
 import SicaiAnalysisEditPage from "./pages/sicai/SicaiAnalysisEditPage.tsx";
+import SicaiTemplatesPage from "./pages/sicai/SicaiTemplatesPage.tsx";
 
 const queryClient = new QueryClient();
 
