@@ -14,6 +14,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2, Upload, FileCheck2, AlertTriangle, XCircle } from "lucide-react";
+import SicaiBatchesTab from "./SicaiBatchesTab";
 
 type Tpl = {
   id: string;
@@ -148,6 +149,7 @@ export default function SicaiTemplatesPage() {
           <TabsList>
             <TabsTrigger value="import">Import</TabsTrigger>
             <TabsTrigger value="list">Liste</TabsTrigger>
+            <TabsTrigger value="batches">Batchs</TabsTrigger>
           </TabsList>
 
           <TabsContent value="import" className="space-y-4">
@@ -310,6 +312,10 @@ export default function SicaiTemplatesPage() {
                 </TableBody>
               </Table>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="batches">
+            <SicaiBatchesTab />
           </TabsContent>
         </Tabs>
       </div>

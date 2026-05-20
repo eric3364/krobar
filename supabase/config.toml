@@ -1,1 +1,4 @@
 project_id = "ltvgjhiqqierpztzjmyv"
+
+[functions.sicai-poll-openai-batch-all-running]
+verify_jwt = false
