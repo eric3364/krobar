@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
-import { Loader2, Pencil, Save, Search } from "lucide-react";
+import { Loader2, Pencil, Save, Search, ImageOff } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -39,6 +41,8 @@ export default function SicaiArchetypesPage() {
   const [fFamily, setFFamily] = useState(ALL);
   const [fCard, setFCard] = useState(ALL);
   const [fReg, setFReg] = useState(ALL);
+  const [fIllust, setFIllust] = useState(ALL); // ALL | "with" | "without"
+  const [thumbs, setThumbs] = useState<Record<string, string>>({});
   const [editing, setEditing] = useState<SicaiArchetype | null>(null);
 
   const reload = async () => {
@@ -46,6 +50,14 @@ export default function SicaiArchetypesPage() {
     try {
       const data = await sicaiApi.listArchetypes();
       setItems(data);
+      const published = data.filter((d) => d.is_published && d.thumbnail_storage_path);
+      const next: Record<string, string> = {};
+      for (const a of published) {
+        const { data: signed } = await supabase.storage
+          .from("sicai-assets").createSignedUrl(a.thumbnail_storage_path!, 3600);
+        if (signed?.signedUrl) next[a.id] = signed.signedUrl;
+      }
+      setThumbs(next);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Erreur de chargement");
     } finally {
@@ -67,10 +79,12 @@ export default function SicaiArchetypesPage() {
       if (fFamily !== ALL && i.graphic_family !== fFamily) return false;
       if (fCard !== ALL && i.cardinality !== fCard) return false;
       if (fReg !== ALL && i.representation_regime !== fReg) return false;
+      if (fIllust === "with" && !i.is_published) return false;
+      if (fIllust === "without" && i.is_published) return false;
       if (term && !i.archetype_id.toLowerCase().includes(term)) return false;
       return true;
     });
-  }, [items, q, fFamily, fCard, fReg]);
+  }, [items, q, fFamily, fCard, fReg, fIllust]);
 
   const incomplete = items.length < EXPECTED_TOTAL;
 
@@ -101,10 +115,19 @@ export default function SicaiArchetypesPage() {
           <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher un archetype_id…" className="pl-8" />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
           <FilterSelect label="Famille graphique" value={fFamily} onChange={setFFamily} options={options.families} />
           <FilterSelect label="Cardinalité" value={fCard} onChange={setFCard} options={options.cards} />
           <FilterSelect label="Régime" value={fReg} onChange={setFReg} options={options.regs} />
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-muted-foreground">Illustration</label>
+            <select className="h-9 w-full border rounded px-2 text-sm bg-background"
+              value={fIllust} onChange={(e) => setFIllust(e.target.value)}>
+              <option value={ALL}>Toutes</option>
+              <option value="with">Avec illustration</option>
+              <option value="without">Sans illustration</option>
+            </select>
+          </div>
         </div>
       </Card>
 
@@ -116,19 +139,27 @@ export default function SicaiArchetypesPage() {
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead>Illustration</TableHead>
                   <TableHead>archetype_id</TableHead>
                   <TableHead>Famille</TableHead>
                   <TableHead>Cardinalité</TableHead>
                   <TableHead>Régime</TableHead>
                   <TableHead>Description</TableHead>
-                  <TableHead>Motifs</TableHead>
-                  <TableHead>Tons</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filtered.map((a) => (
                   <TableRow key={a.id}>
+                    <TableCell>
+                      {a.is_published && thumbs[a.id] ? (
+                        <img src={thumbs[a.id]} alt={a.archetype_id} className="w-20 h-12 object-cover border rounded" />
+                      ) : (
+                        <div className="w-20 h-12 border border-dashed rounded grid place-items-center text-[10px] text-muted-foreground">
+                          <ImageOff className="w-3 h-3" />
+                        </div>
+                      )}
+                    </TableCell>
                     <TableCell className="font-mono text-[11px]">{a.archetype_id}</TableCell>
                     <TableCell className="text-xs">{a.graphic_family}</TableCell>
                     <TableCell><Badge variant="outline">{a.cardinality}</Badge></TableCell>
@@ -136,9 +167,10 @@ export default function SicaiArchetypesPage() {
                     <TableCell className="text-xs text-muted-foreground max-w-[260px]">
                       <span className="line-clamp-2">{a.description ?? "—"}</span>
                     </TableCell>
-                    <TableCell className="text-xs">{asStringArray(a.visual_motifs).join(", ") || "—"}</TableCell>
-                    <TableCell className="text-xs">{asStringArray(a.possible_tones).join(", ") || "—"}</TableCell>
-                    <TableCell className="text-right">
+                    <TableCell className="text-right space-x-1">
+                      <Button size="sm" variant="ghost" asChild title="Voir template SICAI">
+                        <Link to={`/admin/sicai/templates?q=${encodeURIComponent(a.archetype_id)}`}>SICAI</Link>
+                      </Button>
                       <Button size="sm" variant="ghost" onClick={() => setEditing(a)}>
                         <Pencil className="h-4 w-4" />
                       </Button>
@@ -147,7 +179,7 @@ export default function SicaiArchetypesPage() {
                 ))}
                 {filtered.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={8} className="text-center py-10 text-muted-foreground">
+                    <TableCell colSpan={7} className="text-center py-10 text-muted-foreground">
                       Aucun archétype ne correspond aux filtres.
                     </TableCell>
                   </TableRow>
