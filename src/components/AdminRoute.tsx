@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useRef } from "react";
 import { Navigate, Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { Loader2, LayoutDashboard, Palette, Users, Pencil, Grid3x3, Flag, BookOpen, Brain, Library, FilePlus2, BarChart3, Shapes, Settings, FileText } from "lucide-react";
+import { Loader2, LayoutDashboard, Palette, Users, Pencil, Grid3x3, Flag, BookOpen, Brain, Library, FilePlus2, BarChart3, Shapes, Settings, FileText, FileImage } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BYPASS_AUTH } from "@/lib/devAuth";
 import { Helmet } from "react-helmet-async";
@@ -25,6 +25,7 @@ const sicaiNav = {
     { label: "Nouveau texte", path: "/admin/sicai/new", icon: FilePlus2 },
     { label: "Analyses", path: "/admin/sicai/analyses", icon: BarChart3 },
     { label: "Archétypes graphiques", path: "/admin/sicai/archetypes", icon: Shapes },
+    { label: "Templates SICAI", path: "/admin/sicai/templates", icon: FileImage },
     { label: "Paramètres SICAI", path: "/admin/sicai/settings", icon: Settings },
   ],
 };

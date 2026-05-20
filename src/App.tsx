@@ -27,6 +27,7 @@ import SicaiSettingsPage from "./pages/sicai/SicaiSettingsPage.tsx";
 import SicaiDocumentPage from "./pages/sicai/SicaiDocumentPage.tsx";
 import SicaiDocumentsPage from "./pages/sicai/SicaiDocumentsPage.tsx";
 import SicaiAnalysisEditPage from "./pages/sicai/SicaiAnalysisEditPage.tsx";
+import SicaiTemplatesPage from "./pages/sicai/SicaiTemplatesPage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -61,6 +62,7 @@ const App = () => (
             <Route path="/admin/sicai/analyses" element={<AdminRoute><SicaiAnalysesPage /></AdminRoute>} />
             <Route path="/admin/sicai/analyses/:id" element={<AdminRoute><SicaiAnalysisEditPage /></AdminRoute>} />
             <Route path="/admin/sicai/archetypes" element={<AdminRoute><SicaiArchetypesPage /></AdminRoute>} />
+            <Route path="/admin/sicai/templates" element={<AdminRoute><SicaiTemplatesPage /></AdminRoute>} />
             <Route path="/admin/sicai/settings" element={<AdminRoute><SicaiSettingsPage /></AdminRoute>} />
 
             <Route path="*" element={<NotFound />} />
