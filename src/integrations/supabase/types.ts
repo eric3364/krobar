@@ -202,8 +202,13 @@ export type Database = {
           description: string | null
           graphic_family: string
           id: string
+          is_published: boolean
           possible_tones: Json | null
+          published_at: string | null
           representation_regime: string
+          source_job_id: string | null
+          svg_storage_path: string | null
+          thumbnail_storage_path: string | null
           visual_motifs: Json | null
         }
         Insert: {
@@ -216,8 +221,13 @@ export type Database = {
           description?: string | null
           graphic_family: string
           id?: string
+          is_published?: boolean
           possible_tones?: Json | null
+          published_at?: string | null
           representation_regime: string
+          source_job_id?: string | null
+          svg_storage_path?: string | null
+          thumbnail_storage_path?: string | null
           visual_motifs?: Json | null
         }
         Update: {
@@ -230,8 +240,13 @@ export type Database = {
           description?: string | null
           graphic_family?: string
           id?: string
+          is_published?: boolean
           possible_tones?: Json | null
+          published_at?: string | null
           representation_regime?: string
+          source_job_id?: string | null
+          svg_storage_path?: string | null
+          thumbnail_storage_path?: string | null
           visual_motifs?: Json | null
         }
         Relationships: []
