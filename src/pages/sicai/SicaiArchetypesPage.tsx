@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
-import { Loader2, Pencil, Save, Search } from "lucide-react";
+import { Loader2, Pencil, Save, Search, ImageOff } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -39,6 +41,8 @@ export default function SicaiArchetypesPage() {
   const [fFamily, setFFamily] = useState(ALL);
   const [fCard, setFCard] = useState(ALL);
   const [fReg, setFReg] = useState(ALL);
+  const [fIllust, setFIllust] = useState(ALL); // ALL | "with" | "without"
+  const [thumbs, setThumbs] = useState<Record<string, string>>({});
   const [editing, setEditing] = useState<SicaiArchetype | null>(null);
 
   const reload = async () => {
@@ -46,6 +50,14 @@ export default function SicaiArchetypesPage() {
     try {
       const data = await sicaiApi.listArchetypes();
       setItems(data);
+      const published = data.filter((d) => d.is_published && d.thumbnail_storage_path);
+      const next: Record<string, string> = {};
+      for (const a of published) {
+        const { data: signed } = await supabase.storage
+          .from("sicai-assets").createSignedUrl(a.thumbnail_storage_path!, 3600);
+        if (signed?.signedUrl) next[a.id] = signed.signedUrl;
+      }
+      setThumbs(next);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Erreur de chargement");
     } finally {
