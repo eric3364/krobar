@@ -91,7 +91,7 @@ export async function pollBatch(admin: any, batchId: string) {
           storage_path,
           checksum,
           width: 1536,
-          height: 864,
+          height: 1024,
           file_size_bytes: bytes.length,
         });
         const responseClone = JSON.parse(JSON.stringify(entry.response ?? {}));
