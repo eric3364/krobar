@@ -13,9 +13,13 @@ import {
 import {
   Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Loader2, Plus, RefreshCw, Play } from "lucide-react";
+import { Loader2, Plus, RefreshCw, Play, X } from "lucide-react";
 
 type Batch = {
   id: string;
@@ -38,6 +42,7 @@ const STATUS_COLORS: Record<string, "default" | "secondary" | "destructive" | "o
   qc: "secondary",
   done: "default",
   failed: "destructive",
+  cancelled: "outline",
 };
 
 export default function SicaiBatchesTab() {
@@ -46,6 +51,7 @@ export default function SicaiBatchesTab() {
   const [creating, setCreating] = useState(false);
   const [polling, setPolling] = useState<string | null>(null);
   const [dispatching, setDispatching] = useState<string | null>(null);
+  const [cancelling, setCancelling] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
   // Modal state
@@ -122,6 +128,22 @@ export default function SicaiBatchesTab() {
       toast.error(e?.message ?? "Échec poll");
     } finally {
       setPolling(null);
+    }
+  };
+
+  const cancelBatch = async (batchId: string) => {
+    setCancelling(batchId);
+    try {
+      const { data, error } = await supabase.functions.invoke("sicai-cancel-batch", {
+        body: { batch_id: batchId },
+      });
+      if (error) throw new Error(error.message);
+      toast.success("Batch annulé");
+      await load();
+    } catch (e: any) {
+      toast.error(e?.message ?? "Échec annulation");
+    } finally {
+      setCancelling(null);
     }
   };
 
@@ -251,6 +273,30 @@ export default function SicaiBatchesTab() {
                           {dispatching === b.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <Play className="w-3 h-3" />}
                           Suivant
                         </Button>
+                      )}
+                      {["draft", "queued", "running"].includes(b.status) && (
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button size="sm" variant="destructive" disabled={cancelling === b.id}>
+                              {cancelling === b.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <X className="w-3 h-3" />}
+                              Annuler
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Annuler ce batch ?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Le batch « {b.label ?? b.id} » sera marqué <strong>cancelled</strong>.
+                                {b.openai_batch_id && " Une demande d'annulation sera également envoyée à OpenAI."}
+                                Tous les jobs en attente/en cours seront marqués en échec. Cette action est irréversible.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Retour</AlertDialogCancel>
+                              <AlertDialogAction onClick={() => cancelBatch(b.id)}>Confirmer l'annulation</AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       )}
                       <Button size="sm" variant="ghost" asChild>
                         <Link to={`/admin/sicai/templates/batches/${b.id}`}>Détail</Link>
