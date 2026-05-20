@@ -42,6 +42,7 @@ const STATUS_COLORS: Record<string, "default" | "secondary" | "destructive" | "o
   qc: "secondary",
   done: "default",
   failed: "destructive",
+  cancelled: "outline",
 };
 
 export default function SicaiBatchesTab() {
@@ -50,6 +51,7 @@ export default function SicaiBatchesTab() {
   const [creating, setCreating] = useState(false);
   const [polling, setPolling] = useState<string | null>(null);
   const [dispatching, setDispatching] = useState<string | null>(null);
+  const [cancelling, setCancelling] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
   // Modal state
