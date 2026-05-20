@@ -45,7 +45,7 @@ Deno.serve(async (req) => {
     const jobs = templates.map((t, i) => ({
       batch_id: batchRow.id,
       template_id: t.id,
-      custom_id: slugifyCustomId(i + 1, t.illustration_id),
+      custom_id: slugifyCustomId(i + 1, t.illustration_id, batchRow.id),
       openai_request_json: buildOpenAIBody(t.prompt_full, batchRow.id),
       status: "queued",
     }));
