@@ -1,8 +1,7 @@
 // Post-process a generated job: normalize PNG palette, build SVG overlay, save assets.
 import { PNG } from "npm:pngjs@7.0.0";
 import { Buffer } from "node:buffer";
-import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
-import { adminClient, jsonResponse, requireAdmin, sha256 } from "../_shared/sicai.ts";
+import { adminClient, jsonResponse, requireAdmin, sha256, corsHeaders } from "../_shared/sicai.ts";
 import { quantizeToPalette, buildSvg } from "../_shared/sicai-overlay.ts";
 
 const BUCKET = "sicai-assets";
