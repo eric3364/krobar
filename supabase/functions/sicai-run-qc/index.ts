@@ -1,8 +1,7 @@
 // QC checks for a post-processed job. Writes sicai_qc_checks rows + updates job status.
 import { PNG } from "npm:pngjs@7.0.0";
 import { Buffer } from "node:buffer";
-import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
-import { jsonResponse, requireAdmin } from "../_shared/sicai.ts";
+import { jsonResponse, requireAdmin, corsHeaders } from "../_shared/sicai.ts";
 import { SICAI_PALETTE, MIN_SIZES, getOverlayRects } from "../_shared/sicai-overlay.ts";
 
 const BUCKET = "sicai-assets";

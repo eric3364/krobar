@@ -1,5 +1,4 @@
 // Create a SICAI generation batch + queue all jobs with pre-computed OpenAI payloads.
-import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import {
   requireAdmin, jsonResponse, buildOpenAIBody, slugifyCustomId,
   COST_SYNC, COST_BATCH,

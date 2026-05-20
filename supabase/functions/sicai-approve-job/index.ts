@@ -1,6 +1,5 @@
 // Approve a job: mark approved, publish template, sync to sicai_archetypes.
-import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
-import { jsonResponse, requireAdmin } from "../_shared/sicai.ts";
+import { jsonResponse, requireAdmin, corsHeaders } from "../_shared/sicai.ts";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });

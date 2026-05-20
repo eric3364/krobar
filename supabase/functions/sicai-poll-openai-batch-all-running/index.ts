@@ -1,6 +1,5 @@
 // Poll every SICAI batch currently running. Intended for an external scheduler (cron).
-import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
-import { adminClient, jsonResponse } from "../_shared/sicai.ts";
+import { adminClient, jsonResponse, corsHeaders } from "../_shared/sicai.ts";
 import { pollBatch } from "../sicai-poll-openai-batch/index.ts";
 
 const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY");

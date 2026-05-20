@@ -1,6 +1,5 @@
 // Process up to N jobs of a batch through post-process + QC (bounded for timeout).
-import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
-import { jsonResponse, requireAdmin } from "../_shared/sicai.ts";
+import { jsonResponse, requireAdmin, corsHeaders } from "../_shared/sicai.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 

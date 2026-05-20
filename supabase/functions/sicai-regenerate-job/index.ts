@@ -1,6 +1,5 @@
 // Create a new queued job for a template (retry). Marks the old job as rejected.
-import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
-import { jsonResponse, requireAdmin, buildOpenAIBody } from "../_shared/sicai.ts";
+import { jsonResponse, requireAdmin, buildOpenAIBody, corsHeaders } from "../_shared/sicai.ts";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
