@@ -14,6 +14,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2, Upload, FileCheck2, AlertTriangle, XCircle } from "lucide-react";
+import SicaiBatchesTab from "./SicaiBatchesTab";
 
 type Tpl = {
   id: string;
