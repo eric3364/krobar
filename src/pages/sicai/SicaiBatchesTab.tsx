@@ -131,6 +131,22 @@ export default function SicaiBatchesTab() {
     }
   };
 
+  const cancelBatch = async (batchId: string) => {
+    setCancelling(batchId);
+    try {
+      const { data, error } = await supabase.functions.invoke("sicai-cancel-batch", {
+        body: { batch_id: batchId },
+      });
+      if (error) throw new Error(error.message);
+      toast.success("Batch annulé");
+      await load();
+    } catch (e: any) {
+      toast.error(e?.message ?? "Échec annulation");
+    } finally {
+      setCancelling(null);
+    }
+  };
+
   const estimate = mode === "sync" ? (readyCount * 0.04).toFixed(2) : (readyCount * 0.02).toFixed(2);
 
   return (
