@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/table";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { ArrowLeft, Loader2, RefreshCw, RotateCw } from "lucide-react";
+import { ArrowLeft, Loader2, RefreshCw, RotateCw, Wand2 } from "lucide-react";
 
 type Job = {
   id: string;
@@ -117,6 +117,18 @@ export default function SicaiBatchDetailPage() {
     finally { setBusy(null); }
   };
 
+  const runPostprocess = async () => {
+    if (!id) return;
+    setBusy("post");
+    try {
+      const { data, error } = await supabase.functions.invoke("sicai-postprocess-batch", { body: { batch_id: id, limit: 8 } });
+      if (error) throw new Error(error.message);
+      toast.success(`Post-traitement : ${data.processed} jobs, reste ${data.remaining}`);
+      await load();
+    } catch (e: any) { toast.error(e?.message ?? "Échec post-traitement"); }
+    finally { setBusy(null); }
+  };
+
   return (
     <>
       <Helmet><title>Batch {batch?.label ?? id} — SICAI</title></Helmet>
@@ -141,6 +153,12 @@ export default function SicaiBatchDetailPage() {
                   <Button size="sm" onClick={poll} disabled={busy !== null}>
                     {busy === "poll" ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
                     Poll OpenAI
+                  </Button>
+                )}
+                {(batch.status === "qc" || batch.status === "running" || batch.status === "completed") && (
+                  <Button size="sm" variant="secondary" onClick={runPostprocess} disabled={busy !== null}>
+                    {busy === "post" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Wand2 className="w-4 h-4" />}
+                    Post-traiter (8)
                   </Button>
                 )}
                 {(batch.status === "qc" || batch.status === "failed") && (

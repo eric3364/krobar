@@ -150,6 +150,7 @@ export default function SicaiTemplatesPage() {
             <TabsTrigger value="import">Import</TabsTrigger>
             <TabsTrigger value="list">Liste</TabsTrigger>
             <TabsTrigger value="batches">Batchs</TabsTrigger>
+            <TabsTrigger value="qc" asChild><a href="/admin/sicai/templates/qc-dashboard">QC Dashboard</a></TabsTrigger>
           </TabsList>
 
           <TabsContent value="import" className="space-y-4">
