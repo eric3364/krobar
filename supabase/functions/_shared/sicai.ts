@@ -59,12 +59,13 @@ export function buildOpenAIBody(prompt: string, batchId: string) {
   };
 }
 
-export function slugifyCustomId(seq: number, illustrationId: string): string {
+export function slugifyCustomId(seq: number, illustrationId: string, batchId?: string): string {
   const slug = illustrationId
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
-  return `sicai-${String(seq).padStart(3, "0")}-${slug}`;
+  const suffix = batchId ? `-${batchId.replace(/-/g, "").slice(0, 8)}` : "";
+  return `sicai-${String(seq).padStart(3, "0")}-${slug}${suffix}`;
 }
 
 export async function sha256(bytes: Uint8Array): Promise<string> {
