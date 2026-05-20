@@ -274,6 +274,30 @@ export default function SicaiBatchesTab() {
                           Suivant
                         </Button>
                       )}
+                      {["draft", "queued", "running"].includes(b.status) && (
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button size="sm" variant="destructive" disabled={cancelling === b.id}>
+                              {cancelling === b.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <X className="w-3 h-3" />}
+                              Annuler
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Annuler ce batch ?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Le batch « {b.label ?? b.id} » sera marqué <strong>cancelled</strong>.
+                                {b.openai_batch_id && " Une demande d'annulation sera également envoyée à OpenAI."}
+                                Tous les jobs en attente/en cours seront marqués en échec. Cette action est irréversible.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Retour</AlertDialogCancel>
+                              <AlertDialogAction onClick={() => cancelBatch(b.id)}>Confirmer l'annulation</AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      )}
                       <Button size="sm" variant="ghost" asChild>
                         <Link to={`/admin/sicai/templates/batches/${b.id}`}>Détail</Link>
                       </Button>
