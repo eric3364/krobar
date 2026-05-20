@@ -148,6 +148,7 @@ export default function SicaiTemplatesPage() {
           <TabsList>
             <TabsTrigger value="import">Import</TabsTrigger>
             <TabsTrigger value="list">Liste</TabsTrigger>
+            <TabsTrigger value="batches">Batchs</TabsTrigger>
           </TabsList>
 
           <TabsContent value="import" className="space-y-4">
