@@ -39,7 +39,10 @@ export async function requireAdmin(req: Request): Promise<
   return { admin, userId: data.user.id };
 }
 
-export const OPENAI_MODEL = "gpt-image-2-2026-04-21";
+export const OPENAI_MODEL = "gpt-image-1.5";
+export const OPENAI_SIZE = "1536x1024";
+export const OPENAI_WIDTH = 1536;
+export const OPENAI_HEIGHT = 1024;
 export const COST_SYNC = 0.04;
 export const COST_BATCH = 0.02;
 
@@ -47,10 +50,9 @@ export function buildOpenAIBody(prompt: string, batchId: string) {
   return {
     model: OPENAI_MODEL,
     prompt,
-    size: "1536x864",
+    size: OPENAI_SIZE,
     quality: "medium",
     output_format: "png",
-    background: "opaque",
     moderation: "auto",
     n: 1,
     user: `sicai-admin:${batchId}`,
