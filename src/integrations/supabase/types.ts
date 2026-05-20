@@ -236,6 +236,50 @@ export type Database = {
         }
         Relationships: []
       }
+      sicai_assets: {
+        Row: {
+          asset_kind: string
+          checksum: string | null
+          created_at: string
+          file_size_bytes: number | null
+          height: number | null
+          id: string
+          job_id: string | null
+          storage_path: string
+          width: number | null
+        }
+        Insert: {
+          asset_kind: string
+          checksum?: string | null
+          created_at?: string
+          file_size_bytes?: number | null
+          height?: number | null
+          id?: string
+          job_id?: string | null
+          storage_path: string
+          width?: number | null
+        }
+        Update: {
+          asset_kind?: string
+          checksum?: string | null
+          created_at?: string
+          file_size_bytes?: number | null
+          height?: number | null
+          id?: string
+          job_id?: string | null
+          storage_path?: string
+          width?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sicai_assets_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "sicai_generation_jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sicai_documents: {
         Row: {
           created_at: string
@@ -298,6 +342,126 @@ export type Database = {
           },
         ]
       }
+      sicai_generation_batches: {
+        Row: {
+          approved_count: number | null
+          batch_mode: string
+          cost_actual_usd: number | null
+          cost_estimate_usd: number | null
+          created_at: string
+          created_by: string | null
+          failed_count: number | null
+          id: string
+          label: string | null
+          openai_batch_id: string | null
+          request_count: number
+          source_file_name: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          approved_count?: number | null
+          batch_mode: string
+          cost_actual_usd?: number | null
+          cost_estimate_usd?: number | null
+          created_at?: string
+          created_by?: string | null
+          failed_count?: number | null
+          id?: string
+          label?: string | null
+          openai_batch_id?: string | null
+          request_count: number
+          source_file_name?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          approved_count?: number | null
+          batch_mode?: string
+          cost_actual_usd?: number | null
+          cost_estimate_usd?: number | null
+          created_at?: string
+          created_by?: string | null
+          failed_count?: number | null
+          id?: string
+          label?: string | null
+          openai_batch_id?: string | null
+          request_count?: number
+          source_file_name?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      sicai_generation_jobs: {
+        Row: {
+          batch_id: string | null
+          created_at: string
+          custom_id: string | null
+          error_code: string | null
+          error_message: string | null
+          id: string
+          openai_request_json: Json | null
+          openai_response_json: Json | null
+          retry_count: number | null
+          revised_prompt: string | null
+          status: string
+          template_id: string | null
+          updated_at: string
+          usage_input_tokens: number | null
+          usage_output_tokens: number | null
+        }
+        Insert: {
+          batch_id?: string | null
+          created_at?: string
+          custom_id?: string | null
+          error_code?: string | null
+          error_message?: string | null
+          id?: string
+          openai_request_json?: Json | null
+          openai_response_json?: Json | null
+          retry_count?: number | null
+          revised_prompt?: string | null
+          status?: string
+          template_id?: string | null
+          updated_at?: string
+          usage_input_tokens?: number | null
+          usage_output_tokens?: number | null
+        }
+        Update: {
+          batch_id?: string | null
+          created_at?: string
+          custom_id?: string | null
+          error_code?: string | null
+          error_message?: string | null
+          id?: string
+          openai_request_json?: Json | null
+          openai_response_json?: Json | null
+          retry_count?: number | null
+          revised_prompt?: string | null
+          status?: string
+          template_id?: string | null
+          updated_at?: string
+          usage_input_tokens?: number | null
+          usage_output_tokens?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sicai_generation_jobs_batch_id_fkey"
+            columns: ["batch_id"]
+            isOneToOne: false
+            referencedRelation: "sicai_generation_batches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sicai_generation_jobs_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "sicai_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sicai_paragraphs: {
         Row: {
           created_at: string
@@ -335,6 +499,79 @@ export type Database = {
             columns: ["document_id"]
             isOneToOne: false
             referencedRelation: "sicai_documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sicai_qc_checks: {
+        Row: {
+          check_name: string
+          check_status: string
+          created_at: string
+          details_json: Json | null
+          id: string
+          job_id: string | null
+          score: number | null
+        }
+        Insert: {
+          check_name: string
+          check_status: string
+          created_at?: string
+          details_json?: Json | null
+          id?: string
+          job_id?: string | null
+          score?: number | null
+        }
+        Update: {
+          check_name?: string
+          check_status?: string
+          created_at?: string
+          details_json?: Json | null
+          id?: string
+          job_id?: string | null
+          score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sicai_qc_checks_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "sicai_generation_jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sicai_reviews: {
+        Row: {
+          created_at: string
+          decision: string
+          id: string
+          job_id: string | null
+          notes: string | null
+          reviewer_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          decision: string
+          id?: string
+          job_id?: string | null
+          notes?: string | null
+          reviewer_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          decision?: string
+          id?: string
+          job_id?: string | null
+          notes?: string | null
+          reviewer_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sicai_reviews_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "sicai_generation_jobs"
             referencedColumns: ["id"]
           },
         ]
@@ -405,6 +642,114 @@ export type Database = {
           title?: string
           updated_at?: string
           url?: string | null
+        }
+        Relationships: []
+      }
+      sicai_templates: {
+        Row: {
+          anchor_to_placeholder_rule: string | null
+          cardinality_code: string
+          cardinality_label: string | null
+          color_standard: string | null
+          composition_distinctive_rule: string | null
+          composition_refinement_rule: string | null
+          created_at: string
+          editorial_style_rule: string | null
+          family_code: string
+          family_label: string | null
+          file_name_target: string
+          id: string
+          illustration_id: string
+          matching_tags: string[] | null
+          micro_brief: string | null
+          negative_rules: string | null
+          placeholder_rule: string | null
+          prompt_checksum: string | null
+          prompt_full: string
+          prompt_short: string | null
+          regime_code: string
+          regime_differentiation_rule: string | null
+          regime_label: string | null
+          source_row_index: number | null
+          status: string
+          svg_constraint_summary: string | null
+          svg_technical_constraints: string | null
+          title_placeholder_count: number
+          updated_at: string
+          validation_errors: Json | null
+          verbatim_placeholder_count: number
+          visual_anchor_count: number
+          visual_hierarchy_rule: string | null
+        }
+        Insert: {
+          anchor_to_placeholder_rule?: string | null
+          cardinality_code: string
+          cardinality_label?: string | null
+          color_standard?: string | null
+          composition_distinctive_rule?: string | null
+          composition_refinement_rule?: string | null
+          created_at?: string
+          editorial_style_rule?: string | null
+          family_code: string
+          family_label?: string | null
+          file_name_target: string
+          id?: string
+          illustration_id: string
+          matching_tags?: string[] | null
+          micro_brief?: string | null
+          negative_rules?: string | null
+          placeholder_rule?: string | null
+          prompt_checksum?: string | null
+          prompt_full: string
+          prompt_short?: string | null
+          regime_code: string
+          regime_differentiation_rule?: string | null
+          regime_label?: string | null
+          source_row_index?: number | null
+          status?: string
+          svg_constraint_summary?: string | null
+          svg_technical_constraints?: string | null
+          title_placeholder_count?: number
+          updated_at?: string
+          validation_errors?: Json | null
+          verbatim_placeholder_count: number
+          visual_anchor_count: number
+          visual_hierarchy_rule?: string | null
+        }
+        Update: {
+          anchor_to_placeholder_rule?: string | null
+          cardinality_code?: string
+          cardinality_label?: string | null
+          color_standard?: string | null
+          composition_distinctive_rule?: string | null
+          composition_refinement_rule?: string | null
+          created_at?: string
+          editorial_style_rule?: string | null
+          family_code?: string
+          family_label?: string | null
+          file_name_target?: string
+          id?: string
+          illustration_id?: string
+          matching_tags?: string[] | null
+          micro_brief?: string | null
+          negative_rules?: string | null
+          placeholder_rule?: string | null
+          prompt_checksum?: string | null
+          prompt_full?: string
+          prompt_short?: string | null
+          regime_code?: string
+          regime_differentiation_rule?: string | null
+          regime_label?: string | null
+          source_row_index?: number | null
+          status?: string
+          svg_constraint_summary?: string | null
+          svg_technical_constraints?: string | null
+          title_placeholder_count?: number
+          updated_at?: string
+          validation_errors?: Json | null
+          verbatim_placeholder_count?: number
+          visual_anchor_count?: number
+          visual_hierarchy_rule?: string | null
         }
         Relationships: []
       }
