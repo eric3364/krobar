@@ -155,46 +155,65 @@ export default function SicaiBatchDetailPage() {
     } catch (e: any) { toast.error(e?.message ?? "Échec relance"); }
     finally { setBusy(null); }
   };
+  // Server-side chain: kick once, then poll DB. Survives tab closes.
   const postAll = async () => {
-    if (!id) return;
+    if (!id || busy === "postAll") return;
     setBusy("postAll");
-    let totalProcessed = 0;
-    let lastApproved = 0, lastReview = 0, lastFailed = 0;
-    const total = jobs.length || 0;
-    setPostAllProgress({ done: 0, total });
-    let consecutiveErrors = 0;
     try {
-      while (true) {
-        try {
-          const { data, error } = await supabase.functions.invoke("sicai-postprocess-batch", { body: { batch_id: id, limit: 8 } });
-          if (error) throw new Error(error.message);
-          consecutiveErrors = 0;
-          const processed = data?.processed ?? 0;
-          totalProcessed += processed;
-          lastApproved = data?.approved ?? lastApproved;
-          lastReview = data?.review ?? lastReview;
-          lastFailed = data?.failed ?? lastFailed;
-          const remaining = data?.remaining ?? 0;
-          setPostAllProgress({ done: total ? Math.max(0, total - remaining) : totalProcessed, total });
-          if (processed === 0 && remaining === 0) break;
-          if (processed === 0) break;
-          await sleep(2000);
-        } catch (e: any) {
-          consecutiveErrors++;
-          if (consecutiveErrors >= 2) {
-            toast.error(`Post-traitement stoppé après ${totalProcessed} jobs : ${e?.message ?? "erreur"}`);
-            return;
-          }
-          await sleep(5000);
-        }
-      }
-      toast.success(`Post-traitement terminé : ${lastApproved} approuvés, ${lastReview} à reviewer, ${lastFailed} échoués`);
-      await load();
-    } finally {
+      const { error } = await supabase.functions.invoke("sicai-postprocess-batch", {
+        body: { batch_id: id, limit: 8, continue_until_done: true },
+      });
+      if (error) throw new Error(error.message);
+      toast.success("Post-traitement démarré en arrière-plan — vous pouvez quitter cette page.");
+    } catch (e: any) {
+      toast.error(`Échec démarrage : ${e?.message ?? "erreur"}`);
       setBusy(null);
-      setPostAllProgress(null);
     }
   };
+
+  // Auto-poll DB whenever jobs remain in 'generated'/'qc_pending'. Detects an
+  // in-progress chain even if it was started in a previous session.
+  useEffect(() => {
+    if (!id) return;
+    let stopped = false;
+    let prevRemaining = Infinity;
+    let stableTicks = 0;
+    const tick = async () => {
+      if (stopped) return;
+      try {
+        const s = await pollProgress();
+        if (stopped) return;
+        setPostAllProgress({ done: Math.max(0, s.total - s.remaining), total: s.total });
+        if (s.remaining > 0) {
+          if (busy !== "postAll") setBusy("postAll");
+          // Detect stalled chain: same remaining count for ~30s in a row.
+          if (s.remaining === prevRemaining) stableTicks++;
+          else { stableTicks = 0; prevRemaining = s.remaining; }
+        } else {
+          if (busy === "postAll") {
+            toast.success(`Post-traitement terminé : ${s.approved} approuvés, ${s.review} à reviewer, ${s.failed} échoués`);
+            await load();
+          }
+          setBusy((b) => (b === "postAll" ? null : b));
+          setPostAllProgress(null);
+          stopped = true;
+          return;
+        }
+        if (stableTicks >= 10) {
+          // Likely the chain died — restart it transparently.
+          stableTicks = 0;
+          supabase.functions.invoke("sicai-postprocess-batch", {
+            body: { batch_id: id, limit: 8, continue_until_done: true },
+          }).catch(() => {});
+        }
+      } catch { /* swallow */ }
+    };
+    // Initial check, then every 3s.
+    tick();
+    const handle = setInterval(tick, 3000);
+    return () => { stopped = true; clearInterval(handle); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, pollProgress]);
 
   
   const runPostprocess = async () => {
