@@ -15,6 +15,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { ArrowLeft, ArrowRight, Check, X, RotateCw, Loader2, Copy } from "lucide-react";
+import SvgLayoutEditor from "./SvgLayoutEditor";
 
 type Template = {
   id: string;
@@ -82,6 +83,7 @@ export default function SicaiTemplateDetailPage() {
   const [regenUsePrompt, setRegenUsePrompt] = useState(false);
   const [nextTemplateId, setNextTemplateId] = useState<string | null>(null);
   const [loadingNext, setLoadingNext] = useState(false);
+  const [layoutEditing, setLayoutEditing] = useState(false);
 
   const load = useCallback(async () => {
     if (!templateId) return;
@@ -311,14 +313,31 @@ export default function SicaiTemplateDetailPage() {
                     <TabsContent key={k} value={k}>
                       {url ? (
                         <div className="space-y-2">
-                          {key === "svg_final" ? (
+                          {key === "svg_final" && layoutEditing ? (
+                            <SvgLayoutEditor
+                              svgUrl={url}
+                              jobId={currentJob!.id}
+                              cardinality={tpl.cardinality_code}
+                              onClose={() => setLayoutEditing(false)}
+                              onSaved={async () => { await load(); }}
+                            />
+                          ) : key === "svg_final" ? (
                             <img src={url} alt="svg_final" className="w-full border rounded bg-muted" style={{ aspectRatio: "16 / 9", objectFit: "contain" }} />
                           ) : (
                             <img src={url} alt={key} className="w-full border rounded bg-muted" />
                           )}
-                          <Button size="sm" variant="outline" asChild>
-                            <a href={url} target="_blank" rel="noreferrer" download>Télécharger</a>
-                          </Button>
+                          {!(key === "svg_final" && layoutEditing) && (
+                            <div className="flex gap-2 flex-wrap">
+                              <Button size="sm" variant="outline" asChild>
+                                <a href={url} target="_blank" rel="noreferrer" download>Télécharger</a>
+                              </Button>
+                              {key === "svg_final" && currentJob && (
+                                <Button size="sm" variant="secondary" onClick={() => setLayoutEditing(true)}>
+                                  Éditer les coordonnées de layout
+                                </Button>
+                              )}
+                            </div>
+                          )}
                         </div>
                       ) : (
                         <div className="text-xs text-muted-foreground py-8 text-center">Asset non disponible.</div>
