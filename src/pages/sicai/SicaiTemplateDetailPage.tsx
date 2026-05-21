@@ -225,6 +225,19 @@ export default function SicaiTemplateDetailPage() {
               {currentJob && (
                 <Badge variant={STATUS_VARIANT[currentJob.status] ?? "outline"}>Job : {currentJob.status}</Badge>
               )}
+              <Button
+                size="sm"
+                variant="outline"
+                disabled={!nextTemplateId || loadingNext}
+                onClick={() => {
+                  if (!nextTemplateId) return;
+                  const batchId = batchIdParam ?? currentJob?.batch_id;
+                  navigate(`/admin/sicai/templates/detail/${nextTemplateId}${batchId ? `?batch=${batchId}` : ""}`);
+                }}
+                title={nextTemplateId ? "Passer au suivant à valider" : "Aucun job suivant à valider dans ce batch"}
+              >
+                Suivant <ArrowRight className="w-4 h-4 ml-1" />
+              </Button>
             </div>
           </div>
         </Card>
