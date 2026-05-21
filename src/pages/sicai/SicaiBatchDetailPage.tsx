@@ -155,7 +155,48 @@ export default function SicaiBatchDetailPage() {
     } catch (e: any) { toast.error(e?.message ?? "Échec relance"); }
     finally { setBusy(null); }
   };
+  const postAll = async () => {
+    if (!id) return;
+    setBusy("postAll");
+    let totalProcessed = 0;
+    let lastApproved = 0, lastReview = 0, lastFailed = 0;
+    const total = jobs.length || 0;
+    setPostAllProgress({ done: 0, total });
+    let consecutiveErrors = 0;
+    try {
+      while (true) {
+        try {
+          const { data, error } = await supabase.functions.invoke("sicai-postprocess-batch", { body: { batch_id: id, limit: 8 } });
+          if (error) throw new Error(error.message);
+          consecutiveErrors = 0;
+          const processed = data?.processed ?? 0;
+          totalProcessed += processed;
+          lastApproved = data?.approved ?? lastApproved;
+          lastReview = data?.review ?? lastReview;
+          lastFailed = data?.failed ?? lastFailed;
+          const remaining = data?.remaining ?? 0;
+          setPostAllProgress({ done: total ? Math.max(0, total - remaining) : totalProcessed, total });
+          if (processed === 0 && remaining === 0) break;
+          if (processed === 0) break;
+          await sleep(2000);
+        } catch (e: any) {
+          consecutiveErrors++;
+          if (consecutiveErrors >= 2) {
+            toast.error(`Post-traitement stoppé après ${totalProcessed} jobs : ${e?.message ?? "erreur"}`);
+            return;
+          }
+          await sleep(5000);
+        }
+      }
+      toast.success(`Post-traitement terminé : ${lastApproved} approuvés, ${lastReview} à reviewer, ${lastFailed} échoués`);
+      await load();
+    } finally {
+      setBusy(null);
+      setPostAllProgress(null);
+    }
+  };
 
+  
   const runPostprocess = async () => {
     if (!id) return;
     setBusy("post");
