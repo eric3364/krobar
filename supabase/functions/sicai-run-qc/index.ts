@@ -170,7 +170,7 @@ Deno.serve(async (req) => {
     }
 
     // 6. regime_distinctness
-    // Thresholds calibrated for gpt-image-1.5: pass >20, warn 10-20, fail <10.
+    // Thresholds calibrated for gpt-image-1.5: pass >15, warn 5-15, fail <5.
     {
       const { data: siblings } = await admin.from("sicai_generation_jobs")
         .select("id, sicai_templates!inner(illustration_id, family_code, cardinality_code, regime_code)")
@@ -201,7 +201,7 @@ Deno.serve(async (req) => {
         } else {
           const avg = perSibling.reduce((s, x) => s + x.distance, 0) / perSibling.length;
           const minD = Math.min(...perSibling.map((x) => x.distance));
-          const status: Status = avg > 20 ? "pass" : avg >= 10 ? "warn" : "fail";
+          const status: Status = avg > 15 ? "pass" : avg >= 5 ? "warn" : "fail";
           checks.push({
             name: "regime_distinctness",
             status,
