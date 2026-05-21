@@ -155,6 +155,19 @@ export default function SicaiBatchDetailPage() {
     } catch (e: any) { toast.error(e?.message ?? "Échec relance"); }
     finally { setBusy(null); }
   };
+  const pollProgress = useCallback(async () => {
+    if (!id) return { total: 0, remaining: 0, approved: 0, review: 0, failed: 0 };
+    const [{ count: total }, { count: remaining }, { count: approved }, { count: review }, { count: failed }] =
+      await Promise.all([
+        supabase.from("sicai_generation_jobs").select("id", { count: "exact", head: true }).eq("batch_id", id),
+        supabase.from("sicai_generation_jobs").select("id", { count: "exact", head: true }).eq("batch_id", id).in("status", ["generated", "qc_pending"]),
+        supabase.from("sicai_generation_jobs").select("id", { count: "exact", head: true }).eq("batch_id", id).eq("status", "approved"),
+        supabase.from("sicai_generation_jobs").select("id", { count: "exact", head: true }).eq("batch_id", id).eq("status", "review_needed"),
+        supabase.from("sicai_generation_jobs").select("id", { count: "exact", head: true }).eq("batch_id", id).eq("status", "qc_failed"),
+      ]);
+    return { total: total ?? 0, remaining: remaining ?? 0, approved: approved ?? 0, review: review ?? 0, failed: failed ?? 0 };
+  }, [id]);
+
   // Server-side chain: kick once, then poll DB. Survives tab closes.
   const postAll = async () => {
     if (!id || busy === "postAll") return;
