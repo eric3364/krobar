@@ -1,5 +1,8 @@
 // Process up to N jobs of a batch through post-process + QC (bounded for timeout).
 import { jsonResponse, requireAdmin, corsHeaders } from "../_shared/sicai.ts";
+import { publishArchetypeFromJob } from "../_shared/sicai-publish.ts";
+
+
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 
