@@ -9,7 +9,9 @@ import {
 } from "@/components/ui/table";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { ArrowLeft, Loader2, RefreshCw, RotateCw, Wand2 } from "lucide-react";
+import { ArrowLeft, Loader2, RefreshCw, RotateCw, Wand2, Zap } from "lucide-react";
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 type Job = {
   id: string;
@@ -53,6 +55,7 @@ export default function SicaiBatchDetailPage() {
   const [previews, setPreviews] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [busy, setBusy] = useState<string | null>(null);
+  const [postAllProgress, setPostAllProgress] = useState<{ done: number; total: number } | null>(null);
 
   const load = useCallback(async () => {
     if (!id) return;
@@ -152,7 +155,48 @@ export default function SicaiBatchDetailPage() {
     } catch (e: any) { toast.error(e?.message ?? "Échec relance"); }
     finally { setBusy(null); }
   };
+  const postAll = async () => {
+    if (!id) return;
+    setBusy("postAll");
+    let totalProcessed = 0;
+    let lastApproved = 0, lastReview = 0, lastFailed = 0;
+    const total = jobs.length || 0;
+    setPostAllProgress({ done: 0, total });
+    let consecutiveErrors = 0;
+    try {
+      while (true) {
+        try {
+          const { data, error } = await supabase.functions.invoke("sicai-postprocess-batch", { body: { batch_id: id, limit: 8 } });
+          if (error) throw new Error(error.message);
+          consecutiveErrors = 0;
+          const processed = data?.processed ?? 0;
+          totalProcessed += processed;
+          lastApproved = data?.approved ?? lastApproved;
+          lastReview = data?.review ?? lastReview;
+          lastFailed = data?.failed ?? lastFailed;
+          const remaining = data?.remaining ?? 0;
+          setPostAllProgress({ done: total ? Math.max(0, total - remaining) : totalProcessed, total });
+          if (processed === 0 && remaining === 0) break;
+          if (processed === 0) break;
+          await sleep(2000);
+        } catch (e: any) {
+          consecutiveErrors++;
+          if (consecutiveErrors >= 2) {
+            toast.error(`Post-traitement stoppé après ${totalProcessed} jobs : ${e?.message ?? "erreur"}`);
+            return;
+          }
+          await sleep(5000);
+        }
+      }
+      toast.success(`Post-traitement terminé : ${lastApproved} approuvés, ${lastReview} à reviewer, ${lastFailed} échoués`);
+      await load();
+    } finally {
+      setBusy(null);
+      setPostAllProgress(null);
+    }
+  };
 
+  
   const runPostprocess = async () => {
     if (!id) return;
     setBusy("post");
@@ -206,10 +250,18 @@ export default function SicaiBatchDetailPage() {
                   </Button>
                 )}
                 {(batch.status === "qc" || batch.status === "running" || batch.status === "completed") && (
-                  <Button size="sm" variant="secondary" onClick={runPostprocess} disabled={busy !== null}>
-                    {busy === "post" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Wand2 className="w-4 h-4" />}
-                    Post-traiter (8)
-                  </Button>
+                  <>
+                    <Button size="sm" variant="secondary" onClick={runPostprocess} disabled={busy !== null}>
+                      {busy === "post" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Wand2 className="w-4 h-4" />}
+                      Post-traiter (8)
+                    </Button>
+                    <Button size="sm" variant="default" onClick={postAll} disabled={busy !== null}>
+                      {busy === "postAll" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Zap className="w-4 h-4" />}
+                      {busy === "postAll" && postAllProgress
+                        ? `Post-traitement… ${postAllProgress.done}/${postAllProgress.total}`
+                        : "Post-traiter tout"}
+                    </Button>
+                  </>
                 )}
                 {(batch.status === "qc" || batch.status === "completed") && (
                   <Button size="sm" variant="outline" onClick={rerunQc} disabled={busy !== null}>
