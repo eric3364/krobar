@@ -20,17 +20,22 @@ Deno.serve(async (req) => {
     if (gate instanceof Response) return gate;
     const { admin } = gate;
     const auth = req.headers.get("Authorization") ?? "";
-    const { batch_id, limit = 8 } = await req.json();
+    const { batch_id, limit = 8, qc_only = false } = await req.json();
     if (!batch_id) return jsonResponse({ error: "batch_id required" }, 400);
 
+    // qc_only: re-run sicai-run-qc on already-postprocessed jobs (preserves assets).
+    // Default: process raw "generated" jobs through postprocess + QC.
+    const targetStatuses = qc_only
+      ? ["approved", "review_needed", "qc_failed", "qc_pending"]
+      : ["generated", "qc_pending"];
     const { data: jobs } = await admin.from("sicai_generation_jobs")
       .select("id, status").eq("batch_id", batch_id)
-      .in("status", ["generated", "qc_pending"]).limit(limit);
+      .in("status", targetStatuses).limit(limit);
 
     const results: any[] = [];
     for (const j of jobs ?? []) {
       try {
-        if (j.status === "generated") {
+        if (!qc_only && j.status === "generated") {
           const r = await callFn("sicai-postprocess-svg", { job_id: j.id }, auth);
           if (!r.ok) { results.push({ job_id: j.id, step: "postprocess", error: r.json }); continue; }
         }
