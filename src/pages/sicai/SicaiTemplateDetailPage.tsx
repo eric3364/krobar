@@ -135,6 +135,30 @@ export default function SicaiTemplateDetailPage() {
 
   useEffect(() => { load(); }, [load]);
 
+  // Compute next template to review within the same batch (status à valider, ordre custom_id)
+  useEffect(() => {
+    const batchId = batchIdParam ?? currentJob?.batch_id ?? null;
+    if (!batchId || !currentJob) { setNextTemplateId(null); return; }
+    let cancelled = false;
+    (async () => {
+      setLoadingNext(true);
+      const { data } = await supabase
+        .from("sicai_generation_jobs")
+        .select("template_id, custom_id, status")
+        .eq("batch_id", batchId)
+        .in("status", ["review_needed", "qc_failed", "generated", "qc_pending"])
+        .order("custom_id", { ascending: true });
+      if (cancelled) return;
+      const rows = (data as { template_id: string; custom_id: string; status: string }[]) ?? [];
+      const others = rows.filter((r) => r.template_id !== templateId);
+      const after = others.find((r) => r.custom_id > (currentJob.custom_id ?? ""));
+      setNextTemplateId((after ?? others[0])?.template_id ?? null);
+      setLoadingNext(false);
+    })();
+    return () => { cancelled = true; };
+  }, [batchIdParam, currentJob, templateId]);
+
+
   const run = async (fn: string, body: any, key: string) => {
     setBusy(key);
     try {
