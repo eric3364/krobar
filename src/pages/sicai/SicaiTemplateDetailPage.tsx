@@ -83,6 +83,7 @@ export default function SicaiTemplateDetailPage() {
   const [regenUsePrompt, setRegenUsePrompt] = useState(false);
   const [nextTemplateId, setNextTemplateId] = useState<string | null>(null);
   const [loadingNext, setLoadingNext] = useState(false);
+  const [layoutEditing, setLayoutEditing] = useState(false);
 
   const load = useCallback(async () => {
     if (!templateId) return;
