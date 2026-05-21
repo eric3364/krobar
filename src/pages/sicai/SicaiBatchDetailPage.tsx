@@ -9,7 +9,9 @@ import {
 } from "@/components/ui/table";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { ArrowLeft, Loader2, RefreshCw, RotateCw, Wand2 } from "lucide-react";
+import { ArrowLeft, Loader2, RefreshCw, RotateCw, Wand2, Zap } from "lucide-react";
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 type Job = {
   id: string;
