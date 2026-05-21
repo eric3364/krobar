@@ -170,35 +170,50 @@ Deno.serve(async (req) => {
     }
 
     // 6. regime_distinctness
+    // Thresholds calibrated for gpt-image-1.5: pass >20, warn 10-20, fail <10.
     {
       const { data: siblings } = await admin.from("sicai_generation_jobs")
-        .select("id, sicai_templates!inner(family_code, cardinality_code, regime_code)")
+        .select("id, sicai_templates!inner(illustration_id, family_code, cardinality_code, regime_code)")
         .neq("id", job_id)
         .eq("sicai_templates.family_code", tpl.family_code)
         .eq("sicai_templates.cardinality_code", tpl.cardinality_code);
-      const sibIds = (siblings ?? []).map((s: any) => s.id);
-      if (sibIds.length === 0) {
+      const sibList = (siblings ?? []) as any[];
+      if (sibList.length === 0) {
         checks.push({ name: "regime_distinctness", status: "skipped", details: { siblings: 0 } });
       } else {
+        const sibIds = sibList.map((s) => s.id);
+        const sibIllu: Record<string, string> = {};
+        for (const s of sibList) sibIllu[s.id] = s.sicai_templates?.illustration_id ?? s.id;
         const { data: sibAssets } = await admin.from("sicai_assets")
           .select("job_id, storage_path").eq("asset_kind", "png_normalized").in("job_id", sibIds);
-        const hashes: bigint[] = [aHash(norm.w, norm.h, norm.data)];
+        const selfHash = aHash(norm.w, norm.h, norm.data);
+        const perSibling: Array<{ illustration_id: string; distance: number }> = [];
         for (const a of sibAssets ?? []) {
           try {
             const bytes = await downloadBytes(admin, a.storage_path);
             const dec = decodePng(bytes);
-            hashes.push(aHash(dec.w, dec.h, dec.data));
+            const d = hamming(selfHash, aHash(dec.w, dec.h, dec.data));
+            perSibling.push({ illustration_id: sibIllu[a.job_id] ?? a.job_id, distance: d });
           } catch { /* ignore */ }
         }
-        if (hashes.length < 2) {
-          checks.push({ name: "regime_distinctness", status: "skipped", details: { hashes: hashes.length } });
+        if (perSibling.length === 0) {
+          checks.push({ name: "regime_distinctness", status: "skipped", details: { siblings: 0 } });
         } else {
-          let sum = 0, c = 0;
-          for (let i = 0; i < hashes.length; i++)
-            for (let j = i + 1; j < hashes.length; j++) { sum += hamming(hashes[i], hashes[j]); c++; }
-          const avg = sum / c;
-          const status: Status = avg > 30 ? "pass" : avg >= 20 ? "warn" : "fail";
-          checks.push({ name: "regime_distinctness", status, score: avg, details: { avg_distance: avg, n: hashes.length } });
+          const avg = perSibling.reduce((s, x) => s + x.distance, 0) / perSibling.length;
+          const minD = Math.min(...perSibling.map((x) => x.distance));
+          const status: Status = avg > 20 ? "pass" : avg >= 10 ? "warn" : "fail";
+          checks.push({
+            name: "regime_distinctness",
+            status,
+            score: avg,
+            details: {
+              hamming_distance: avg,
+              min_distance: minD,
+              n: perSibling.length,
+              siblings: perSibling.map((x) => x.illustration_id),
+              per_sibling: perSibling,
+            },
+          });
         }
       }
     }
