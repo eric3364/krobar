@@ -261,6 +261,7 @@ export type Database = {
           id: string
           job_id: string | null
           storage_path: string
+          version: number
           width: number | null
         }
         Insert: {
@@ -272,6 +273,7 @@ export type Database = {
           id?: string
           job_id?: string | null
           storage_path: string
+          version?: number
           width?: number | null
         }
         Update: {
@@ -283,6 +285,7 @@ export type Database = {
           id?: string
           job_id?: string | null
           storage_path?: string
+          version?: number
           width?: number | null
         }
         Relationships: [

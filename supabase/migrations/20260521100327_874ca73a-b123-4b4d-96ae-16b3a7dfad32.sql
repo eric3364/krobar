@@ -1,0 +1,2 @@
+ALTER TABLE public.sicai_assets ADD COLUMN IF NOT EXISTS version integer NOT NULL DEFAULT 1;
+CREATE INDEX IF NOT EXISTS idx_sicai_assets_job_kind ON public.sicai_assets(job_id, asset_kind, version DESC);
