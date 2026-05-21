@@ -67,6 +67,9 @@ const CHECK_BADGE: Record<string, string> = {
 
 export default function SicaiTemplateDetailPage() {
   const { templateId } = useParams<{ templateId: string }>();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const batchIdParam = searchParams.get("batch");
   const [tpl, setTpl] = useState<Template | null>(null);
   const [jobs, setJobs] = useState<Job[]>([]);
   const [currentJob, setCurrentJob] = useState<Job | null>(null);
@@ -77,6 +80,8 @@ export default function SicaiTemplateDetailPage() {
   const [regenOpen, setRegenOpen] = useState(false);
   const [regenPrompt, setRegenPrompt] = useState("");
   const [regenUsePrompt, setRegenUsePrompt] = useState(false);
+  const [nextTemplateId, setNextTemplateId] = useState<string | null>(null);
+  const [loadingNext, setLoadingNext] = useState(false);
 
   const load = useCallback(async () => {
     if (!templateId) return;
