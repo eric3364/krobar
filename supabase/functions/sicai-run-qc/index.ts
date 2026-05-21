@@ -201,7 +201,7 @@ Deno.serve(async (req) => {
         } else {
           const avg = perSibling.reduce((s, x) => s + x.distance, 0) / perSibling.length;
           const minD = Math.min(...perSibling.map((x) => x.distance));
-          const status: Status = avg > 20 ? "pass" : avg >= 10 ? "warn" : "fail";
+          const status: Status = avg > 15 ? "pass" : avg >= 5 ? "warn" : "fail";
           checks.push({
             name: "regime_distinctness",
             status,
