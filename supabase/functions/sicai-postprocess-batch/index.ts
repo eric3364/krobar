@@ -44,6 +44,8 @@ Deno.serve(async (req) => {
     // Refresh batch counters
     const { count: approved } = await admin.from("sicai_generation_jobs")
       .select("id", { count: "exact", head: true }).eq("batch_id", batch_id).eq("status", "approved");
+    const { count: review } = await admin.from("sicai_generation_jobs")
+      .select("id", { count: "exact", head: true }).eq("batch_id", batch_id).eq("status", "review_needed");
     const { count: failed } = await admin.from("sicai_generation_jobs")
       .select("id", { count: "exact", head: true }).eq("batch_id", batch_id).eq("status", "qc_failed");
     const { count: remaining } = await admin.from("sicai_generation_jobs")
@@ -55,7 +57,14 @@ Deno.serve(async (req) => {
       status: (remaining ?? 0) === 0 ? "completed" : "qc",
     }).eq("id", batch_id);
 
-    return jsonResponse({ processed: results.length, remaining: remaining ?? 0, results });
+    return jsonResponse({
+      processed: results.length,
+      remaining: remaining ?? 0,
+      approved: approved ?? 0,
+      review: review ?? 0,
+      failed: failed ?? 0,
+      results,
+    });
   } catch (e) {
     return jsonResponse({ error: (e as Error).message }, 500);
   }
