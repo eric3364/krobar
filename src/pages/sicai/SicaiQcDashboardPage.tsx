@@ -176,10 +176,15 @@ export default function SicaiQcDashboardPage() {
                 {jobs.filter((j) => j.status === "qc_failed" || j.status === "review_needed")
                   .sort((a, b) => (a.status === "qc_failed" ? -1 : 1))
                   .map((j) => (
-                    <li key={j.id} className="flex items-center gap-2">
-                      <span className={`inline-block w-2 h-2 rounded-full ${STATUS_COLOR[j.status]}`} />
-                      <code className="text-xs">{j.template?.illustration_id}</code>
-                      <Badge variant="outline" className="text-[10px]">{j.status}</Badge>
+                    <li key={j.id}>
+                      <Link
+                        to={`/admin/sicai/templates/detail/${j.template_id}`}
+                        className="flex items-center gap-2 px-2 py-1 -mx-2 rounded hover:bg-muted transition-colors"
+                      >
+                        <span className={`inline-block w-2 h-2 rounded-full ${STATUS_COLOR[j.status]}`} />
+                        <code className="text-xs">{j.template?.illustration_id}</code>
+                        <Badge variant="outline" className="text-[10px]">{j.status}</Badge>
+                      </Link>
                     </li>
                   ))}
                 {jobs.filter((j) => j.status === "qc_failed" || j.status === "review_needed").length === 0 && (
