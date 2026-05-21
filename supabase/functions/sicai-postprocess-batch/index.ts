@@ -28,9 +28,37 @@ Deno.serve(async (req) => {
     const targetStatuses = qc_only
       ? ["approved", "review_needed", "qc_failed", "qc_pending"]
       : ["generated", "qc_pending"];
-    const { data: jobs } = await admin.from("sicai_generation_jobs")
-      .select("id, status").eq("batch_id", batch_id)
-      .in("status", targetStatuses).limit(limit);
+
+    let jobs: Array<{ id: string; status: string }> = [];
+    if (qc_only) {
+      // Select all candidates, then order by "least recently QC-checked" (NULLS FIRST)
+      // so successive clicks progress through the full batch.
+      const { data: allJobs } = await admin.from("sicai_generation_jobs")
+        .select("id, status").eq("batch_id", batch_id).in("status", targetStatuses);
+      const ids = (allJobs ?? []).map((j) => j.id);
+      const lastChecked: Record<string, string> = {};
+      if (ids.length > 0) {
+        const { data: qcRows } = await admin.from("sicai_qc_checks")
+          .select("job_id, created_at").in("job_id", ids);
+        for (const r of qcRows ?? []) {
+          const cur = lastChecked[r.job_id];
+          if (!cur || (r.created_at && r.created_at > cur)) lastChecked[r.job_id] = r.created_at;
+        }
+      }
+      jobs = (allJobs ?? []).slice().sort((a, b) => {
+        const la = lastChecked[a.id];
+        const lb = lastChecked[b.id];
+        if (!la && !lb) return 0;
+        if (!la) return -1; // NULLS FIRST
+        if (!lb) return 1;
+        return la < lb ? -1 : la > lb ? 1 : 0;
+      }).slice(0, limit);
+    } else {
+      const { data } = await admin.from("sicai_generation_jobs")
+        .select("id, status").eq("batch_id", batch_id)
+        .in("status", targetStatuses).limit(limit);
+      jobs = data ?? [];
+    }
 
     const results: any[] = [];
     for (const j of jobs ?? []) {
