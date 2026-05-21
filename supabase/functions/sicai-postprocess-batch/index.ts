@@ -1,5 +1,8 @@
 // Process up to N jobs of a batch through post-process + QC (bounded for timeout).
 import { jsonResponse, requireAdmin, corsHeaders } from "../_shared/sicai.ts";
+import { publishArchetypeFromJob } from "../_shared/sicai-publish.ts";
+
+
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 
@@ -68,11 +71,36 @@ Deno.serve(async (req) => {
           if (!r.ok) { results.push({ job_id: j.id, step: "postprocess", error: r.json }); continue; }
         }
         const q = await callFn("sicai-run-qc", { job_id: j.id }, auth);
-        results.push({ job_id: j.id, qc: q.json, ok: q.ok });
+        // Auto-publish to sicai_archetypes if QC passed (status='approved').
+        // Without this, sicai-postprocess-batch leaves jobs approved but
+        // orphan (not published), forcing a manual catch-up.
+        let publishInfo: any = null;
+        try {
+          const { data: row } = await admin.from("sicai_generation_jobs")
+            .select("status, template_id, sicai_templates(illustration_id)")
+            .eq("id", j.id).maybeSingle();
+          if (row?.status === "approved") {
+            const illustrationId = (row as any).sicai_templates?.illustration_id;
+            const pub = await publishArchetypeFromJob(admin, {
+              job_id: j.id, illustration_id: illustrationId,
+            });
+            publishInfo = pub;
+            if (!pub.ok) console.warn("auto-publish failed", j.id, pub.reason);
+            else {
+              await admin.from("sicai_templates")
+                .update({ status: "published" }).eq("id", row.template_id);
+            }
+          }
+        } catch (pe) {
+          console.error("auto-publish error", j.id, pe);
+          publishInfo = { ok: false, reason: (pe as Error).message };
+        }
+        results.push({ job_id: j.id, qc: q.json, ok: q.ok, publish: publishInfo });
       } catch (e) {
         results.push({ job_id: j.id, error: (e as Error).message });
       }
     }
+
 
     // Refresh batch counters
     const { count: approved } = await admin.from("sicai_generation_jobs")

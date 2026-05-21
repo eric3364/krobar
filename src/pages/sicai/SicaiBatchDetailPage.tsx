@@ -255,6 +255,19 @@ export default function SicaiBatchDetailPage() {
     finally { setBusy(null); }
   };
 
+  const republishOrphans = async () => {
+    if (!id) return;
+    setBusy("republish");
+    try {
+      const { data, error } = await supabase.functions.invoke("sicai-republish-orphans", { body: { batch_id: id } });
+      if (error) throw new Error(error.message);
+      toast.success(`Rattrapage : ${data.republished} re-publié(s) sur ${data.orphans_found} orphelin(s)${data.failed ? ` · ${data.failed} échec(s)` : ""}`);
+      await load();
+    } catch (e: any) { toast.error(e?.message ?? "Échec rattrapage"); }
+    finally { setBusy(null); }
+  };
+
+
   return (
     <>
       <Helmet><title>Batch {batch?.label ?? id} — SICAI</title></Helmet>
@@ -301,11 +314,18 @@ export default function SicaiBatchDetailPage() {
                     Relancer l'inventaire QC (12)
                   </Button>
                 )}
+                {(batch.status === "qc" || batch.status === "completed") && (
+                  <Button size="sm" variant="outline" onClick={republishOrphans} disabled={busy !== null}>
+                    {busy === "republish" ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
+                    Re-publier les orphelins
+                  </Button>
+                )}
                 {(batch.status === "qc" || batch.status === "failed") && (
                   <Button size="sm" variant="outline" onClick={regenFailed} disabled={busy !== null}>
                     <RotateCw className="w-4 h-4" /> Régénérer les échecs
                   </Button>
                 )}
+
               </div>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
