@@ -156,6 +156,20 @@ export default function SicaiBatchDetailPage() {
     finally { setBusy(null); }
   };
 
+  const rerunQc = async () => {
+    if (!id) return;
+    setBusy("qc");
+    try {
+      const { data, error } = await supabase.functions.invoke("sicai-postprocess-batch", {
+        body: { batch_id: id, limit: 12, qc_only: true },
+      });
+      if (error) throw new Error(error.message);
+      toast.success(`QC relancé sur ${data.processed} jobs · OK ${data.approved} · Review ${data.review} · Failed ${data.failed}`);
+      await load();
+    } catch (e: any) { toast.error(e?.message ?? "Échec relance QC"); }
+    finally { setBusy(null); }
+  };
+
   return (
     <>
       <Helmet><title>Batch {batch?.label ?? id} — SICAI</title></Helmet>
