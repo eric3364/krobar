@@ -47,6 +47,7 @@ const STATUS_COLORS: Record<string, "default" | "secondary" | "destructive" | "o
 
 export default function SicaiBatchesTab() {
   const [batches, setBatches] = useState<Batch[]>([]);
+  const [reviewCounts, setReviewCounts] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(false);
   const [creating, setCreating] = useState(false);
   const [polling, setPolling] = useState<string | null>(null);
@@ -61,19 +62,39 @@ export default function SicaiBatchesTab() {
 
   const load = useCallback(async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from("sicai_generation_batches")
-      .select("id, label, batch_mode, status, request_count, approved_count, failed_count, cost_estimate_usd, cost_actual_usd, openai_batch_id, created_at")
-      .order("created_at", { ascending: false });
-    if (error) toast.error(error.message);
-    else setBatches((data ?? []) as Batch[]);
+    try {
+      const { data, error } = await supabase
+        .from("sicai_generation_batches")
+        .select("id, label, batch_mode, status, request_count, approved_count, failed_count, cost_estimate_usd, cost_actual_usd, openai_batch_id, created_at")
+        .order("created_at", { ascending: false });
+      if (error) toast.error(error.message);
+      const list = (data ?? []) as Batch[];
+      setBatches(list);
 
-    const { count } = await supabase
-      .from("sicai_templates")
-      .select("*", { count: "exact", head: true })
-      .eq("status", "ready");
-    setReadyCount(count ?? 0);
-    setLoading(false);
+      // Fetch review_needed counts per batch (single query, mapped client-side)
+      if (list.length > 0) {
+        const { data: reviewJobs } = await supabase
+          .from("sicai_generation_jobs")
+          .select("batch_id")
+          .eq("status", "review_needed")
+          .in("batch_id", list.map((b) => b.id));
+        const counts: Record<string, number> = {};
+        for (const r of reviewJobs ?? []) {
+          if (r.batch_id) counts[r.batch_id] = (counts[r.batch_id] ?? 0) + 1;
+        }
+        setReviewCounts(counts);
+      } else {
+        setReviewCounts({});
+      }
+
+      const { count } = await supabase
+        .from("sicai_templates")
+        .select("*", { count: "exact", head: true })
+        .eq("status", "ready");
+      setReadyCount(count ?? 0);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => { load(); }, [load]);
@@ -231,9 +252,10 @@ export default function SicaiBatchesTab() {
               <TableRow><TableCell colSpan={7} className="text-center text-muted-foreground py-6">Aucun batch.</TableCell></TableRow>
             ) : batches.map((b) => {
               const done = b.approved_count ?? 0;
+              const review = reviewCounts[b.id] ?? 0;
               const failed = b.failed_count ?? 0;
               const total = b.request_count || 1;
-              const pct = Math.round(((done + failed) / total) * 100);
+              const pct = Math.round(((done + review + failed) / total) * 100);
               return (
                 <TableRow key={b.id}>
                   <TableCell className="text-xs">{new Date(b.created_at).toLocaleString("fr-FR")}</TableCell>
@@ -244,8 +266,10 @@ export default function SicaiBatchesTab() {
                   </TableCell>
                   <TableCell><Badge variant="outline" className="text-xs">{b.batch_mode}</Badge></TableCell>
                   <TableCell><Badge variant={STATUS_COLORS[b.status] ?? "outline"}>{b.status}</Badge></TableCell>
-                  <TableCell className="min-w-[160px]">
-                    <div className="text-xs mb-1">{done}/{total} ok · {failed} err</div>
+                  <TableCell className="min-w-[180px]">
+                    <div className="text-xs mb-1">
+                      OK : <strong>{done}</strong> · Review : <strong>{review}</strong> · Failed : <strong>{failed}</strong> <span className="text-muted-foreground">/ {total}</span>
+                    </div>
                     <Progress value={pct} className="h-1.5" />
                   </TableCell>
                   <TableCell className="text-xs">
