@@ -257,7 +257,7 @@ export default function SicaiBatchDetailPage() {
               ) : jobs.length === 0 ? (
                 <TableRow><TableCell colSpan={7} className="text-center text-muted-foreground py-6">Aucun job.</TableCell></TableRow>
               ) : jobs.map((j) => {
-                const detailUrl = `/admin/sicai/templates/detail/${j.template_id}`;
+                const detailUrl = `/admin/sicai/templates/detail/${j.template_id}?batch=${batchId}`;
                 return (
                   <TableRow key={j.id}>
                     <TableCell className="font-mono text-xs">
