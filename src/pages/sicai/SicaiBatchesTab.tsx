@@ -47,6 +47,7 @@ const STATUS_COLORS: Record<string, "default" | "secondary" | "destructive" | "o
 
 export default function SicaiBatchesTab() {
   const [batches, setBatches] = useState<Batch[]>([]);
+  const [reviewCounts, setReviewCounts] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(false);
   const [creating, setCreating] = useState(false);
   const [polling, setPolling] = useState<string | null>(null);
@@ -61,19 +62,39 @@ export default function SicaiBatchesTab() {
 
   const load = useCallback(async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from("sicai_generation_batches")
-      .select("id, label, batch_mode, status, request_count, approved_count, failed_count, cost_estimate_usd, cost_actual_usd, openai_batch_id, created_at")
-      .order("created_at", { ascending: false });
-    if (error) toast.error(error.message);
-    else setBatches((data ?? []) as Batch[]);
+    try {
+      const { data, error } = await supabase
+        .from("sicai_generation_batches")
+        .select("id, label, batch_mode, status, request_count, approved_count, failed_count, cost_estimate_usd, cost_actual_usd, openai_batch_id, created_at")
+        .order("created_at", { ascending: false });
+      if (error) toast.error(error.message);
+      const list = (data ?? []) as Batch[];
+      setBatches(list);
 
-    const { count } = await supabase
-      .from("sicai_templates")
-      .select("*", { count: "exact", head: true })
-      .eq("status", "ready");
-    setReadyCount(count ?? 0);
-    setLoading(false);
+      // Fetch review_needed counts per batch (single query, mapped client-side)
+      if (list.length > 0) {
+        const { data: reviewJobs } = await supabase
+          .from("sicai_generation_jobs")
+          .select("batch_id")
+          .eq("status", "review_needed")
+          .in("batch_id", list.map((b) => b.id));
+        const counts: Record<string, number> = {};
+        for (const r of reviewJobs ?? []) {
+          if (r.batch_id) counts[r.batch_id] = (counts[r.batch_id] ?? 0) + 1;
+        }
+        setReviewCounts(counts);
+      } else {
+        setReviewCounts({});
+      }
+
+      const { count } = await supabase
+        .from("sicai_templates")
+        .select("*", { count: "exact", head: true })
+        .eq("status", "ready");
+      setReadyCount(count ?? 0);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => { load(); }, [load]);
