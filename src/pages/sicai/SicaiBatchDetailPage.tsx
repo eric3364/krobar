@@ -199,7 +199,7 @@ export default function SicaiBatchDetailPage() {
               <div><span className="text-muted-foreground">Mode :</span> <Badge variant="outline">{batch.batch_mode}</Badge></div>
               <div><span className="text-muted-foreground">Statut :</span> <Badge>{batch.status}</Badge></div>
               <div><span className="text-muted-foreground">Jobs :</span> {batch.request_count}</div>
-              <div><span className="text-muted-foreground">OK / Err :</span> {batch.approved_count ?? 0} / {batch.failed_count ?? 0}</div>
+              <div className="col-span-2"><span className="text-muted-foreground">OK / Review / Failed :</span> <strong>{jobs.filter((j) => j.status === "approved").length}</strong> · <strong>{jobs.filter((j) => j.status === "review_needed").length}</strong> · <strong>{jobs.filter((j) => j.status === "qc_failed").length}</strong></div>
               <div><span className="text-muted-foreground">Coût estimé :</span> {batch.cost_estimate_usd?.toFixed(2) ?? "—"} $</div>
               <div><span className="text-muted-foreground">Coût réel :</span> {batch.cost_actual_usd?.toFixed(2) ?? "—"} $</div>
               {batch.openai_batch_id && (
