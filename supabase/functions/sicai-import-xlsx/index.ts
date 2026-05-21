@@ -42,8 +42,83 @@ function asStr(v: unknown): string {
   return v == null ? "" : String(v);
 }
 
+type Zone = { name: string; x: number; y: number; w: number; h: number };
+
+function zoningFor(cardinality: string): { text: Zone[]; illu: Zone[] } {
+  const c = (cardinality || "").toUpperCase();
+  const TITLE: Zone = { name: "TITLE_ZONE", x: 80, y: 40, w: 1440, h: 140 };
+  if (c === "UNITAIRE") {
+    return {
+      text: [TITLE, { name: "VERBATIM_1", x: 620, y: 720, w: 360, h: 140 }],
+      illu: [{ name: "ILLUSTRATION_1", x: 400, y: 220, w: 800, h: 440 }],
+    };
+  }
+  if (c === "BINAIRE") {
+    return {
+      text: [TITLE,
+        { name: "VERBATIM_1", x: 440, y: 720, w: 320, h: 124 },
+        { name: "VERBATIM_2", x: 840, y: 720, w: 320, h: 124 }],
+      illu: [
+        { name: "ILLUSTRATION_1", x: 200, y: 220, w: 520, h: 440 },
+        { name: "ILLUSTRATION_2", x: 880, y: 220, w: 520, h: 440 }],
+    };
+  }
+  if (c === "TERNAIRE") {
+    return {
+      text: [TITLE,
+        { name: "VERBATIM_1", x: 180, y: 720, w: 280, h: 112 },
+        { name: "VERBATIM_2", x: 660, y: 720, w: 280, h: 112 },
+        { name: "VERBATIM_3", x: 1140, y: 720, w: 280, h: 112 }],
+      illu: [
+        { name: "ILLUSTRATION_1", x: 120, y: 220, w: 400, h: 440 },
+        { name: "ILLUSTRATION_2", x: 600, y: 220, w: 400, h: 440 },
+        { name: "ILLUSTRATION_3", x: 1080, y: 220, w: 400, h: 440 }],
+    };
+  }
+  if (c === "MULTIPLE") {
+    const xs = [80, 380, 680, 980, 1280];
+    return {
+      text: [TITLE, ...xs.map((x, i) => ({ name: `VERBATIM_${i + 1}`, x, y: 720, w: 240, h: 100 }))],
+      illu: xs.map((x, i) => ({ name: `ILLUSTRATION_${i + 1}`, x, y: 220, w: 240, h: 440 })),
+    };
+  }
+  return { text: [TITLE], illu: [] };
+}
+
+function fmtZone(z: Zone): string {
+  const pad = z.name.padEnd(16, " ");
+  return `${pad} : x=${z.x}, y=${z.y}, w=${z.w}, h=${z.h}`;
+}
+
+function buildBloc0(cardinality: string): string {
+  const { text, illu } = zoningFor(cardinality);
+  return `[Bloc 0 — Zoning strict du canvas]
+Le canvas est de 1536×1024 px (sera étendu à 1600×900 après vectorisation).
+Le canvas est divisé en zones nommées. Respecte STRICTEMENT le contrat suivant.
+
+ZONES TEXTE — DOIVENT RESTER ABSOLUMENT VIDES (fond #FFFFFF pur, aucun pixel
+non-blanc, aucun cadre, aucun trait, aucune décoration, aucune annotation) :
+${text.map(fmtZone).join("\n")}
+
+ZONES ILLUSTRATION — Place tes illustrations EXCLUSIVEMENT à l'intérieur de
+ces zones nommées. Une illustration ne doit jamais franchir les bordures de
+sa zone. Centre l'illustration dans sa zone :
+${illu.map(fmtZone).join("\n")}
+
+ZONES INTERSTITIELLES (l'espace entre les zones nommées) : laissées blanches
+ou avec une décoration éditoriale très légère (filets fins, points
+d'ancrage), jamais d'illustration significative.
+
+RÈGLE ABSOLUE : tout pixel non-blanc situé dans une ZONE TEXTE est une
+erreur de production. N'écris aucun mot, aucun chiffre, aucun symbole
+dans aucune zone. Aucun rectangle, aucun cadre, aucun placeholder ne doit
+être dessiné — Lovable les injectera en post-production.`;
+}
+
 function buildPromptFull(row: Record<string, unknown>): string {
-  return `[Bloc 1 — Style Editorial Premium B&W]
+  return `${buildBloc0(asStr(row.cardinality_code))}
+
+[Bloc 1 — Style Editorial Premium B&W]
 ${asStr(row.editorial_style_rule)}
 
 [Bloc 2 — Archétype SICAI]
@@ -51,21 +126,12 @@ Archétype SICAI : ${asStr(row.illustration_id)}.
 Famille : ${asStr(row.family_label)}. Cardinalité : ${asStr(row.cardinality_label)}. Régime : ${asStr(row.regime_label)}.
 ${asStr(row.composition_distinctive_rule)}
 
-[Bloc 3 — Cardinalité et placeholders]
-${asStr(row.placeholder_rule)}
-${asStr(row.anchor_to_placeholder_rule)}
-Tailles minimales placeholders selon cardinalité :
-  - UNITAIRE 360×140 px
-  - BINAIRE 320×124 px
-  - TERNAIRE 280×112 px
-  - MULTIPLE 240×100 px
-
-[Bloc 4 — Différenciation de régime]
+[Bloc 3 — Différenciation de régime]
 ${asStr(row.regime_differentiation_rule)}
 ${asStr(row.composition_refinement_rule)}
 ${asStr(row.visual_hierarchy_rule)}
 
-[Bloc 5 — Contraintes SVG et règles négatives]
+[Bloc 4 — Contraintes SVG et règles négatives]
 ${asStr(row.svg_technical_constraints)}
 ${asStr(row.negative_rules)}`;
 }
