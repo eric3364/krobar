@@ -84,16 +84,25 @@ export default function SicaiBatchDetailPage() {
       const mapped: Job[] = rawJobs.map((j) => ({ ...j, template: templateMap[j.template_id] ?? null }));
       setJobs(mapped);
 
-      // 3. Signed URLs for png_master previews — parallel, fault-tolerant
-      const generatedIds = mapped.filter((j) => j.status === "generated").map((j) => j.id);
-      if (generatedIds.length > 0) {
+      // 3. Signed URLs for previews — prefer png_normalized (post-processed), fallback png_master
+      const allIds = mapped.map((j) => j.id);
+      if (allIds.length > 0) {
         const { data: assets } = await supabase.from("sicai_assets")
-          .select("job_id, storage_path").eq("asset_kind", "png_master").in("job_id", generatedIds);
+          .select("job_id, storage_path, asset_kind")
+          .in("asset_kind", ["png_normalized", "png_master"])
+          .in("job_id", allIds);
+        const chosen: Record<string, string> = {};
+        for (const a of assets ?? []) {
+          if (a.asset_kind === "png_normalized") chosen[a.job_id] = a.storage_path;
+        }
+        for (const a of assets ?? []) {
+          if (a.asset_kind === "png_master" && !chosen[a.job_id]) chosen[a.job_id] = a.storage_path;
+        }
         const settled = await Promise.allSettled(
-          (assets ?? []).map(async (a) => {
+          Object.entries(chosen).map(async ([job_id, path]) => {
             const { data: signed } = await supabase.storage
-              .from("sicai-assets").createSignedUrl(a.storage_path, 3600);
-            return { job_id: a.job_id, url: signed?.signedUrl };
+              .from("sicai-assets").createSignedUrl(path, 3600);
+            return { job_id, url: signed?.signedUrl };
           })
         );
         const next: Record<string, string> = {};
