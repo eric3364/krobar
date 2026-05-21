@@ -250,10 +250,18 @@ export default function SicaiBatchDetailPage() {
                   </Button>
                 )}
                 {(batch.status === "qc" || batch.status === "running" || batch.status === "completed") && (
-                  <Button size="sm" variant="secondary" onClick={runPostprocess} disabled={busy !== null}>
-                    {busy === "post" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Wand2 className="w-4 h-4" />}
-                    Post-traiter (8)
-                  </Button>
+                  <>
+                    <Button size="sm" variant="secondary" onClick={runPostprocess} disabled={busy !== null}>
+                      {busy === "post" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Wand2 className="w-4 h-4" />}
+                      Post-traiter (8)
+                    </Button>
+                    <Button size="sm" variant="default" onClick={postAll} disabled={busy !== null}>
+                      {busy === "postAll" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Zap className="w-4 h-4" />}
+                      {busy === "postAll" && postAllProgress
+                        ? `Post-traitement… ${postAllProgress.done}/${postAllProgress.total}`
+                        : "Post-traiter tout"}
+                    </Button>
+                  </>
                 )}
                 {(batch.status === "qc" || batch.status === "completed") && (
                   <Button size="sm" variant="outline" onClick={rerunQc} disabled={busy !== null}>
