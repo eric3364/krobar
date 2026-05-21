@@ -101,7 +101,21 @@ export default function SicaiTemplateDetailPage() {
       for (const x of (a as Asset[]) ?? []) {
         const { data: signed } = await supabase.storage.from("sicai-assets")
           .createSignedUrl(x.storage_path, 3600);
-        if (signed?.signedUrl) map[x.asset_kind] = signed.signedUrl;
+        if (!signed?.signedUrl) continue;
+        if (x.asset_kind === "svg_final") {
+          // Re-wrap as blob with explicit svg mime type so the browser renders inline
+          // (storage may serve it as application/octet-stream, which triggers download).
+          try {
+            const res = await fetch(signed.signedUrl);
+            const text = await res.text();
+            const blob = new Blob([text], { type: "image/svg+xml" });
+            map[x.asset_kind] = URL.createObjectURL(blob);
+          } catch {
+            map[x.asset_kind] = signed.signedUrl;
+          }
+        } else {
+          map[x.asset_kind] = signed.signedUrl;
+        }
       }
       setAssets(map);
 
@@ -256,7 +270,7 @@ export default function SicaiTemplateDetailPage() {
                       {url ? (
                         <div className="space-y-2">
                           {key === "svg_final" ? (
-                            <object data={url} type="image/svg+xml" className="w-full bg-muted border rounded" style={{ aspectRatio: "16 / 9" }} />
+                            <img src={url} alt="svg_final" className="w-full border rounded bg-muted" style={{ aspectRatio: "16 / 9", objectFit: "contain" }} />
                           ) : (
                             <img src={url} alt={key} className="w-full border rounded bg-muted" />
                           )}
