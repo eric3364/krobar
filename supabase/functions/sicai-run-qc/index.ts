@@ -170,7 +170,7 @@ Deno.serve(async (req) => {
     }
 
     // 6. regime_distinctness
-    // Thresholds calibrated for gpt-image-1.5: pass >20, warn 10-20, fail <10.
+    // Thresholds calibrated for gpt-image-1.5: pass >15, warn 5-15, fail <5.
     {
       const { data: siblings } = await admin.from("sicai_generation_jobs")
         .select("id, sicai_templates!inner(illustration_id, family_code, cardinality_code, regime_code)")
