@@ -156,6 +156,20 @@ export default function SicaiBatchDetailPage() {
     finally { setBusy(null); }
   };
 
+  const rerunQc = async () => {
+    if (!id) return;
+    setBusy("qc");
+    try {
+      const { data, error } = await supabase.functions.invoke("sicai-postprocess-batch", {
+        body: { batch_id: id, limit: 12, qc_only: true },
+      });
+      if (error) throw new Error(error.message);
+      toast.success(`QC relancé sur ${data.processed} jobs · OK ${data.approved} · Review ${data.review} · Failed ${data.failed}`);
+      await load();
+    } catch (e: any) { toast.error(e?.message ?? "Échec relance QC"); }
+    finally { setBusy(null); }
+  };
+
   return (
     <>
       <Helmet><title>Batch {batch?.label ?? id} — SICAI</title></Helmet>
@@ -186,6 +200,12 @@ export default function SicaiBatchDetailPage() {
                   <Button size="sm" variant="secondary" onClick={runPostprocess} disabled={busy !== null}>
                     {busy === "post" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Wand2 className="w-4 h-4" />}
                     Post-traiter (8)
+                  </Button>
+                )}
+                {(batch.status === "qc" || batch.status === "completed") && (
+                  <Button size="sm" variant="outline" onClick={rerunQc} disabled={busy !== null}>
+                    {busy === "qc" ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
+                    Relancer l'inventaire QC (12)
                   </Button>
                 )}
                 {(batch.status === "qc" || batch.status === "failed") && (
