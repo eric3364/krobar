@@ -68,10 +68,11 @@ export function buildSvg(opts: {
 }): string {
   const { title, verbatims } = getOverlayRects(opts.cardinalityCode);
   const scale = 1600 / 1536; // 1.04167
+  const strokeAttrs = `fill="none" stroke="#CFCFCF" stroke-width="0.5" stroke-opacity="0.6" stroke-dasharray="4 4" vector-effect="non-scaling-stroke"`;
   const rectsXml = [
-    `<rect data-slot="title" x="${title.x}" y="${title.y}" width="${title.w}" height="${title.h}" rx="${title.rx}" ry="${title.rx}" fill="none" stroke="#111111" stroke-width="1.6" vector-effect="non-scaling-stroke" />`,
+    `<rect data-slot="title" x="${title.x}" y="${title.y}" width="${title.w}" height="${title.h}" rx="8" ry="8" ${strokeAttrs} />`,
     ...verbatims.map((v, i) =>
-      `<rect data-slot="verbatim-${i + 1}" x="${v.x}" y="${v.y}" width="${v.w}" height="${v.h}" rx="${v.rx}" ry="${v.rx}" fill="none" stroke="#111111" stroke-width="1.6" vector-effect="non-scaling-stroke" />`
+      `<rect data-slot="verbatim-${i + 1}" x="${v.x}" y="${v.y}" width="${v.w}" height="${v.h}" rx="6" ry="6" ${strokeAttrs} />`
     ),
   ].join("\n  ");
   return `<?xml version="1.0" encoding="UTF-8"?>
