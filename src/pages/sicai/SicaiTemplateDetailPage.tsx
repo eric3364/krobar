@@ -270,7 +270,7 @@ export default function SicaiTemplateDetailPage() {
                       {url ? (
                         <div className="space-y-2">
                           {key === "svg_final" ? (
-                            <object data={url} type="image/svg+xml" className="w-full bg-muted border rounded" style={{ aspectRatio: "16 / 9" }} />
+                            <img src={url} alt="svg_final" className="w-full border rounded bg-muted" style={{ aspectRatio: "16 / 9", objectFit: "contain" }} />
                           ) : (
                             <img src={url} alt={key} className="w-full border rounded bg-muted" />
                           )}
