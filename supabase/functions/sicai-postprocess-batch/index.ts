@@ -20,7 +20,7 @@ Deno.serve(async (req) => {
     if (gate instanceof Response) return gate;
     const { admin } = gate;
     const auth = req.headers.get("Authorization") ?? "";
-    const { batch_id, limit = 8, qc_only = false } = await req.json();
+    const { batch_id, limit = 8, qc_only = false, continue_until_done = false } = await req.json();
     if (!batch_id) return jsonResponse({ error: "batch_id required" }, 400);
 
     // qc_only: re-run sicai-run-qc on already-postprocessed jobs (preserves assets).
