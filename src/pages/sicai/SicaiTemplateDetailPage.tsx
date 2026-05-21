@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { ArrowLeft, Check, X, RotateCw, Loader2, Copy } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, X, RotateCw, Loader2, Copy } from "lucide-react";
 
 type Template = {
   id: string;
@@ -67,6 +67,9 @@ const CHECK_BADGE: Record<string, string> = {
 
 export default function SicaiTemplateDetailPage() {
   const { templateId } = useParams<{ templateId: string }>();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const batchIdParam = searchParams.get("batch");
   const [tpl, setTpl] = useState<Template | null>(null);
   const [jobs, setJobs] = useState<Job[]>([]);
   const [currentJob, setCurrentJob] = useState<Job | null>(null);
@@ -77,6 +80,8 @@ export default function SicaiTemplateDetailPage() {
   const [regenOpen, setRegenOpen] = useState(false);
   const [regenPrompt, setRegenPrompt] = useState("");
   const [regenUsePrompt, setRegenUsePrompt] = useState(false);
+  const [nextTemplateId, setNextTemplateId] = useState<string | null>(null);
+  const [loadingNext, setLoadingNext] = useState(false);
 
   const load = useCallback(async () => {
     if (!templateId) return;
@@ -129,6 +134,30 @@ export default function SicaiTemplateDetailPage() {
   }, [templateId]);
 
   useEffect(() => { load(); }, [load]);
+
+  // Compute next template to review within the same batch (status à valider, ordre custom_id)
+  useEffect(() => {
+    const batchId = batchIdParam ?? currentJob?.batch_id ?? null;
+    if (!batchId || !currentJob) { setNextTemplateId(null); return; }
+    let cancelled = false;
+    (async () => {
+      setLoadingNext(true);
+      const { data } = await supabase
+        .from("sicai_generation_jobs")
+        .select("template_id, custom_id, status")
+        .eq("batch_id", batchId)
+        .in("status", ["review_needed", "qc_failed", "generated", "qc_pending"])
+        .order("custom_id", { ascending: true });
+      if (cancelled) return;
+      const rows = (data as { template_id: string; custom_id: string; status: string }[]) ?? [];
+      const others = rows.filter((r) => r.template_id !== templateId);
+      const after = others.find((r) => r.custom_id > (currentJob.custom_id ?? ""));
+      setNextTemplateId((after ?? others[0])?.template_id ?? null);
+      setLoadingNext(false);
+    })();
+    return () => { cancelled = true; };
+  }, [batchIdParam, currentJob, templateId]);
+
 
   const run = async (fn: string, body: any, key: string) => {
     setBusy(key);
@@ -196,6 +225,19 @@ export default function SicaiTemplateDetailPage() {
               {currentJob && (
                 <Badge variant={STATUS_VARIANT[currentJob.status] ?? "outline"}>Job : {currentJob.status}</Badge>
               )}
+              <Button
+                size="sm"
+                variant="outline"
+                disabled={!nextTemplateId || loadingNext}
+                onClick={() => {
+                  if (!nextTemplateId) return;
+                  const batchId = batchIdParam ?? currentJob?.batch_id;
+                  navigate(`/admin/sicai/templates/detail/${nextTemplateId}${batchId ? `?batch=${batchId}` : ""}`);
+                }}
+                title={nextTemplateId ? "Passer au suivant à valider" : "Aucun job suivant à valider dans ce batch"}
+              >
+                Suivant <ArrowRight className="w-4 h-4 ml-1" />
+              </Button>
             </div>
           </div>
         </Card>
