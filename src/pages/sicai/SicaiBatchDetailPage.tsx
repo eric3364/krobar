@@ -55,6 +55,7 @@ export default function SicaiBatchDetailPage() {
   const [previews, setPreviews] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [busy, setBusy] = useState<string | null>(null);
+  const [postAllProgress, setPostAllProgress] = useState<{ done: number; total: number } | null>(null);
 
   const load = useCallback(async () => {
     if (!id) return;
