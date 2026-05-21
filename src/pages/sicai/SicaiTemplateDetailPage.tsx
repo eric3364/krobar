@@ -348,6 +348,29 @@ export default function SicaiTemplateDetailPage() {
               </Tabs>
             </Card>
 
+            <Card className="p-4 space-y-3">
+              <h2 className="text-sm font-semibold">Actions de revue</h2>
+              <Textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                placeholder="Notes de revue (obligatoires pour rejet/régénération)"
+                rows={3}
+              />
+              <div className="flex gap-2 flex-wrap">
+                <Button onClick={approve} disabled={busy !== null || !currentJob}>
+                  {busy === "approve" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
+                  Approuver et publier
+                </Button>
+                <Button variant="destructive" onClick={reject} disabled={busy !== null || !currentJob}>
+                  {busy === "reject" ? <Loader2 className="w-4 h-4 animate-spin" /> : <X className="w-4 h-4" />}
+                  Rejeter
+                </Button>
+                <Button variant="outline" onClick={() => { setRegenPrompt(tpl.prompt_full); setRegenOpen(true); }} disabled={busy !== null || !currentJob}>
+                  <RotateCw className="w-4 h-4" /> Régénérer…
+                </Button>
+              </div>
+            </Card>
+
             <Card className="p-4">
               <h2 className="text-sm font-semibold mb-2">Contrôles QC</h2>
               {checks.length === 0 ? (
@@ -372,29 +395,6 @@ export default function SicaiTemplateDetailPage() {
                   </TableBody>
                 </Table>
               )}
-            </Card>
-
-            <Card className="p-4 space-y-3">
-              <h2 className="text-sm font-semibold">Actions de revue</h2>
-              <Textarea
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                placeholder="Notes de revue (obligatoires pour rejet/régénération)"
-                rows={3}
-              />
-              <div className="flex gap-2 flex-wrap">
-                <Button onClick={approve} disabled={busy !== null || !currentJob}>
-                  {busy === "approve" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
-                  Approuver et publier
-                </Button>
-                <Button variant="destructive" onClick={reject} disabled={busy !== null || !currentJob}>
-                  {busy === "reject" ? <Loader2 className="w-4 h-4 animate-spin" /> : <X className="w-4 h-4" />}
-                  Rejeter
-                </Button>
-                <Button variant="outline" onClick={() => { setRegenPrompt(tpl.prompt_full); setRegenOpen(true); }} disabled={busy !== null || !currentJob}>
-                  <RotateCw className="w-4 h-4" /> Régénérer…
-                </Button>
-              </div>
             </Card>
           </div>
         </div>
