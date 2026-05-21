@@ -248,34 +248,45 @@ export default function SicaiBatchDetailPage() {
                 <TableHead>Retry</TableHead>
                 <TableHead>Erreur</TableHead>
                 <TableHead>Preview</TableHead>
+                <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {loading ? (
-                <TableRow><TableCell colSpan={6} className="text-center py-6"><Loader2 className="w-4 h-4 animate-spin inline" /></TableCell></TableRow>
+                <TableRow><TableCell colSpan={7} className="text-center py-6"><Loader2 className="w-4 h-4 animate-spin inline" /></TableCell></TableRow>
               ) : jobs.length === 0 ? (
-                <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-6">Aucun job.</TableCell></TableRow>
-              ) : jobs.map((j) => (
-                <TableRow key={j.id}>
-                  <TableCell className="font-mono text-xs">{j.custom_id}</TableCell>
-                  <TableCell className="text-xs">{j.template?.illustration_id ?? "—"}</TableCell>
-                  <TableCell><Badge variant={STATUS_COLORS[j.status] ?? "outline"}>{j.status}</Badge></TableCell>
-                  <TableCell className="text-xs">{j.retry_count ?? 0}</TableCell>
-                  <TableCell className="text-xs max-w-[300px]">
-                    {j.error_code && <Badge variant="destructive" className="mr-1 text-[10px]">{j.error_code}</Badge>}
-                    <span className="text-muted-foreground line-clamp-2">{j.error_message}</span>
-                  </TableCell>
-                  <TableCell>
-                    {previews[j.id] ? (
-                      <a href={previews[j.id]} target="_blank" rel="noreferrer" className="block">
-                        <img src={previews[j.id]} alt={j.custom_id} className="w-24 h-14 object-cover border rounded" />
-                      </a>
-                    ) : (
-                      <div className="w-24 h-14 border border-dashed rounded grid place-items-center text-[10px] text-muted-foreground">—</div>
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))}
+                <TableRow><TableCell colSpan={7} className="text-center text-muted-foreground py-6">Aucun job.</TableCell></TableRow>
+              ) : jobs.map((j) => {
+                const detailUrl = `/admin/sicai/templates/detail/${j.template_id}`;
+                return (
+                  <TableRow key={j.id}>
+                    <TableCell className="font-mono text-xs">
+                      <Link to={detailUrl} className="hover:underline text-primary">{j.custom_id}</Link>
+                    </TableCell>
+                    <TableCell className="text-xs">{j.template?.illustration_id ?? "—"}</TableCell>
+                    <TableCell><Badge variant={STATUS_COLORS[j.status] ?? "outline"}>{j.status}</Badge></TableCell>
+                    <TableCell className="text-xs">{j.retry_count ?? 0}</TableCell>
+                    <TableCell className="text-xs max-w-[300px]">
+                      {j.error_code && <Badge variant="destructive" className="mr-1 text-[10px]">{j.error_code}</Badge>}
+                      <span className="text-muted-foreground line-clamp-2">{j.error_message}</span>
+                    </TableCell>
+                    <TableCell>
+                      {previews[j.id] ? (
+                        <Link to={detailUrl} className="block">
+                          <img src={previews[j.id]} alt={j.custom_id} className="w-24 h-14 object-cover border rounded hover:opacity-80 transition-opacity" />
+                        </Link>
+                      ) : (
+                        <div className="w-24 h-14 border border-dashed rounded grid place-items-center text-[10px] text-muted-foreground">—</div>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Button size="sm" variant="outline" asChild>
+                        <Link to={detailUrl}>Détail</Link>
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </Card>
