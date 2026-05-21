@@ -61,7 +61,7 @@ Deno.serve(async (req) => {
     }
 
     const results: any[] = [];
-    for (const j of jobs ?? []) {
+    for (const j of jobs) {
       try {
         if (!qc_only && j.status === "generated") {
           const r = await callFn("sicai-postprocess-svg", { job_id: j.id }, auth);
