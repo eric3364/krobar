@@ -41,6 +41,8 @@ const STATUS_COLORS: Record<string, "default" | "secondary" | "destructive" | "o
   queued: "outline",
   generating: "secondary",
   generated: "default",
+  approved: "default",
+  review_needed: "secondary",
   qc_failed: "destructive",
 };
 
