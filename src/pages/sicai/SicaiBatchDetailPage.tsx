@@ -255,6 +255,19 @@ export default function SicaiBatchDetailPage() {
     finally { setBusy(null); }
   };
 
+  const republishOrphans = async () => {
+    if (!id) return;
+    setBusy("republish");
+    try {
+      const { data, error } = await supabase.functions.invoke("sicai-republish-orphans", { body: { batch_id: id } });
+      if (error) throw new Error(error.message);
+      toast.success(`Rattrapage : ${data.republished} re-publié(s) sur ${data.orphans_found} orphelin(s)${data.failed ? ` · ${data.failed} échec(s)` : ""}`);
+      await load();
+    } catch (e: any) { toast.error(e?.message ?? "Échec rattrapage"); }
+    finally { setBusy(null); }
+  };
+
+
   return (
     <>
       <Helmet><title>Batch {batch?.label ?? id} — SICAI</title></Helmet>
