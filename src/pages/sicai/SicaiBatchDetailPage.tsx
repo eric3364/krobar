@@ -202,6 +202,12 @@ export default function SicaiBatchDetailPage() {
                     Post-traiter (8)
                   </Button>
                 )}
+                {(batch.status === "qc" || batch.status === "completed") && (
+                  <Button size="sm" variant="outline" onClick={rerunQc} disabled={busy !== null}>
+                    {busy === "qc" ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
+                    Relancer l'inventaire QC (12)
+                  </Button>
+                )}
                 {(batch.status === "qc" || batch.status === "failed") && (
                   <Button size="sm" variant="outline" onClick={regenFailed} disabled={busy !== null}>
                     <RotateCw className="w-4 h-4" /> Régénérer les échecs
