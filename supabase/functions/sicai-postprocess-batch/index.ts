@@ -20,7 +20,7 @@ Deno.serve(async (req) => {
     if (gate instanceof Response) return gate;
     const { admin } = gate;
     const auth = req.headers.get("Authorization") ?? "";
-    const { batch_id, limit = 8, qc_only = false } = await req.json();
+    const { batch_id, limit = 8, qc_only = false, continue_until_done = false } = await req.json();
     if (!batch_id) return jsonResponse({ error: "batch_id required" }, 400);
 
     // qc_only: re-run sicai-run-qc on already-postprocessed jobs (preserves assets).
@@ -90,12 +90,26 @@ Deno.serve(async (req) => {
       status: (remaining ?? 0) === 0 ? "completed" : "qc",
     }).eq("id", batch_id);
 
+    // Chain next chunk in background if requested and work remains.
+    // This keeps post-processing alive even if the browser closes.
+    const willContinue = continue_until_done && !qc_only && (remaining ?? 0) > 0 && results.length > 0;
+    if (willContinue) {
+      const next = fetch(`${SUPABASE_URL}/functions/v1/sicai-postprocess-batch`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: auth },
+        body: JSON.stringify({ batch_id, limit, continue_until_done: true }),
+      }).catch((e) => console.error("chain failed", e));
+      // @ts-ignore - EdgeRuntime is available in Supabase Edge runtime
+      try { EdgeRuntime.waitUntil(next); } catch { /* ignore */ }
+    }
+
     return jsonResponse({
       processed: results.length,
       remaining: remaining ?? 0,
       approved: approved ?? 0,
       review: review ?? 0,
       failed: failed ?? 0,
+      continuing: willContinue,
       results,
     });
   } catch (e) {
