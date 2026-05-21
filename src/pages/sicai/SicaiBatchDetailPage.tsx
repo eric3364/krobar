@@ -55,33 +55,58 @@ export default function SicaiBatchDetailPage() {
   const load = useCallback(async () => {
     if (!id) return;
     setLoading(true);
-    const [{ data: b, error: be }, { data: js, error: je }] = await Promise.all([
-      supabase.from("sicai_generation_batches").select("*").eq("id", id).maybeSingle(),
-      supabase.from("sicai_generation_jobs")
-        .select("id, custom_id, template_id, status, retry_count, error_code, error_message, revised_prompt, sicai_templates(illustration_id)")
-        .eq("batch_id", id)
-        .order("custom_id"),
-    ]);
-    if (be) toast.error(be.message);
-    if (je) toast.error(je.message);
-    setBatch((b as Batch) ?? null);
-    const mapped = (js ?? []).map((j: any) => ({ ...j, template: j.sicai_templates }));
-    setJobs(mapped);
+    try {
+      // 1. Batch + jobs (no PostgREST join — no FK declared)
+      const [{ data: b, error: be }, { data: js, error: je }] = await Promise.all([
+        supabase.from("sicai_generation_batches").select("*").eq("id", id).maybeSingle(),
+        supabase.from("sicai_generation_jobs")
+          .select("id, custom_id, template_id, status, retry_count, error_code, error_message, revised_prompt")
+          .eq("batch_id", id)
+          .order("custom_id"),
+      ]);
+      if (be) toast.error(be.message);
+      if (je) toast.error(je.message);
+      setBatch((b as Batch) ?? null);
+      const rawJobs = (js ?? []) as any[];
 
-    // Build signed URLs for png_master assets of generated jobs
-    const generatedIds = mapped.filter((j) => j.status === "generated").map((j) => j.id);
-    if (generatedIds.length > 0) {
-      const { data: assets } = await supabase.from("sicai_assets")
-        .select("job_id, storage_path").eq("asset_kind", "png_master").in("job_id", generatedIds);
-      const next: Record<string, string> = {};
-      for (const a of assets ?? []) {
-        const { data: signed } = await supabase.storage
-          .from("sicai-assets").createSignedUrl(a.storage_path, 3600);
-        if (signed?.signedUrl) next[a.job_id] = signed.signedUrl;
+      // 2. Templates (separate query, indexed by id)
+      const templateIds = Array.from(new Set(rawJobs.map((j) => j.template_id).filter(Boolean)));
+      let templateMap: Record<string, { illustration_id: string }> = {};
+      if (templateIds.length > 0) {
+        const { data: tpls } = await supabase
+          .from("sicai_templates")
+          .select("id, illustration_id")
+          .in("id", templateIds);
+        for (const t of tpls ?? []) templateMap[t.id] = { illustration_id: t.illustration_id };
       }
-      setPreviews(next);
+      const mapped: Job[] = rawJobs.map((j) => ({ ...j, template: templateMap[j.template_id] ?? null }));
+      setJobs(mapped);
+
+      // 3. Signed URLs for png_master previews — parallel, fault-tolerant
+      const generatedIds = mapped.filter((j) => j.status === "generated").map((j) => j.id);
+      if (generatedIds.length > 0) {
+        const { data: assets } = await supabase.from("sicai_assets")
+          .select("job_id, storage_path").eq("asset_kind", "png_master").in("job_id", generatedIds);
+        const settled = await Promise.allSettled(
+          (assets ?? []).map(async (a) => {
+            const { data: signed } = await supabase.storage
+              .from("sicai-assets").createSignedUrl(a.storage_path, 3600);
+            return { job_id: a.job_id, url: signed?.signedUrl };
+          })
+        );
+        const next: Record<string, string> = {};
+        for (const r of settled) {
+          if (r.status === "fulfilled" && r.value.url) next[r.value.job_id] = r.value.url;
+        }
+        setPreviews(next);
+      } else {
+        setPreviews({});
+      }
+    } catch (e: any) {
+      toast.error(e?.message ?? "Échec du chargement du batch");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }, [id]);
 
   useEffect(() => { load(); }, [load]);
