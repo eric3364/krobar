@@ -43,98 +43,93 @@ Deno.serve(async (req) => {
 
   const result: any = { moved: 0, skipped: 0, errors: 0, by_folder: {}, error_details: [] };
 
-  for (const folder of FOLDERS) {
-    const fStats = { moved: 0, skipped: 0, errors: 0, total: 0 };
-    // Paginated list
-    let offset = 0;
-    const all: string[] = [];
-    // eslint-disable-next-line no-constant-condition
-    while (true) {
-      const { data: files, error } = await admin.storage.from(BUCKET).list(folder, {
-        limit: 1000, offset, sortBy: { column: "name", order: "asc" },
-      });
-      if (error) {
-        result.error_details.push({ folder, op: "list", error: error.message });
-        fStats.errors++;
-        break;
-      }
-      if (!files || files.length === 0) break;
-      for (const f of files) {
-        // skip "folders" (no id) and empty
-        if (!f.name) continue;
-        all.push(`${folder}/${f.name}`);
-      }
-      if (files.length < 1000) break;
-      offset += 1000;
-    }
-    fStats.total = all.length;
-
-    // Move in batches of 50, sequential
-    for (let i = 0; i < all.length; i += BATCH) {
-      const chunk = all.slice(i, i + BATCH);
-      for (const oldPath of chunk) {
-        // Idempotency: skip if first segment is a known theme code
-        const firstSeg = oldPath.split("/")[0];
-        if (knownThemes.has(firstSeg)) {
-          fStats.skipped++;
-          result.skipped++;
-          continue;
-        }
-        const newPath = `${DEFAULT_THEME}/${oldPath}`;
-        const { error: mvErr } = await admin.storage.from(BUCKET).move(oldPath, newPath);
-        if (mvErr) {
+  const doWork = async () => {
+    for (const folder of FOLDERS) {
+      const fStats = { moved: 0, skipped: 0, errors: 0, total: 0 };
+      let offset = 0;
+      const all: string[] = [];
+      while (true) {
+        const { data: files, error } = await admin.storage.from(BUCKET).list(folder, {
+          limit: 1000, offset, sortBy: { column: "name", order: "asc" },
+        });
+        if (error) {
+          result.error_details.push({ folder, op: "list", error: error.message });
           fStats.errors++;
-          result.errors++;
-          result.error_details.push({ folder, path: oldPath, error: mvErr.message });
-          continue;
+          break;
         }
-        fStats.moved++;
-        result.moved++;
+        if (!files || files.length === 0) break;
+        for (const f of files) {
+          if (!f.name) continue;
+          all.push(`${folder}/${f.name}`);
+        }
+        if (files.length < 1000) break;
+        offset += 1000;
+      }
+      fStats.total = all.length;
+
+      for (let i = 0; i < all.length; i += BATCH) {
+        const chunk = all.slice(i, i + BATCH);
+        for (const oldPath of chunk) {
+          const firstSeg = oldPath.split("/")[0];
+          if (knownThemes.has(firstSeg)) {
+            fStats.skipped++; result.skipped++; continue;
+          }
+          const newPath = `${DEFAULT_THEME}/${oldPath}`;
+          const { error: mvErr } = await admin.storage.from(BUCKET).move(oldPath, newPath);
+          if (mvErr) {
+            fStats.errors++; result.errors++;
+            result.error_details.push({ folder, path: oldPath, error: mvErr.message });
+            continue;
+          }
+          fStats.moved++; result.moved++;
+        }
+      }
+      result.by_folder[folder] = fStats;
+    }
+
+    // DB path rewrites
+    const dbUpdates = { sicai_assets: 0, sicai_archetypes_svg: 0, sicai_archetypes_thumb: 0 };
+    for (const folder of FOLDERS) {
+      const { data: rows, error: selErr } = await admin.from("sicai_assets")
+        .select("id, storage_path").like("storage_path", `${folder}/%`);
+      if (selErr) {
+        result.error_details.push({ table: "sicai_assets", op: "select", error: selErr.message });
+      } else {
+        for (const r of rows ?? []) {
+          const newPath = `${DEFAULT_THEME}/${r.storage_path}`;
+          const { error: upErr } = await admin.from("sicai_assets")
+            .update({ storage_path: newPath }).eq("id", r.id);
+          if (upErr) result.error_details.push({ table: "sicai_assets", id: r.id, error: upErr.message });
+          else dbUpdates.sicai_assets++;
+        }
+      }
+      const { data: rowsSvg } = await admin.from("sicai_archetypes")
+        .select("id, svg_storage_path").like("svg_storage_path", `${folder}/%`);
+      for (const r of rowsSvg ?? []) {
+        const np = `${DEFAULT_THEME}/${r.svg_storage_path}`;
+        const { error } = await admin.from("sicai_archetypes")
+          .update({ svg_storage_path: np }).eq("id", r.id);
+        if (!error) dbUpdates.sicai_archetypes_svg++;
+      }
+      const { data: rowsThumb } = await admin.from("sicai_archetypes")
+        .select("id, thumbnail_storage_path").like("thumbnail_storage_path", `${folder}/%`);
+      for (const r of rowsThumb ?? []) {
+        const np = `${DEFAULT_THEME}/${r.thumbnail_storage_path}`;
+        const { error } = await admin.from("sicai_archetypes")
+          .update({ thumbnail_storage_path: np }).eq("id", r.id);
+        if (!error) dbUpdates.sicai_archetypes_thumb++;
       }
     }
-    result.by_folder[folder] = fStats;
-  }
+    result.db_updates = dbUpdates;
+    console.log("migrate-storage-to-themed done:", JSON.stringify(result));
+  };
 
-  // DB path rewrites (idempotent: only rows not yet prefixed by a known theme)
-  // We use simple prefix matching against each folder root.
-  const dbUpdates = { sicai_assets: 0, sicai_archetypes_svg: 0, sicai_archetypes_thumb: 0 };
-  for (const folder of FOLDERS) {
-    // sicai_assets.storage_path
-    const { data: rows, error: selErr } = await admin.from("sicai_assets")
-      .select("id, storage_path").like("storage_path", `${folder}/%`);
-    if (selErr) {
-      result.error_details.push({ table: "sicai_assets", op: "select", error: selErr.message });
-    } else {
-      for (const r of rows ?? []) {
-        const newPath = `${DEFAULT_THEME}/${r.storage_path}`;
-        const { error: upErr } = await admin.from("sicai_assets")
-          .update({ storage_path: newPath }).eq("id", r.id);
-        if (upErr) result.error_details.push({ table: "sicai_assets", id: r.id, error: upErr.message });
-        else dbUpdates.sicai_assets++;
-      }
-    }
+  if (background) {
+    // @ts-ignore - EdgeRuntime in Supabase Edge runtime
+    try { EdgeRuntime.waitUntil(doWork()); } catch { await doWork(); }
+    return json({ started: true, background: true });
+  } else {
+    await doWork();
+    return json(result);
   }
-
-  // sicai_archetypes svg_storage_path / thumbnail_storage_path
-  for (const folder of FOLDERS) {
-    const { data: rowsSvg } = await admin.from("sicai_archetypes")
-      .select("id, svg_storage_path").like("svg_storage_path", `${folder}/%`);
-    for (const r of rowsSvg ?? []) {
-      const np = `${DEFAULT_THEME}/${r.svg_storage_path}`;
-      const { error } = await admin.from("sicai_archetypes")
-        .update({ svg_storage_path: np }).eq("id", r.id);
-      if (!error) dbUpdates.sicai_archetypes_svg++;
-    }
-    const { data: rowsThumb } = await admin.from("sicai_archetypes")
-      .select("id, thumbnail_storage_path").like("thumbnail_storage_path", `${folder}/%`);
-    for (const r of rowsThumb ?? []) {
-      const np = `${DEFAULT_THEME}/${r.thumbnail_storage_path}`;
-      const { error } = await admin.from("sicai_archetypes")
-        .update({ thumbnail_storage_path: np }).eq("id", r.id);
-      if (!error) dbUpdates.sicai_archetypes_thumb++;
-    }
-  }
-  result.db_updates = dbUpdates;
-
-  return json(result);
 });
