@@ -238,6 +238,63 @@ export default function SicaiThemeEditPage() {
     [lexicon],
   );
 
+  // Build a normalized snapshot of editable fields for dirty detection
+  const currentSnapshot = useMemo(() => {
+    const lexPayload: Record<string, string[]> = {};
+    for (const k of Object.keys(lexicon) as LexiconKey[]) {
+      if (lexicon[k].length > 0) lexPayload[k] = lexicon[k];
+    }
+    const manualTrim = manualEdit ? manualText.trim() : "";
+    return JSON.stringify({
+      label_fr: labelFr.trim(),
+      description: (description || "").trim(),
+      status,
+      is_protected: isProtected,
+      constraints: (constraints || "").trim(),
+      visual_lexicon: lexPayload,
+      cell_briefs: cellBriefs,
+      prompt_bloc_addition: manualEdit && manualTrim ? manualText : "",
+    });
+  }, [labelFr, description, status, isProtected, constraints, lexicon, cellBriefs, manualEdit, manualText]);
+
+  const originalSnapshot = useMemo(() => {
+    if (!original) return "";
+    const lex = normalizeLex(original.visual_lexicon);
+    const lexPayload: Record<string, string[]> = {};
+    for (const k of Object.keys(lex) as LexiconKey[]) {
+      if (lex[k].length > 0) lexPayload[k] = lex[k];
+    }
+    const cb: CellBriefs = {};
+    if (original.cell_briefs && typeof original.cell_briefs === "object") {
+      for (const [k, v] of Object.entries(original.cell_briefs as Record<string, unknown>)) {
+        if (typeof v === "string" && v.trim()) cb[k] = v;
+      }
+    }
+    return JSON.stringify({
+      label_fr: original.label_fr.trim(),
+      description: (original.description || "").trim(),
+      status: original.status,
+      is_protected: original.is_protected,
+      constraints: (original.constraints || "").trim(),
+      visual_lexicon: lexPayload,
+      cell_briefs: cb,
+      prompt_bloc_addition: original.prompt_bloc_addition || "",
+    });
+  }, [original]);
+
+  const isDirty = !isNew && original !== null && currentSnapshot !== originalSnapshot;
+
+  // beforeunload guard
+  useEffect(() => {
+    if (!isDirty) return;
+    const handler = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, [isDirty]);
+
   const onSave = async () => {
     const c = code.trim();
     const l = labelFr.trim();
