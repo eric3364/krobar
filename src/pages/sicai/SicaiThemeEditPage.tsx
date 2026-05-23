@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
+import SicaiCellBriefsEditor, { type CellBriefs } from "./SicaiCellBriefsEditor";
 
 type LexiconKey = "equipments" | "scenes" | "gestures" | "characters" | "abstract_metaphors";
 
@@ -169,6 +170,7 @@ export default function SicaiThemeEditPage() {
   const [isProtected, setIsProtected] = useState(false);
   const [constraints, setConstraints] = useState("");
   const [lexicon, setLexicon] = useState<Lexicon>(emptyLex());
+  const [cellBriefs, setCellBriefs] = useState<CellBriefs>({});
 
   // Bloc 0.5 manual override
   const [manualEdit, setManualEdit] = useState(false);
@@ -196,6 +198,14 @@ export default function SicaiThemeEditPage() {
         setIsProtected(t.is_protected);
         setConstraints(t.constraints ?? "");
         setLexicon(normalizeLex(t.visual_lexicon));
+        // Normalize cell_briefs into Record<string,string>
+        const cb: CellBriefs = {};
+        if (t.cell_briefs && typeof t.cell_briefs === "object") {
+          for (const [k, v] of Object.entries(t.cell_briefs as Record<string, unknown>)) {
+            if (typeof v === "string" && v.trim()) cb[k] = v;
+          }
+        }
+        setCellBriefs(cb);
         const manual = (t.prompt_bloc_addition ?? "").trim();
         if (manual) {
           setManualEdit(true);
@@ -268,6 +278,7 @@ export default function SicaiThemeEditPage() {
             is_protected: isProtected,
             constraints: constraints || null,
             visual_lexicon: lexPayload,
+            cell_briefs: cellBriefs,
             prompt_bloc_addition: manualEdit && manualTrim ? manualText : null,
           }).select("id").single();
         if (error) throw error;
@@ -281,6 +292,7 @@ export default function SicaiThemeEditPage() {
             status,
             constraints: constraints || null,
             visual_lexicon: lexPayload,
+            cell_briefs: cellBriefs,
             prompt_bloc_addition: manualEdit && manualTrim ? manualText : null,
             version: (original?.version ?? 1) + 1,
             ...(protectedLocked ? {} : { is_protected: isProtected }),
@@ -337,7 +349,7 @@ export default function SicaiThemeEditPage() {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-6 grid gap-6 max-w-4xl">
+      <main className="container mx-auto px-4 py-6 grid gap-6 max-w-6xl">
         <Card className="p-4 grid gap-4">
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="grid gap-1.5">
@@ -468,6 +480,18 @@ export default function SicaiThemeEditPage() {
             />
           )}
         </Card>
+
+        <Card className="p-4 grid gap-3">
+          <div>
+            <h2 className="font-medium">Briefs par cellule (Bloc 2 — override)</h2>
+            <p className="text-xs text-muted-foreground">
+              Brief thématique optionnel injecté après la ligne « Régime : … » du Bloc 2 pour chaque cellule de la matrice SICAI.
+              Une cellule sans brief utilise le prompt standard du template.
+            </p>
+          </div>
+          <SicaiCellBriefsEditor value={cellBriefs} onChange={setCellBriefs} />
+        </Card>
+
 
         {!isNew && original && (
           <div className="text-xs text-muted-foreground">
