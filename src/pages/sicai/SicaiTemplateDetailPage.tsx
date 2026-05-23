@@ -45,7 +45,10 @@ type Job = {
   error_message: string | null;
   batch_id: string | null;
   created_at: string;
+  openai_request_json: any | null;
 };
+
+type BatchTheme = { theme_code: string | null; theme_id: string | null; label: string | null };
 
 type Asset = { asset_kind: string; storage_path: string };
 type Check = { check_name: string; check_status: string; score: number | null; details_json: any };
