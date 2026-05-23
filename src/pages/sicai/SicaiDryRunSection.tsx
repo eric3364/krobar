@@ -211,6 +211,11 @@ export default function SicaiDryRunSection({ themeId, themeCode, hasContent, onB
     if (!themeId) return toast.error("Enregistrez le thème avant de lancer un dry-run.");
     if (!hasContent) return toast.error("Lexique vide et Bloc 0.5 manuel vide — dry-run inutile.");
 
+    if (onBeforeLaunch) {
+      const ok = await onBeforeLaunch();
+      if (!ok) return;
+    }
+
     setRunning(true);
     setPhase("creating");
     try {
