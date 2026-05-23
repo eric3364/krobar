@@ -40,7 +40,7 @@ export default function SicaiHomePage() {
   useEffect(() => {
     (async () => {
       try {
-        const [sources, sourcesFr, sourcesInitial, documents, segmented, analysesGlobal, analysesParagraph, archetypes] =
+        const [sources, sourcesFr, sourcesInitial, documents, segmented, analysesGlobal, analysesParagraph, archetypes, themes, templates] =
           await Promise.all([
             countRows("sicai_sources"),
             countRows("sicai_sources", (q) => q.like("source_id", "SICAI-FR-%")),
@@ -50,11 +50,13 @@ export default function SicaiHomePage() {
             countRows("sicai_analyses", (q) => q.eq("analysis_level", "global")),
             countRows("sicai_analyses", (q) => q.eq("analysis_level", "paragraph")),
             countRows("sicai_archetypes"),
+            countRows("sicai_themes"),
+            countRows("sicai_templates", (q) => q.in("status", ["ready", "published"])),
           ]);
-        setStats({ sources, sourcesFr, sourcesInitial, documents, segmented, analysesGlobal, analysesParagraph, archetypes });
+        setStats({ sources, sourcesFr, sourcesInitial, documents, segmented, analysesGlobal, analysesParagraph, archetypes, themes, templates });
       } catch (e) {
         toast.error(e instanceof Error ? e.message : "Erreur de chargement des statistiques");
-        setStats({ sources: 0, sourcesFr: 0, sourcesInitial: 0, documents: 0, segmented: 0, analysesGlobal: 0, analysesParagraph: 0, archetypes: 0 });
+        setStats({ sources: 0, sourcesFr: 0, sourcesInitial: 0, documents: 0, segmented: 0, analysesGlobal: 0, analysesParagraph: 0, archetypes: 0, themes: 0, templates: 0 });
       } finally {
         setLoading(false);
       }
@@ -75,7 +77,7 @@ export default function SicaiHomePage() {
         <div className="py-16 flex justify-center"><Loader2 className="animate-spin text-muted-foreground" /></div>
       ) : (
         <>
-          <section className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             <StatCard label="Sources (total)" value={stats.sources} to="/admin/sicai/library" icon={<BookOpen className="h-4 w-4" />} />
             <StatCard label="Sources — corpus initial" value={stats.sourcesInitial} to="/admin/sicai/library" icon={<BookOpen className="h-4 w-4" />} />
             <StatCard label="Sources — corpus FR" value={stats.sourcesFr} to="/admin/sicai/library" icon={<BookOpen className="h-4 w-4" />} />
@@ -84,15 +86,19 @@ export default function SicaiHomePage() {
             <StatCard label="Analyses globales" value={stats.analysesGlobal} to="/admin/sicai/analyses" icon={<Sparkles className="h-4 w-4" />} />
             <StatCard label="Analyses par paragraphe" value={stats.analysesParagraph} to="/admin/sicai/analyses" icon={<Sparkles className="h-4 w-4" />} />
             <StatCard label="Archétypes disponibles" value={stats.archetypes} to="/admin/sicai/archetypes" icon={<Shapes className="h-4 w-4" />} />
+            <StatCard label="Thèmes" value={stats.themes} to="/admin/sicai/themes" icon={<Palette className="h-4 w-4" />} />
+            <StatCard label="Templates SICAI" value={stats.templates} to="/admin/sicai/templates" icon={<FileImage className="h-4 w-4" />} />
           </section>
 
           <section className="space-y-3">
             <h2 className="text-lg font-semibold">Raccourcis</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
               <ShortcutButton to="/admin/sicai/library" icon={<BookOpen className="h-4 w-4" />} label="Bibliothèque" />
               <ShortcutButton to="/admin/sicai/new" icon={<FilePlus2 className="h-4 w-4" />} label="Nouveau texte" />
               <ShortcutButton to="/admin/sicai/analyses" icon={<Sparkles className="h-4 w-4" />} label="Analyses" />
               <ShortcutButton to="/admin/sicai/archetypes" icon={<Shapes className="h-4 w-4" />} label="Archétypes" />
+              <ShortcutButton to="/admin/sicai/themes" icon={<Palette className="h-4 w-4" />} label="Thèmes" />
+              <ShortcutButton to="/admin/sicai/templates" icon={<FileImage className="h-4 w-4" />} label="Templates" />
             </div>
             <div className="pt-1">
               <Button asChild variant="ghost" size="sm">
