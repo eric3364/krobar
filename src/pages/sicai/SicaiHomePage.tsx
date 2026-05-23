@@ -17,11 +17,13 @@ type Stats = {
   analysesGlobal: number;
   analysesParagraph: number;
   archetypes: number;
+  themes: number;
+  templates: number;
 };
 
 async function countRows(table:
   | "sicai_sources" | "sicai_documents" | "sicai_paragraphs"
-  | "sicai_analyses" | "sicai_archetypes",
+  | "sicai_analyses" | "sicai_archetypes" | "sicai_themes" | "sicai_templates",
   filter?: (q: ReturnType<typeof supabase.from>) => unknown,
 ): Promise<number> {
   let q = supabase.from(table).select("*", { count: "exact", head: true });
