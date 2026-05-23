@@ -198,6 +198,14 @@ export default function SicaiThemeEditPage() {
         setIsProtected(t.is_protected);
         setConstraints(t.constraints ?? "");
         setLexicon(normalizeLex(t.visual_lexicon));
+        // Normalize cell_briefs into Record<string,string>
+        const cb: CellBriefs = {};
+        if (t.cell_briefs && typeof t.cell_briefs === "object") {
+          for (const [k, v] of Object.entries(t.cell_briefs as Record<string, unknown>)) {
+            if (typeof v === "string" && v.trim()) cb[k] = v;
+          }
+        }
+        setCellBriefs(cb);
         const manual = (t.prompt_bloc_addition ?? "").trim();
         if (manual) {
           setManualEdit(true);
