@@ -327,7 +327,7 @@ export default function SicaiThemeEditPage() {
         if (ex) {
           toast.error("Ce code est déjà utilisé");
           setSaving(false);
-          return;
+          return false;
         }
         const { data, error } = await supabase
           .from("sicai_themes").insert({
@@ -342,7 +342,7 @@ export default function SicaiThemeEditPage() {
             prompt_bloc_addition: manualEdit && manualTrim ? manualText : null,
           }).select("id").single();
         if (error) throw error;
-        toast.success("Thème créé");
+        if (!opts?.silent) toast.success("Thème créé");
         navigate(`/admin/sicai/themes/${data.id}`);
       } else {
         const { error } = await supabase
@@ -358,13 +358,15 @@ export default function SicaiThemeEditPage() {
             ...(protectedLocked ? {} : { is_protected: isProtected }),
           }).eq("id", id!);
         if (error) throw error;
-        toast.success("Thème enregistré");
+        if (!opts?.silent) toast.success("Thème enregistré");
         const { data: fresh } = await supabase
           .from("sicai_themes").select("*").eq("id", id!).maybeSingle();
         if (fresh) setOriginal(fresh as ThemeRow);
       }
+      return true;
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Erreur d'enregistrement");
+      return false;
     } finally {
       setSaving(false);
     }
