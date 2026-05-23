@@ -70,6 +70,7 @@ const App = () => (
             <Route path="/admin/sicai/templates/batches/:id" element={<AdminRoute><SicaiBatchDetailPage /></AdminRoute>} />
             <Route path="/admin/sicai/templates/qc-dashboard" element={<AdminRoute><SicaiQcDashboardPage /></AdminRoute>} />
             <Route path="/admin/sicai/templates/detail/:templateId" element={<AdminRoute><SicaiTemplateDetailPage /></AdminRoute>} />
+            <Route path="/admin/sicai/themes" element={<AdminRoute><SicaiThemesPage /></AdminRoute>} />
             <Route path="/admin/sicai/settings" element={<AdminRoute><SicaiSettingsPage /></AdminRoute>} />
 
             <Route path="*" element={<NotFound />} />
