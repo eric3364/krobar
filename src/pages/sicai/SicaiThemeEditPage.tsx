@@ -295,7 +295,7 @@ export default function SicaiThemeEditPage() {
     return () => window.removeEventListener("beforeunload", handler);
   }, [isDirty]);
 
-  const onSave = async () => {
+  const onSave = async (opts?: { silent?: boolean }): Promise<boolean> => {
     const c = code.trim();
     const l = labelFr.trim();
     if (isNew) {
