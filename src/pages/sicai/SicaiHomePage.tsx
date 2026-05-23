@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import {
-  BookOpen, FilePlus2, FileText, Layers, Loader2, Settings2, Shapes, Sparkles,
+  BookOpen, FilePlus2, FileText, Layers, Loader2, Palette, Settings2, Shapes, Sparkles, FileImage,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
