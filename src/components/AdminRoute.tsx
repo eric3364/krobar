@@ -25,6 +25,7 @@ const sicaiNav = {
     { label: "Nouveau texte", path: "/admin/sicai/new", icon: FilePlus2 },
     { label: "Analyses", path: "/admin/sicai/analyses", icon: BarChart3 },
     { label: "Archétypes graphiques", path: "/admin/sicai/archetypes", icon: Shapes },
+    { label: "Thèmes", path: "/admin/sicai/themes", icon: Palette },
     { label: "Templates SICAI", path: "/admin/sicai/templates", icon: FileImage },
     { label: "Paramètres SICAI", path: "/admin/sicai/settings", icon: Settings },
   ],
