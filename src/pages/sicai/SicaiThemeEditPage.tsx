@@ -349,7 +349,7 @@ export default function SicaiThemeEditPage() {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-6 grid gap-6 max-w-4xl">
+      <main className="container mx-auto px-4 py-6 grid gap-6 max-w-6xl">
         <Card className="p-4 grid gap-4">
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="grid gap-1.5">
