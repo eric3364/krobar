@@ -560,6 +560,12 @@ export default function SicaiThemeEditPage() {
               constraints.trim().length > 0 ||
               (manualEdit && manualText.trim().length > 0)
             }
+            onBeforeLaunch={async () => {
+              if (!isDirty) return true;
+              const ok = await onSave({ silent: true });
+              if (ok) toast.info("Modifications enregistrées avant le dry-run");
+              return ok;
+            }}
           />
         </Card>
 
