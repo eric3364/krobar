@@ -298,18 +298,20 @@ export default function SicaiThemeEditPage() {
   const onSave = async (opts?: { silent?: boolean }): Promise<boolean> => {
     const c = code.trim();
     const l = labelFr.trim();
+    const fail = (msg: string) => { if (!opts?.silent) toast.error(msg); return false; };
     if (isNew) {
-      if (!c) return toast.error("Le code est requis");
-      if (!CODE_RE.test(c)) return toast.error("Code invalide (a-z, 0-9, _ uniquement)");
+      if (!c) return fail("Le code est requis");
+      if (!CODE_RE.test(c)) return fail("Code invalide (a-z, 0-9, _ uniquement)");
     }
-    if (!l) return toast.error("Le label FR est requis");
+    if (!l) return fail("Le label FR est requis");
 
     const manualTrim = manualEdit ? manualText.trim() : "";
     if (status === "active" && !lexiconNonEmpty && !manualTrim) {
-      return toast.error(
+      return fail(
         "Statut actif : au moins une catégorie de lexique ou un Bloc 0.5 manuel non vide est requis.",
       );
     }
+
 
     setSaving(true);
     try {
