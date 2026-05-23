@@ -208,6 +208,8 @@ export type Database = {
           representation_regime: string
           source_job_id: string | null
           svg_storage_path: string | null
+          theme_code: string | null
+          theme_id: string | null
           thumbnail_storage_path: string | null
           visual_motifs: Json | null
         }
@@ -227,6 +229,8 @@ export type Database = {
           representation_regime: string
           source_job_id?: string | null
           svg_storage_path?: string | null
+          theme_code?: string | null
+          theme_id?: string | null
           thumbnail_storage_path?: string | null
           visual_motifs?: Json | null
         }
@@ -246,10 +250,20 @@ export type Database = {
           representation_regime?: string
           source_job_id?: string | null
           svg_storage_path?: string | null
+          theme_code?: string | null
+          theme_id?: string | null
           thumbnail_storage_path?: string | null
           visual_motifs?: Json | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "sicai_archetypes_theme_id_fkey"
+            columns: ["theme_id"]
+            isOneToOne: false
+            referencedRelation: "sicai_themes"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       sicai_assets: {
         Row: {
@@ -370,11 +384,14 @@ export type Database = {
           created_by: string | null
           failed_count: number | null
           id: string
+          is_dry_run: boolean
           label: string | null
           openai_batch_id: string | null
           request_count: number
           source_file_name: string | null
           status: string
+          theme_code: string | null
+          theme_id: string | null
           updated_at: string
         }
         Insert: {
@@ -386,11 +403,14 @@ export type Database = {
           created_by?: string | null
           failed_count?: number | null
           id?: string
+          is_dry_run?: boolean
           label?: string | null
           openai_batch_id?: string | null
           request_count: number
           source_file_name?: string | null
           status?: string
+          theme_code?: string | null
+          theme_id?: string | null
           updated_at?: string
         }
         Update: {
@@ -402,14 +422,25 @@ export type Database = {
           created_by?: string | null
           failed_count?: number | null
           id?: string
+          is_dry_run?: boolean
           label?: string | null
           openai_batch_id?: string | null
           request_count?: number
           source_file_name?: string | null
           status?: string
+          theme_code?: string | null
+          theme_id?: string | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "sicai_generation_batches_theme_id_fkey"
+            columns: ["theme_id"]
+            isOneToOne: false
+            referencedRelation: "sicai_themes"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       sicai_generation_jobs: {
         Row: {
@@ -768,6 +799,54 @@ export type Database = {
           verbatim_placeholder_count?: number
           visual_anchor_count?: number
           visual_hierarchy_rule?: string | null
+        }
+        Relationships: []
+      }
+      sicai_themes: {
+        Row: {
+          cell_briefs: Json
+          code: string
+          constraints: string | null
+          created_at: string
+          description: string | null
+          id: string
+          is_protected: boolean
+          label_fr: string
+          prompt_bloc_addition: string | null
+          status: string
+          updated_at: string
+          version: number
+          visual_lexicon: Json
+        }
+        Insert: {
+          cell_briefs?: Json
+          code: string
+          constraints?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_protected?: boolean
+          label_fr: string
+          prompt_bloc_addition?: string | null
+          status?: string
+          updated_at?: string
+          version?: number
+          visual_lexicon?: Json
+        }
+        Update: {
+          cell_briefs?: Json
+          code?: string
+          constraints?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_protected?: boolean
+          label_fr?: string
+          prompt_bloc_addition?: string | null
+          status?: string
+          updated_at?: string
+          version?: number
+          visual_lexicon?: Json
         }
         Relationships: []
       }
