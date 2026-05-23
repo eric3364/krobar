@@ -98,7 +98,7 @@ Deno.serve(async (req) => {
       regimeCode: tpl.regime_code,
     });
     const svgBytes = new TextEncoder().encode(svg);
-    const svgPath = `svg_final/${job_id}.svg`;
+    const svgPath = themedPath(themeCode, "svg_final", job_id);
     await admin.storage.from(BUCKET).upload(svgPath, svgBytes, { contentType: "image/svg+xml", upsert: true });
     await admin.from("sicai_assets").insert({
       job_id, asset_kind: "svg_final", storage_path: svgPath,
