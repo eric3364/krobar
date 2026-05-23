@@ -12,9 +12,10 @@ import {
 import {
   Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { ArrowLeft, ArrowRight, Check, X, RotateCw, Loader2, Copy } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, X, RotateCw, Loader2, Copy, ChevronDown } from "lucide-react";
 import SvgLayoutEditor from "./SvgLayoutEditor";
 
 type Template = {
@@ -44,7 +45,10 @@ type Job = {
   error_message: string | null;
   batch_id: string | null;
   created_at: string;
+  openai_request_json: any | null;
 };
+
+type BatchTheme = { theme_code: string | null; theme_id: string | null; label: string | null };
 
 type Asset = { asset_kind: string; storage_path: string };
 type Check = { check_name: string; check_status: string; score: number | null; details_json: any };
@@ -84,6 +88,7 @@ export default function SicaiTemplateDetailPage() {
   const [nextTemplateId, setNextTemplateId] = useState<string | null>(null);
   const [loadingNext, setLoadingNext] = useState(false);
   const [layoutEditing, setLayoutEditing] = useState(false);
+  const [batchTheme, setBatchTheme] = useState<BatchTheme | null>(null);
 
   const load = useCallback(async () => {
     if (!templateId) return;
@@ -92,13 +97,17 @@ export default function SicaiTemplateDetailPage() {
     setTpl((t as Template) ?? null);
 
     const { data: js } = await supabase.from("sicai_generation_jobs")
-      .select("id, custom_id, status, retry_count, error_code, error_message, batch_id, created_at")
+      .select("id, custom_id, status, retry_count, error_code, error_message, batch_id, created_at, openai_request_json")
       .eq("template_id", templateId).order("created_at", { ascending: false });
     const list = (js as Job[]) ?? [];
     setJobs(list);
 
-    // Most recent job that has assets (not rejected/queued)
-    const current = list.find((j) => !["rejected", "queued", "generating"].includes(j.status)) ?? list[0] ?? null;
+    // If we're navigating from a batch context, prefer the job from that batch.
+    const fromBatch = batchIdParam ? list.find((j) => j.batch_id === batchIdParam) : null;
+    const current = fromBatch
+      ?? list.find((j) => !["rejected", "queued", "generating"].includes(j.status))
+      ?? list[0]
+      ?? null;
     setCurrentJob(current);
 
     if (current) {
@@ -133,9 +142,25 @@ export default function SicaiTemplateDetailPage() {
       setAssets({});
       setChecks([]);
     }
-  }, [templateId]);
+  }, [templateId, batchIdParam]);
 
   useEffect(() => { load(); }, [load]);
+
+  // Load batch theme info for the "Prompt résolu" section
+  useEffect(() => {
+    const batchId = currentJob?.batch_id ?? batchIdParam ?? null;
+    if (!batchId) { setBatchTheme(null); return; }
+    let cancelled = false;
+    (async () => {
+      const { data } = await supabase
+        .from("sicai_generation_batches")
+        .select("theme_code, theme_id, label")
+        .eq("id", batchId)
+        .maybeSingle();
+      if (!cancelled) setBatchTheme((data as BatchTheme) ?? null);
+    })();
+    return () => { cancelled = true; };
+  }, [currentJob, batchIdParam]);
 
   // Compute next template to review within the same batch (status à valider, ordre custom_id)
   useEffect(() => {
@@ -264,6 +289,58 @@ export default function SicaiTemplateDetailPage() {
                 {tpl.prompt_full}
               </pre>
             </Card>
+            {(() => {
+              const inBatchContext = !!(batchIdParam || currentJob?.batch_id);
+              if (!inBatchContext || !currentJob) return null;
+              const req = currentJob.openai_request_json as any;
+              const resolved: string | null = typeof req?.prompt === "string" ? req.prompt : null;
+              const themeCode = batchTheme?.theme_code ?? "neutre";
+              const identical = resolved !== null && resolved === tpl.prompt_full;
+              return (
+                <Card className="p-4">
+                  <Collapsible>
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <CollapsibleTrigger className="flex items-center gap-2 text-left group">
+                        <ChevronDown className="w-3 h-3 transition-transform group-data-[state=closed]:-rotate-90" />
+                        <h2 className="text-sm font-semibold">Prompt résolu envoyé à OpenAI</h2>
+                        <Badge variant="outline" className="text-[10px]">Thème : {themeCode}</Badge>
+                        {identical && (
+                          <Badge variant="secondary" className="text-[10px]">✓ identique au canonique</Badge>
+                        )}
+                      </CollapsibleTrigger>
+                      {resolved && (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => {
+                            navigator.clipboard.writeText(resolved);
+                            toast.success("Prompt résolu copié");
+                          }}
+                        >
+                          <Copy className="w-3 h-3 mr-1" /> Copier
+                        </Button>
+                      )}
+                    </div>
+                    <CollapsibleContent>
+                      {resolved ? (
+                        <pre className="text-[10px] bg-muted p-2 rounded max-h-72 overflow-auto whitespace-pre-wrap font-mono">
+                          {resolved}
+                        </pre>
+                      ) : (
+                        <div className="text-xs text-muted-foreground py-2">
+                          Prompt résolu indisponible (format inattendu).
+                          {req && (
+                            <pre className="text-[10px] bg-muted p-2 rounded mt-2 max-h-40 overflow-auto">
+                              {JSON.stringify(req, null, 2)}
+                            </pre>
+                          )}
+                        </div>
+                      )}
+                    </CollapsibleContent>
+                  </Collapsible>
+                </Card>
+              );
+            })()}
             {tpl.negative_rules && (
               <Card className="p-4">
                 <h2 className="text-sm font-semibold mb-2">Negative rules</h2>
