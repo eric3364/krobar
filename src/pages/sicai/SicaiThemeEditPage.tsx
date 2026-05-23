@@ -161,7 +161,7 @@ export default function SicaiThemeEditPage() {
         toast.success("Thème créé");
         navigate(`/admin/sicai/themes/${data.id}`);
       } else {
-        const payload: Record<string, unknown> = {
+        const payload = {
           label_fr: label,
           description: form.description || null,
           status: form.status ?? "draft",
@@ -170,8 +170,8 @@ export default function SicaiThemeEditPage() {
           visual_lexicon: parsedLexicon ?? {},
           cell_briefs: parsedBriefs ?? {},
           version: (original?.version ?? 1) + 1,
+          ...(protectedLocked ? {} : { is_protected: !!form.is_protected }),
         };
-        if (!protectedLocked) payload.is_protected = !!form.is_protected;
         const { error } = await supabase
           .from("sicai_themes").update(payload).eq("id", id!);
         if (error) throw error;
