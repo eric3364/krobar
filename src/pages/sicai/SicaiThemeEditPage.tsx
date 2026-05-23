@@ -292,6 +292,7 @@ export default function SicaiThemeEditPage() {
             status,
             constraints: constraints || null,
             visual_lexicon: lexPayload,
+            cell_briefs: cellBriefs,
             prompt_bloc_addition: manualEdit && manualTrim ? manualText : null,
             version: (original?.version ?? 1) + 1,
             ...(protectedLocked ? {} : { is_protected: isProtected }),
