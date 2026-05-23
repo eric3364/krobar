@@ -88,6 +88,7 @@ export default function SicaiTemplateDetailPage() {
   const [nextTemplateId, setNextTemplateId] = useState<string | null>(null);
   const [loadingNext, setLoadingNext] = useState(false);
   const [layoutEditing, setLayoutEditing] = useState(false);
+  const [batchTheme, setBatchTheme] = useState<BatchTheme | null>(null);
 
   const load = useCallback(async () => {
     if (!templateId) return;
