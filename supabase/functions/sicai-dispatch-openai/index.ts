@@ -1,5 +1,5 @@
 // Dispatch a SICAI batch to OpenAI: either sync (1 job) or openai_batch (upload JSONL + create batch).
-import { requireAdmin, jsonResponse, sha256, corsHeaders } from "../_shared/sicai.ts";
+import { requireAdmin, jsonResponse, sha256, corsHeaders, themedPath } from "../_shared/sicai.ts";
 
 const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY");
 const STORAGE_BUCKET = "sicai-assets";
