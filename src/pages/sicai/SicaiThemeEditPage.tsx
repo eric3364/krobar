@@ -481,6 +481,18 @@ export default function SicaiThemeEditPage() {
           )}
         </Card>
 
+        <Card className="p-4 grid gap-3">
+          <div>
+            <h2 className="font-medium">Briefs par cellule (Bloc 2 — override)</h2>
+            <p className="text-xs text-muted-foreground">
+              Brief thématique optionnel injecté après la ligne « Régime : … » du Bloc 2 pour chaque cellule de la matrice SICAI.
+              Une cellule sans brief utilise le prompt standard du template.
+            </p>
+          </div>
+          <SicaiCellBriefsEditor value={cellBriefs} onChange={setCellBriefs} />
+        </Card>
+
+
         {!isNew && original && (
           <div className="text-xs text-muted-foreground">
             Version actuelle : v{original.version} · Mis à jour {new Date(original.updated_at).toLocaleString("fr-FR")}
