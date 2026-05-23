@@ -493,7 +493,11 @@ export default function SicaiThemeEditPage() {
           <SicaiDryRunSection
             themeId={isNew ? null : (original?.id ?? null)}
             themeCode={code || (original?.code ?? "")}
-            hasContent={lexiconNonEmpty || (manualEdit && manualText.trim().length > 0)}
+            hasContent={
+              lexiconNonEmpty ||
+              constraints.trim().length > 0 ||
+              (manualEdit && manualText.trim().length > 0)
+            }
           />
         </Card>
 
