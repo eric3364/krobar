@@ -31,6 +31,7 @@ import SicaiTemplatesPage from "./pages/sicai/SicaiTemplatesPage.tsx";
 import SicaiBatchDetailPage from "./pages/sicai/SicaiBatchDetailPage.tsx";
 import SicaiQcDashboardPage from "./pages/sicai/SicaiQcDashboardPage.tsx";
 import SicaiTemplateDetailPage from "./pages/sicai/SicaiTemplateDetailPage.tsx";
+import SicaiThemesPage from "./pages/sicai/SicaiThemesPage.tsx";
 
 const queryClient = new QueryClient();
 
