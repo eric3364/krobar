@@ -278,6 +278,7 @@ export default function SicaiThemeEditPage() {
             is_protected: isProtected,
             constraints: constraints || null,
             visual_lexicon: lexPayload,
+            cell_briefs: cellBriefs,
             prompt_bloc_addition: manualEdit && manualTrim ? manualText : null,
           }).select("id").single();
         if (error) throw error;
