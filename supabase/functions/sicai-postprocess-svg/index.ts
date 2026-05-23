@@ -109,7 +109,7 @@ Deno.serve(async (req) => {
     // E. Thumbnail (400x225) via downsample of normalized
     const thumbData = resizeNearest(decoded.w, decoded.h, normData, 400, 225);
     const thumbPng = encodePng(400, 225, thumbData);
-    const thumbPath = `thumbnails/${job_id}.png`;
+    const thumbPath = themedPath(themeCode, "thumbnails", job_id);
     await admin.storage.from(BUCKET).upload(thumbPath, thumbPng, { contentType: "image/png", upsert: true });
     await admin.from("sicai_assets").insert({
       job_id, asset_kind: "thumbnail", storage_path: thumbPath,
