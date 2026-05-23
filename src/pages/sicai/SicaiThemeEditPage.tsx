@@ -357,7 +357,7 @@ export default function SicaiThemeEditPage() {
               <Label htmlFor="code">Code {codeLocked && <span className="text-xs text-muted-foreground">(immuable)</span>}</Label>
               <Input
                 id="code" value={code} disabled={codeLocked}
-                onChange={(e) => setCode(e.target.value)}
+                onChange={(e) => setCode(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, "_"))}
                 placeholder="ex. neutre, energie_renouvelable"
               />
               {isNew && (
