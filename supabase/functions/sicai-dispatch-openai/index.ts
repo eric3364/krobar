@@ -60,7 +60,7 @@ async function runSyncJob(admin: any, batchId: string, jobIdHint?: string) {
 
     const bytes = b64ToBytes(b64);
     const checksum = await sha256(bytes);
-    const storage_path = `png_master/${job.id}.png`;
+    const storage_path = themedPath(themeCode, "png_master", job.id);
 
     const { error: upErr } = await admin.storage.from(STORAGE_BUCKET)
       .upload(storage_path, bytes, { contentType: "image/png", upsert: true });
