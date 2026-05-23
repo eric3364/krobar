@@ -238,21 +238,80 @@ export default function SicaiThemeEditPage() {
     [lexicon],
   );
 
-  const onSave = async () => {
+  // Build a normalized snapshot of editable fields for dirty detection
+  const currentSnapshot = useMemo(() => {
+    const lexPayload: Record<string, string[]> = {};
+    for (const k of Object.keys(lexicon) as LexiconKey[]) {
+      if (lexicon[k].length > 0) lexPayload[k] = lexicon[k];
+    }
+    const manualTrim = manualEdit ? manualText.trim() : "";
+    return JSON.stringify({
+      label_fr: labelFr.trim(),
+      description: (description || "").trim(),
+      status,
+      is_protected: isProtected,
+      constraints: (constraints || "").trim(),
+      visual_lexicon: lexPayload,
+      cell_briefs: cellBriefs,
+      prompt_bloc_addition: manualEdit && manualTrim ? manualText : "",
+    });
+  }, [labelFr, description, status, isProtected, constraints, lexicon, cellBriefs, manualEdit, manualText]);
+
+  const originalSnapshot = useMemo(() => {
+    if (!original) return "";
+    const lex = normalizeLex(original.visual_lexicon);
+    const lexPayload: Record<string, string[]> = {};
+    for (const k of Object.keys(lex) as LexiconKey[]) {
+      if (lex[k].length > 0) lexPayload[k] = lex[k];
+    }
+    const cb: CellBriefs = {};
+    if (original.cell_briefs && typeof original.cell_briefs === "object") {
+      for (const [k, v] of Object.entries(original.cell_briefs as Record<string, unknown>)) {
+        if (typeof v === "string" && v.trim()) cb[k] = v;
+      }
+    }
+    return JSON.stringify({
+      label_fr: original.label_fr.trim(),
+      description: (original.description || "").trim(),
+      status: original.status,
+      is_protected: original.is_protected,
+      constraints: (original.constraints || "").trim(),
+      visual_lexicon: lexPayload,
+      cell_briefs: cb,
+      prompt_bloc_addition: original.prompt_bloc_addition || "",
+    });
+  }, [original]);
+
+  const isDirty = !isNew && original !== null && currentSnapshot !== originalSnapshot;
+
+  // beforeunload guard
+  useEffect(() => {
+    if (!isDirty) return;
+    const handler = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, [isDirty]);
+
+  const onSave = async (opts?: { silent?: boolean }): Promise<boolean> => {
     const c = code.trim();
     const l = labelFr.trim();
+    const fail = (msg: string) => { if (!opts?.silent) toast.error(msg); return false; };
     if (isNew) {
-      if (!c) return toast.error("Le code est requis");
-      if (!CODE_RE.test(c)) return toast.error("Code invalide (a-z, 0-9, _ uniquement)");
+      if (!c) return fail("Le code est requis");
+      if (!CODE_RE.test(c)) return fail("Code invalide (a-z, 0-9, _ uniquement)");
     }
-    if (!l) return toast.error("Le label FR est requis");
+    if (!l) return fail("Le label FR est requis");
 
     const manualTrim = manualEdit ? manualText.trim() : "";
     if (status === "active" && !lexiconNonEmpty && !manualTrim) {
-      return toast.error(
+      return fail(
         "Statut actif : au moins une catégorie de lexique ou un Bloc 0.5 manuel non vide est requis.",
       );
     }
+
 
     setSaving(true);
     try {
@@ -268,7 +327,7 @@ export default function SicaiThemeEditPage() {
         if (ex) {
           toast.error("Ce code est déjà utilisé");
           setSaving(false);
-          return;
+          return false;
         }
         const { data, error } = await supabase
           .from("sicai_themes").insert({
@@ -283,7 +342,7 @@ export default function SicaiThemeEditPage() {
             prompt_bloc_addition: manualEdit && manualTrim ? manualText : null,
           }).select("id").single();
         if (error) throw error;
-        toast.success("Thème créé");
+        if (!opts?.silent) toast.success("Thème créé");
         navigate(`/admin/sicai/themes/${data.id}`);
       } else {
         const { error } = await supabase
@@ -299,13 +358,15 @@ export default function SicaiThemeEditPage() {
             ...(protectedLocked ? {} : { is_protected: isProtected }),
           }).eq("id", id!);
         if (error) throw error;
-        toast.success("Thème enregistré");
+        if (!opts?.silent) toast.success("Thème enregistré");
         const { data: fresh } = await supabase
           .from("sicai_themes").select("*").eq("id", id!).maybeSingle();
         if (fresh) setOriginal(fresh as ThemeRow);
       }
+      return true;
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Erreur d'enregistrement");
+      return false;
     } finally {
       setSaving(false);
     }
@@ -342,7 +403,8 @@ export default function SicaiThemeEditPage() {
             <Button variant="outline" onClick={() => navigate("/admin/sicai/themes")}>
               <ArrowLeft className="h-4 w-4 mr-1" /> Retour
             </Button>
-            <Button onClick={onSave} disabled={saving}>
+            <Button onClick={() => onSave()} disabled={saving}>
+              {isDirty && <span className="mr-1 inline-block h-2 w-2 rounded-full bg-amber-500" aria-hidden />}
               {saving ? <Loader2 className="h-4 w-4 mr-1 animate-spin" /> : <Save className="h-4 w-4 mr-1" />}
               Enregistrer
             </Button>
@@ -498,6 +560,12 @@ export default function SicaiThemeEditPage() {
               constraints.trim().length > 0 ||
               (manualEdit && manualText.trim().length > 0)
             }
+            onBeforeLaunch={async () => {
+              if (!isDirty) return true;
+              const ok = await onSave({ silent: true });
+              if (ok) toast.info("Modifications enregistrées avant le dry-run");
+              return ok;
+            }}
           />
         </Card>
 

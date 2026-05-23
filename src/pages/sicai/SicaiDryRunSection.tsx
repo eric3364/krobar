@@ -78,9 +78,10 @@ type Props = {
   themeId: string | null;
   themeCode: string;
   hasContent: boolean; // lexicon non-empty OR manual prompt_bloc_addition non-empty
+  onBeforeLaunch?: () => Promise<boolean>; // returns false to abort
 };
 
-export default function SicaiDryRunSection({ themeId, themeCode, hasContent }: Props) {
+export default function SicaiDryRunSection({ themeId, themeCode, hasContent, onBeforeLaunch }: Props) {
   const navigate = useNavigate();
 
   const [nomenclature, setNomenclature] = useState<Nom[]>([]);
@@ -209,6 +210,11 @@ export default function SicaiDryRunSection({ themeId, themeCode, hasContent }: P
   const launchDryRun = async () => {
     if (!themeId) return toast.error("Enregistrez le thème avant de lancer un dry-run.");
     if (!hasContent) return toast.error("Lexique vide et Bloc 0.5 manuel vide — dry-run inutile.");
+
+    if (onBeforeLaunch) {
+      const ok = await onBeforeLaunch();
+      if (!ok) return;
+    }
 
     setRunning(true);
     setPhase("creating");
