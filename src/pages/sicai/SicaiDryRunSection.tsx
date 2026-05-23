@@ -78,9 +78,10 @@ type Props = {
   themeId: string | null;
   themeCode: string;
   hasContent: boolean; // lexicon non-empty OR manual prompt_bloc_addition non-empty
+  onBeforeLaunch?: () => Promise<boolean>; // returns false to abort
 };
 
-export default function SicaiDryRunSection({ themeId, themeCode, hasContent }: Props) {
+export default function SicaiDryRunSection({ themeId, themeCode, hasContent, onBeforeLaunch }: Props) {
   const navigate = useNavigate();
 
   const [nomenclature, setNomenclature] = useState<Nom[]>([]);
