@@ -74,7 +74,7 @@ export async function pollBatch(admin: any, batchId: string) {
         }
         const bytes = b64ToBytes(b64);
         const checksum = await sha256(bytes);
-        const storage_path = `png_master/${jobId}.png`;
+        const storage_path = themedPath(batch.theme_code, "png_master", jobId);
 
         const { error: upErr } = await admin.storage.from(STORAGE_BUCKET)
           .upload(storage_path, bytes, { contentType: "image/png", upsert: true });
