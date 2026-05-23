@@ -57,11 +57,12 @@ Deno.serve(async (req) => {
 
     const { data: job, error: jErr } = await admin
       .from("sicai_generation_jobs")
-      .select("id, status, template_id, sicai_templates(illustration_id, family_code, cardinality_code, regime_code)")
+      .select("id, status, template_id, sicai_templates(illustration_id, family_code, cardinality_code, regime_code), sicai_generation_batches(theme_code)")
       .eq("id", job_id).maybeSingle();
     if (jErr || !job) return jsonResponse({ error: "job not found" }, 404);
     const tpl = (job as any).sicai_templates;
     if (!tpl) return jsonResponse({ error: "template missing" }, 400);
+    const themeCode = (job as any).sicai_generation_batches?.theme_code ?? "neutre";
 
     // Idempotence
     if (!force) {
