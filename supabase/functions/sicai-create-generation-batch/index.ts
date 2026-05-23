@@ -1,7 +1,11 @@
 // Create a SICAI generation batch + queue all jobs with pre-computed OpenAI payloads.
+// Phase A: applique le thème (Bloc 0.5 + cell briefs) au prompt à la volée,
+// stocke le prompt résolu dans jobs.openai_request_json. Le prompt canonique
+// (sicai_templates.prompt_full) reste inchangé.
 import {
   requireAdmin, jsonResponse, buildOpenAIBody, slugifyCustomId,
-  COST_SYNC, COST_BATCH, corsHeaders,
+  COST_SYNC, COST_BATCH, corsHeaders, resolveThemedPrompt, sha256,
+  type ThemeRow,
 } from "../_shared/sicai.ts";
 
 Deno.serve(async (req) => {
@@ -18,6 +22,25 @@ Deno.serve(async (req) => {
     const batch_mode: string = body.batch_mode === "sync" ? "sync" : "openai_batch";
     const template_ids: string[] | null = Array.isArray(body.template_ids) && body.template_ids.length > 0
       ? body.template_ids : null;
+    const is_dry_run: boolean = body.is_dry_run === true;
+
+    // Resolve theme (defaults to 'neutre')
+    let theme: ThemeRow | null = null;
+    if (body.theme_id) {
+      const { data, error } = await admin.from("sicai_themes")
+        .select("id, code, label_fr, description, visual_lexicon, constraints, cell_briefs, prompt_bloc_addition")
+        .eq("id", body.theme_id).maybeSingle();
+      if (error) throw error;
+      if (!data) return jsonResponse({ error: `theme_id ${body.theme_id} not found` }, 400);
+      theme = data as ThemeRow;
+    } else {
+      const { data, error } = await admin.from("sicai_themes")
+        .select("id, code, label_fr, description, visual_lexicon, constraints, cell_briefs, prompt_bloc_addition")
+        .eq("code", "neutre").maybeSingle();
+      if (error) throw error;
+      if (!data) return jsonResponse({ error: "default theme 'neutre' missing" }, 500);
+      theme = data as ThemeRow;
+    }
 
     let q = admin.from("sicai_templates").select("id, illustration_id, prompt_full, status").order("illustration_id");
     q = template_ids ? q.in("id", template_ids) : q.eq("status", "ready");
@@ -38,16 +61,23 @@ Deno.serve(async (req) => {
         status: "queued",
         cost_estimate_usd: cost,
         created_by: userId,
+        theme_id: theme.id,
+        theme_code: theme.code,
+        is_dry_run,
       })
       .select("*").single();
     if (batchErr) throw batchErr;
 
-    const jobs = templates.map((t, i) => ({
-      batch_id: batchRow.id,
-      template_id: t.id,
-      custom_id: slugifyCustomId(i + 1, t.illustration_id, batchRow.id),
-      openai_request_json: buildOpenAIBody(t.prompt_full, batchRow.id),
-      status: "queued",
+    // Resolve theme-applied prompt for each template, compute checksum.
+    const jobs = await Promise.all(templates.map(async (t, i) => {
+      const resolvedPrompt = resolveThemedPrompt(t.prompt_full, t.illustration_id, theme);
+      return {
+        batch_id: batchRow.id,
+        template_id: t.id,
+        custom_id: slugifyCustomId(i + 1, t.illustration_id, batchRow.id),
+        openai_request_json: buildOpenAIBody(resolvedPrompt, batchRow.id),
+        status: "queued",
+      };
     }));
     const { error: jobsErr } = await admin.from("sicai_generation_jobs").insert(jobs);
     if (jobsErr) throw jobsErr;
@@ -57,6 +87,9 @@ Deno.serve(async (req) => {
       request_count: templates.length,
       cost_estimate_usd: cost,
       batch_mode,
+      theme_id: theme.id,
+      theme_code: theme.code,
+      is_dry_run,
     });
   } catch (e) {
     const msg = e instanceof Error ? e.message

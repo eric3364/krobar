@@ -1,5 +1,5 @@
 // Dispatch a SICAI batch to OpenAI: either sync (1 job) or openai_batch (upload JSONL + create batch).
-import { requireAdmin, jsonResponse, sha256, corsHeaders } from "../_shared/sicai.ts";
+import { requireAdmin, jsonResponse, sha256, corsHeaders, themedPath } from "../_shared/sicai.ts";
 
 const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY");
 const STORAGE_BUCKET = "sicai-assets";
@@ -13,12 +13,13 @@ function b64ToBytes(b64: string): Uint8Array {
 
 async function runSyncJob(admin: any, batchId: string, jobIdHint?: string) {
   // Pick target job
-  let q = admin.from("sicai_generation_jobs").select("*").eq("batch_id", batchId);
+  let q = admin.from("sicai_generation_jobs").select("*, sicai_generation_batches!inner(theme_code)").eq("batch_id", batchId);
   q = jobIdHint ? q.eq("id", jobIdHint) : q.eq("status", "queued").limit(1);
   const { data: jobs, error } = await q;
   if (error) throw error;
   const job = jobs?.[0];
   if (!job) return { error: "no job found" };
+  const themeCode = job.sicai_generation_batches?.theme_code ?? "neutre";
 
   await admin.from("sicai_generation_jobs").update({ status: "generating" }).eq("id", job.id);
 
@@ -59,7 +60,7 @@ async function runSyncJob(admin: any, batchId: string, jobIdHint?: string) {
 
     const bytes = b64ToBytes(b64);
     const checksum = await sha256(bytes);
-    const storage_path = `png_master/${job.id}.png`;
+    const storage_path = themedPath(themeCode, "png_master", job.id);
 
     const { error: upErr } = await admin.storage.from(STORAGE_BUCKET)
       .upload(storage_path, bytes, { contentType: "image/png", upsert: true });

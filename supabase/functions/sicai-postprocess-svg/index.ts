@@ -1,7 +1,7 @@
 // Post-process a generated job: normalize PNG palette, build SVG overlay, save assets.
 import { PNG } from "npm:pngjs@7.0.0";
 import { Buffer } from "node:buffer";
-import { adminClient, jsonResponse, requireAdmin, sha256, corsHeaders } from "../_shared/sicai.ts";
+import { adminClient, jsonResponse, requireAdmin, sha256, corsHeaders, themedPath } from "../_shared/sicai.ts";
 import { quantizeToPalette, buildSvg } from "../_shared/sicai-overlay.ts";
 
 const BUCKET = "sicai-assets";
@@ -57,11 +57,12 @@ Deno.serve(async (req) => {
 
     const { data: job, error: jErr } = await admin
       .from("sicai_generation_jobs")
-      .select("id, status, template_id, sicai_templates(illustration_id, family_code, cardinality_code, regime_code)")
+      .select("id, status, template_id, sicai_templates(illustration_id, family_code, cardinality_code, regime_code), sicai_generation_batches(theme_code)")
       .eq("id", job_id).maybeSingle();
     if (jErr || !job) return jsonResponse({ error: "job not found" }, 404);
     const tpl = (job as any).sicai_templates;
     if (!tpl) return jsonResponse({ error: "template missing" }, 400);
+    const themeCode = (job as any).sicai_generation_batches?.theme_code ?? "neutre";
 
     // Idempotence
     if (!force) {
@@ -79,7 +80,7 @@ Deno.serve(async (req) => {
     const decoded = decodePng(masterBytes);
     const normData = normalizePalette(decoded.w, decoded.h, decoded.data);
     const normPng = encodePng(decoded.w, decoded.h, normData);
-    const normPath = `png_normalized/${job_id}.png`;
+    const normPath = themedPath(themeCode, "png_normalized", job_id);
     await admin.storage.from(BUCKET).upload(normPath, normPng, { contentType: "image/png", upsert: true });
     await admin.from("sicai_assets").insert({
       job_id, asset_kind: "png_normalized", storage_path: normPath,
@@ -97,7 +98,7 @@ Deno.serve(async (req) => {
       regimeCode: tpl.regime_code,
     });
     const svgBytes = new TextEncoder().encode(svg);
-    const svgPath = `svg_final/${job_id}.svg`;
+    const svgPath = themedPath(themeCode, "svg_final", job_id);
     await admin.storage.from(BUCKET).upload(svgPath, svgBytes, { contentType: "image/svg+xml", upsert: true });
     await admin.from("sicai_assets").insert({
       job_id, asset_kind: "svg_final", storage_path: svgPath,
@@ -108,7 +109,7 @@ Deno.serve(async (req) => {
     // E. Thumbnail (400x225) via downsample of normalized
     const thumbData = resizeNearest(decoded.w, decoded.h, normData, 400, 225);
     const thumbPng = encodePng(400, 225, thumbData);
-    const thumbPath = `thumbnails/${job_id}.png`;
+    const thumbPath = themedPath(themeCode, "thumbnails", job_id);
     await admin.storage.from(BUCKET).upload(thumbPath, thumbPng, { contentType: "image/png", upsert: true });
     await admin.from("sicai_assets").insert({
       job_id, asset_kind: "thumbnail", storage_path: thumbPath,
