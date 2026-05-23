@@ -192,7 +192,7 @@ export default function SicaiThemesPage() {
                   <div className="text-xs text-muted-foreground">
                     {n} archétype{n > 1 ? "s" : ""} publié{n > 1 ? "s" : ""} / {EXPECTED_TOTAL}
                   </div>
-                  <div className="flex gap-2 mt-auto pt-2 border-t">
+                  <div className="flex flex-wrap gap-2 mt-auto pt-2 border-t">
                     <Button size="sm" variant="outline" onClick={() => navigate(`/admin/sicai/themes/${t.id}`)}>
                       <Pencil className="h-3.5 w-3.5 mr-1" /> Éditer
                     </Button>
