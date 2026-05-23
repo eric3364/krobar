@@ -77,18 +77,26 @@ Deno.serve(async (req) => {
         let publishInfo: any = null;
         try {
           const { data: row } = await admin.from("sicai_generation_jobs")
-            .select("status, template_id, sicai_templates(illustration_id)")
+            .select("status, template_id, sicai_templates(illustration_id), sicai_generation_batches(theme_id, theme_code, is_dry_run)")
             .eq("id", j.id).maybeSingle();
           if (row?.status === "approved") {
-            const illustrationId = (row as any).sicai_templates?.illustration_id;
-            const pub = await publishArchetypeFromJob(admin, {
-              job_id: j.id, illustration_id: illustrationId,
-            });
-            publishInfo = pub;
-            if (!pub.ok) console.warn("auto-publish failed", j.id, pub.reason);
-            else {
-              await admin.from("sicai_templates")
-                .update({ status: "published" }).eq("id", row.template_id);
+            const batchInfo = (row as any).sicai_generation_batches;
+            if (batchInfo?.is_dry_run) {
+              publishInfo = { ok: false, reason: "skipped: dry-run batch" };
+            } else {
+              const illustrationId = (row as any).sicai_templates?.illustration_id;
+              const pub = await publishArchetypeFromJob(admin, {
+                job_id: j.id,
+                illustration_id: illustrationId,
+                theme_id: batchInfo?.theme_id,
+                theme_code: batchInfo?.theme_code,
+              });
+              publishInfo = pub;
+              if (!pub.ok) console.warn("auto-publish failed", j.id, pub.reason);
+              else {
+                await admin.from("sicai_templates")
+                  .update({ status: "published" }).eq("id", row.template_id);
+              }
             }
           }
         } catch (pe) {
