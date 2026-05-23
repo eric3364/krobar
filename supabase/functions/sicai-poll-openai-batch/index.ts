@@ -1,5 +1,5 @@
 // Poll one OpenAI batch, download outputs/errors, upload PNG masters, update jobs.
-import { requireAdmin, jsonResponse, sha256, corsHeaders } from "../_shared/sicai.ts";
+import { requireAdmin, jsonResponse, sha256, corsHeaders, themedPath } from "../_shared/sicai.ts";
 
 const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY");
 const STORAGE_BUCKET = "sicai-assets";
