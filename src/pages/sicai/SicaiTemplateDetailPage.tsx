@@ -289,6 +289,58 @@ export default function SicaiTemplateDetailPage() {
                 {tpl.prompt_full}
               </pre>
             </Card>
+            {(() => {
+              const inBatchContext = !!(batchIdParam || currentJob?.batch_id);
+              if (!inBatchContext || !currentJob) return null;
+              const req = currentJob.openai_request_json as any;
+              const resolved: string | null = typeof req?.prompt === "string" ? req.prompt : null;
+              const themeCode = batchTheme?.theme_code ?? "neutre";
+              const identical = resolved !== null && resolved === tpl.prompt_full;
+              return (
+                <Card className="p-4">
+                  <Collapsible>
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <CollapsibleTrigger className="flex items-center gap-2 text-left group">
+                        <ChevronDown className="w-3 h-3 transition-transform group-data-[state=closed]:-rotate-90" />
+                        <h2 className="text-sm font-semibold">Prompt résolu envoyé à OpenAI</h2>
+                        <Badge variant="outline" className="text-[10px]">Thème : {themeCode}</Badge>
+                        {identical && (
+                          <Badge variant="secondary" className="text-[10px]">✓ identique au canonique</Badge>
+                        )}
+                      </CollapsibleTrigger>
+                      {resolved && (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => {
+                            navigator.clipboard.writeText(resolved);
+                            toast.success("Prompt résolu copié");
+                          }}
+                        >
+                          <Copy className="w-3 h-3 mr-1" /> Copier
+                        </Button>
+                      )}
+                    </div>
+                    <CollapsibleContent>
+                      {resolved ? (
+                        <pre className="text-[10px] bg-muted p-2 rounded max-h-72 overflow-auto whitespace-pre-wrap font-mono">
+                          {resolved}
+                        </pre>
+                      ) : (
+                        <div className="text-xs text-muted-foreground py-2">
+                          Prompt résolu indisponible (format inattendu).
+                          {req && (
+                            <pre className="text-[10px] bg-muted p-2 rounded mt-2 max-h-40 overflow-auto">
+                              {JSON.stringify(req, null, 2)}
+                            </pre>
+                          )}
+                        </div>
+                      )}
+                    </CollapsibleContent>
+                  </Collapsible>
+                </Card>
+              );
+            })()}
             {tpl.negative_rules && (
               <Card className="p-4">
                 <h2 className="text-sm font-semibold mb-2">Negative rules</h2>
