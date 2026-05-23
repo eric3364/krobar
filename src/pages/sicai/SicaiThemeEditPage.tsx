@@ -403,7 +403,8 @@ export default function SicaiThemeEditPage() {
             <Button variant="outline" onClick={() => navigate("/admin/sicai/themes")}>
               <ArrowLeft className="h-4 w-4 mr-1" /> Retour
             </Button>
-            <Button onClick={onSave} disabled={saving}>
+            <Button onClick={() => onSave()} disabled={saving}>
+              {isDirty && <span className="mr-1 inline-block h-2 w-2 rounded-full bg-amber-500" aria-hidden />}
               {saving ? <Loader2 className="h-4 w-4 mr-1 animate-spin" /> : <Save className="h-4 w-4 mr-1" />}
               Enregistrer
             </Button>
