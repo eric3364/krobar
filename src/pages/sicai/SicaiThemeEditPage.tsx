@@ -170,6 +170,7 @@ export default function SicaiThemeEditPage() {
   const [isProtected, setIsProtected] = useState(false);
   const [constraints, setConstraints] = useState("");
   const [lexicon, setLexicon] = useState<Lexicon>(emptyLex());
+  const [cellBriefs, setCellBriefs] = useState<CellBriefs>({});
 
   // Bloc 0.5 manual override
   const [manualEdit, setManualEdit] = useState(false);
