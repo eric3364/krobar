@@ -142,9 +142,25 @@ export default function SicaiTemplateDetailPage() {
       setAssets({});
       setChecks([]);
     }
-  }, [templateId]);
+  }, [templateId, batchIdParam]);
 
   useEffect(() => { load(); }, [load]);
+
+  // Load batch theme info for the "Prompt résolu" section
+  useEffect(() => {
+    const batchId = currentJob?.batch_id ?? batchIdParam ?? null;
+    if (!batchId) { setBatchTheme(null); return; }
+    let cancelled = false;
+    (async () => {
+      const { data } = await supabase
+        .from("sicai_generation_batches")
+        .select("theme_code, theme_id, label")
+        .eq("id", batchId)
+        .maybeSingle();
+      if (!cancelled) setBatchTheme((data as BatchTheme) ?? null);
+    })();
+    return () => { cancelled = true; };
+  }, [currentJob, batchIdParam]);
 
   // Compute next template to review within the same batch (status à valider, ordre custom_id)
   useEffect(() => {
