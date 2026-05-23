@@ -38,6 +38,9 @@ Deno.serve(async (req) => {
     return json({ error: `default theme '${DEFAULT_THEME}' not seeded` }, 500);
   }
 
+  const body = await req.json().catch(() => ({} as any));
+  const background = body?.background !== false; // default: run in background
+
   const result: any = { moved: 0, skipped: 0, errors: 0, by_folder: {}, error_details: [] };
 
   for (const folder of FOLDERS) {
