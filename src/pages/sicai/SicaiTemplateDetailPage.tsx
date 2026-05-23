@@ -97,13 +97,17 @@ export default function SicaiTemplateDetailPage() {
     setTpl((t as Template) ?? null);
 
     const { data: js } = await supabase.from("sicai_generation_jobs")
-      .select("id, custom_id, status, retry_count, error_code, error_message, batch_id, created_at")
+      .select("id, custom_id, status, retry_count, error_code, error_message, batch_id, created_at, openai_request_json")
       .eq("template_id", templateId).order("created_at", { ascending: false });
     const list = (js as Job[]) ?? [];
     setJobs(list);
 
-    // Most recent job that has assets (not rejected/queued)
-    const current = list.find((j) => !["rejected", "queued", "generating"].includes(j.status)) ?? list[0] ?? null;
+    // If we're navigating from a batch context, prefer the job from that batch.
+    const fromBatch = batchIdParam ? list.find((j) => j.batch_id === batchIdParam) : null;
+    const current = fromBatch
+      ?? list.find((j) => !["rejected", "queued", "generating"].includes(j.status))
+      ?? list[0]
+      ?? null;
     setCurrentJob(current);
 
     if (current) {
