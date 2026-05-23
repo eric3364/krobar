@@ -12,13 +12,14 @@ Deno.serve(async (req) => {
     if (!job_id) return jsonResponse({ error: "job_id required" }, 400);
 
     const { data: job, error: jErr } = await admin.from("sicai_generation_jobs")
-      .select("id, status, template_id, batch_id, sicai_templates(illustration_id)")
+      .select("id, status, template_id, batch_id, sicai_templates(illustration_id), sicai_generation_batches(theme_id, theme_code, is_dry_run)")
       .eq("id", job_id).maybeSingle();
     if (jErr || !job) return jsonResponse({ error: "job not found" }, 404);
     if (!["approved", "review_needed", "qc_failed", "qc_pending"].includes(job.status)) {
       return jsonResponse({ error: `cannot approve job in status ${job.status}` }, 400);
     }
     const illustrationId = (job as any).sicai_templates?.illustration_id;
+    const batchInfo = (job as any).sicai_generation_batches;
 
     await admin.from("sicai_reviews").insert({
       job_id, reviewer_id: userId, decision: "approve", notes: notes ?? null,
@@ -26,9 +27,14 @@ Deno.serve(async (req) => {
     await admin.from("sicai_generation_jobs").update({ status: "approved" }).eq("id", job_id);
     await admin.from("sicai_templates").update({ status: "published" }).eq("id", job.template_id);
 
-    const pub = await publishArchetypeFromJob(admin, {
-      job_id, illustration_id: illustrationId,
-    });
+    const pub = batchInfo?.is_dry_run
+      ? { ok: false as const, reason: "skipped: dry-run batch" }
+      : await publishArchetypeFromJob(admin, {
+          job_id,
+          illustration_id: illustrationId,
+          theme_id: batchInfo?.theme_id,
+          theme_code: batchInfo?.theme_code,
+        });
 
     // Refresh batch approved_count
     if (job.batch_id) {
