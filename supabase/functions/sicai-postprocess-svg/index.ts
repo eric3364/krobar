@@ -80,7 +80,7 @@ Deno.serve(async (req) => {
     const decoded = decodePng(masterBytes);
     const normData = normalizePalette(decoded.w, decoded.h, decoded.data);
     const normPng = encodePng(decoded.w, decoded.h, normData);
-    const normPath = `png_normalized/${job_id}.png`;
+    const normPath = themedPath(themeCode, "png_normalized", job_id);
     await admin.storage.from(BUCKET).upload(normPath, normPng, { contentType: "image/png", upsert: true });
     await admin.from("sicai_assets").insert({
       job_id, asset_kind: "png_normalized", storage_path: normPath,
