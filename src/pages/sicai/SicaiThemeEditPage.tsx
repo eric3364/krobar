@@ -13,6 +13,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import SicaiCellBriefsEditor, { type CellBriefs } from "./SicaiCellBriefsEditor";
+import SicaiDryRunSection from "./SicaiDryRunSection";
 
 type LexiconKey = "equipments" | "scenes" | "gestures" | "characters" | "abstract_metaphors";
 
