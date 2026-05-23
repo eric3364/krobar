@@ -484,6 +484,21 @@ export default function SicaiThemeEditPage() {
 
         <Card className="p-4 grid gap-3">
           <div>
+            <h2 className="font-medium">Dry-run de validation</h2>
+            <p className="text-xs text-muted-foreground">
+              Génère un petit échantillon (1 à 12 templates) via OpenAI sync pour visualiser l'effet du lexique + Bloc 0.5 avant d'investir dans les briefs détaillés.
+              Ne publie jamais dans <code>sicai_archetypes</code> (flag <code>is_dry_run</code>).
+            </p>
+          </div>
+          <SicaiDryRunSection
+            themeId={isNew ? null : (original?.id ?? null)}
+            themeCode={code || (original?.code ?? "")}
+            hasContent={lexiconNonEmpty || (manualEdit && manualText.trim().length > 0)}
+          />
+        </Card>
+
+        <Card className="p-4 grid gap-3">
+          <div>
             <h2 className="font-medium">Briefs par cellule (Bloc 2 — override)</h2>
             <p className="text-xs text-muted-foreground">
               Brief thématique optionnel injecté après la ligne « Régime : … » du Bloc 2 pour chaque cellule de la matrice SICAI.
