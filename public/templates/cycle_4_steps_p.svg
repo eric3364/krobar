@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:ns1="http://krobar.online/spec/v1" viewBox="0 0 1600 900" data-svg-kr-version="1.0" data-has-header-slots="true" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif">
+
+  
+  <metadata>
+    <ns1:krobar-meta>
+      <ns1:id>cycle_4_steps_p</ns1:id>
+      <ns1:name>Cycle 4 étapes</ns1:name>
+      <ns1:category>Process</ns1:category>
+      <ns1:tier>premium</ns1:tier>
+      <ns1:description>Cycle itératif de 4 phases qui se répètent en boucle. Idéal pour les processus récurrents type PDCA, amélioration continue, sprints agiles.</ns1:description>
+      <ns1:best-for>cycle itératif, amélioration continue, boucle de feedback, processus récurrent</ns1:best-for>
+      <ns1:markers>cycle, cyclique, itération, itératif, itère, boucle, en boucle, rotation, récurrence, récurrent, périodique, périodiquement, répétition, répété, à répéter, amélioration continue, kaizen, scrum, sprint, PDCA, Plan-Do-Check-Act, roue de Deming, phase 1, phase 2, phase 3, phase 4, à chaque cycle, à chaque itération</ns1:markers>
+      <ns1:matching-types>process_cyclic</ns1:matching-types>
+      <ns1:test-text>La roue de Deming structure l'amélioration continue en quatre phases qui se répètent en boucle : planifier les actions, déployer sur le terrain, vérifier les résultats, agir sur les écarts détectés.</ns1:test-text>
+    </ns1:krobar-meta>
+  </metadata>
+
+  
+  <defs>
+    <marker id="arrowhead-cycle" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0 0, 10 5, 0 10" fill="#5EBFB0" />
+    </marker>
+  </defs>
+
+  
+  <rect class="krobar-background" width="1600" height="900" fill="#FFFFFF" />
+
+  
+  <g class="krobar-slot" data-slot-key="title" data-slot-cardinality="unique" data-slot-icon="disabled">
+    <rect class="slot-bbox" x="60" y="80" width="700" height="80" fill="none" stroke="none" />
+    </g>
+
+  <g class="krobar-slot" data-slot-key="subtitle" data-slot-cardinality="unique" data-slot-icon="disabled">
+    <rect class="slot-bbox" x="60" y="155" width="700" height="50" fill="none" stroke="none" />
+    </g>
+
+  
+  <g class="krobar-decoration">
+
+    
+    <path d="M 1050 199 A 300 300 0 0 1 1214 415" stroke="#5EBFB0" stroke-width="3" fill="none" opacity="0.85" marker-end="url(#arrowhead-cycle)" />
+
+    
+    <path d="M 1214 525 A 300 300 0 0 1 1050 740" stroke="#5EBFB0" stroke-width="3" fill="none" opacity="0.85" marker-end="url(#arrowhead-cycle)" />
+
+    
+    <path d="M 790 740 A 300 300 0 0 1 625 525" stroke="#5EBFB0" stroke-width="3" fill="none" opacity="0.85" marker-end="url(#arrowhead-cycle)" />
+
+    
+    <path d="M 625 415 A 300 300 0 0 1 790 199" stroke="#5EBFB0" stroke-width="3" fill="none" opacity="0.85" marker-end="url(#arrowhead-cycle)" />
+
+    
+    </g>
+
+  
+
+  
+  <g class="krobar-slot" data-slot-key="step" data-slot-cardinality="repeated" data-slot-cardinality-ideal="4" data-slot-cardinality-min="3" data-slot-cardinality-max="5" data-slot-variants="3,4,5" data-slot-instance-index="1" data-slot-icon="optional" data-slot-icon-default="refresh-cw" data-slot-icon-position="top" data-slot-icon-size="28">
+    <rect x="790" y="115" width="260" height="110" fill="#FFFFFF" stroke="#5EBFB0" stroke-width="2" rx="10" />
+    <rect class="slot-bbox" x="805" y="126" width="230" height="88" fill="none" stroke="none" />
+    </g>
+
+  
+  <g class="krobar-slot" data-slot-key="step" data-slot-cardinality="repeated" data-slot-cardinality-ideal="4" data-slot-cardinality-min="3" data-slot-cardinality-max="5" data-slot-variants="3,4,5" data-slot-instance-index="2" data-slot-icon="optional" data-slot-icon-default="refresh-cw" data-slot-icon-position="top" data-slot-icon-size="28">
+    <rect x="1090" y="415" width="260" height="110" fill="#FFFFFF" stroke="#5EBFB0" stroke-width="2" rx="10" />
+    <rect class="slot-bbox" x="1105" y="426" width="230" height="88" fill="none" stroke="none" />
+    </g>
+
+  
+  <g class="krobar-slot" data-slot-key="step" data-slot-cardinality="repeated" data-slot-cardinality-ideal="4" data-slot-cardinality-min="3" data-slot-cardinality-max="5" data-slot-variants="3,4,5" data-slot-instance-index="3" data-slot-icon="optional" data-slot-icon-default="refresh-cw" data-slot-icon-position="top" data-slot-icon-size="28">
+    <rect x="790" y="715" width="260" height="110" fill="#FFFFFF" stroke="#5EBFB0" stroke-width="2" rx="10" />
+    <rect class="slot-bbox" x="805" y="726" width="230" height="88" fill="none" stroke="none" />
+    </g>
+
+  
+  <g class="krobar-slot" data-slot-key="step" data-slot-cardinality="repeated" data-slot-cardinality-ideal="4" data-slot-cardinality-min="3" data-slot-cardinality-max="5" data-slot-variants="3,4,5" data-slot-instance-index="4" data-slot-icon="optional" data-slot-icon-default="refresh-cw" data-slot-icon-position="top" data-slot-icon-size="28">
+    <rect x="490" y="415" width="260" height="110" fill="#FFFFFF" stroke="#5EBFB0" stroke-width="2" rx="10" />
+    <rect class="slot-bbox" x="505" y="426" width="230" height="88" fill="none" stroke="none" />
+    </g>
+
+<g class="slot-group" data-slot-key="title"><rect class="slot-shape" data-shape="bbox_title_1" x="60" y="80" width="700" height="80" fill="none" stroke="none" /><foreignObject class="slot-label" x="60" y="80" width="700" height="80"><html:div class="slot-content" style="font-size:64px;font-weight:700;color:#1A1A1A;line-height:1.1;padding:0;margin:0;text-align:left;">{{title}}</html:div></foreignObject></g><g class="slot-group" data-slot-key="subtitle"><rect class="slot-shape" data-shape="bbox_subtitle_1" x="60" y="155" width="700" height="50" fill="none" stroke="none" /><foreignObject class="slot-label" x="60" y="155" width="700" height="50"><html:div class="slot-content" style="font-size:32px;font-weight:400;color:#555555;opacity:0.85;line-height:1.2;padding:0;margin:0;text-align:left;">{{subtitle}}</html:div></foreignObject></g><g class="slot-group" data-slot-key="step"><rect class="slot-shape" data-shape="bbox_step_1" x="805" y="126" width="230" height="88" fill="none" stroke="none" /><foreignObject class="slot-label" x="805" y="126" width="230" height="88"><html:div class="slot-content">{{step_1}}</html:div></foreignObject></g><g class="slot-group" data-slot-key="step"><rect class="slot-shape" data-shape="bbox_step_2" x="1105" y="426" width="230" height="88" fill="none" stroke="none" /><foreignObject class="slot-label" x="1105" y="426" width="230" height="88"><html:div class="slot-content">{{step_2}}</html:div></foreignObject></g><g class="slot-group" data-slot-key="step"><rect class="slot-shape" data-shape="bbox_step_3" x="805" y="726" width="230" height="88" fill="none" stroke="none" /><foreignObject class="slot-label" x="805" y="726" width="230" height="88"><html:div class="slot-content">{{step_3}}</html:div></foreignObject></g><g class="slot-group" data-slot-key="step"><rect class="slot-shape" data-shape="bbox_step_4" x="505" y="426" width="230" height="88" fill="none" stroke="none" /><foreignObject class="slot-label" x="505" y="426" width="230" height="88"><html:div class="slot-content">{{step_4}}</html:div></foreignObject></g></svg>

@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml" viewBox="0 0 1600 900" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif">
+
+  
+  <rect width="1600" height="900" fill="#F7F8FA" />
+
+  
+  
+  
+  
+  <rect x="730" y="170" width="140" height="5" fill="#3B5BDB" rx="2.5" />
+
+  
+  
+  
+  
+  <rect x="120" y="420" width="240" height="240" rx="16" ry="16" fill="#FFFFFF" stroke="#1A2A4A" stroke-width="2.5" />
+  
+  <line x1="362" y1="540" x2="398" y2="540" stroke="#1A2A4A" stroke-width="2.5" />
+  <polyline points="388,532 398,540 388,548" stroke="#1A2A4A" stroke-width="2.5" fill="none" />
+
+  
+  
+  
+  <rect x="400" y="420" width="240" height="240" rx="16" ry="16" fill="#FFFFFF" stroke="#1A2A4A" stroke-width="2.5" />
+  <line x1="642" y1="540" x2="678" y2="540" stroke="#1A2A4A" stroke-width="2.5" />
+  <polyline points="668,532 678,540 668,548" stroke="#1A2A4A" stroke-width="2.5" fill="none" />
+
+  
+  
+  
+  <rect x="680" y="420" width="240" height="240" rx="16" ry="16" fill="#FFFFFF" stroke="#1A2A4A" stroke-width="2.5" />
+  <line x1="922" y1="540" x2="958" y2="540" stroke="#1A2A4A" stroke-width="2.5" />
+  <polyline points="948,532 958,540 948,548" stroke="#1A2A4A" stroke-width="2.5" fill="none" />
+
+  
+  
+  
+  <rect x="960" y="420" width="240" height="240" rx="16" ry="16" fill="#FFFFFF" stroke="#1A2A4A" stroke-width="2.5" />
+  <line x1="1202" y1="540" x2="1238" y2="540" stroke="#1A2A4A" stroke-width="2.5" />
+  <polyline points="1228,532 1238,540 1228,548" stroke="#1A2A4A" stroke-width="2.5" fill="none" />
+
+  
+  
+  
+  <rect x="1240" y="420" width="240" height="240" rx="16" ry="16" fill="#FFFFFF" stroke="#1A2A4A" stroke-width="2.5" />
+  <g class="slot-group" data-slot-key="item"><rect class="slot-shape" data-shape="bbox_item_1" x="140" y="440" width="210" height="200" fill="none" stroke="none" /><foreignObject class="slot-label" x="140" y="440" width="210" height="200"><html:div class="slot-content">{{item_1}}</html:div></foreignObject></g><g class="slot-group" data-slot-key="item"><rect class="slot-shape" data-shape="bbox_item_2" x="420" y="440" width="210" height="200" fill="none" stroke="none" /><foreignObject class="slot-label" x="420" y="440" width="210" height="200"><html:div class="slot-content">{{item_2}}</html:div></foreignObject></g><g class="slot-group" data-slot-key="item"><rect class="slot-shape" data-shape="bbox_item_3" x="700" y="440" width="210" height="200" fill="none" stroke="none" /><foreignObject class="slot-label" x="700" y="440" width="210" height="200"><html:div class="slot-content">{{item_3}}</html:div></foreignObject></g><g class="slot-group" data-slot-key="item"><rect class="slot-shape" data-shape="bbox_item_4" x="980" y="440" width="210" height="200" fill="none" stroke="none" /><foreignObject class="slot-label" x="980" y="440" width="210" height="200"><html:div class="slot-content">{{item_4}}</html:div></foreignObject></g><g class="slot-group" data-slot-key="item"><rect class="slot-shape" data-shape="bbox_item_5" x="1250" y="440" width="210" height="200" fill="none" stroke="none" /><foreignObject class="slot-label" x="1250" y="440" width="210" height="200"><html:div class="slot-content">{{item_5}}</html:div></foreignObject></g><g class="slot-icon" data-slot-icon-key="item" transform="translate(0,0)" data-icon-size="48" data-icon-stroke="currentColor" data-icon-default="arrow-big-right" /></svg>

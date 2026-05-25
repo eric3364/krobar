@@ -1,0 +1,184 @@
+{
+  "templates": [
+    {
+      "id": "process_3_steps",
+      "name": "Process en 3 étapes",
+      "category": "Process",
+      "description": "Trois cartes éditoriales numérotées avec titre, label et description courte",
+      "file": "process_3_steps.svg",
+      "slots": ["title", "category_label", "step_1", "step_1_description", "step_2", "step_2_description", "step_3", "step_3_description"],
+      "best_for": "Décrire un processus court avec un début, un milieu et une fin"
+    },
+    {
+      "id": "process_5_steps",
+      "name": "Process en 5 étapes",
+      "category": "Process",
+      "description": "Séquence linéaire de 5 étapes numérotées et connectées par des flèches",
+      "file": "process_5_steps.svg",
+      "slots": ["title", "step_1", "step_2", "step_3", "step_4", "step_5"],
+      "best_for": "Détailler un processus en cinq étapes ordonnées"
+    },
+    {
+      "id": "comparison_2_columns",
+      "name": "Comparaison 2 colonnes",
+      "category": "Comparison",
+      "description": "Deux colonnes côte à côte avec un titre commun",
+      "file": "comparison_2_columns.svg",
+      "slots": ["title", "left_label", "left_item_1", "left_item_2", "left_item_3", "right_label", "right_item_1", "right_item_2", "right_item_3"],
+      "best_for": "Comparer deux concepts, options ou approches"
+    },
+    {
+      "id": "comparison_3_columns",
+      "name": "Comparaison 3 colonnes",
+      "category": "Comparison",
+      "description": "Trois colonnes côte à côte avec colonne centrale mise en valeur",
+      "file": "comparison_3_columns.svg",
+      "slots": ["title", "col_1_label", "col_1_item_1", "col_1_item_2", "col_1_item_3", "col_2_label", "col_2_item_1", "col_2_item_2", "col_2_item_3", "col_3_label", "col_3_item_1", "col_3_item_2", "col_3_item_3"],
+      "best_for": "Comparer trois options ou approches en mettant l'option recommandée en avant"
+    },
+    {
+      "id": "hierarchy_pyramid",
+      "name": "Pyramide hiérarchique",
+      "category": "Hierarchy",
+      "description": "Pyramide à 3 niveaux",
+      "file": "hierarchy_pyramid.svg",
+      "slots": ["title", "top_label", "middle_label", "bottom_label"],
+      "best_for": "Montrer une hiérarchie, des priorités ou une structure pyramidale"
+    },
+    {
+      "id": "org_tree",
+      "name": "Arbre organisationnel",
+      "category": "Hierarchy",
+      "description": "Arbre hiérarchique avec une racine et trois enfants reliés par des connecteurs",
+      "file": "org_tree.svg",
+      "slots": ["title", "root", "child_1", "child_2", "child_3"],
+      "best_for": "Représenter une structure parent-enfants comme un organigramme ou une décomposition"
+    },
+    {
+      "id": "cycle_4_steps",
+      "name": "Cycle en 4 étapes",
+      "category": "Process",
+      "description": "4 cercles disposés en cycle, connectés par des flèches courbes",
+      "file": "cycle_4_steps.svg",
+      "slots": ["title", "step_1", "step_2", "step_3", "step_4"],
+      "best_for": "Représenter un cycle, une boucle ou un processus itératif"
+    },
+    {
+      "id": "timeline_horizontal",
+      "name": "Frise chronologique",
+      "category": "Timelines",
+      "description": "Ligne horizontale avec 4 jalons, dates au-dessus et événements en dessous",
+      "file": "timeline_horizontal.svg",
+      "slots": ["title", "date_1", "event_1", "date_2", "event_2", "date_3", "event_3", "date_4", "event_4"],
+      "best_for": "Présenter une succession d'événements datés sur une période"
+    },
+    {
+      "id": "swot_matrix",
+      "name": "Matrice SWOT",
+      "category": "Business Frameworks",
+      "description": "Matrice 2x2 forces, faiblesses, opportunités et menaces, chaque case avec 3 puces",
+      "file": "swot_matrix.svg",
+      "slots": ["title", "strengths_label", "strength_1", "strength_2", "strength_3", "weaknesses_label", "weakness_1", "weakness_2", "weakness_3", "opportunities_label", "opp_1", "opp_2", "opp_3", "threats_label", "threat_1", "threat_2", "threat_3"],
+      "best_for": "Réaliser un diagnostic stratégique interne et externe d'une organisation ou d'un projet"
+    },
+    {
+      "id": "bcg_matrix",
+      "name": "Matrice BCG",
+      "category": "Business Frameworks",
+      "description": "Matrice 2x2 part de marché relative et taux de croissance avec quatre quadrants Vedettes, Vaches à lait, Dilemmes et Poids morts",
+      "file": "bcg_matrix.svg",
+      "slots": ["title", "stars_items", "cash_cows_items", "question_marks_items", "dogs_items"],
+      "best_for": "Analyser un portefeuille de produits selon leur part de marché et leur croissance"
+    },
+    {
+      "id": "five_forces",
+      "name": "5 forces de Porter",
+      "category": "Business Frameworks",
+      "description": "Pentagone central de la rivalité concurrentielle entouré des quatre forces concurrentielles avec flèches",
+      "file": "five_forces.svg",
+      "slots": ["title", "central_force", "suppliers", "buyers", "new_entrants", "substitutes"],
+      "best_for": "Analyser l'intensité concurrentielle et l'attractivité d'un secteur d'activité"
+    },
+    {
+      "id": "business_model_canvas",
+      "name": "Business Model Canvas",
+      "category": "Business Frameworks",
+      "description": "Canvas Osterwalder simplifié avec 9 blocs : partenaires, activités, ressources, proposition de valeur, relation, canaux, segments, coûts et revenus",
+      "file": "business_model_canvas.svg",
+      "slots": ["title", "partners", "activities", "value_proposition", "relationships", "segments", "resources", "channels", "cost_structure", "revenue_streams"],
+      "best_for": "Modéliser le fonctionnement global d'un business sur une seule page"
+    },
+    {
+      "id": "fishbone",
+      "name": "Diagramme d'Ishikawa",
+      "category": "Cause and Effect",
+      "description": "Arête centrale avec 4 catégories de causes et 2 sous-causes chacune, pointant vers un effet",
+      "file": "fishbone.svg",
+      "slots": ["title", "effect", "category_1", "cause_1_1", "cause_1_2", "category_2", "cause_2_1", "cause_2_2", "category_3", "cause_3_1", "cause_3_2", "category_4", "cause_4_1", "cause_4_2"],
+      "best_for": "Analyser les causes profondes d'un problème selon plusieurs catégories"
+    },
+    {
+      "id": "cause_effect_arrows",
+      "name": "Causes vers effet",
+      "category": "Cause and Effect",
+      "description": "Trois causes à gauche convergeant par flèches vers un effet à droite",
+      "file": "cause_effect_arrows.svg",
+      "slots": ["title", "cause_1", "cause_2", "cause_3", "effect"],
+      "best_for": "Montrer comment plusieurs facteurs convergent vers un même résultat"
+    },
+    {
+      "id": "donut_4_parts",
+      "name": "Donut en 4 parts",
+      "category": "Parts of a Whole",
+      "description": "Donut chart à 4 segments avec pourcentages paramétrables et légende latérale",
+      "file": "donut_4_parts.svg",
+      "slots": ["title", "label_1", "percent_1", "label_2", "percent_2", "label_3", "percent_3", "label_4", "percent_4"],
+      "best_for": "Visualiser la répartition d'un tout en quatre proportions"
+    },
+    {
+      "id": "roadmap_quarters",
+      "name": "Roadmap trimestrielle",
+      "category": "Timelines",
+      "description": "Quatre colonnes Q1 à Q4 avec deux initiatives par trimestre et une barre de progression",
+      "file": "roadmap_quarters.svg",
+      "slots": ["title", "q1_item_1", "q1_item_2", "q2_item_1", "q2_item_2", "q3_item_1", "q3_item_2", "q4_item_1", "q4_item_2"],
+      "best_for": "Planifier les initiatives d'une année réparties sur quatre trimestres"
+    },
+    {
+      "id": "mindmap_central",
+      "name": "Carte mentale centrale",
+      "category": "Mindmap",
+      "description": "Nœud central avec quatre branches diagonales, chacune comportant deux sous-branches",
+      "file": "mindmap_central.svg",
+      "slots": ["title", "central", "branch_1", "branch_1_sub_1", "branch_1_sub_2", "branch_2", "branch_2_sub_1", "branch_2_sub_2", "branch_3", "branch_3_sub_1", "branch_3_sub_2", "branch_4", "branch_4_sub_1", "branch_4_sub_2"],
+      "best_for": "Brainstormer ou structurer un sujet autour d'une idée centrale et de quatre axes"
+    },
+    {
+      "id": "iceberg",
+      "name": "Modèle de l'iceberg",
+      "category": "Visual Metaphors",
+      "description": "Iceberg avec partie visible au-dessus de la ligne d'eau et trois niveaux immergés de profondeur croissante",
+      "file": "iceberg.svg",
+      "slots": ["title", "visible_label", "visible_item", "level_1", "level_2", "level_3"],
+      "best_for": "Distinguer ce qui est apparent des couches sous-jacentes plus profondes d'un phénomène"
+    },
+    {
+      "id": "bridge_problem_solution",
+      "name": "Pont problème vers solution",
+      "category": "Visual Metaphors",
+      "description": "Deux falaises problème et solution reliées par un pont avec leviers de transition en dessous",
+      "file": "bridge_problem_solution.svg",
+      "slots": ["title", "problem_label", "problem_item_1", "problem_item_2", "bridge_step_1", "bridge_step_2", "solution_label", "solution_item_1", "solution_item_2"],
+      "best_for": "Illustrer le passage d'une situation problématique à une situation cible via des leviers d'action"
+    },
+    {
+      "id": "stacked_bar",
+      "name": "Barre empilée",
+      "category": "Parts of a Whole",
+      "description": "Barre horizontale empilée à 4 segments paramétrables avec pourcentages et légende verticale",
+      "file": "stacked_bar.svg",
+      "slots": ["title", "segment_1_label", "segment_1_percent", "segment_2_label", "segment_2_percent", "segment_3_label", "segment_3_percent", "segment_4_label", "segment_4_percent"],
+      "best_for": "Comparer la part relative de quatre catégories formant un tout"
+    }
+  ]
+}

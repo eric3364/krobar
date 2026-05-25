@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml" viewBox="0 0 1040 600" font-family="Plus Jakarta Sans, system-ui, sans-serif">
+  <style>
+    .title-text {
+      font-size: 20px;
+      font-weight: 700;
+      text-align: center;
+      color: #0f172a;
+    }
+    .label-text {
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      color: #0f172a;
+      line-height: 1.3;
+    }
+    .center-label-text {
+      font-size: 16px;
+      font-weight: 700;
+      text-align: center;
+      color: #0f172a;
+    }
+    .box {
+      fill: #f8fafc;
+      stroke: #e2e8f0;
+      stroke-width: 2;
+      rx: 8;
+      ry: 8;
+    }
+    .connector {
+      stroke: #94a3b8;
+      stroke-width: 2;
+      fill: none;
+    }
+    .arrow-marker {
+        fill: #94a3b8;
+    }
+  </style>
+  
+  <defs>
+    <marker id="arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" class="arrow-marker" />
+    </marker>
+  </defs>
+
+  
+  <foreignObject x="320" y="20" width="400" height="40">
+    <html:div data-slot="title" class="title-text">
+      5 forces de Porter
+    </html:div>
+  </foreignObject>
+
+  
+  <rect x="385" y="235" width="270" height="130" class="box" />
+  <foreignObject x="395" y="260" width="250" height="80">
+    <html:div data-slot="rivalry-label" class="center-label-text" style="display: flex; align-items: center; justify-content: center; height: 100%;">
+      Intensité concurrentielle
+    </html:div>
+  </foreignObject>
+
+  
+  <foreignObject x="385" y="65" width="270" height="40">
+    <html:div data-slot="substitutes-label" class="label-text">
+      Menace des produits de substitution
+    </html:div>
+  </foreignObject>
+  <rect x="385" y="105" width="270" height="110" class="box" />
+  <path d="M 520 215 L 520 235" class="connector" marker-end="url(#arrowhead)" />
+
+  
+  <rect x="385" y="385" width="270" height="110" class="box" />
+  <foreignObject x="385" y="500" width="270" height="40">
+    <html:div data-slot="new-entrants-label" class="label-text">
+      Menace des nouveaux entrants
+    </html:div>
+  </foreignObject>
+  <path d="M 520 385 L 520 365" class="connector" marker-end="url(#arrowhead)" />
+  
+  
+  <foreignObject x="40" y="205" width="240" height="40">
+    <html:div data-slot="suppliers-label" class="label-text">
+      Pouvoir de négociation des fournisseurs
+    </html:div>
+  </foreignObject>
+  <rect x="40" y="245" width="240" height="130" class="box" />
+  <path d="M 280 310 L 385 310" class="connector" marker-end="url(#arrowhead)" />
+
+  
+  <foreignObject x="760" y="205" width="240" height="40">
+    <html:div data-slot="buyers-label" class="label-text">
+      Pouvoir de négociation des clients
+    </html:div>
+  </foreignObject>
+  <rect x="760" y="245" width="240" height="130" class="box" />
+  <path d="M 760 310 L 655 310" class="connector" marker-end="url(#arrowhead)" />
+
+<g class="slot-group" data-slot-key="supplier_1"><rect class="slot-shape" data-shape="bbox_supplier_1_1" x="50" y="250" width="220" height="120" fill="none" stroke="none" /><foreignObject class="slot-label" x="50" y="250" width="220" height="120"><html:div class="slot-content">{{supplier_1}}</html:div></foreignObject></g><g class="slot-group" data-slot-key="substitute_1"><rect class="slot-shape" data-shape="bbox_substitute_1_1" x="390" y="110" width="260" height="100" fill="none" stroke="none" /><foreignObject class="slot-label" x="390" y="110" width="260" height="100"><html:div class="slot-content">{{substitute_1}}</html:div></foreignObject></g><g class="slot-group" data-slot-key="buyer_1"><rect class="slot-shape" data-shape="bbox_buyer_1_1" x="770" y="250" width="220" height="120" fill="none" stroke="none" /><foreignObject class="slot-label" x="770" y="250" width="220" height="120"><html:div class="slot-content">{{buyer_1}}</html:div></foreignObject></g><g class="slot-group" data-slot-key="new_entrant_1"><rect class="slot-shape" data-shape="bbox_new_entrant_1_1" x="390" y="390" width="260" height="100" fill="none" stroke="none" /><foreignObject class="slot-label" x="390" y="390" width="260" height="100"><html:div class="slot-content">{{new_entrant_1}}</html:div></foreignObject></g><g class="slot-group" data-slot-key="competitor_1"><rect class="slot-shape" data-shape="bbox_competitor_1_1" x="400" y="240" width="250" height="120" fill="none" stroke="none" /><foreignObject class="slot-label" x="400" y="240" width="250" height="120"><html:div class="slot-content">{{competitor_1}}</html:div></foreignObject></g></svg>

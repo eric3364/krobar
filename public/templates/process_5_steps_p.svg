@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:krobar="http://krobar.online/spec/v1" viewBox="0 0 1600 900" data-svg-kr-version="1.0" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif">
+
+  
+  
+  
+  <metadata>
+    <krobar:krobar-meta>
+      <krobar:id>process_5_steps_p</krobar:id>
+      <krobar:name>Process 5 étapes</krobar:name>
+      <krobar:category>Process</krobar:category>
+      <krobar:tier>premium</krobar:tier>
+      <krobar:description>Séquence de cinq étapes ordonnées avec un titre et un sous-titre de contexte.</krobar:description>
+      <krobar:best-for>Présenter un processus, un parcours ou un workflow ordonné en cinq jalons.</krobar:best-for>
+      <krobar:markers>étape, phase, jalon, séquence, étapes, phases, jalons, processus, workflow, milestone, parcours, progression, déploiement, en 2020, en 2021, à partir de, Q1, T2, premièrement, ensuite, puis, finalement, d'abord</krobar:markers>
+      <krobar:matching-types>process_ordered</krobar:matching-types>
+      <krobar:test-text>1. La conception 2. La préparation 3. L'ouverture 4. La réalisation 5. La réception</krobar:test-text>
+    </krobar:krobar-meta>
+  </metadata>
+
+  
+  <rect width="1600" height="900" fill="#F7F8FA" />
+
+  
+  
+  
+  <g class="krobar-slot" data-slot-key="title" data-slot-cardinality="unique" data-slot-icon="disabled">
+    <rect class="slot-bbox" x="200" y="90" width="1200" height="100" fill="none" stroke="none" />
+    </g>
+
+  
+  <rect x="730" y="195" width="140" height="5" fill="#3B5BDB" rx="2.5" />
+
+  
+  
+  
+  <g class="krobar-slot" data-slot-key="subtitle" data-slot-cardinality="unique" data-slot-icon="disabled">
+    <rect class="slot-bbox" x="200" y="240" width="1200" height="60" fill="none" stroke="none" />
+    </g>
+
+  
+  
+  
+  
+  <g class="krobar-decoration">
+    </g>
+
+  
+  
+  
+  
+  
+
+  
+  <g class="krobar-slot" data-slot-key="step" data-slot-cardinality="repeated" data-slot-cardinality-ideal="5" data-slot-cardinality-min="3" data-slot-cardinality-max="5" data-slot-variants="3,4,5" data-slot-instance-index="1" data-slot-icon="optional" data-slot-icon-default="arrow-big-right" data-slot-icon-position="top" data-slot-icon-size="24">
+    <rect class="slot-shape" x="120" y="420" width="240" height="240" rx="16" ry="16" fill="#FFFFFF" stroke="#1A2A4A" stroke-width="2.5" />
+    <rect class="slot-bbox" x="120" y="420" width="240" height="240" fill="none" stroke="none" />
+    </g>
+
+  
+  <line x1="362" y1="540" x2="398" y2="540" stroke="#1A2A4A" stroke-width="2.5" />
+  <polyline points="388,532 398,540 388,548" stroke="#1A2A4A" stroke-width="2.5" fill="none" />
+
+  
+  <g class="krobar-slot" data-slot-key="step" data-slot-cardinality="repeated" data-slot-cardinality-ideal="5" data-slot-cardinality-min="3" data-slot-cardinality-max="5" data-slot-variants="3,4,5" data-slot-instance-index="2" data-slot-icon="optional" data-slot-icon-default="arrow-big-right" data-slot-icon-position="top" data-slot-icon-size="24">
+    <rect class="slot-shape" x="400" y="420" width="240" height="240" rx="16" ry="16" fill="#FFFFFF" stroke="#1A2A4A" stroke-width="2.5" />
+    <rect class="slot-bbox" x="400" y="420" width="240" height="240" fill="none" stroke="none" />
+    </g>
+
+  <line x1="642" y1="540" x2="678" y2="540" stroke="#1A2A4A" stroke-width="2.5" />
+  <polyline points="668,532 678,540 668,548" stroke="#1A2A4A" stroke-width="2.5" fill="none" />
+
+  
+  <g class="krobar-slot" data-slot-key="step" data-slot-cardinality="repeated" data-slot-cardinality-ideal="5" data-slot-cardinality-min="3" data-slot-cardinality-max="5" data-slot-variants="3,4,5" data-slot-instance-index="3" data-slot-icon="optional" data-slot-icon-default="arrow-big-right" data-slot-icon-position="top" data-slot-icon-size="24">
+    <rect class="slot-shape" x="680" y="420" width="240" height="240" rx="16" ry="16" fill="#FFFFFF" stroke="#1A2A4A" stroke-width="2.5" />
+    <rect class="slot-bbox" x="680" y="420" width="240" height="240" fill="none" stroke="none" />
+    </g>
+
+  <line x1="922" y1="540" x2="958" y2="540" stroke="#1A2A4A" stroke-width="2.5" />
+  <polyline points="948,532 958,540 948,548" stroke="#1A2A4A" stroke-width="2.5" fill="none" />
+
+  
+  <g class="krobar-slot" data-slot-key="step" data-slot-cardinality="repeated" data-slot-cardinality-ideal="5" data-slot-cardinality-min="3" data-slot-cardinality-max="5" data-slot-variants="3,4,5" data-slot-instance-index="4" data-slot-icon="optional" data-slot-icon-default="arrow-big-right" data-slot-icon-position="top" data-slot-icon-size="24">
+    <rect class="slot-shape" x="960" y="420" width="240" height="240" rx="16" ry="16" fill="#FFFFFF" stroke="#1A2A4A" stroke-width="2.5" />
+    <rect class="slot-bbox" x="960" y="420" width="240" height="240" fill="none" stroke="none" />
+    </g>
+
+  <line x1="1202" y1="540" x2="1238" y2="540" stroke="#1A2A4A" stroke-width="2.5" />
+  <polyline points="1228,532 1238,540 1228,548" stroke="#1A2A4A" stroke-width="2.5" fill="none" />
+
+  
+  <g class="krobar-slot" data-slot-key="step" data-slot-cardinality="repeated" data-slot-cardinality-ideal="5" data-slot-cardinality-min="3" data-slot-cardinality-max="5" data-slot-variants="3,4,5" data-slot-instance-index="5" data-slot-icon="optional" data-slot-icon-default="arrow-big-right" data-slot-icon-position="top" data-slot-icon-size="24">
+    <rect class="slot-shape" x="1240" y="420" width="240" height="240" rx="16" ry="16" fill="#FFFFFF" stroke="#1A2A4A" stroke-width="2.5" />
+    <rect class="slot-bbox" x="1240" y="420" width="240" height="240" fill="none" stroke="none" />
+    </g>
+
+  
+  
+  
+  <g class="krobar-decoration">
+    </g>
+
+<g class="slot-group" data-slot-key="title"><rect class="slot-shape" data-shape="bbox_title_1" x="200" y="90" width="1200" height="100" fill="none" stroke="none" /><foreignObject class="slot-label" x="200" y="90" width="1200" height="100"><html:div class="slot-content">{{title}}</html:div></foreignObject></g><g class="slot-group" data-slot-key="subtitle"><rect class="slot-shape" data-shape="bbox_subtitle_1" x="200" y="240" width="1200" height="60" fill="none" stroke="none" /><foreignObject class="slot-label" x="200" y="240" width="1200" height="60"><html:div class="slot-content">{{subtitle}}</html:div></foreignObject></g><g class="slot-group" data-slot-key="step"><rect class="slot-shape" data-shape="bbox_step_1" x="120" y="420" width="240" height="240" fill="none" stroke="none" /><foreignObject class="slot-label" x="120" y="420" width="240" height="240"><html:div class="slot-content">{{step_1}}</html:div></foreignObject></g><g class="slot-group" data-slot-key="step"><rect class="slot-shape" data-shape="bbox_step_2" x="400" y="420" width="240" height="240" fill="none" stroke="none" /><foreignObject class="slot-label" x="400" y="420" width="240" height="240"><html:div class="slot-content">{{step_2}}</html:div></foreignObject></g><g class="slot-group" data-slot-key="step"><rect class="slot-shape" data-shape="bbox_step_3" x="680" y="420" width="240" height="240" fill="none" stroke="none" /><foreignObject class="slot-label" x="680" y="420" width="240" height="240"><html:div class="slot-content">{{step_3}}</html:div></foreignObject></g><g class="slot-group" data-slot-key="step"><rect class="slot-shape" data-shape="bbox_step_4" x="960" y="420" width="240" height="240" fill="none" stroke="none" /><foreignObject class="slot-label" x="960" y="420" width="240" height="240"><html:div class="slot-content">{{step_4}}</html:div></foreignObject></g><g class="slot-group" data-slot-key="step"><rect class="slot-shape" data-shape="bbox_step_5" x="1240" y="420" width="240" height="240" fill="none" stroke="none" /><foreignObject class="slot-label" x="1240" y="420" width="240" height="240"><html:div class="slot-content">{{step_5}}</html:div></foreignObject></g><g class="slot-icon" data-slot-icon-key="step" transform="translate(108,-32)" data-icon-size="24" data-icon-stroke="currentColor" data-icon-default="arrow-big-right" /><g class="decorative-icon" data-icon-name="asterisk" data-icon-size="50" data-icon-stroke="var(--primary)" transform="translate(797,380)"><svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 6v12" />
+  <path d="M17.196 9 6.804 15" />
+  <path d="m6.804 9 10.392 6" />
+</svg>
+</g></svg>
