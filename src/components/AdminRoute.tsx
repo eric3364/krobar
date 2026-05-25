@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useRef } from "react";
 import { Navigate, Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { Loader2, LayoutDashboard, Palette, Users, Pencil, Grid3x3, Flag, BookOpen, Brain, Library, FilePlus2, BarChart3, Shapes, Settings, FileText, FileImage } from "lucide-react";
+import { Loader2, LayoutDashboard, Palette, Pencil, Grid3x3, Flag, BookOpen, Brain, Library, FilePlus2, BarChart3, Shapes, Settings, FileText, FileImage } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BYPASS_AUTH } from "@/lib/devAuth";
 import { Helmet } from "react-helmet-async";
@@ -10,7 +10,7 @@ const navItems = [
   { label: "Back-office", path: "/admin", icon: LayoutDashboard },
   { label: "Studio", path: "/admin/studio", icon: Palette },
   { label: "Bibliothèque", path: "/admin/library", icon: BookOpen },
-  { label: "Familles", path: "/admin/familles", icon: Users },
+  
   { label: "Feature flags", path: "/admin/feature-flags", icon: Flag },
   { label: "Matrice", path: "/admin/matrice", icon: Grid3x3 },
 ];
