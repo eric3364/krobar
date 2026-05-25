@@ -1523,7 +1523,7 @@
     {
       "id": "polarite_binaire",
       "name": "La Polarité",
-      "category": "Reclassed_SICAI",
+      "category": "Transformation",
       "description": "Deux termes en symétrie sur un axe d'opposition.",
       "file": "polarite_binaire.svg",
       "slots": [
@@ -1548,7 +1548,7 @@
     {
       "id": "liaison_binaire",
       "name": "La Liaison",
-      "category": "Reclassed_SICAI",
+      "category": "Mindmap",
       "description": "Deux entités équivalentes reliées sans hiérarchie.",
       "file": "liaison_binaire.svg",
       "slots": [
@@ -1574,7 +1574,7 @@
     {
       "id": "sequence_multiple",
       "name": "La Séquence",
-      "category": "Reclassed_SICAI",
+      "category": "Process",
       "description": "Étapes discrètes ordonnées dans le temps.",
       "file": "sequence_multiple.svg",
       "slots": [
@@ -1602,7 +1602,7 @@
     {
       "id": "gradient_multiple",
       "name": "Le Gradient",
-      "category": "Reclassed_SICAI",
+      "category": "Transformation",
       "description": "Progression continue sans rupture identifiable et sans étapes discrètes nommées.",
       "file": "gradient_multiple.svg",
       "slots": [
@@ -1634,7 +1634,7 @@
     {
       "id": "pente_unitaire",
       "name": "La Pente",
-      "category": "Reclassed_SICAI",
+      "category": "Transformation",
       "description": "Direction abstraite sans centre concret.",
       "file": "pente_unitaire.svg",
       "slots": [
@@ -1663,7 +1663,7 @@
     {
       "id": "emboitement_ternaire",
       "name": "L'Emboîtement",
-      "category": "Reclassed_SICAI",
+      "category": "Structure",
       "description": "Structures empilées par niveaux, chaque niveau contenant le suivant ou contenu par lui.",
       "file": "emboitement_ternaire.svg",
       "slots": [
@@ -1697,7 +1697,7 @@
     {
       "id": "trame_multiple",
       "name": "La Trame",
-      "category": "Reclassed_SICAI",
+      "category": "Mindmap",
       "description": "Réseau horizontal multidirectionnel sans centre ni hiérarchie.",
       "file": "trame_multiple.svg",
       "slots": [
@@ -1726,7 +1726,7 @@
     {
       "id": "foyer_rayonnant_multiple",
       "name": "Le Foyer Rayonnant",
-      "category": "Reclassed_SICAI",
+      "category": "Mindmap",
       "description": "Un cœur entouré de 3 à 6 satellites identifiés qui en dépendent.",
       "file": "foyer_rayonnant_multiple.svg",
       "slots": [
@@ -1758,7 +1758,7 @@
     {
       "id": "etoile_multiple",
       "name": "L'Étoile",
-      "category": "Reclassed_SICAI",
+      "category": "Mindmap",
       "description": "Un centre soumis à plusieurs pressions externes convergentes.",
       "file": "etoile_multiple.svg",
       "slots": [
@@ -1788,7 +1788,7 @@
     {
       "id": "polarite_mediane_ternaire",
       "name": "La Polarité Médiane",
-      "category": "Reclassed_SICAI",
+      "category": "Transformation",
       "description": "Deux pôles symétriques en confrontation, avec une position médiane qui synthétise, arbitre ou tempère la tension entre les deux.",
       "file": "polarite_mediane_ternaire.svg",
       "slots": [
@@ -1817,7 +1817,7 @@
     {
       "id": "degrade_tranche_multiple",
       "name": "Le Dégradé Tranché",
-      "category": "Reclassed_SICAI",
+      "category": "Transformation",
       "description": "Bande dégradée continue avec un point de bascule explicite et signifiant.",
       "file": "degrade_tranche_multiple.svg",
       "slots": [
@@ -1849,7 +1849,7 @@
     {
       "id": "hierarchie_multiple",
       "name": "La Hiérarchie",
-      "category": "Reclassed_SICAI",
+      "category": "Structure",
       "description": "Arbre vertical à 3 niveaux ou plus, organigramme.",
       "file": "hierarchie_multiple.svg",
       "slots": [
@@ -1882,7 +1882,7 @@
     {
       "id": "constellation_multiple",
       "name": "La Constellation",
-      "category": "Reclassed_SICAI",
+      "category": "Mindmap",
       "description": "Centre faible + réseau périphérique d'éléments associés.",
       "file": "constellation_multiple.svg",
       "slots": [
@@ -1913,7 +1913,7 @@
     {
       "id": "coexistence_binaire",
       "name": "La Coexistence",
-      "category": "Reclassed_SICAI",
+      "category": "Transformation",
       "description": "Deux entités en parallèle qui doivent coexister sans fusion.",
       "file": "coexistence_binaire.svg",
       "slots": [
@@ -1953,7 +1953,7 @@
     {
       "id": "tension_orientee_binaire",
       "name": "La Tension Orientée",
-      "category": "Reclassed_SICAI",
+      "category": "Transformation",
       "description": "Polarité avec axe directeur — opposition orientée vers une issue.",
       "file": "tension_orientee_binaire.svg",
       "slots": [
@@ -1984,7 +1984,7 @@
     {
       "id": "cycle_tension_multiple",
       "name": "Le Cycle en Tension",
-      "category": "Reclassed_SICAI",
+      "category": "Process",
       "description": "Boucle traversée par un axe de tension qui la divise.",
       "file": "cycle_tension_multiple.svg",
       "slots": [
@@ -2018,7 +2018,7 @@
     {
       "id": "croisement_trajectoires_binaire",
       "name": "Le Croisement de Trajectoires",
-      "category": "Reclassed_SICAI",
+      "category": "Transformation",
       "description": "Deux courbes de pentes différentes qui finissent par se croiser.",
       "file": "croisement_trajectoires_binaire.svg",
       "slots": [
@@ -2050,7 +2050,7 @@
     {
       "id": "arene_multiple",
       "name": "L'Arène",
-      "category": "Reclassed_SICAI",
+      "category": "Narrative",
       "description": "Deux camps internes en conflit autour d'un enjeu central.",
       "file": "arene_multiple.svg",
       "slots": [
@@ -2083,7 +2083,7 @@
     {
       "id": "nebuleuse_graduee_multiple",
       "name": "La Nébuleuse Graduée",
-      "category": "Reclassed_SICAI",
+      "category": "Visual Metaphors",
       "description": "Réseau à intensité variable centré faiblement.",
       "file": "nebuleuse_graduee_multiple.svg",
       "slots": [
