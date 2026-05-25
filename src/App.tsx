@@ -11,7 +11,7 @@ import Landing from "./pages/Landing.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import Admin from "./pages/Admin.tsx";
 import AdminStudioPage from "./pages/AdminStudioPage.tsx";
-import AdminFamiliesPage from "./pages/AdminFamiliesPage.tsx";
+
 import AdminMatricePage from "./pages/AdminMatricePage.tsx";
 import AdminFeatureFlagsPage from "./pages/AdminFeatureFlagsPage.tsx";
 import AdminLibraryPage from "./pages/AdminLibraryPage.tsx";
@@ -54,7 +54,7 @@ const App = () => (
             <Route path="/admin/studio" element={<AdminRoute><AdminStudioPage /></AdminRoute>} />
             <Route path="/admin/library" element={<AdminRoute><AdminLibraryPage /></AdminRoute>} />
             <Route path="/admin/library/:templateId" element={<AdminRoute><AdminLibraryTemplatePage /></AdminRoute>} />
-            <Route path="/admin/familles" element={<AdminRoute><AdminFamiliesPage /></AdminRoute>} />
+            
             <Route path="/admin/feature-flags" element={<AdminRoute><AdminFeatureFlagsPage /></AdminRoute>} />
             <Route path="/admin/matrice" element={<AdminRoute><AdminMatricePage /></AdminRoute>} />
 
