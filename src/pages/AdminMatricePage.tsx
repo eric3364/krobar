@@ -226,7 +226,7 @@ export default function AdminMatricePage() {
           <Table
             containerRef={tableScrollRef}
             containerClassName="w-full overflow-x-auto"
-            className="min-w-[1120px]"
+            className="min-w-[1480px]"
           >
             <TableHeader>
               <TableRow>
