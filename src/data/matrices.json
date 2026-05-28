@@ -3,2034 +3,4417 @@
     "id": "m001",
     "category": "Stratégie d’entreprise",
     "name": "SWOT",
-    "usage": "Forces, faiblesses, opportunités, menaces"
+    "usage": "Forces, faiblesses, opportunités, menaces",
+    "components": [
+      "Forces",
+      "Faiblesses",
+      "Opportunités",
+      "Menaces"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m002",
     "category": "Stratégie d’entreprise",
     "name": "PESTEL",
-    "usage": "Analyse de l’environnement macro"
+    "usage": "Analyse de l’environnement macro",
+    "components": [
+      "Politique",
+      "Économique",
+      "Socioculturel",
+      "Technologique",
+      "Écologique",
+      "Légal"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m003",
     "category": "Stratégie d’entreprise",
     "name": "5 forces de Porter",
-    "usage": "Analyse de l’intensité concurrentielle"
+    "usage": "Analyse de l’intensité concurrentielle",
+    "components": [
+      "Intensité concurrentielle",
+      "Pouvoir de négociation des fournisseurs",
+      "Pouvoir de négociation des clients",
+      "Menace des nouveaux entrants",
+      "Menace des produits de substitution"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m004",
     "category": "Stratégie d’entreprise",
     "name": "Matrice BCG",
-    "usage": "Gestion d’un portefeuille d’activités"
+    "usage": "Gestion d’un portefeuille d’activités",
+    "components": [
+      "Vedettes",
+      "Vaches à lait",
+      "Dilemmes",
+      "Poids morts"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m005",
     "category": "Stratégie d’entreprise",
     "name": "Matrice McKinsey / GE",
-    "usage": "Attractivité du marché vs position concurrentielle"
+    "usage": "Attractivité du marché vs position concurrentielle",
+    "components": [
+      "Mckinsey fort / Ge fort",
+      "Mckinsey fort / Ge faible",
+      "Mckinsey faible / Ge fort",
+      "Mckinsey faible / Ge faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m006",
     "category": "Stratégie d’entreprise",
     "name": "Matrice ADL",
-    "usage": "Maturité du secteur vs position concurrentielle"
+    "usage": "Maturité du secteur vs position concurrentielle",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m007",
     "category": "Stratégie d’entreprise",
     "name": "Matrice Ansoff",
-    "usage": "Stratégies de croissance"
+    "usage": "Stratégies de croissance",
+    "components": [
+      "Pénétration de marché",
+      "Développement de produit",
+      "Développement de marché",
+      "Diversification"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m008",
     "category": "Stratégie d’entreprise",
     "name": "Océan Bleu",
-    "usage": "Création d’un espace stratégique non concurrentiel"
+    "usage": "Création d’un espace stratégique non concurrentiel",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m009",
     "category": "Stratégie d’entreprise",
     "name": "Canevas stratégique Océan Bleu",
-    "usage": "Comparaison des facteurs de valeur"
+    "usage": "Comparaison des facteurs de valeur",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m010",
     "category": "Stratégie d’entreprise",
     "name": "Matrice des avantages concurrentiels",
-    "usage": "Coût, différenciation, focalisation"
+    "usage": "Coût, différenciation, focalisation",
+    "components": [
+      "Coût",
+      "Différenciation",
+      "Focalisation"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m011",
     "category": "Stratégie d’entreprise",
     "name": "Stratégies génériques de Porter",
-    "usage": "Domination par les coûts, différenciation, concentration"
+    "usage": "Domination par les coûts, différenciation, concentration",
+    "components": [
+      "Domination par les coûts",
+      "Différenciation",
+      "Concentration"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m012",
     "category": "Stratégie d’entreprise",
     "name": "Matrice SPACE",
-    "usage": "Position stratégique et choix d’orientation"
+    "usage": "Position stratégique et choix d’orientation",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m013",
     "category": "Stratégie d’entreprise",
     "name": "Matrice TOWS",
-    "usage": "Croisement opérationnel des éléments SWOT"
+    "usage": "Croisement opérationnel des éléments SWOT",
+    "components": [
+      "Stratégies SO (Forces-Opportunités)",
+      "Stratégies WO (Faiblesses-Opportunités)",
+      "Stratégies ST (Forces-Menaces)",
+      "Stratégies WT (Faiblesses-Menaces)"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m014",
     "category": "Stratégie d’entreprise",
     "name": "Matrice d’attractivité marché / compétitivité",
-    "usage": "Priorisation des marchés"
+    "usage": "Priorisation des marchés",
+    "components": [
+      "D’attractivité marché fort / Compétitivité fort",
+      "D’attractivité marché fort / Compétitivité faible",
+      "D’attractivité marché faible / Compétitivité fort",
+      "D’attractivité marché faible / Compétitivité faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m015",
     "category": "Stratégie d’entreprise",
     "name": "Matrice de positionnement stratégique",
-    "usage": "Comparaison des acteurs sur deux axes"
+    "usage": "Comparaison des acteurs sur deux axes",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m016",
     "category": "Stratégie d’entreprise",
     "name": "Matrice de diversification",
-    "usage": "Diversification liée ou non liée"
+    "usage": "Diversification liée ou non liée",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m017",
     "category": "Stratégie d’entreprise",
     "name": "Matrice de synergies",
-    "usage": "Identification des synergies entre activités"
+    "usage": "Identification des synergies entre activités",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m018",
     "category": "Stratégie d’entreprise",
     "name": "Matrice de risque stratégique",
-    "usage": "Risque vs impact stratégique"
+    "usage": "Risque vs impact stratégique",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m019",
     "category": "Stratégie d’entreprise",
     "name": "Matrice de scénarios",
-    "usage": "Hypothèses futures et options stratégiques"
+    "usage": "Hypothèses futures et options stratégiques",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m020",
     "category": "Stratégie d’entreprise",
     "name": "Matrice de décision stratégique",
-    "usage": "Pondération multicritère des options"
+    "usage": "Pondération multicritère des options",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m021",
     "category": "Marketing",
     "name": "STP",
-    "usage": "Segmentation, ciblage, positionnement"
+    "usage": "Segmentation, ciblage, positionnement",
+    "components": [
+      "Segmentation",
+      "Ciblage",
+      "Positionnement"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m022",
     "category": "Marketing",
     "name": "Matrice de segmentation",
-    "usage": "Découpage du marché"
+    "usage": "Découpage du marché",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m023",
     "category": "Marketing",
     "name": "Matrice de ciblage",
-    "usage": "Priorisation des segments"
+    "usage": "Priorisation des segments",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m024",
     "category": "Marketing",
     "name": "Carte perceptuelle / perceptual map",
-    "usage": "Positionnement perçu par les clients"
+    "usage": "Positionnement perçu par les clients",
+    "components": [
+      "Carte perceptuelle fort / Perceptual map fort",
+      "Carte perceptuelle fort / Perceptual map faible",
+      "Carte perceptuelle faible / Perceptual map fort",
+      "Carte perceptuelle faible / Perceptual map faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m025",
     "category": "Marketing",
     "name": "Matrice de positionnement",
-    "usage": "Position de la marque ou de l’offre"
+    "usage": "Position de la marque ou de l’offre",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m026",
     "category": "Marketing",
     "name": "Marketing mix 4P",
-    "usage": "Produit, prix, place, promotion"
+    "usage": "Produit, prix, place, promotion",
+    "components": [
+      "Produit",
+      "Prix",
+      "Place",
+      "Promotion"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m027",
     "category": "Marketing",
     "name": "Marketing mix 7P",
-    "usage": "Version services : 4P + people, process, physical evidence"
+    "usage": "Version services : 4P + people, process, physical evidence",
+    "components": [
+      "Produit",
+      "Prix",
+      "Place",
+      "Promotion",
+      "Personnes",
+      "Processus",
+      "Preuve physique"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m028",
     "category": "Marketing",
     "name": "Matrice produit / marché",
-    "usage": "Croisement offre et cible"
+    "usage": "Croisement offre et cible",
+    "components": [
+      "Produit fort / Marché fort",
+      "Produit fort / Marché faible",
+      "Produit faible / Marché fort",
+      "Produit faible / Marché faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m029",
     "category": "Marketing",
     "name": "Matrice prix / valeur",
-    "usage": "Positionnement tarifaire"
+    "usage": "Positionnement tarifaire",
+    "components": [
+      "Prix fort / Valeur fort",
+      "Prix fort / Valeur faible",
+      "Prix faible / Valeur fort",
+      "Prix faible / Valeur faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m030",
     "category": "Marketing",
     "name": "Matrice d’élasticité prix",
-    "usage": "Sensibilité au prix"
+    "usage": "Sensibilité au prix",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m031",
     "category": "Marketing",
     "name": "Matrice de différenciation",
-    "usage": "Facteurs distinctifs de l’offre"
+    "usage": "Facteurs distinctifs de l’offre",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m032",
     "category": "Marketing",
     "name": "Matrice de proposition de valeur",
-    "usage": "Bénéfices, preuves, différenciation"
+    "usage": "Bénéfices, preuves, différenciation",
+    "components": [
+      "Bénéfices",
+      "Preuves",
+      "Différenciation"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m033",
     "category": "Marketing",
     "name": "Value Proposition Canvas",
-    "usage": "Profil client et proposition de valeur"
+    "usage": "Profil client et proposition de valeur",
+    "components": [
+      "Tâches du client",
+      "Bénéfices attendus",
+      "Douleurs",
+      "Produits & services",
+      "Créateurs de gains",
+      "Soulageurs de douleurs"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m034",
     "category": "Marketing",
     "name": "Brand Key",
-    "usage": "Plateforme de marque"
+    "usage": "Plateforme de marque",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m035",
     "category": "Marketing",
     "name": "Brand Onion",
-    "usage": "Identité de marque par couches"
+    "usage": "Identité de marque par couches",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m036",
     "category": "Marketing",
     "name": "Brand Equity Model",
-    "usage": "Capital de marque"
+    "usage": "Capital de marque",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m037",
     "category": "Marketing",
     "name": "Pyramide de Keller",
-    "usage": "Construction de la marque"
+    "usage": "Construction de la marque",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m038",
     "category": "Marketing",
     "name": "Prisme d’identité de Kapferer",
-    "usage": "Analyse de l’identité de marque"
+    "usage": "Analyse de l’identité de marque",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m039",
     "category": "Marketing",
     "name": "Matrice de notoriété / image",
-    "usage": "Diagnostic de marque"
+    "usage": "Diagnostic de marque",
+    "components": [
+      "De notoriété fort / Image fort",
+      "De notoriété fort / Image faible",
+      "De notoriété faible / Image fort",
+      "De notoriété faible / Image faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m040",
     "category": "Marketing",
     "name": "Matrice de fidélité client",
-    "usage": "Attachement et réachat"
+    "usage": "Attachement et réachat",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m041",
     "category": "Marketing",
     "name": "Matrice RFM",
-    "usage": "Récence, fréquence, montant"
+    "usage": "Récence, fréquence, montant",
+    "components": [
+      "Récence",
+      "Fréquence",
+      "Montant"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m042",
     "category": "Marketing",
     "name": "Matrice satisfaction / fidélité",
-    "usage": "Typologie des clients"
+    "usage": "Typologie des clients",
+    "components": [
+      "Satisfaction fort / Fidélité fort",
+      "Satisfaction fort / Fidélité faible",
+      "Satisfaction faible / Fidélité fort",
+      "Satisfaction faible / Fidélité faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m043",
     "category": "Marketing",
     "name": "Matrice importance / performance",
-    "usage": "Priorisation des attributs client"
+    "usage": "Priorisation des attributs client",
+    "components": [
+      "Importance fort / Performance fort",
+      "Importance fort / Performance faible",
+      "Importance faible / Performance fort",
+      "Importance faible / Performance faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m044",
     "category": "Marketing",
     "name": "Matrice expérience client",
-    "usage": "Points de contact et satisfaction"
+    "usage": "Points de contact et satisfaction",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m045",
     "category": "Marketing",
     "name": "Customer Journey Map",
-    "usage": "Parcours client"
+    "usage": "Parcours client",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m046",
     "category": "Marketing",
     "name": "Empathy Map",
-    "usage": "Compréhension des besoins utilisateurs"
+    "usage": "Compréhension des besoins utilisateurs",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m047",
     "category": "Marketing",
     "name": "Persona Matrix",
-    "usage": "Typologie des profils clients"
+    "usage": "Typologie des profils clients",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m048",
     "category": "Marketing",
     "name": "Matrice des objections",
-    "usage": "Freins à l’achat et réponses"
+    "usage": "Freins à l’achat et réponses",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m049",
     "category": "Marketing",
     "name": "Matrice des bénéfices clients",
-    "usage": "Bénéfices fonctionnels, émotionnels, sociaux"
+    "usage": "Bénéfices fonctionnels, émotionnels, sociaux",
+    "components": [
+      "Bénéfices fonctionnels",
+      "Émotionnels",
+      "Sociaux"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m050",
     "category": "Marketing",
     "name": "Matrice contenu / parcours d’achat",
-    "usage": "Contenus selon étape du funnel"
+    "usage": "Contenus selon étape du funnel",
+    "components": [
+      "Contenu fort / Parcours d’achat fort",
+      "Contenu fort / Parcours d’achat faible",
+      "Contenu faible / Parcours d’achat fort",
+      "Contenu faible / Parcours d’achat faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m051",
     "category": "Marketing",
     "name": "Matrice AIDA",
-    "usage": "Attention, intérêt, désir, action"
+    "usage": "Attention, intérêt, désir, action",
+    "components": [
+      "Attention",
+      "Intérêt",
+      "Désir",
+      "Action"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m052",
     "category": "Marketing",
     "name": "Funnel marketing",
-    "usage": "Acquisition, conversion, fidélisation"
+    "usage": "Acquisition, conversion, fidélisation",
+    "components": [
+      "Acquisition",
+      "Conversion",
+      "Fidélisation"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m053",
     "category": "Marketing",
     "name": "Matrice acquisition / rétention",
-    "usage": "Allocation des efforts marketing"
+    "usage": "Allocation des efforts marketing",
+    "components": [
+      "Acquisition fort / Rétention fort",
+      "Acquisition fort / Rétention faible",
+      "Acquisition faible / Rétention fort",
+      "Acquisition faible / Rétention faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m054",
     "category": "Marketing",
     "name": "Matrice paid / owned / earned media",
-    "usage": "Canaux de communication"
+    "usage": "Canaux de communication",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m055",
     "category": "Marketing",
     "name": "Matrice des canaux",
-    "usage": "Performance par canal"
+    "usage": "Performance par canal",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m056",
     "category": "Marketing",
     "name": "Matrice message / cible",
-    "usage": "Adaptation des messages par segment"
+    "usage": "Adaptation des messages par segment",
+    "components": [
+      "Message fort / Cible fort",
+      "Message fort / Cible faible",
+      "Message faible / Cible fort",
+      "Message faible / Cible faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m057",
     "category": "Marketing",
     "name": "Matrice de campagnes",
-    "usage": "Objectifs, cibles, canaux, KPI"
+    "usage": "Objectifs, cibles, canaux, KPI",
+    "components": [
+      "Objectifs",
+      "Cibles",
+      "Canaux",
+      "KPI"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m058",
     "category": "Marketing",
     "name": "Matrice de valeur client",
-    "usage": "Valeur actuelle vs potentiel"
+    "usage": "Valeur actuelle vs potentiel",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m059",
     "category": "Marketing",
     "name": "Matrice CLV / CAC",
-    "usage": "Valeur vie client vs coût d’acquisition"
+    "usage": "Valeur vie client vs coût d’acquisition",
+    "components": [
+      "Clv fort / Cac fort",
+      "Clv fort / Cac faible",
+      "Clv faible / Cac fort",
+      "Clv faible / Cac faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m060",
     "category": "Marketing digital et performance",
     "name": "Matrice SEO impact / effort",
-    "usage": "Priorisation des actions SEO"
+    "usage": "Priorisation des actions SEO",
+    "components": [
+      "Seo impact fort / Effort fort",
+      "Seo impact fort / Effort faible",
+      "Seo impact faible / Effort fort",
+      "Seo impact faible / Effort faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m061",
     "category": "Marketing digital et performance",
     "name": "Matrice mots-clés intention / volume",
-    "usage": "Stratégie de mots-clés"
+    "usage": "Stratégie de mots-clés",
+    "components": [
+      "Mots-clés intention fort / Volume fort",
+      "Mots-clés intention fort / Volume faible",
+      "Mots-clés intention faible / Volume fort",
+      "Mots-clés intention faible / Volume faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m062",
     "category": "Marketing digital et performance",
     "name": "Matrice contenu evergreen / actualité",
-    "usage": "Stratégie éditoriale"
+    "usage": "Stratégie éditoriale",
+    "components": [
+      "Contenu evergreen fort / Actualité fort",
+      "Contenu evergreen fort / Actualité faible",
+      "Contenu evergreen faible / Actualité fort",
+      "Contenu evergreen faible / Actualité faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m063",
     "category": "Marketing digital et performance",
     "name": "Matrice contenu / intention de recherche",
-    "usage": "Alignement SEO"
+    "usage": "Alignement SEO",
+    "components": [
+      "Contenu fort / Intention de recherche fort",
+      "Contenu fort / Intention de recherche faible",
+      "Contenu faible / Intention de recherche fort",
+      "Contenu faible / Intention de recherche faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m064",
     "category": "Marketing digital et performance",
     "name": "Matrice social media engagement / portée",
-    "usage": "Analyse des contenus sociaux"
+    "usage": "Analyse des contenus sociaux",
+    "components": [
+      "Social media engagement fort / Portée fort",
+      "Social media engagement fort / Portée faible",
+      "Social media engagement faible / Portée fort",
+      "Social media engagement faible / Portée faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m065",
     "category": "Marketing digital et performance",
     "name": "Matrice paid media coût / conversion",
-    "usage": "Optimisation publicitaire"
+    "usage": "Optimisation publicitaire",
+    "components": [
+      "Paid media coût fort / Conversion fort",
+      "Paid media coût fort / Conversion faible",
+      "Paid media coût faible / Conversion fort",
+      "Paid media coût faible / Conversion faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m066",
     "category": "Marketing digital et performance",
     "name": "Matrice ROAS / marge",
-    "usage": "Rentabilité des campagnes"
+    "usage": "Rentabilité des campagnes",
+    "components": [
+      "Roas fort / Marge fort",
+      "Roas fort / Marge faible",
+      "Roas faible / Marge fort",
+      "Roas faible / Marge faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m067",
     "category": "Marketing digital et performance",
     "name": "Matrice lead scoring",
-    "usage": "Qualification des prospects"
+    "usage": "Qualification des prospects",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m068",
     "category": "Marketing digital et performance",
     "name": "Matrice nurturing",
-    "usage": "Scénarios de marketing automation"
+    "usage": "Scénarios de marketing automation",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m069",
     "category": "Marketing digital et performance",
     "name": "Matrice CRM valeur / engagement",
-    "usage": "Segmentation relationnelle"
+    "usage": "Segmentation relationnelle",
+    "components": [
+      "Crm valeur fort / Engagement fort",
+      "Crm valeur fort / Engagement faible",
+      "Crm valeur faible / Engagement fort",
+      "Crm valeur faible / Engagement faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m070",
     "category": "Marketing digital et performance",
     "name": "Matrice taux de conversion / trafic",
-    "usage": "Diagnostic web"
+    "usage": "Diagnostic web",
+    "components": [
+      "Taux de conversion fort / Trafic fort",
+      "Taux de conversion fort / Trafic faible",
+      "Taux de conversion faible / Trafic fort",
+      "Taux de conversion faible / Trafic faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m071",
     "category": "Marketing digital et performance",
     "name": "Matrice UX impact / friction",
-    "usage": "Priorisation UX"
+    "usage": "Priorisation UX",
+    "components": [
+      "Ux impact fort / Friction fort",
+      "Ux impact fort / Friction faible",
+      "Ux impact faible / Friction fort",
+      "Ux impact faible / Friction faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m072",
     "category": "Marketing digital et performance",
     "name": "Matrice analytics KPI / objectif",
-    "usage": "Pilotage digital"
+    "usage": "Pilotage digital",
+    "components": [
+      "Analytics kpi fort / Objectif fort",
+      "Analytics kpi fort / Objectif faible",
+      "Analytics kpi faible / Objectif fort",
+      "Analytics kpi faible / Objectif faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m073",
     "category": "Marketing digital et performance",
     "name": "Matrice canal / attribution",
-    "usage": "Contribution des canaux"
+    "usage": "Contribution des canaux",
+    "components": [
+      "Canal fort / Attribution fort",
+      "Canal fort / Attribution faible",
+      "Canal faible / Attribution fort",
+      "Canal faible / Attribution faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m074",
     "category": "Marketing digital et performance",
     "name": "Matrice email performance",
-    "usage": "Ouverture, clic, conversion"
+    "usage": "Ouverture, clic, conversion",
+    "components": [
+      "Ouverture",
+      "Clic",
+      "Conversion"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m075",
     "category": "Marketing digital et performance",
     "name": "Matrice de maturité digitale",
-    "usage": "Évaluation du niveau digital"
+    "usage": "Évaluation du niveau digital",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m076",
     "category": "Marketing digital et performance",
     "name": "Matrice data marketing",
-    "usage": "Données disponibles vs activation"
+    "usage": "Données disponibles vs activation",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m077",
     "category": "Marketing digital et performance",
     "name": "Matrice privacy / performance",
-    "usage": "Arbitrage RGPD et performance"
+    "usage": "Arbitrage RGPD et performance",
+    "components": [
+      "Privacy fort / Performance fort",
+      "Privacy fort / Performance faible",
+      "Privacy faible / Performance fort",
+      "Privacy faible / Performance faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m078",
     "category": "Management et organisation",
     "name": "Matrice RACI",
-    "usage": "Répartition des rôles et responsabilités"
+    "usage": "Répartition des rôles et responsabilités",
+    "components": [
+      "Responsible (Réalise)",
+      "Accountable (Approuve)",
+      "Consulted (Consulté)",
+      "Informed (Informé)"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m079",
     "category": "Management et organisation",
     "name": "Matrice RAPID",
-    "usage": "Décision et gouvernance"
+    "usage": "Décision et gouvernance",
+    "components": [
+      "Recommend",
+      "Agree",
+      "Perform",
+      "Input",
+      "Decide"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m080",
     "category": "Management et organisation",
     "name": "Matrice pouvoir / intérêt",
-    "usage": "Gestion des parties prenantes"
+    "usage": "Gestion des parties prenantes",
+    "components": [
+      "Pouvoir fort / Intérêt fort",
+      "Pouvoir fort / Intérêt faible",
+      "Pouvoir faible / Intérêt fort",
+      "Pouvoir faible / Intérêt faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m081",
     "category": "Management et organisation",
     "name": "Matrice influence / impact",
-    "usage": "Analyse des acteurs clés"
+    "usage": "Analyse des acteurs clés",
+    "components": [
+      "Influence fort / Impact fort",
+      "Influence fort / Impact faible",
+      "Influence faible / Impact fort",
+      "Influence faible / Impact faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m082",
     "category": "Management et organisation",
     "name": "Matrice responsabilité / autonomie",
-    "usage": "Délégation managériale"
+    "usage": "Délégation managériale",
+    "components": [
+      "Responsabilité fort / Autonomie fort",
+      "Responsabilité fort / Autonomie faible",
+      "Responsabilité faible / Autonomie fort",
+      "Responsabilité faible / Autonomie faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m083",
     "category": "Management et organisation",
     "name": "Matrice urgence / importance d’Eisenhower",
-    "usage": "Priorisation personnelle"
+    "usage": "Priorisation personnelle",
+    "components": [
+      "Urgent et important",
+      "Important non urgent",
+      "Urgent non important",
+      "Ni urgent ni important"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m084",
     "category": "Management et organisation",
     "name": "Matrice effort / impact",
-    "usage": "Priorisation des actions"
+    "usage": "Priorisation des actions",
+    "components": [
+      "Effort fort / Impact fort",
+      "Effort fort / Impact faible",
+      "Effort faible / Impact fort",
+      "Effort faible / Impact faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m085",
     "category": "Management et organisation",
     "name": "Matrice complexité / valeur",
-    "usage": "Arbitrage des projets"
+    "usage": "Arbitrage des projets",
+    "components": [
+      "Complexité fort / Valeur fort",
+      "Complexité fort / Valeur faible",
+      "Complexité faible / Valeur fort",
+      "Complexité faible / Valeur faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m086",
     "category": "Management et organisation",
     "name": "Matrice risque / impact",
-    "usage": "Gestion des risques"
+    "usage": "Gestion des risques",
+    "components": [
+      "Risque fort / Impact fort",
+      "Risque fort / Impact faible",
+      "Risque faible / Impact fort",
+      "Risque faible / Impact faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m087",
     "category": "Management et organisation",
     "name": "Matrice probabilité / gravité",
-    "usage": "Cartographie des risques"
+    "usage": "Cartographie des risques",
+    "components": [
+      "Probabilité fort / Gravité fort",
+      "Probabilité fort / Gravité faible",
+      "Probabilité faible / Gravité fort",
+      "Probabilité faible / Gravité faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m088",
     "category": "Management et organisation",
     "name": "Matrice décisionnelle multicritère",
-    "usage": "Choix entre options"
+    "usage": "Choix entre options",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m089",
     "category": "Management et organisation",
     "name": "Matrice de délégation",
-    "usage": "Niveau de délégation selon collaborateur"
+    "usage": "Niveau de délégation selon collaborateur",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m090",
     "category": "Management et organisation",
     "name": "Matrice compétences / tâches",
-    "usage": "Allocation des ressources"
+    "usage": "Allocation des ressources",
+    "components": [
+      "Compétences fort / Tâches fort",
+      "Compétences fort / Tâches faible",
+      "Compétences faible / Tâches fort",
+      "Compétences faible / Tâches faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m091",
     "category": "Management et organisation",
     "name": "Matrice charge / capacité",
-    "usage": "Planification des équipes"
+    "usage": "Planification des équipes",
+    "components": [
+      "Charge fort / Capacité fort",
+      "Charge fort / Capacité faible",
+      "Charge faible / Capacité fort",
+      "Charge faible / Capacité faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m092",
     "category": "Management et organisation",
     "name": "Matrice alignement / engagement",
-    "usage": "Diagnostic organisationnel"
+    "usage": "Diagnostic organisationnel",
+    "components": [
+      "Alignement fort / Engagement fort",
+      "Alignement fort / Engagement faible",
+      "Alignement faible / Engagement fort",
+      "Alignement faible / Engagement faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m093",
     "category": "Management et organisation",
     "name": "Matrice maturité organisationnelle",
-    "usage": "Évaluation de la structuration"
+    "usage": "Évaluation de la structuration",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m094",
     "category": "Management et organisation",
     "name": "Matrice centralisation / autonomie",
-    "usage": "Design organisationnel"
+    "usage": "Design organisationnel",
+    "components": [
+      "Centralisation fort / Autonomie fort",
+      "Centralisation fort / Autonomie faible",
+      "Centralisation faible / Autonomie fort",
+      "Centralisation faible / Autonomie faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m095",
     "category": "Management et organisation",
     "name": "Matrice processus / responsabilité",
-    "usage": "Cartographie opérationnelle"
+    "usage": "Cartographie opérationnelle",
+    "components": [
+      "Processus fort / Responsabilité fort",
+      "Processus fort / Responsabilité faible",
+      "Processus faible / Responsabilité fort",
+      "Processus faible / Responsabilité faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m096",
     "category": "Management et organisation",
     "name": "Matrice performance / potentiel",
-    "usage": "Évaluation des collaborateurs"
+    "usage": "Évaluation des collaborateurs",
+    "components": [
+      "Performance fort / Potentiel fort",
+      "Performance fort / Potentiel faible",
+      "Performance faible / Potentiel fort",
+      "Performance faible / Potentiel faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m097",
     "category": "Management et organisation",
     "name": "Matrice 9-box",
-    "usage": "Talent management"
+    "usage": "Talent management",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m098",
     "category": "Management et organisation",
     "name": "Matrice motivation / compétence",
-    "usage": "Style de management adapté"
+    "usage": "Style de management adapté",
+    "components": [
+      "Motivation fort / Compétence fort",
+      "Motivation fort / Compétence faible",
+      "Motivation faible / Compétence fort",
+      "Motivation faible / Compétence faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m099",
     "category": "Management et organisation",
     "name": "Matrice Hersey-Blanchard",
-    "usage": "Leadership situationnel"
+    "usage": "Leadership situationnel",
+    "components": [
+      "Directif",
+      "Persuasif",
+      "Participatif",
+      "Délégatif"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m100",
     "category": "Management et organisation",
     "name": "Matrice Blake & Mouton",
-    "usage": "Style de management"
+    "usage": "Style de management",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m101",
     "category": "Management et organisation",
     "name": "Matrice de culture organisationnelle",
-    "usage": "Analyse des cultures internes"
+    "usage": "Analyse des cultures internes",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m102",
     "category": "Management et organisation",
     "name": "Matrice de gouvernance",
-    "usage": "Droits de décision et instances"
+    "usage": "Droits de décision et instances",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m103",
     "category": "Gestion de projet",
     "name": "Matrice impact / effort",
-    "usage": "Priorisation des fonctionnalités ou tâches"
+    "usage": "Priorisation des fonctionnalités ou tâches",
+    "components": [
+      "Impact fort / Effort fort",
+      "Impact fort / Effort faible",
+      "Impact faible / Effort fort",
+      "Impact faible / Effort faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m104",
     "category": "Gestion de projet",
     "name": "Matrice valeur / complexité",
-    "usage": "Arbitrage produit/projet"
+    "usage": "Arbitrage produit/projet",
+    "components": [
+      "Valeur fort / Complexité fort",
+      "Valeur fort / Complexité faible",
+      "Valeur faible / Complexité fort",
+      "Valeur faible / Complexité faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m105",
     "category": "Gestion de projet",
     "name": "Matrice risques projet",
-    "usage": "Identification et traitement des risques"
+    "usage": "Identification et traitement des risques",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m106",
     "category": "Gestion de projet",
     "name": "Matrice parties prenantes",
-    "usage": "Analyse et plan d’engagement"
+    "usage": "Analyse et plan d’engagement",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m107",
     "category": "Gestion de projet",
     "name": "Matrice RACI projet",
-    "usage": "Clarification des responsabilités"
+    "usage": "Clarification des responsabilités",
+    "components": [
+      "Responsible (Réalise)",
+      "Accountable (Approuve)",
+      "Consulted (Consulté)",
+      "Informed (Informé)"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m108",
     "category": "Gestion de projet",
     "name": "Matrice MoSCoW",
-    "usage": "Must, Should, Could, Won’t"
+    "usage": "Must, Should, Could, Won’t",
+    "components": [
+      "Must have",
+      "Should have",
+      "Could have",
+      "Won't have"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m109",
     "category": "Gestion de projet",
     "name": "Matrice Kano",
-    "usage": "Satisfaction utilisateur selon fonctionnalités"
+    "usage": "Satisfaction utilisateur selon fonctionnalités",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m110",
     "category": "Gestion de projet",
     "name": "Matrice ICE",
-    "usage": "Impact, confidence, ease"
+    "usage": "Impact, confidence, ease",
+    "components": [
+      "Impact",
+      "Confidence",
+      "Ease"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m111",
     "category": "Gestion de projet",
     "name": "Matrice RICE",
-    "usage": "Reach, impact, confidence, effort"
+    "usage": "Reach, impact, confidence, effort",
+    "components": [
+      "Reach",
+      "Impact",
+      "Confidence",
+      "Effort"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m112",
     "category": "Gestion de projet",
     "name": "Matrice WSJF",
-    "usage": "Priorisation agile par valeur économique"
+    "usage": "Priorisation agile par valeur économique",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m113",
     "category": "Gestion de projet",
     "name": "Matrice Eisenhower",
-    "usage": "Urgence vs importance"
+    "usage": "Urgence vs importance",
+    "components": [
+      "Urgent et important",
+      "Important non urgent",
+      "Urgent non important",
+      "Ni urgent ni important"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m114",
     "category": "Gestion de projet",
     "name": "Matrice coûts / délais / qualité",
-    "usage": "Triangle projet"
+    "usage": "Triangle projet",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m115",
     "category": "Gestion de projet",
     "name": "Matrice de dépendances",
-    "usage": "Liens entre lots ou tâches"
+    "usage": "Liens entre lots ou tâches",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m116",
     "category": "Gestion de projet",
     "name": "Matrice de criticité",
-    "usage": "Urgence et sévérité"
+    "usage": "Urgence et sévérité",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m117",
     "category": "Gestion de projet",
     "name": "Matrice de décision Go / No Go",
-    "usage": "Validation d’un jalon"
+    "usage": "Validation d’un jalon",
+    "components": [
+      "De décision go fort / No go fort",
+      "De décision go fort / No go faible",
+      "De décision go faible / No go fort",
+      "De décision go faible / No go faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m118",
     "category": "Gestion de projet",
     "name": "Matrice de maturité projet",
-    "usage": "Niveau de maîtrise projet"
+    "usage": "Niveau de maîtrise projet",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m119",
     "category": "Gestion de projet",
     "name": "Matrice d’arbitrage backlog",
-    "usage": "Priorisation produit"
+    "usage": "Priorisation produit",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m120",
     "category": "Gestion de projet",
     "name": "Matrice risques / opportunités",
-    "usage": "Vision projet équilibrée"
+    "usage": "Vision projet équilibrée",
+    "components": [
+      "Risques fort / Opportunités fort",
+      "Risques fort / Opportunités faible",
+      "Risques faible / Opportunités fort",
+      "Risques faible / Opportunités faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m121",
     "category": "Innovation et product management",
     "name": "Business Model Canvas",
-    "usage": "Modèle économique"
+    "usage": "Modèle économique",
+    "components": [
+      "Segments de clientèle",
+      "Proposition de valeur",
+      "Canaux",
+      "Relations clients",
+      "Sources de revenus",
+      "Ressources clés",
+      "Activités clés",
+      "Partenaires clés",
+      "Structure de coûts"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m122",
     "category": "Innovation et product management",
     "name": "Lean Canvas",
-    "usage": "Version startup du business model"
+    "usage": "Version startup du business model",
+    "components": [
+      "Problème",
+      "Segments de clients",
+      "Proposition de valeur unique",
+      "Solution",
+      "Canaux",
+      "Sources de revenus",
+      "Structure de coûts",
+      "Indicateurs clés",
+      "Avantage déloyal"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m123",
     "category": "Innovation et product management",
     "name": "Product Market Fit Canvas",
-    "usage": "Alignement produit / marché"
+    "usage": "Alignement produit / marché",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m124",
     "category": "Innovation et product management",
     "name": "Value Proposition Canvas",
-    "usage": "Proposition de valeur"
+    "usage": "Proposition de valeur",
+    "components": [
+      "Tâches du client",
+      "Bénéfices attendus",
+      "Douleurs",
+      "Produits & services",
+      "Créateurs de gains",
+      "Soulageurs de douleurs"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m125",
     "category": "Innovation et product management",
     "name": "Jobs To Be Done Matrix",
-    "usage": "Besoins et tâches clients"
+    "usage": "Besoins et tâches clients",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m126",
     "category": "Innovation et product management",
     "name": "Matrice Kano",
-    "usage": "Priorisation des fonctionnalités"
+    "usage": "Priorisation des fonctionnalités",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m127",
     "category": "Innovation et product management",
     "name": "Matrice impact / effort produit",
-    "usage": "Roadmap produit"
+    "usage": "Roadmap produit",
+    "components": [
+      "Impact fort / Effort produit fort",
+      "Impact fort / Effort produit faible",
+      "Impact faible / Effort produit fort",
+      "Impact faible / Effort produit faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m128",
     "category": "Innovation et product management",
     "name": "Matrice valeur utilisateur / valeur business",
-    "usage": "Arbitrage roadmap"
+    "usage": "Arbitrage roadmap",
+    "components": [
+      "Valeur utilisateur fort / Valeur business fort",
+      "Valeur utilisateur fort / Valeur business faible",
+      "Valeur utilisateur faible / Valeur business fort",
+      "Valeur utilisateur faible / Valeur business faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m129",
     "category": "Innovation et product management",
     "name": "Matrice innovation incrémentale / rupture",
-    "usage": "Typologie d’innovation"
+    "usage": "Typologie d’innovation",
+    "components": [
+      "Innovation incrémentale fort / Rupture fort",
+      "Innovation incrémentale fort / Rupture faible",
+      "Innovation incrémentale faible / Rupture fort",
+      "Innovation incrémentale faible / Rupture faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m130",
     "category": "Innovation et product management",
     "name": "Matrice Ambition Innovation",
-    "usage": "Core, adjacent, transformational"
+    "usage": "Core, adjacent, transformational",
+    "components": [
+      "Core",
+      "Adjacent",
+      "Transformational"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m131",
     "category": "Innovation et product management",
     "name": "Matrice Horizon de McKinsey",
-    "usage": "H1, H2, H3"
+    "usage": "H1, H2, H3",
+    "components": [
+      "Horizon 1 — cœur de métier",
+      "Horizon 2 — relais de croissance",
+      "Horizon 3 — innovations de rupture"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m132",
     "category": "Innovation et product management",
     "name": "Matrice technologie / marché",
-    "usage": "Innovation produit"
+    "usage": "Innovation produit",
+    "components": [
+      "Technologie fort / Marché fort",
+      "Technologie fort / Marché faible",
+      "Technologie faible / Marché fort",
+      "Technologie faible / Marché faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m133",
     "category": "Innovation et product management",
     "name": "Matrice attractivité / faisabilité",
-    "usage": "Sélection d’idées"
+    "usage": "Sélection d’idées",
+    "components": [
+      "Attractivité fort / Faisabilité fort",
+      "Attractivité fort / Faisabilité faible",
+      "Attractivité faible / Faisabilité fort",
+      "Attractivité faible / Faisabilité faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m134",
     "category": "Innovation et product management",
     "name": "Matrice desirability / feasibility / viability",
-    "usage": "Design thinking"
+    "usage": "Design thinking",
+    "components": [
+      "Désirabilité",
+      "Faisabilité",
+      "Viabilité"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m135",
     "category": "Innovation et product management",
     "name": "Matrice expérimentation / apprentissage",
-    "usage": "Tests startup"
+    "usage": "Tests startup",
+    "components": [
+      "Expérimentation fort / Apprentissage fort",
+      "Expérimentation fort / Apprentissage faible",
+      "Expérimentation faible / Apprentissage fort",
+      "Expérimentation faible / Apprentissage faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m136",
     "category": "Innovation et product management",
     "name": "Matrice MVP",
-    "usage": "Minimum viable product"
+    "usage": "Minimum viable product",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m137",
     "category": "Innovation et product management",
     "name": "Matrice riskiest assumption",
-    "usage": "Hypothèses critiques"
+    "usage": "Hypothèses critiques",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m138",
     "category": "Innovation et product management",
     "name": "Matrice pain / gain",
-    "usage": "Diagnostic utilisateur"
+    "usage": "Diagnostic utilisateur",
+    "components": [
+      "Pain fort / Gain fort",
+      "Pain fort / Gain faible",
+      "Pain faible / Gain fort",
+      "Pain faible / Gain faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m139",
     "category": "Innovation et product management",
     "name": "Matrice opportunité solution",
-    "usage": "Product discovery"
+    "usage": "Product discovery",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m140",
     "category": "Innovation et product management",
     "name": "Opportunity Solution Tree",
-    "usage": "Exploration produit"
+    "usage": "Exploration produit",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m141",
     "category": "Innovation et product management",
     "name": "Matrice adoption innovation",
-    "usage": "Courbe d’adoption"
+    "usage": "Courbe d’adoption",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m142",
     "category": "Innovation et product management",
     "name": "Matrice disruption",
-    "usage": "Risque de rupture"
+    "usage": "Risque de rupture",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m143",
     "category": "Innovation et product management",
     "name": "Matrice de maturité produit",
-    "usage": "Niveau d’évolution produit"
+    "usage": "Niveau d’évolution produit",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m144",
     "category": "RH, compétences et formation",
     "name": "Matrice compétences / postes",
-    "usage": "Cartographie des compétences"
+    "usage": "Cartographie des compétences",
+    "components": [
+      "Compétences fort / Postes fort",
+      "Compétences fort / Postes faible",
+      "Compétences faible / Postes fort",
+      "Compétences faible / Postes faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m145",
     "category": "RH, compétences et formation",
     "name": "Matrice compétences / niveaux",
-    "usage": "Évaluation des acquis"
+    "usage": "Évaluation des acquis",
+    "components": [
+      "Compétences fort / Niveaux fort",
+      "Compétences fort / Niveaux faible",
+      "Compétences faible / Niveaux fort",
+      "Compétences faible / Niveaux faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m146",
     "category": "RH, compétences et formation",
     "name": "Matrice polyvalence",
-    "usage": "Capacité à occuper plusieurs rôles"
+    "usage": "Capacité à occuper plusieurs rôles",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m147",
     "category": "RH, compétences et formation",
     "name": "Matrice 9-box RH",
-    "usage": "Performance vs potentiel"
+    "usage": "Performance vs potentiel",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m148",
     "category": "RH, compétences et formation",
     "name": "Matrice motivation / compétence",
-    "usage": "Accompagnement managérial"
+    "usage": "Accompagnement managérial",
+    "components": [
+      "Motivation fort / Compétence fort",
+      "Motivation fort / Compétence faible",
+      "Motivation faible / Compétence fort",
+      "Motivation faible / Compétence faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m149",
     "category": "RH, compétences et formation",
     "name": "Matrice engagement / satisfaction",
-    "usage": "Diagnostic social"
+    "usage": "Diagnostic social",
+    "components": [
+      "Engagement fort / Satisfaction fort",
+      "Engagement fort / Satisfaction faible",
+      "Engagement faible / Satisfaction fort",
+      "Engagement faible / Satisfaction faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m150",
     "category": "RH, compétences et formation",
     "name": "Matrice climat social",
-    "usage": "Perception interne"
+    "usage": "Perception interne",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m151",
     "category": "RH, compétences et formation",
     "name": "Matrice formation impact / urgence",
-    "usage": "Priorisation formation"
+    "usage": "Priorisation formation",
+    "components": [
+      "Formation impact fort / Urgence fort",
+      "Formation impact fort / Urgence faible",
+      "Formation impact faible / Urgence fort",
+      "Formation impact faible / Urgence faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m152",
     "category": "RH, compétences et formation",
     "name": "Matrice GPEC",
-    "usage": "Emplois, compétences, évolution"
+    "usage": "Emplois, compétences, évolution",
+    "components": [
+      "Emplois",
+      "Compétences",
+      "Évolution"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m153",
     "category": "RH, compétences et formation",
     "name": "Matrice criticité des compétences",
-    "usage": "Compétences rares ou stratégiques"
+    "usage": "Compétences rares ou stratégiques",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m154",
     "category": "RH, compétences et formation",
     "name": "Matrice mobilité interne",
-    "usage": "Passerelles métiers"
+    "usage": "Passerelles métiers",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m155",
     "category": "RH, compétences et formation",
     "name": "Matrice succession planning",
-    "usage": "Remplacement des postes clés"
+    "usage": "Remplacement des postes clés",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m156",
     "category": "RH, compétences et formation",
     "name": "Matrice attractivité / rétention",
-    "usage": "Politique RH"
+    "usage": "Politique RH",
+    "components": [
+      "Attractivité fort / Rétention fort",
+      "Attractivité fort / Rétention faible",
+      "Attractivité faible / Rétention fort",
+      "Attractivité faible / Rétention faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m157",
     "category": "RH, compétences et formation",
     "name": "Matrice risques RH",
-    "usage": "Risque de départ, désengagement"
+    "usage": "Risque de départ, désengagement",
+    "components": [
+      "Risque de départ",
+      "Désengagement"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m158",
     "category": "RH, compétences et formation",
     "name": "Matrice d’évaluation 360°",
-    "usage": "Feedback multi-acteurs"
+    "usage": "Feedback multi-acteurs",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m159",
     "category": "RH, compétences et formation",
     "name": "Matrice objectifs / compétences",
-    "usage": "Évaluation annuelle"
+    "usage": "Évaluation annuelle",
+    "components": [
+      "Objectifs fort / Compétences fort",
+      "Objectifs fort / Compétences faible",
+      "Objectifs faible / Compétences fort",
+      "Objectifs faible / Compétences faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m160",
     "category": "RH, compétences et formation",
     "name": "Matrice d’autonomie",
-    "usage": "Niveau de maîtrise collaborateur"
+    "usage": "Niveau de maîtrise collaborateur",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m161",
     "category": "RH, compétences et formation",
     "name": "Matrice tutorat / apprentissage",
-    "usage": "Suivi pédagogique"
+    "usage": "Suivi pédagogique",
+    "components": [
+      "Tutorat fort / Apprentissage fort",
+      "Tutorat fort / Apprentissage faible",
+      "Tutorat faible / Apprentissage fort",
+      "Tutorat faible / Apprentissage faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m162",
     "category": "RH, compétences et formation",
     "name": "Matrice certification / blocs de compétences",
-    "usage": "Validation des acquis"
+    "usage": "Validation des acquis",
+    "components": [
+      "Certification fort / Blocs de compétences fort",
+      "Certification fort / Blocs de compétences faible",
+      "Certification faible / Blocs de compétences fort",
+      "Certification faible / Blocs de compétences faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m163",
     "category": "RH, compétences et formation",
     "name": "Matrice Bloom",
-    "usage": "Niveaux cognitifs d’apprentissage"
+    "usage": "Niveaux cognitifs d’apprentissage",
+    "components": [
+      "Connaître",
+      "Comprendre",
+      "Appliquer",
+      "Analyser",
+      "Évaluer",
+      "Créer"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m164",
     "category": "RH, compétences et formation",
     "name": "Matrice Kirkpatrick",
-    "usage": "Évaluation de la formation"
+    "usage": "Évaluation de la formation",
+    "components": [
+      "Réaction",
+      "Apprentissage",
+      "Comportement",
+      "Résultats"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m165",
     "category": "RH, compétences et formation",
     "name": "Matrice progression pédagogique",
-    "usage": "Objectifs, activités, évaluations"
+    "usage": "Objectifs, activités, évaluations",
+    "components": [
+      "Objectifs",
+      "Activités",
+      "Évaluations"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m166",
     "category": "Finance et business performance",
     "name": "Matrice marge / volume",
-    "usage": "Analyse de rentabilité"
+    "usage": "Analyse de rentabilité",
+    "components": [
+      "Marge fort / Volume fort",
+      "Marge fort / Volume faible",
+      "Marge faible / Volume fort",
+      "Marge faible / Volume faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m167",
     "category": "Finance et business performance",
     "name": "Matrice coût / valeur",
-    "usage": "Optimisation économique"
+    "usage": "Optimisation économique",
+    "components": [
+      "Coût fort / Valeur fort",
+      "Coût fort / Valeur faible",
+      "Coût faible / Valeur fort",
+      "Coût faible / Valeur faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m168",
     "category": "Finance et business performance",
     "name": "Matrice ROI / risque",
-    "usage": "Priorisation des investissements"
+    "usage": "Priorisation des investissements",
+    "components": [
+      "Roi fort / Risque fort",
+      "Roi fort / Risque faible",
+      "Roi faible / Risque fort",
+      "Roi faible / Risque faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m169",
     "category": "Finance et business performance",
     "name": "Matrice rentabilité / croissance",
-    "usage": "Pilotage portefeuille"
+    "usage": "Pilotage portefeuille",
+    "components": [
+      "Rentabilité fort / Croissance fort",
+      "Rentabilité fort / Croissance faible",
+      "Rentabilité faible / Croissance fort",
+      "Rentabilité faible / Croissance faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m170",
     "category": "Finance et business performance",
     "name": "Matrice cash-flow / profitabilité",
-    "usage": "Santé financière"
+    "usage": "Santé financière",
+    "components": [
+      "Cash-flow fort / Profitabilité fort",
+      "Cash-flow fort / Profitabilité faible",
+      "Cash-flow faible / Profitabilité fort",
+      "Cash-flow faible / Profitabilité faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m171",
     "category": "Finance et business performance",
     "name": "Matrice prix / marge",
-    "usage": "Politique tarifaire"
+    "usage": "Politique tarifaire",
+    "components": [
+      "Prix fort / Marge fort",
+      "Prix fort / Marge faible",
+      "Prix faible / Marge fort",
+      "Prix faible / Marge faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m172",
     "category": "Finance et business performance",
     "name": "Matrice coût fixe / coût variable",
-    "usage": "Analyse économique"
+    "usage": "Analyse économique",
+    "components": [
+      "Coût fixe fort / Coût variable fort",
+      "Coût fixe fort / Coût variable faible",
+      "Coût fixe faible / Coût variable fort",
+      "Coût fixe faible / Coût variable faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m173",
     "category": "Finance et business performance",
     "name": "Matrice seuil de rentabilité",
-    "usage": "Point mort"
+    "usage": "Point mort",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m174",
     "category": "Finance et business performance",
     "name": "Matrice TCO / bénéfices",
-    "usage": "Coût total de possession"
+    "usage": "Coût total de possession",
+    "components": [
+      "Tco fort / Bénéfices fort",
+      "Tco fort / Bénéfices faible",
+      "Tco faible / Bénéfices fort",
+      "Tco faible / Bénéfices faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m175",
     "category": "Finance et business performance",
     "name": "Matrice CAPEX / OPEX",
-    "usage": "Arbitrage investissement/exploitation"
+    "usage": "Arbitrage investissement/exploitation",
+    "components": [
+      "Capex fort / Opex fort",
+      "Capex fort / Opex faible",
+      "Capex faible / Opex fort",
+      "Capex faible / Opex faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m176",
     "category": "Finance et business performance",
     "name": "Matrice budget / impact",
-    "usage": "Allocation des ressources"
+    "usage": "Allocation des ressources",
+    "components": [
+      "Budget fort / Impact fort",
+      "Budget fort / Impact faible",
+      "Budget faible / Impact fort",
+      "Budget faible / Impact faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m177",
     "category": "Finance et business performance",
     "name": "Matrice performance / coût",
-    "usage": "Optimisation des dépenses"
+    "usage": "Optimisation des dépenses",
+    "components": [
+      "Performance fort / Coût fort",
+      "Performance fort / Coût faible",
+      "Performance faible / Coût fort",
+      "Performance faible / Coût faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m178",
     "category": "Finance et business performance",
     "name": "Matrice client rentable / non rentable",
-    "usage": "Analyse portefeuille client"
+    "usage": "Analyse portefeuille client",
+    "components": [
+      "Client rentable fort / Non rentable fort",
+      "Client rentable fort / Non rentable faible",
+      "Client rentable faible / Non rentable fort",
+      "Client rentable faible / Non rentable faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m179",
     "category": "Finance et business performance",
     "name": "Matrice business case",
-    "usage": "Gains, coûts, risques"
+    "usage": "Gains, coûts, risques",
+    "components": [
+      "Gains",
+      "Coûts",
+      "Risques"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m180",
     "category": "Finance et business performance",
     "name": "Matrice sensibilité financière",
-    "usage": "Hypothèses critiques"
+    "usage": "Hypothèses critiques",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m181",
     "category": "Finance et business performance",
     "name": "Matrice de scoring d’investissement",
-    "usage": "Choix des projets"
+    "usage": "Choix des projets",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m182",
     "category": "Commercial et ventes",
     "name": "Matrice prospects / potentiel",
-    "usage": "Priorisation commerciale"
+    "usage": "Priorisation commerciale",
+    "components": [
+      "Prospects fort / Potentiel fort",
+      "Prospects fort / Potentiel faible",
+      "Prospects faible / Potentiel fort",
+      "Prospects faible / Potentiel faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m183",
     "category": "Commercial et ventes",
     "name": "Matrice opportunité / probabilité",
-    "usage": "Pipeline commercial"
+    "usage": "Pipeline commercial",
+    "components": [
+      "Opportunité fort / Probabilité fort",
+      "Opportunité fort / Probabilité faible",
+      "Opportunité faible / Probabilité fort",
+      "Opportunité faible / Probabilité faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m184",
     "category": "Commercial et ventes",
     "name": "Matrice valeur compte / accessibilité",
-    "usage": "Account management"
+    "usage": "Account management",
+    "components": [
+      "Valeur compte fort / Accessibilité fort",
+      "Valeur compte fort / Accessibilité faible",
+      "Valeur compte faible / Accessibilité fort",
+      "Valeur compte faible / Accessibilité faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m185",
     "category": "Commercial et ventes",
     "name": "Matrice grands comptes",
-    "usage": "Segmentation comptes clés"
+    "usage": "Segmentation comptes clés",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m186",
     "category": "Commercial et ventes",
     "name": "Matrice pouvoir / influence acheteur",
-    "usage": "Cartographie des décideurs"
+    "usage": "Cartographie des décideurs",
+    "components": [
+      "Pouvoir fort / Influence acheteur fort",
+      "Pouvoir fort / Influence acheteur faible",
+      "Pouvoir faible / Influence acheteur fort",
+      "Pouvoir faible / Influence acheteur faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m187",
     "category": "Commercial et ventes",
     "name": "Matrice besoin / maturité client",
-    "usage": "Adaptation du discours"
+    "usage": "Adaptation du discours",
+    "components": [
+      "Besoin fort / Maturité client fort",
+      "Besoin fort / Maturité client faible",
+      "Besoin faible / Maturité client fort",
+      "Besoin faible / Maturité client faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m188",
     "category": "Commercial et ventes",
     "name": "Matrice objections / réponses",
-    "usage": "Argumentaire commercial"
+    "usage": "Argumentaire commercial",
+    "components": [
+      "Objections fort / Réponses fort",
+      "Objections fort / Réponses faible",
+      "Objections faible / Réponses fort",
+      "Objections faible / Réponses faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m189",
     "category": "Commercial et ventes",
     "name": "Matrice solution / douleur client",
-    "usage": "Vente consultative"
+    "usage": "Vente consultative",
+    "components": [
+      "Solution fort / Douleur client fort",
+      "Solution fort / Douleur client faible",
+      "Solution faible / Douleur client fort",
+      "Solution faible / Douleur client faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m190",
     "category": "Commercial et ventes",
     "name": "Matrice urgence / budget",
-    "usage": "Qualification commerciale"
+    "usage": "Qualification commerciale",
+    "components": [
+      "Urgence fort / Budget fort",
+      "Urgence fort / Budget faible",
+      "Urgence faible / Budget fort",
+      "Urgence faible / Budget faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m191",
     "category": "Commercial et ventes",
     "name": "Matrice BANT",
-    "usage": "Budget, authority, need, timing"
+    "usage": "Budget, authority, need, timing",
+    "components": [
+      "Budget",
+      "Authority",
+      "Need",
+      "Timing"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m192",
     "category": "Commercial et ventes",
     "name": "Matrice MEDDIC",
-    "usage": "Qualification complexe"
+    "usage": "Qualification complexe",
+    "components": [
+      "Metrics",
+      "Economic buyer",
+      "Decision criteria",
+      "Decision process",
+      "Identify pain",
+      "Champion"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m193",
     "category": "Commercial et ventes",
     "name": "Matrice challenger sale",
-    "usage": "Tension commerciale"
+    "usage": "Tension commerciale",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m194",
     "category": "Commercial et ventes",
     "name": "Matrice cycle de vente / contenu",
-    "usage": "Sales enablement"
+    "usage": "Sales enablement",
+    "components": [
+      "Cycle de vente fort / Contenu fort",
+      "Cycle de vente fort / Contenu faible",
+      "Cycle de vente faible / Contenu fort",
+      "Cycle de vente faible / Contenu faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m195",
     "category": "Commercial et ventes",
     "name": "Matrice cross-sell / up-sell",
-    "usage": "Développement client"
+    "usage": "Développement client",
+    "components": [
+      "Cross-sell fort / Up-sell fort",
+      "Cross-sell fort / Up-sell faible",
+      "Cross-sell faible / Up-sell fort",
+      "Cross-sell faible / Up-sell faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m196",
     "category": "Commercial et ventes",
     "name": "Matrice fidélisation / expansion",
-    "usage": "Customer success"
+    "usage": "Customer success",
+    "components": [
+      "Fidélisation fort / Expansion fort",
+      "Fidélisation fort / Expansion faible",
+      "Fidélisation faible / Expansion fort",
+      "Fidélisation faible / Expansion faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m197",
     "category": "Commercial et ventes",
     "name": "Matrice churn risk",
-    "usage": "Risque de départ client"
+    "usage": "Risque de départ client",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m198",
     "category": "Commercial et ventes",
     "name": "Matrice satisfaction / valeur",
-    "usage": "Priorisation comptes clients"
+    "usage": "Priorisation comptes clients",
+    "components": [
+      "Satisfaction fort / Valeur fort",
+      "Satisfaction fort / Valeur faible",
+      "Satisfaction faible / Valeur fort",
+      "Satisfaction faible / Valeur faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m199",
     "category": "Qualité, process et amélioration continue",
     "name": "Matrice PDCA",
-    "usage": "Plan, do, check, act"
+    "usage": "Plan, do, check, act",
+    "components": [
+      "Plan",
+      "Do",
+      "Check",
+      "Act"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m200",
     "category": "Qualité, process et amélioration continue",
     "name": "Matrice DMAIC",
-    "usage": "Six Sigma"
+    "usage": "Six Sigma",
+    "components": [
+      "Define",
+      "Measure",
+      "Analyze",
+      "Improve",
+      "Control"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m201",
     "category": "Qualité, process et amélioration continue",
     "name": "Matrice SIPOC",
-    "usage": "Processus fournisseurs-inputs-process-output-clients"
+    "usage": "Processus fournisseurs-inputs-process-output-clients",
+    "components": [
+      "Suppliers",
+      "Inputs",
+      "Process",
+      "Outputs",
+      "Customers"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m202",
     "category": "Qualité, process et amélioration continue",
     "name": "Matrice cause / effet",
-    "usage": "Diagramme d’Ishikawa"
+    "usage": "Diagramme d’Ishikawa",
+    "components": [
+      "Méthodes",
+      "Matières",
+      "Matériel",
+      "Main d'œuvre",
+      "Milieu",
+      "Mesure"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m203",
     "category": "Qualité, process et amélioration continue",
     "name": "Matrice 5 pourquoi",
-    "usage": "Recherche de causes racines"
+    "usage": "Recherche de causes racines",
+    "components": [
+      "Pourquoi 1",
+      "Pourquoi 2",
+      "Pourquoi 3",
+      "Pourquoi 4",
+      "Pourquoi 5"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m204",
     "category": "Qualité, process et amélioration continue",
     "name": "Matrice AMDEC",
-    "usage": "Analyse des modes de défaillance"
+    "usage": "Analyse des modes de défaillance",
+    "components": [
+      "Gravité",
+      "Occurrence",
+      "Détection",
+      "Criticité (IPR)"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m205",
     "category": "Qualité, process et amélioration continue",
     "name": "Matrice criticité",
-    "usage": "Gravité, occurrence, détection"
+    "usage": "Gravité, occurrence, détection",
+    "components": [
+      "Gravité",
+      "Occurrence",
+      "Détection"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m206",
     "category": "Qualité, process et amélioration continue",
     "name": "Matrice qualité / coût",
-    "usage": "Arbitrage qualité"
+    "usage": "Arbitrage qualité",
+    "components": [
+      "Qualité fort / Coût fort",
+      "Qualité fort / Coût faible",
+      "Qualité faible / Coût fort",
+      "Qualité faible / Coût faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m207",
     "category": "Qualité, process et amélioration continue",
     "name": "Matrice conformité / risque",
-    "usage": "Audit qualité"
+    "usage": "Audit qualité",
+    "components": [
+      "Conformité fort / Risque fort",
+      "Conformité fort / Risque faible",
+      "Conformité faible / Risque fort",
+      "Conformité faible / Risque faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m208",
     "category": "Qualité, process et amélioration continue",
     "name": "Matrice processus / performance",
-    "usage": "Pilotage opérationnel"
+    "usage": "Pilotage opérationnel",
+    "components": [
+      "Processus fort / Performance fort",
+      "Processus fort / Performance faible",
+      "Processus faible / Performance fort",
+      "Processus faible / Performance faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m209",
     "category": "Qualité, process et amélioration continue",
     "name": "Matrice gaspillage Lean",
-    "usage": "Identification des mudas"
+    "usage": "Identification des mudas",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m210",
     "category": "Qualité, process et amélioration continue",
     "name": "Matrice valeur ajoutée / non-valeur ajoutée",
-    "usage": "Optimisation process"
+    "usage": "Optimisation process",
+    "components": [
+      "Valeur ajoutée fort / Non-valeur ajoutée fort",
+      "Valeur ajoutée fort / Non-valeur ajoutée faible",
+      "Valeur ajoutée faible / Non-valeur ajoutée fort",
+      "Valeur ajoutée faible / Non-valeur ajoutée faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m211",
     "category": "Qualité, process et amélioration continue",
     "name": "Matrice contrôle / fréquence",
-    "usage": "Plan de contrôle"
+    "usage": "Plan de contrôle",
+    "components": [
+      "Contrôle fort / Fréquence fort",
+      "Contrôle fort / Fréquence faible",
+      "Contrôle faible / Fréquence fort",
+      "Contrôle faible / Fréquence faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m212",
     "category": "Qualité, process et amélioration continue",
     "name": "Matrice maturité qualité",
-    "usage": "Niveau de maîtrise"
+    "usage": "Niveau de maîtrise",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m213",
     "category": "Qualité, process et amélioration continue",
     "name": "Matrice satisfaction / réclamation",
-    "usage": "Analyse qualité client"
+    "usage": "Analyse qualité client",
+    "components": [
+      "Satisfaction fort / Réclamation fort",
+      "Satisfaction fort / Réclamation faible",
+      "Satisfaction faible / Réclamation fort",
+      "Satisfaction faible / Réclamation faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m214",
     "category": "UX, design et expérience utilisateur",
     "name": "Empathy Map",
-    "usage": "Compréhension utilisateur"
+    "usage": "Compréhension utilisateur",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m215",
     "category": "UX, design et expérience utilisateur",
     "name": "Customer Journey Map",
-    "usage": "Parcours client"
+    "usage": "Parcours client",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m216",
     "category": "UX, design et expérience utilisateur",
     "name": "Experience Map",
-    "usage": "Expérience globale"
+    "usage": "Expérience globale",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m217",
     "category": "UX, design et expérience utilisateur",
     "name": "Service Blueprint",
-    "usage": "Processus visible et invisible"
+    "usage": "Processus visible et invisible",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m218",
     "category": "UX, design et expérience utilisateur",
     "name": "Matrice UX impact / effort",
-    "usage": "Priorisation UX"
+    "usage": "Priorisation UX",
+    "components": [
+      "Ux impact fort / Effort fort",
+      "Ux impact fort / Effort faible",
+      "Ux impact faible / Effort fort",
+      "Ux impact faible / Effort faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m219",
     "category": "UX, design et expérience utilisateur",
     "name": "Matrice friction / fréquence",
-    "usage": "Optimisation parcours"
+    "usage": "Optimisation parcours",
+    "components": [
+      "Friction fort / Fréquence fort",
+      "Friction fort / Fréquence faible",
+      "Friction faible / Fréquence fort",
+      "Friction faible / Fréquence faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m220",
     "category": "UX, design et expérience utilisateur",
     "name": "Matrice accessibilité / impact",
-    "usage": "Priorisation accessibilité"
+    "usage": "Priorisation accessibilité",
+    "components": [
+      "Accessibilité fort / Impact fort",
+      "Accessibilité fort / Impact faible",
+      "Accessibilité faible / Impact fort",
+      "Accessibilité faible / Impact faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m221",
     "category": "UX, design et expérience utilisateur",
     "name": "Matrice besoins / fonctionnalités",
-    "usage": "Design produit"
+    "usage": "Design produit",
+    "components": [
+      "Besoins fort / Fonctionnalités fort",
+      "Besoins fort / Fonctionnalités faible",
+      "Besoins faible / Fonctionnalités fort",
+      "Besoins faible / Fonctionnalités faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m222",
     "category": "UX, design et expérience utilisateur",
     "name": "Matrice persona / besoins",
-    "usage": "Ciblage UX"
+    "usage": "Ciblage UX",
+    "components": [
+      "Persona fort / Besoins fort",
+      "Persona fort / Besoins faible",
+      "Persona faible / Besoins fort",
+      "Persona faible / Besoins faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m223",
     "category": "UX, design et expérience utilisateur",
     "name": "Matrice tâches / émotions",
-    "usage": "Analyse de parcours"
+    "usage": "Analyse de parcours",
+    "components": [
+      "Tâches fort / Émotions fort",
+      "Tâches fort / Émotions faible",
+      "Tâches faible / Émotions fort",
+      "Tâches faible / Émotions faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m224",
     "category": "UX, design et expérience utilisateur",
     "name": "Matrice heuristique Nielsen",
-    "usage": "Audit ergonomique"
+    "usage": "Audit ergonomique",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m225",
     "category": "UX, design et expérience utilisateur",
     "name": "Matrice utilisabilité / désirabilité",
-    "usage": "Évaluation interface"
+    "usage": "Évaluation interface",
+    "components": [
+      "Utilisabilité fort / Désirabilité fort",
+      "Utilisabilité fort / Désirabilité faible",
+      "Utilisabilité faible / Désirabilité fort",
+      "Utilisabilité faible / Désirabilité faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m226",
     "category": "UX, design et expérience utilisateur",
     "name": "Matrice contenu / contexte",
-    "usage": "Architecture de l’information"
+    "usage": "Architecture de l’information",
+    "components": [
+      "Contenu fort / Contexte fort",
+      "Contenu fort / Contexte faible",
+      "Contenu faible / Contexte fort",
+      "Contenu faible / Contexte faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m227",
     "category": "UX, design et expérience utilisateur",
     "name": "Matrice wireframe / objectif",
-    "usage": "Structuration écran"
+    "usage": "Structuration écran",
+    "components": [
+      "Wireframe fort / Objectif fort",
+      "Wireframe fort / Objectif faible",
+      "Wireframe faible / Objectif fort",
+      "Wireframe faible / Objectif faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m228",
     "category": "UX, design et expérience utilisateur",
     "name": "Matrice design system",
-    "usage": "Composants et usages"
+    "usage": "Composants et usages",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m229",
     "category": "UX, design et expérience utilisateur",
     "name": "Matrice test utilisateur",
-    "usage": "Hypothèses, résultats, corrections"
+    "usage": "Hypothèses, résultats, corrections",
+    "components": [
+      "Hypothèses",
+      "Résultats",
+      "Corrections"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m230",
     "category": "Data, IA et transformation numérique",
     "name": "Matrice maturité digitale",
-    "usage": "Diagnostic transformation"
+    "usage": "Diagnostic transformation",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m231",
     "category": "Data, IA et transformation numérique",
     "name": "Matrice maturité data",
-    "usage": "Gouvernance et usage des données"
+    "usage": "Gouvernance et usage des données",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m232",
     "category": "Data, IA et transformation numérique",
     "name": "Matrice maturité IA",
-    "usage": "Niveau d’adoption de l’IA"
+    "usage": "Niveau d’adoption de l’IA",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m233",
     "category": "Data, IA et transformation numérique",
     "name": "Matrice cas d’usage IA impact / faisabilité",
-    "usage": "Priorisation IA"
+    "usage": "Priorisation IA",
+    "components": [
+      "Cas d’usage ia impact fort / Faisabilité fort",
+      "Cas d’usage ia impact fort / Faisabilité faible",
+      "Cas d’usage ia impact faible / Faisabilité fort",
+      "Cas d’usage ia impact faible / Faisabilité faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m234",
     "category": "Data, IA et transformation numérique",
     "name": "Matrice risque IA / valeur",
-    "usage": "Arbitrage IA"
+    "usage": "Arbitrage IA",
+    "components": [
+      "Risque ia fort / Valeur fort",
+      "Risque ia fort / Valeur faible",
+      "Risque ia faible / Valeur fort",
+      "Risque ia faible / Valeur faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m235",
     "category": "Data, IA et transformation numérique",
     "name": "Matrice automatisation / complexité",
-    "usage": "Priorisation automatisation"
+    "usage": "Priorisation automatisation",
+    "components": [
+      "Automatisation fort / Complexité fort",
+      "Automatisation fort / Complexité faible",
+      "Automatisation faible / Complexité fort",
+      "Automatisation faible / Complexité faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m236",
     "category": "Data, IA et transformation numérique",
     "name": "Matrice données disponibles / données nécessaires",
-    "usage": "Diagnostic data"
+    "usage": "Diagnostic data",
+    "components": [
+      "Données disponibles fort / Données nécessaires fort",
+      "Données disponibles fort / Données nécessaires faible",
+      "Données disponibles faible / Données nécessaires fort",
+      "Données disponibles faible / Données nécessaires faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m237",
     "category": "Data, IA et transformation numérique",
     "name": "Matrice qualité des données",
-    "usage": "Fiabilité, complétude, fraîcheur"
+    "usage": "Fiabilité, complétude, fraîcheur",
+    "components": [
+      "Fiabilité",
+      "Complétude",
+      "Fraîcheur"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m238",
     "category": "Data, IA et transformation numérique",
     "name": "Matrice gouvernance data",
-    "usage": "Rôles, règles, responsabilités"
+    "usage": "Rôles, règles, responsabilités",
+    "components": [
+      "Rôles",
+      "Règles",
+      "Responsabilités"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m239",
     "category": "Data, IA et transformation numérique",
     "name": "Matrice sécurité / accessibilité",
-    "usage": "Gestion des accès"
+    "usage": "Gestion des accès",
+    "components": [
+      "Sécurité fort / Accessibilité fort",
+      "Sécurité fort / Accessibilité faible",
+      "Sécurité faible / Accessibilité fort",
+      "Sécurité faible / Accessibilité faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m240",
     "category": "Data, IA et transformation numérique",
     "name": "Matrice IA générative usage / risque",
-    "usage": "Encadrement des usages GenAI"
+    "usage": "Encadrement des usages GenAI",
+    "components": [
+      "Ia générative usage fort / Risque fort",
+      "Ia générative usage fort / Risque faible",
+      "Ia générative usage faible / Risque fort",
+      "Ia générative usage faible / Risque faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m241",
     "category": "Data, IA et transformation numérique",
     "name": "Matrice conformité IA",
-    "usage": "Risques réglementaires"
+    "usage": "Risques réglementaires",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m242",
     "category": "Data, IA et transformation numérique",
     "name": "Matrice humain / machine",
-    "usage": "Répartition des tâches"
+    "usage": "Répartition des tâches",
+    "components": [
+      "Humain fort / Machine fort",
+      "Humain fort / Machine faible",
+      "Humain faible / Machine fort",
+      "Humain faible / Machine faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m243",
     "category": "Data, IA et transformation numérique",
     "name": "Matrice augmentation / automatisation",
-    "usage": "Impact sur le travail"
+    "usage": "Impact sur le travail",
+    "components": [
+      "Augmentation fort / Automatisation fort",
+      "Augmentation fort / Automatisation faible",
+      "Augmentation faible / Automatisation fort",
+      "Augmentation faible / Automatisation faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m244",
     "category": "Data, IA et transformation numérique",
     "name": "Matrice prompt / tâche",
-    "usage": "Standardisation des usages IA"
+    "usage": "Standardisation des usages IA",
+    "components": [
+      "Prompt fort / Tâche fort",
+      "Prompt fort / Tâche faible",
+      "Prompt faible / Tâche fort",
+      "Prompt faible / Tâche faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m245",
     "category": "Data, IA et transformation numérique",
     "name": "Matrice ROI IA",
-    "usage": "Gains, coûts, risques"
+    "usage": "Gains, coûts, risques",
+    "components": [
+      "Gains",
+      "Coûts",
+      "Risques"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m246",
     "category": "Data, IA et transformation numérique",
     "name": "Matrice éthique IA",
-    "usage": "Biais, transparence, responsabilité"
+    "usage": "Biais, transparence, responsabilité",
+    "components": [
+      "Biais",
+      "Transparence",
+      "Responsabilité"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m247",
     "category": "Communication et image",
     "name": "Matrice message / cible",
-    "usage": "Communication ciblée"
+    "usage": "Communication ciblée",
+    "components": [
+      "Message fort / Cible fort",
+      "Message fort / Cible faible",
+      "Message faible / Cible fort",
+      "Message faible / Cible faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m248",
     "category": "Communication et image",
     "name": "Matrice canal / objectif",
-    "usage": "Choix des canaux"
+    "usage": "Choix des canaux",
+    "components": [
+      "Canal fort / Objectif fort",
+      "Canal fort / Objectif faible",
+      "Canal faible / Objectif fort",
+      "Canal faible / Objectif faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m249",
     "category": "Communication et image",
     "name": "Matrice tonalité / audience",
-    "usage": "Ligne éditoriale"
+    "usage": "Ligne éditoriale",
+    "components": [
+      "Tonalité fort / Audience fort",
+      "Tonalité fort / Audience faible",
+      "Tonalité faible / Audience fort",
+      "Tonalité faible / Audience faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m250",
     "category": "Communication et image",
     "name": "Matrice média paid / owned / earned",
-    "usage": "Stratégie média"
+    "usage": "Stratégie média",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m251",
     "category": "Communication et image",
     "name": "Matrice réputation / visibilité",
-    "usage": "Image publique"
+    "usage": "Image publique",
+    "components": [
+      "Réputation fort / Visibilité fort",
+      "Réputation fort / Visibilité faible",
+      "Réputation faible / Visibilité fort",
+      "Réputation faible / Visibilité faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m252",
     "category": "Communication et image",
     "name": "Matrice crise impact / probabilité",
-    "usage": "Communication de crise"
+    "usage": "Communication de crise",
+    "components": [
+      "Crise impact fort / Probabilité fort",
+      "Crise impact fort / Probabilité faible",
+      "Crise impact faible / Probabilité fort",
+      "Crise impact faible / Probabilité faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m253",
     "category": "Communication et image",
     "name": "Matrice parties prenantes communication",
-    "usage": "Messages par acteur"
+    "usage": "Messages par acteur",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m254",
     "category": "Communication et image",
     "name": "Matrice influence / relais",
-    "usage": "Relations publiques"
+    "usage": "Relations publiques",
+    "components": [
+      "Influence fort / Relais fort",
+      "Influence fort / Relais faible",
+      "Influence faible / Relais fort",
+      "Influence faible / Relais faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m255",
     "category": "Communication et image",
     "name": "Matrice contenu / objectif",
-    "usage": "Stratégie éditoriale"
+    "usage": "Stratégie éditoriale",
+    "components": [
+      "Contenu fort / Objectif fort",
+      "Contenu fort / Objectif faible",
+      "Contenu faible / Objectif fort",
+      "Contenu faible / Objectif faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m256",
     "category": "Communication et image",
     "name": "Matrice preuve / promesse",
-    "usage": "Crédibilité du discours"
+    "usage": "Crédibilité du discours",
+    "components": [
+      "Preuve fort / Promesse fort",
+      "Preuve fort / Promesse faible",
+      "Preuve faible / Promesse fort",
+      "Preuve faible / Promesse faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m257",
     "category": "Communication et image",
     "name": "Matrice storytelling",
-    "usage": "Message, conflit, transformation"
+    "usage": "Message, conflit, transformation",
+    "components": [
+      "Message",
+      "Conflit",
+      "Transformation"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m258",
     "category": "Communication et image",
     "name": "Matrice marque employeur",
-    "usage": "Attractivité RH"
+    "usage": "Attractivité RH",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m259",
     "category": "Communication et image",
     "name": "Matrice perception / réalité",
-    "usage": "Diagnostic d’image"
+    "usage": "Diagnostic d’image",
+    "components": [
+      "Perception fort / Réalité fort",
+      "Perception fort / Réalité faible",
+      "Perception faible / Réalité fort",
+      "Perception faible / Réalité faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m260",
     "category": "Achats, supply chain et opérations",
     "name": "Matrice de Kraljic",
-    "usage": "Stratégie achats"
+    "usage": "Stratégie achats",
+    "components": [
+      "Articles stratégiques",
+      "Articles à effet de levier",
+      "Articles à goulot d'étranglement",
+      "Articles simples"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m261",
     "category": "Achats, supply chain et opérations",
     "name": "Matrice fournisseurs risque / valeur",
-    "usage": "Priorisation fournisseurs"
+    "usage": "Priorisation fournisseurs",
+    "components": [
+      "Fournisseurs risque fort / Valeur fort",
+      "Fournisseurs risque fort / Valeur faible",
+      "Fournisseurs risque faible / Valeur fort",
+      "Fournisseurs risque faible / Valeur faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m262",
     "category": "Achats, supply chain et opérations",
     "name": "Matrice criticité fournisseurs",
-    "usage": "Dépendance et risque"
+    "usage": "Dépendance et risque",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m263",
     "category": "Achats, supply chain et opérations",
     "name": "Matrice Make or Buy",
-    "usage": "Faire ou acheter"
+    "usage": "Faire ou acheter",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m264",
     "category": "Achats, supply chain et opérations",
     "name": "Matrice coûts / délais / qualité fournisseurs",
-    "usage": "Évaluation fournisseurs"
+    "usage": "Évaluation fournisseurs",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m265",
     "category": "Achats, supply chain et opérations",
     "name": "Matrice stock rotation / valeur",
-    "usage": "Gestion des stocks"
+    "usage": "Gestion des stocks",
+    "components": [
+      "Stock rotation fort / Valeur fort",
+      "Stock rotation fort / Valeur faible",
+      "Stock rotation faible / Valeur fort",
+      "Stock rotation faible / Valeur faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m266",
     "category": "Achats, supply chain et opérations",
     "name": "Matrice ABC",
-    "usage": "Classification par valeur"
+    "usage": "Classification par valeur",
+    "components": [
+      "Catégorie A",
+      "Catégorie B",
+      "Catégorie C"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m267",
     "category": "Achats, supply chain et opérations",
     "name": "Matrice XYZ",
-    "usage": "Variabilité de la demande"
+    "usage": "Variabilité de la demande",
+    "components": [
+      "Catégorie X",
+      "Catégorie Y",
+      "Catégorie Z"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m268",
     "category": "Achats, supply chain et opérations",
     "name": "Matrice ABC / XYZ",
-    "usage": "Politique de stock"
+    "usage": "Politique de stock",
+    "components": [
+      "Abc fort / Xyz fort",
+      "Abc fort / Xyz faible",
+      "Abc faible / Xyz fort",
+      "Abc faible / Xyz faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m269",
     "category": "Achats, supply chain et opérations",
     "name": "Matrice capacité / demande",
-    "usage": "Planification opérationnelle"
+    "usage": "Planification opérationnelle",
+    "components": [
+      "Capacité fort / Demande fort",
+      "Capacité fort / Demande faible",
+      "Capacité faible / Demande fort",
+      "Capacité faible / Demande faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m270",
     "category": "Achats, supply chain et opérations",
     "name": "Matrice flux / contraintes",
-    "usage": "Optimisation supply chain"
+    "usage": "Optimisation supply chain",
+    "components": [
+      "Flux fort / Contraintes fort",
+      "Flux fort / Contraintes faible",
+      "Flux faible / Contraintes fort",
+      "Flux faible / Contraintes faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m271",
     "category": "Achats, supply chain et opérations",
     "name": "Matrice risque logistique",
-    "usage": "Rupture, délai, dépendance"
+    "usage": "Rupture, délai, dépendance",
+    "components": [
+      "Rupture",
+      "Délai",
+      "Dépendance"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m272",
     "category": "Achats, supply chain et opérations",
     "name": "Matrice qualité fournisseur",
-    "usage": "Non-conformités et criticité"
+    "usage": "Non-conformités et criticité",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m273",
     "category": "Achats, supply chain et opérations",
     "name": "Matrice empreinte carbone / coût",
-    "usage": "Arbitrage supply durable"
+    "usage": "Arbitrage supply durable",
+    "components": [
+      "Empreinte carbone fort / Coût fort",
+      "Empreinte carbone fort / Coût faible",
+      "Empreinte carbone faible / Coût fort",
+      "Empreinte carbone faible / Coût faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m274",
     "category": "Juridique, conformité et risques",
     "name": "Matrice risques juridiques",
-    "usage": "Cartographie des risques"
+    "usage": "Cartographie des risques",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m275",
     "category": "Juridique, conformité et risques",
     "name": "Matrice conformité / impact",
-    "usage": "Priorisation conformité"
+    "usage": "Priorisation conformité",
+    "components": [
+      "Conformité fort / Impact fort",
+      "Conformité fort / Impact faible",
+      "Conformité faible / Impact fort",
+      "Conformité faible / Impact faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m276",
     "category": "Juridique, conformité et risques",
     "name": "Matrice RGPD risque / données",
-    "usage": "Données personnelles"
+    "usage": "Données personnelles",
+    "components": [
+      "Rgpd risque fort / Données fort",
+      "Rgpd risque fort / Données faible",
+      "Rgpd risque faible / Données fort",
+      "Rgpd risque faible / Données faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m277",
     "category": "Juridique, conformité et risques",
     "name": "Matrice probabilité / gravité",
-    "usage": "Analyse de risque classique"
+    "usage": "Analyse de risque classique",
+    "components": [
+      "Probabilité fort / Gravité fort",
+      "Probabilité fort / Gravité faible",
+      "Probabilité faible / Gravité fort",
+      "Probabilité faible / Gravité faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m278",
     "category": "Juridique, conformité et risques",
     "name": "Matrice criticité réglementaire",
-    "usage": "Obligations prioritaires"
+    "usage": "Obligations prioritaires",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m279",
     "category": "Juridique, conformité et risques",
     "name": "Matrice responsabilité / contrôle",
-    "usage": "Gouvernance conformité"
+    "usage": "Gouvernance conformité",
+    "components": [
+      "Responsabilité fort / Contrôle fort",
+      "Responsabilité fort / Contrôle faible",
+      "Responsabilité faible / Contrôle fort",
+      "Responsabilité faible / Contrôle faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m280",
     "category": "Juridique, conformité et risques",
     "name": "Matrice audit / preuve",
-    "usage": "Suivi documentaire"
+    "usage": "Suivi documentaire",
+    "components": [
+      "Audit fort / Preuve fort",
+      "Audit fort / Preuve faible",
+      "Audit faible / Preuve fort",
+      "Audit faible / Preuve faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m281",
     "category": "Juridique, conformité et risques",
     "name": "Matrice contrats / risques",
-    "usage": "Analyse contractuelle"
+    "usage": "Analyse contractuelle",
+    "components": [
+      "Contrats fort / Risques fort",
+      "Contrats fort / Risques faible",
+      "Contrats faible / Risques fort",
+      "Contrats faible / Risques faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m282",
     "category": "Juridique, conformité et risques",
     "name": "Matrice litiges / exposition",
-    "usage": "Suivi contentieux"
+    "usage": "Suivi contentieux",
+    "components": [
+      "Litiges fort / Exposition fort",
+      "Litiges fort / Exposition faible",
+      "Litiges faible / Exposition fort",
+      "Litiges faible / Exposition faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m283",
     "category": "Juridique, conformité et risques",
     "name": "Matrice corruption / exposition",
-    "usage": "Compliance anticorruption"
+    "usage": "Compliance anticorruption",
+    "components": [
+      "Corruption fort / Exposition fort",
+      "Corruption fort / Exposition faible",
+      "Corruption faible / Exposition fort",
+      "Corruption faible / Exposition faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m284",
     "category": "Juridique, conformité et risques",
     "name": "Matrice cybersécurité impact / probabilité",
-    "usage": "Analyse cyber"
+    "usage": "Analyse cyber",
+    "components": [
+      "Cybersécurité impact fort / Probabilité fort",
+      "Cybersécurité impact fort / Probabilité faible",
+      "Cybersécurité impact faible / Probabilité fort",
+      "Cybersécurité impact faible / Probabilité faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m285",
     "category": "Juridique, conformité et risques",
     "name": "Matrice continuité d’activité",
-    "usage": "PCA / PRA"
+    "usage": "PCA / PRA",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m286",
     "category": "Juridique, conformité et risques",
     "name": "Matrice AI Act risque / usage",
-    "usage": "Classification des systèmes IA"
+    "usage": "Classification des systèmes IA",
+    "components": [
+      "Ai act risque fort / Usage fort",
+      "Ai act risque fort / Usage faible",
+      "Ai act risque faible / Usage fort",
+      "Ai act risque faible / Usage faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m287",
     "category": "Pédagogie et formation",
     "name": "Taxonomie de Bloom",
-    "usage": "Niveau cognitif des objectifs"
+    "usage": "Niveau cognitif des objectifs",
+    "components": [
+      "Connaître",
+      "Comprendre",
+      "Appliquer",
+      "Analyser",
+      "Évaluer",
+      "Créer"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m288",
     "category": "Pédagogie et formation",
     "name": "Matrice objectifs / activités / évaluations",
-    "usage": "Alignement pédagogique"
+    "usage": "Alignement pédagogique",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m289",
     "category": "Pédagogie et formation",
     "name": "Matrice compétences / preuves",
-    "usage": "Certification"
+    "usage": "Certification",
+    "components": [
+      "Compétences fort / Preuves fort",
+      "Compétences fort / Preuves faible",
+      "Compétences faible / Preuves fort",
+      "Compétences faible / Preuves faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m290",
     "category": "Pédagogie et formation",
     "name": "Matrice niveau / compétence",
-    "usage": "Progression pédagogique"
+    "usage": "Progression pédagogique",
+    "components": [
+      "Niveau fort / Compétence fort",
+      "Niveau fort / Compétence faible",
+      "Niveau faible / Compétence fort",
+      "Niveau faible / Compétence faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m291",
     "category": "Pédagogie et formation",
     "name": "Matrice prérequis / objectifs",
-    "usage": "Construction de parcours"
+    "usage": "Construction de parcours",
+    "components": [
+      "Prérequis fort / Objectifs fort",
+      "Prérequis fort / Objectifs faible",
+      "Prérequis faible / Objectifs fort",
+      "Prérequis faible / Objectifs faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m292",
     "category": "Pédagogie et formation",
     "name": "Matrice scénario pédagogique",
-    "usage": "Séquence, activité, évaluation"
+    "usage": "Séquence, activité, évaluation",
+    "components": [
+      "Séquence",
+      "Activité",
+      "Évaluation"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m293",
     "category": "Pédagogie et formation",
     "name": "Matrice synchrone / asynchrone",
-    "usage": "Modalités de formation"
+    "usage": "Modalités de formation",
+    "components": [
+      "Synchrone fort / Asynchrone fort",
+      "Synchrone fort / Asynchrone faible",
+      "Synchrone faible / Asynchrone fort",
+      "Synchrone faible / Asynchrone faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m294",
     "category": "Pédagogie et formation",
     "name": "Matrice individuel / collectif",
-    "usage": "Design pédagogique"
+    "usage": "Design pédagogique",
+    "components": [
+      "Individuel fort / Collectif fort",
+      "Individuel fort / Collectif faible",
+      "Individuel faible / Collectif fort",
+      "Individuel faible / Collectif faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m295",
     "category": "Pédagogie et formation",
     "name": "Matrice effort apprenant / valeur pédagogique",
-    "usage": "Priorisation activités"
+    "usage": "Priorisation activités",
+    "components": [
+      "Effort apprenant fort / Valeur pédagogique fort",
+      "Effort apprenant fort / Valeur pédagogique faible",
+      "Effort apprenant faible / Valeur pédagogique fort",
+      "Effort apprenant faible / Valeur pédagogique faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m296",
     "category": "Pédagogie et formation",
     "name": "Matrice évaluation formative / sommative",
-    "usage": "Évaluation des apprentissages"
+    "usage": "Évaluation des apprentissages",
+    "components": [
+      "Évaluation formative fort / Sommative fort",
+      "Évaluation formative fort / Sommative faible",
+      "Évaluation formative faible / Sommative fort",
+      "Évaluation formative faible / Sommative faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m297",
     "category": "Pédagogie et formation",
     "name": "Matrice Kirkpatrick",
-    "usage": "Évaluation de formation"
+    "usage": "Évaluation de formation",
+    "components": [
+      "Réaction",
+      "Apprentissage",
+      "Comportement",
+      "Résultats"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m298",
     "category": "Pédagogie et formation",
     "name": "Matrice compétences / badges",
-    "usage": "Gamification pédagogique"
+    "usage": "Gamification pédagogique",
+    "components": [
+      "Compétences fort / Badges fort",
+      "Compétences fort / Badges faible",
+      "Compétences faible / Badges fort",
+      "Compétences faible / Badges faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m299",
     "category": "Pédagogie et formation",
     "name": "Matrice motivation / difficulté",
-    "usage": "Engagement apprenant"
+    "usage": "Engagement apprenant",
+    "components": [
+      "Motivation fort / Difficulté fort",
+      "Motivation fort / Difficulté faible",
+      "Motivation faible / Difficulté fort",
+      "Motivation faible / Difficulté faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m300",
     "category": "Pédagogie et formation",
     "name": "Matrice feedback / progression",
-    "usage": "Suivi individualisé"
+    "usage": "Suivi individualisé",
+    "components": [
+      "Feedback fort / Progression fort",
+      "Feedback fort / Progression faible",
+      "Feedback faible / Progression fort",
+      "Feedback faible / Progression faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m301",
     "category": "Décision et priorisation transversales",
     "name": "Impact / effort",
-    "usage": "Prioriser rapidement"
+    "usage": "Prioriser rapidement",
+    "components": [
+      "Impact fort / Effort fort",
+      "Impact fort / Effort faible",
+      "Impact faible / Effort fort",
+      "Impact faible / Effort faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m302",
     "category": "Décision et priorisation transversales",
     "name": "Valeur / complexité",
-    "usage": "Arbitrer des initiatives"
+    "usage": "Arbitrer des initiatives",
+    "components": [
+      "Valeur fort / Complexité fort",
+      "Valeur fort / Complexité faible",
+      "Valeur faible / Complexité fort",
+      "Valeur faible / Complexité faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m303",
     "category": "Décision et priorisation transversales",
     "name": "Urgence / importance",
-    "usage": "Gérer le temps"
+    "usage": "Gérer le temps",
+    "components": [
+      "Urgence fort / Importance fort",
+      "Urgence fort / Importance faible",
+      "Urgence faible / Importance fort",
+      "Urgence faible / Importance faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m304",
     "category": "Décision et priorisation transversales",
     "name": "Risque / impact",
-    "usage": "Gérer les risques"
+    "usage": "Gérer les risques",
+    "components": [
+      "Risque fort / Impact fort",
+      "Risque fort / Impact faible",
+      "Risque faible / Impact fort",
+      "Risque faible / Impact faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m305",
     "category": "Décision et priorisation transversales",
     "name": "Coût / bénéfice",
-    "usage": "Arbitrage économique"
+    "usage": "Arbitrage économique",
+    "components": [
+      "Coût fort / Bénéfice fort",
+      "Coût fort / Bénéfice faible",
+      "Coût faible / Bénéfice fort",
+      "Coût faible / Bénéfice faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m306",
     "category": "Décision et priorisation transversales",
     "name": "Faisabilité / attractivité",
-    "usage": "Choisir des idées"
+    "usage": "Choisir des idées",
+    "components": [
+      "Faisabilité fort / Attractivité fort",
+      "Faisabilité fort / Attractivité faible",
+      "Faisabilité faible / Attractivité fort",
+      "Faisabilité faible / Attractivité faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m307",
     "category": "Décision et priorisation transversales",
     "name": "Importance / performance",
-    "usage": "Améliorer une offre"
+    "usage": "Améliorer une offre",
+    "components": [
+      "Importance fort / Performance fort",
+      "Importance fort / Performance faible",
+      "Importance faible / Performance fort",
+      "Importance faible / Performance faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m308",
     "category": "Décision et priorisation transversales",
     "name": "Probabilité / gravité",
-    "usage": "Cartographier un risque"
+    "usage": "Cartographier un risque",
+    "components": [
+      "Probabilité fort / Gravité fort",
+      "Probabilité fort / Gravité faible",
+      "Probabilité faible / Gravité fort",
+      "Probabilité faible / Gravité faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m309",
     "category": "Décision et priorisation transversales",
     "name": "Pouvoir / intérêt",
-    "usage": "Piloter les parties prenantes"
+    "usage": "Piloter les parties prenantes",
+    "components": [
+      "Pouvoir fort / Intérêt fort",
+      "Pouvoir fort / Intérêt faible",
+      "Pouvoir faible / Intérêt fort",
+      "Pouvoir faible / Intérêt faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m310",
     "category": "Décision et priorisation transversales",
     "name": "Influence / attitude",
-    "usage": "Conduite du changement"
+    "usage": "Conduite du changement",
+    "components": [
+      "Influence fort / Attitude fort",
+      "Influence fort / Attitude faible",
+      "Influence faible / Attitude fort",
+      "Influence faible / Attitude faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m311",
     "category": "Décision et priorisation transversales",
     "name": "Maturité / potentiel",
-    "usage": "Évaluer une organisation"
+    "usage": "Évaluer une organisation",
+    "components": [
+      "Maturité fort / Potentiel fort",
+      "Maturité fort / Potentiel faible",
+      "Maturité faible / Potentiel fort",
+      "Maturité faible / Potentiel faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m312",
     "category": "Décision et priorisation transversales",
     "name": "Performance / potentiel",
-    "usage": "Évaluer les talents"
+    "usage": "Évaluer les talents",
+    "components": [
+      "Performance fort / Potentiel fort",
+      "Performance fort / Potentiel faible",
+      "Performance faible / Potentiel fort",
+      "Performance faible / Potentiel faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m313",
     "category": "Décision et priorisation transversales",
     "name": "Besoin / capacité",
-    "usage": "Allouer les moyens"
+    "usage": "Allouer les moyens",
+    "components": [
+      "Besoin fort / Capacité fort",
+      "Besoin fort / Capacité faible",
+      "Besoin faible / Capacité fort",
+      "Besoin faible / Capacité faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m314",
     "category": "Décision et priorisation transversales",
     "name": "Fréquence / intensité",
-    "usage": "Analyser un problème"
+    "usage": "Analyser un problème",
+    "components": [
+      "Fréquence fort / Intensité fort",
+      "Fréquence fort / Intensité faible",
+      "Fréquence faible / Intensité fort",
+      "Fréquence faible / Intensité faible"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m315",
     "category": "Décision et priorisation transversales",
     "name": "Effort / confiance / impact",
-    "usage": "Priorisation ICE"
+    "usage": "Priorisation ICE",
+    "components": [
+      "Impact",
+      "Confidence",
+      "Ease"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m316",
     "category": "Décision et priorisation transversales",
     "name": "Reach / impact / confidence / effort",
-    "usage": "Priorisation RICE"
+    "usage": "Priorisation RICE",
+    "components": [
+      "Reach",
+      "Impact",
+      "Confidence",
+      "Effort"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m317",
     "category": "Décision et priorisation transversales",
     "name": "Décision multicritère pondérée",
-    "usage": "Choix rationnel entre options"
+    "usage": "Choix rationnel entre options",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m318",
     "category": "Autres modèles utiles",
     "name": "Cynefin Framework",
-    "usage": "Décision selon complexité du contexte"
+    "usage": "Décision selon complexité du contexte",
+    "components": [
+      "Simple",
+      "Compliqué",
+      "Complexe",
+      "Chaotique",
+      "Désordre"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m319",
     "category": "Autres modèles utiles",
     "name": "OODA Loop",
-    "usage": "Observation, orientation, décision, action"
+    "usage": "Observation, orientation, décision, action",
+    "components": [
+      "Observer",
+      "S'orienter",
+      "Décider",
+      "Agir"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m320",
     "category": "Autres modèles utiles",
     "name": "VRIO",
-    "usage": "Valeur, rareté, imitabilité, organisation"
+    "usage": "Valeur, rareté, imitabilité, organisation",
+    "components": [
+      "Valeur",
+      "Rareté",
+      "Imitabilité",
+      "Organisation"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m321",
     "category": "Autres modèles utiles",
     "name": "Matrice VRIN",
-    "usage": "Ressources stratégiques"
+    "usage": "Ressources stratégiques",
+    "components": [
+      "Valeur",
+      "Rareté",
+      "Imitabilité",
+      "Non-substituabilité"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m322",
     "category": "Autres modèles utiles",
     "name": "7S McKinsey",
-    "usage": "Diagnostic organisationnel"
+    "usage": "Diagnostic organisationnel",
+    "components": [
+      "Stratégie",
+      "Structure",
+      "Systèmes",
+      "Style",
+      "Personnel",
+      "Compétences",
+      "Valeurs partagées"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m323",
     "category": "Autres modèles utiles",
     "name": "Balanced Scorecard",
-    "usage": "Pilotage stratégique"
+    "usage": "Pilotage stratégique",
+    "components": [
+      "Finance",
+      "Clients",
+      "Processus internes",
+      "Apprentissage et croissance"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m324",
     "category": "Autres modèles utiles",
     "name": "OKR Matrix",
-    "usage": "Objectifs et résultats clés"
+    "usage": "Objectifs et résultats clés",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m325",
     "category": "Autres modèles utiles",
     "name": "Hoshin Kanri Matrix",
-    "usage": "Déploiement stratégique"
+    "usage": "Déploiement stratégique",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m326",
     "category": "Autres modèles utiles",
     "name": "Strategy Map",
-    "usage": "Carte stratégique"
+    "usage": "Carte stratégique",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m327",
     "category": "Autres modèles utiles",
     "name": "Theory of Change",
-    "usage": "Transformation et impact"
+    "usage": "Transformation et impact",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m328",
     "category": "Autres modèles utiles",
     "name": "Logic Model",
-    "usage": "Ressources, activités, résultats"
+    "usage": "Ressources, activités, résultats",
+    "components": [
+      "Ressources",
+      "Activités",
+      "Résultats"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m329",
     "category": "Autres modèles utiles",
     "name": "Stakeholder Salience Model",
-    "usage": "Pouvoir, légitimité, urgence"
+    "usage": "Pouvoir, légitimité, urgence",
+    "components": [
+      "Pouvoir",
+      "Légitimité",
+      "Urgence"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m330",
     "category": "Autres modèles utiles",
     "name": "Competing Values Framework",
-    "usage": "Culture organisationnelle"
+    "usage": "Culture organisationnelle",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m331",
     "category": "Autres modèles utiles",
     "name": "Greiner Growth Model",
-    "usage": "Phases de croissance"
+    "usage": "Phases de croissance",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m332",
     "category": "Autres modèles utiles",
     "name": "Kotter Change Model",
-    "usage": "Conduite du changement"
+    "usage": "Conduite du changement",
+    "components": [
+      "Créer un sentiment d'urgence",
+      "Former une coalition directrice",
+      "Développer une vision et une stratégie",
+      "Communiquer la vision",
+      "Lever les obstacles",
+      "Générer des victoires à court terme",
+      "Consolider les gains",
+      "Ancrer les nouvelles approches"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m333",
     "category": "Autres modèles utiles",
     "name": "ADKAR",
-    "usage": "Changement individuel"
+    "usage": "Changement individuel",
+    "components": [
+      "Conscience",
+      "Désir",
+      "Connaissance",
+      "Capacité",
+      "Renforcement"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m334",
     "category": "Autres modèles utiles",
     "name": "Lewin Change Model",
-    "usage": "Unfreeze, change, refreeze"
+    "usage": "Unfreeze, change, refreeze",
+    "components": [
+      "Dégeler",
+      "Changer",
+      "Recongeler"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m335",
     "category": "Autres modèles utiles",
     "name": "Spiral Dynamics",
-    "usage": "Niveaux de culture et valeurs"
+    "usage": "Niveaux de culture et valeurs",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m336",
     "category": "Autres modèles utiles",
     "name": "Design Thinking Double Diamond",
-    "usage": "Divergence et convergence"
+    "usage": "Divergence et convergence",
+    "components": [
+      "Découvrir",
+      "Définir",
+      "Développer",
+      "Livrer"
+    ],
+    "components_status": "verified"
   },
   {
     "id": "m337",
     "category": "Autres modèles utiles",
     "name": "Wardley Mapping",
-    "usage": "Stratégie technologique"
+    "usage": "Stratégie technologique",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m338",
     "category": "Autres modèles utiles",
     "name": "North Star Metric Framework",
-    "usage": "Croissance produit"
+    "usage": "Croissance produit",
+    "components": [
+      "Quadrant 1",
+      "Quadrant 2",
+      "Quadrant 3",
+      "Quadrant 4"
+    ],
+    "components_status": "to_verify"
   },
   {
     "id": "m339",
     "category": "Autres modèles utiles",
     "name": "Pirate Metrics AARRR",
-    "usage": "Acquisition, activation, rétention, revenu, referral"
+    "usage": "Acquisition, activation, rétention, revenu, referral",
+    "components": [
+      "Acquisition",
+      "Activation",
+      "Rétention",
+      "Revenu",
+      "Recommandation"
+    ],
+    "components_status": "verified"
   }
 ]
