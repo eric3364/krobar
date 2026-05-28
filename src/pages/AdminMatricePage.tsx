@@ -276,6 +276,19 @@ export default function AdminMatricePage() {
                       />
                     </TableCell>
                     <TableCell>
+                      <Textarea
+                        key={`lex-${m.id}-${lexicons[m.id] !== undefined ? "loaded" : "empty"}`}
+                        rows={6}
+                        placeholder="# trigger_lexicon YAML…"
+                        defaultValue={lexicons[m.id] ?? ""}
+                        onBlur={(e) => {
+                          const v = e.target.value;
+                          if (v !== (lexicons[m.id] ?? "")) saveLexicon(m.id, v);
+                        }}
+                        className="font-mono text-[11px] leading-snug min-h-[120px]"
+                      />
+                    </TableCell>
+                    <TableCell>
                       {thumb ? (
                         <button
                           onDoubleClick={() => setZoomId(m.id)}
