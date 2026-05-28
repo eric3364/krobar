@@ -44,10 +44,31 @@ export default function AdminMatricePage() {
   const [states, setStates] = useState(getAllStates());
   const [zoomId, setZoomId] = useState<string | null>(null);
   const [batchRunning, setBatchRunning] = useState(false);
+  const [lexicons, setLexicons] = useState<Record<string, string>>({});
   const cancelRef = useRef(false);
   const tableScrollRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => subscribe(() => setStates(getAllStates())), []);
+
+  useEffect(() => {
+    (async () => {
+      const { data, error } = await supabase
+        .from("matrice_trigger_lexicon")
+        .select("matrice_id, lexicon_yaml");
+      if (error) return;
+      const map: Record<string, string> = {};
+      (data ?? []).forEach((r: any) => { map[r.matrice_id] = r.lexicon_yaml ?? ""; });
+      setLexicons(map);
+    })();
+  }, []);
+
+  const saveLexicon = useCallback(async (matriceId: string, yaml: string) => {
+    setLexicons((prev) => ({ ...prev, [matriceId]: yaml }));
+    const { error } = await supabase
+      .from("matrice_trigger_lexicon")
+      .upsert({ matrice_id: matriceId, lexicon_yaml: yaml }, { onConflict: "matrice_id" });
+    if (error) toast.error(`Sauvegarde lexicon : ${error.message}`);
+  }, []);
 
   useEffect(() => {
     const resetHorizontalScroll = () => {
