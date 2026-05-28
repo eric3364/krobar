@@ -38,8 +38,28 @@ export default function AdminMatricePage() {
   const [zoomId, setZoomId] = useState<string | null>(null);
   const [batchRunning, setBatchRunning] = useState(false);
   const cancelRef = useRef(false);
+  const tableScrollRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => subscribe(() => setStates(getAllStates())), []);
+
+  useEffect(() => {
+    const resetHorizontalScroll = () => {
+      const node = tableScrollRef.current;
+      if (!node) return;
+      node.scrollLeft = 0;
+    };
+
+    resetHorizontalScroll();
+
+    const handlePageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        requestAnimationFrame(resetHorizontalScroll);
+      }
+    };
+
+    window.addEventListener("pageshow", handlePageShow);
+    return () => window.removeEventListener("pageshow", handlePageShow);
+  }, []);
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -175,8 +195,11 @@ export default function AdminMatricePage() {
         </Card>
 
         <Card className="overflow-hidden">
-          <div className="w-full overflow-x-auto">
-          <Table className="min-w-[1120px]">
+          <Table
+            containerRef={tableScrollRef}
+            containerClassName="w-full overflow-x-auto"
+            className="min-w-[1120px]"
+          >
             <TableHeader>
               <TableRow>
                 <TableHead className="w-10">
@@ -285,7 +308,6 @@ export default function AdminMatricePage() {
               })}
             </TableBody>
           </Table>
-          </div>
           {filtered.length > 200 && (
             <p className="p-3 text-xs text-muted-foreground text-center">
               {filtered.length - 200} lignes supplémentaires masquées — affinez la recherche.
