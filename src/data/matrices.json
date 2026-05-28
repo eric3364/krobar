@@ -418,21 +418,6 @@
     "components_status": "to_verify"
   },
   {
-    "id": "m033",
-    "category": "Marketing",
-    "name": "Value Proposition Canvas",
-    "usage": "Profil client et proposition de valeur",
-    "components": [
-      "Tâches du client",
-      "Bénéfices attendus",
-      "Douleurs",
-      "Produits & services",
-      "Créateurs de gains",
-      "Soulageurs de douleurs"
-    ],
-    "components_status": "verified"
-  },
-  {
     "id": "m034",
     "category": "Marketing",
     "name": "Brand Key",
@@ -712,19 +697,6 @@
       "Quadrant 2",
       "Quadrant 3",
       "Quadrant 4"
-    ],
-    "components_status": "to_verify"
-  },
-  {
-    "id": "m056",
-    "category": "Marketing",
-    "name": "Matrice message / cible",
-    "usage": "Adaptation des messages par segment",
-    "components": [
-      "Message fort / Cible fort",
-      "Message fort / Cible faible",
-      "Message faible / Cible fort",
-      "Message faible / Cible faible"
     ],
     "components_status": "to_verify"
   },
@@ -1119,19 +1091,6 @@
     "components_status": "to_verify"
   },
   {
-    "id": "m087",
-    "category": "Management et organisation",
-    "name": "Matrice probabilité / gravité",
-    "usage": "Cartographie des risques",
-    "components": [
-      "Probabilité fort / Gravité fort",
-      "Probabilité fort / Gravité faible",
-      "Probabilité faible / Gravité fort",
-      "Probabilité faible / Gravité faible"
-    ],
-    "components_status": "to_verify"
-  },
-  {
     "id": "m088",
     "category": "Management et organisation",
     "name": "Matrice décisionnelle multicritère",
@@ -1262,19 +1221,6 @@
     "components_status": "to_verify"
   },
   {
-    "id": "m098",
-    "category": "Management et organisation",
-    "name": "Matrice motivation / compétence",
-    "usage": "Style de management adapté",
-    "components": [
-      "Motivation fort / Compétence fort",
-      "Motivation fort / Compétence faible",
-      "Motivation faible / Compétence fort",
-      "Motivation faible / Compétence faible"
-    ],
-    "components_status": "to_verify"
-  },
-  {
     "id": "m099",
     "category": "Management et organisation",
     "name": "Matrice Hersey-Blanchard",
@@ -1380,19 +1326,6 @@
     "components_status": "to_verify"
   },
   {
-    "id": "m107",
-    "category": "Gestion de projet",
-    "name": "Matrice RACI projet",
-    "usage": "Clarification des responsabilités",
-    "components": [
-      "Responsible (Réalise)",
-      "Accountable (Approuve)",
-      "Consulted (Consulté)",
-      "Informed (Informé)"
-    ],
-    "components_status": "verified"
-  },
-  {
     "id": "m108",
     "category": "Gestion de projet",
     "name": "Matrice MoSCoW",
@@ -1402,20 +1335,6 @@
       "Should have",
       "Could have",
       "Won't have"
-    ],
-    "components_status": "verified"
-  },
-  {
-    "id": "m109",
-    "category": "Gestion de projet",
-    "name": "Matrice Kano",
-    "usage": "Satisfaction utilisateur selon fonctionnalités",
-    "components": [
-      "Qualité basique",
-      "Qualité de performance",
-      "Qualité attractive",
-      "Indifférent",
-      "Rejet"
     ],
     "components_status": "verified"
   },
@@ -1456,19 +1375,6 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify"
-  },
-  {
-    "id": "m113",
-    "category": "Gestion de projet",
-    "name": "Matrice Eisenhower",
-    "usage": "Urgence vs importance",
-    "components": [
-      "Urgent et important",
-      "Important non urgent",
-      "Urgent non important",
-      "Ni urgent ni important"
-    ],
-    "components_status": "verified"
   },
   {
     "id": "m114",
@@ -2113,34 +2019,6 @@
       "Certification faible / Blocs de compétences faible"
     ],
     "components_status": "to_verify"
-  },
-  {
-    "id": "m163",
-    "category": "RH, compétences et formation",
-    "name": "Matrice Bloom",
-    "usage": "Niveaux cognitifs d’apprentissage",
-    "components": [
-      "Connaître",
-      "Comprendre",
-      "Appliquer",
-      "Analyser",
-      "Évaluer",
-      "Créer"
-    ],
-    "components_status": "verified"
-  },
-  {
-    "id": "m164",
-    "category": "RH, compétences et formation",
-    "name": "Matrice Kirkpatrick",
-    "usage": "Évaluation de la formation",
-    "components": [
-      "Réaction",
-      "Apprentissage",
-      "Comportement",
-      "Résultats"
-    ],
-    "components_status": "verified"
   },
   {
     "id": "m165",
@@ -3184,18 +3062,6 @@
     "components_status": "to_verify"
   },
   {
-    "id": "m245",
-    "category": "Data, IA et transformation numérique",
-    "name": "Matrice ROI IA",
-    "usage": "Gains, coûts, risques",
-    "components": [
-      "Gains",
-      "Coûts",
-      "Risques"
-    ],
-    "components_status": "to_verify"
-  },
-  {
     "id": "m246",
     "category": "Data, IA et transformation numérique",
     "name": "Matrice éthique IA",
@@ -3903,226 +3769,6 @@
       "Feedback fort / Progression faible",
       "Feedback faible / Progression fort",
       "Feedback faible / Progression faible"
-    ],
-    "components_status": "to_verify"
-  },
-  {
-    "id": "m301",
-    "category": "Décision et priorisation transversales",
-    "name": "Impact / effort",
-    "usage": "Prioriser rapidement",
-    "components": [
-      "Impact fort / Effort fort",
-      "Impact fort / Effort faible",
-      "Impact faible / Effort fort",
-      "Impact faible / Effort faible"
-    ],
-    "components_status": "to_verify"
-  },
-  {
-    "id": "m302",
-    "category": "Décision et priorisation transversales",
-    "name": "Valeur / complexité",
-    "usage": "Arbitrer des initiatives",
-    "components": [
-      "Valeur fort / Complexité fort",
-      "Valeur fort / Complexité faible",
-      "Valeur faible / Complexité fort",
-      "Valeur faible / Complexité faible"
-    ],
-    "components_status": "to_verify"
-  },
-  {
-    "id": "m303",
-    "category": "Décision et priorisation transversales",
-    "name": "Urgence / importance",
-    "usage": "Gérer le temps",
-    "components": [
-      "Urgence fort / Importance fort",
-      "Urgence fort / Importance faible",
-      "Urgence faible / Importance fort",
-      "Urgence faible / Importance faible"
-    ],
-    "components_status": "to_verify"
-  },
-  {
-    "id": "m304",
-    "category": "Décision et priorisation transversales",
-    "name": "Risque / impact",
-    "usage": "Gérer les risques",
-    "components": [
-      "Risque fort / Impact fort",
-      "Risque fort / Impact faible",
-      "Risque faible / Impact fort",
-      "Risque faible / Impact faible"
-    ],
-    "components_status": "to_verify"
-  },
-  {
-    "id": "m305",
-    "category": "Décision et priorisation transversales",
-    "name": "Coût / bénéfice",
-    "usage": "Arbitrage économique",
-    "components": [
-      "Coût fort / Bénéfice fort",
-      "Coût fort / Bénéfice faible",
-      "Coût faible / Bénéfice fort",
-      "Coût faible / Bénéfice faible"
-    ],
-    "components_status": "to_verify"
-  },
-  {
-    "id": "m306",
-    "category": "Décision et priorisation transversales",
-    "name": "Faisabilité / attractivité",
-    "usage": "Choisir des idées",
-    "components": [
-      "Faisabilité fort / Attractivité fort",
-      "Faisabilité fort / Attractivité faible",
-      "Faisabilité faible / Attractivité fort",
-      "Faisabilité faible / Attractivité faible"
-    ],
-    "components_status": "to_verify"
-  },
-  {
-    "id": "m307",
-    "category": "Décision et priorisation transversales",
-    "name": "Importance / performance",
-    "usage": "Améliorer une offre",
-    "components": [
-      "Importance fort / Performance fort",
-      "Importance fort / Performance faible",
-      "Importance faible / Performance fort",
-      "Importance faible / Performance faible"
-    ],
-    "components_status": "to_verify"
-  },
-  {
-    "id": "m308",
-    "category": "Décision et priorisation transversales",
-    "name": "Probabilité / gravité",
-    "usage": "Cartographier un risque",
-    "components": [
-      "Probabilité fort / Gravité fort",
-      "Probabilité fort / Gravité faible",
-      "Probabilité faible / Gravité fort",
-      "Probabilité faible / Gravité faible"
-    ],
-    "components_status": "to_verify"
-  },
-  {
-    "id": "m309",
-    "category": "Décision et priorisation transversales",
-    "name": "Pouvoir / intérêt",
-    "usage": "Piloter les parties prenantes",
-    "components": [
-      "Pouvoir fort / Intérêt fort",
-      "Pouvoir fort / Intérêt faible",
-      "Pouvoir faible / Intérêt fort",
-      "Pouvoir faible / Intérêt faible"
-    ],
-    "components_status": "to_verify"
-  },
-  {
-    "id": "m310",
-    "category": "Décision et priorisation transversales",
-    "name": "Influence / attitude",
-    "usage": "Conduite du changement",
-    "components": [
-      "Influence fort / Attitude fort",
-      "Influence fort / Attitude faible",
-      "Influence faible / Attitude fort",
-      "Influence faible / Attitude faible"
-    ],
-    "components_status": "to_verify"
-  },
-  {
-    "id": "m311",
-    "category": "Décision et priorisation transversales",
-    "name": "Maturité / potentiel",
-    "usage": "Évaluer une organisation",
-    "components": [
-      "Maturité fort / Potentiel fort",
-      "Maturité fort / Potentiel faible",
-      "Maturité faible / Potentiel fort",
-      "Maturité faible / Potentiel faible"
-    ],
-    "components_status": "to_verify"
-  },
-  {
-    "id": "m312",
-    "category": "Décision et priorisation transversales",
-    "name": "Performance / potentiel",
-    "usage": "Évaluer les talents",
-    "components": [
-      "Performance fort / Potentiel fort",
-      "Performance fort / Potentiel faible",
-      "Performance faible / Potentiel fort",
-      "Performance faible / Potentiel faible"
-    ],
-    "components_status": "to_verify"
-  },
-  {
-    "id": "m313",
-    "category": "Décision et priorisation transversales",
-    "name": "Besoin / capacité",
-    "usage": "Allouer les moyens",
-    "components": [
-      "Besoin fort / Capacité fort",
-      "Besoin fort / Capacité faible",
-      "Besoin faible / Capacité fort",
-      "Besoin faible / Capacité faible"
-    ],
-    "components_status": "to_verify"
-  },
-  {
-    "id": "m314",
-    "category": "Décision et priorisation transversales",
-    "name": "Fréquence / intensité",
-    "usage": "Analyser un problème",
-    "components": [
-      "Fréquence fort / Intensité fort",
-      "Fréquence fort / Intensité faible",
-      "Fréquence faible / Intensité fort",
-      "Fréquence faible / Intensité faible"
-    ],
-    "components_status": "to_verify"
-  },
-  {
-    "id": "m315",
-    "category": "Décision et priorisation transversales",
-    "name": "Effort / confiance / impact",
-    "usage": "Priorisation ICE",
-    "components": [
-      "Impact",
-      "Confidence",
-      "Ease"
-    ],
-    "components_status": "verified"
-  },
-  {
-    "id": "m316",
-    "category": "Décision et priorisation transversales",
-    "name": "Reach / impact / confidence / effort",
-    "usage": "Priorisation RICE",
-    "components": [
-      "Reach",
-      "Impact",
-      "Confidence",
-      "Effort"
-    ],
-    "components_status": "verified"
-  },
-  {
-    "id": "m317",
-    "category": "Décision et priorisation transversales",
-    "name": "Décision multicritère pondérée",
-    "usage": "Choix rationnel entre options",
-    "components": [
-      "Quadrant 1",
-      "Quadrant 2",
-      "Quadrant 3",
-      "Quadrant 4"
     ],
     "components_status": "to_verify"
   },
