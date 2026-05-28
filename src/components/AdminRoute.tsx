@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useLayoutEffect, useRef } from "react";
 import { Navigate, Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Loader2, LayoutDashboard, Palette, Pencil, Grid3x3, Flag, BookOpen, Brain, Library, FilePlus2, BarChart3, Shapes, Settings, FileText, FileImage } from "lucide-react";
@@ -33,6 +33,41 @@ const sicaiNav = {
 
 function AdminLayoutInner({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
+  const mainRef = useRef<HTMLElement | null>(null);
+
+  const resetMainHorizontalScroll = () => {
+    const node = mainRef.current;
+    if (!node || node.scrollLeft === 0) return;
+    node.scrollLeft = 0;
+  };
+
+  useLayoutEffect(() => {
+    resetMainHorizontalScroll();
+  }, [pathname]);
+
+  useEffect(() => {
+    const scheduleReset = () => requestAnimationFrame(resetMainHorizontalScroll);
+    const handlePageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) scheduleReset();
+    };
+    const handleFocus = () => scheduleReset();
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        scheduleReset();
+      }
+    };
+
+    scheduleReset();
+    window.addEventListener("pageshow", handlePageShow);
+    window.addEventListener("focus", handleFocus);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      window.removeEventListener("pageshow", handlePageShow);
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [pathname]);
 
   return (
     <>
@@ -97,7 +132,7 @@ function AdminLayoutInner({ children }: { children: ReactNode }) {
 
         {/* Main */}
         <div className="flex-1 flex flex-col min-w-0">
-          <main className="flex-1 overflow-y-auto overflow-x-hidden p-6">
+          <main ref={mainRef} className="flex-1 overflow-y-auto overflow-x-hidden p-6">
             {children}
           </main>
         </div>
