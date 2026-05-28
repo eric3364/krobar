@@ -174,8 +174,9 @@ export default function AdminMatricePage() {
           </div>
         </Card>
 
-        <Card className="overflow-x-auto">
-          <Table>
+        <Card className="overflow-hidden">
+          <div className="w-full overflow-x-auto">
+          <Table className="min-w-[1120px]">
             <TableHeader>
               <TableRow>
                 <TableHead className="w-10">
@@ -284,6 +285,7 @@ export default function AdminMatricePage() {
               })}
             </TableBody>
           </Table>
+          </div>
           {filtered.length > 200 && (
             <p className="p-3 text-xs text-muted-foreground text-center">
               {filtered.length - 200} lignes supplémentaires masquées — affinez la recherche.
