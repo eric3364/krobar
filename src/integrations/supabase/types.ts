@@ -41,6 +41,27 @@ export type Database = {
         }
         Relationships: []
       }
+      matrice_trigger_lexicon: {
+        Row: {
+          lexicon_yaml: string
+          matrice_id: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          lexicon_yaml?: string
+          matrice_id: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          lexicon_yaml?: string
+          matrice_id?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       plan_quotas: {
         Row: {
           description: string | null
