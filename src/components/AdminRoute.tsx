@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Navigate, Link, useLocation } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Loader2, LayoutDashboard, Palette, Pencil, Grid3x3, Flag, BookOpen, Brain, Library, FilePlus2, BarChart3, Shapes, Settings, FileText, FileImage } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -32,8 +32,7 @@ const sicaiNav = {
 };
 
 function AdminLayoutInner({ children }: { children: ReactNode }) {
-  const { signOut } = useAuth();
-  const { pathname } = useLocation();
+  useAuth();
 
   return (
     <>
@@ -48,7 +47,7 @@ function AdminLayoutInner({ children }: { children: ReactNode }) {
           </div>
           <nav className="flex-1 p-2 space-y-0.5 overflow-y-auto">
             {navItems.map((item) => {
-              const active = pathname === item.path;
+              const active = location.pathname === item.path;
               return (
                 <Link
                   key={item.path}
@@ -72,7 +71,7 @@ function AdminLayoutInner({ children }: { children: ReactNode }) {
               </Link>
               <div className="ml-3 mt-0.5 border-l border-border pl-2 space-y-0.5">
                 {sicaiNav.children.map((c) => {
-                  const active = pathname === c.path;
+                  const active = location.pathname === c.path;
                   return (
                     <Link
                       key={c.path}
