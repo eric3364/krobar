@@ -163,8 +163,8 @@
     "usage": "Croisement opérationnel des éléments SWOT",
     "components": [
       "Stratégies SO (Forces-Opportunités)",
-      "Stratégies WO (Faiblesses-Opportunités)",
       "Stratégies ST (Forces-Menaces)",
+      "Stratégies WO (Faiblesses-Opportunités)",
       "Stratégies WT (Faiblesses-Menaces)"
     ],
     "components_status": "verified"
@@ -1293,12 +1293,13 @@
     "name": "Matrice Blake & Mouton",
     "usage": "Style de management",
     "components": [
-      "Quadrant 1",
-      "Quadrant 2",
-      "Quadrant 3",
-      "Quadrant 4"
+      "Management appauvri (1,1)",
+      "Management social (1,9)",
+      "Management autoritaire (9,1)",
+      "Management intermédiaire (5,5)",
+      "Management d'équipe (9,9)"
     ],
-    "components_status": "to_verify"
+    "components_status": "verified"
   },
   {
     "id": "m101",
@@ -1410,12 +1411,13 @@
     "name": "Matrice Kano",
     "usage": "Satisfaction utilisateur selon fonctionnalités",
     "components": [
-      "Quadrant 1",
-      "Quadrant 2",
-      "Quadrant 3",
-      "Quadrant 4"
+      "Qualité basique",
+      "Qualité de performance",
+      "Qualité attractive",
+      "Indifférent",
+      "Rejet"
     ],
-    "components_status": "to_verify"
+    "components_status": "verified"
   },
   {
     "id": "m110",
@@ -1642,12 +1644,13 @@
     "name": "Matrice Kano",
     "usage": "Priorisation des fonctionnalités",
     "components": [
-      "Quadrant 1",
-      "Quadrant 2",
-      "Quadrant 3",
-      "Quadrant 4"
+      "Qualité basique",
+      "Qualité de performance",
+      "Qualité attractive",
+      "Indifférent",
+      "Rejet"
     ],
-    "components_status": "to_verify"
+    "components_status": "verified"
   },
   {
     "id": "m127",
@@ -4158,7 +4161,7 @@
     "components": [
       "Valeur",
       "Rareté",
-      "Imitabilité",
+      "Inimitabilité",
       "Organisation"
     ],
     "components_status": "verified"
@@ -4171,7 +4174,7 @@
     "components": [
       "Valeur",
       "Rareté",
-      "Imitabilité",
+      "Inimitabilité",
       "Non-substituabilité"
     ],
     "components_status": "verified"
