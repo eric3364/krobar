@@ -526,7 +526,7 @@
   {
     "id": "m041",
     "category": "Marketing",
-    "name": "Matrice RFM",
+    "name": "RFM",
     "usage": "Récence, fréquence, montant",
     "components": [
       "Récence",
@@ -654,7 +654,7 @@
   {
     "id": "m051",
     "category": "Marketing",
-    "name": "Matrice AIDA",
+    "name": "AIDA",
     "usage": "Attention, intérêt, désir, action",
     "components": [
       "Attention",
@@ -1003,7 +1003,7 @@
   {
     "id": "m078",
     "category": "Management et organisation",
-    "name": "Matrice RACI",
+    "name": "RACI",
     "usage": "Répartition des rôles et responsabilités",
     "components": [
       "Responsible (Réalise)",
@@ -1016,7 +1016,7 @@
   {
     "id": "m079",
     "category": "Management et organisation",
-    "name": "Matrice RAPID",
+    "name": "RAPID",
     "usage": "Décision et gouvernance",
     "components": [
       "Recommend",
@@ -1290,7 +1290,7 @@
   {
     "id": "m100",
     "category": "Management et organisation",
-    "name": "Matrice Blake & Mouton",
+    "name": "Grille de Blake & Mouton",
     "usage": "Style de management",
     "components": [
       "Management appauvri (1,1)",
@@ -1641,7 +1641,7 @@
   {
     "id": "m126",
     "category": "Innovation et product management",
-    "name": "Matrice Kano",
+    "name": "Modèle de Kano",
     "usage": "Priorisation des fonctionnalités",
     "components": [
       "Qualité basique",
