@@ -24,7 +24,14 @@ import {
   getAllStates, getState, setState, subscribe, removeFromLibrary,
 } from "@/lib/matriceLibrary";
 
-type Matrice = { id: string; category: string; name: string; usage: string };
+type Matrice = {
+  id: string;
+  category: string;
+  name: string;
+  usage: string;
+  components?: string[];
+  components_status?: "verified" | "to_verify";
+};
 
 const CATALOG = matricesData as Matrice[];
 const ALL_CATEGORIES = Array.from(new Set(CATALOG.map((m) => m.category)));
@@ -37,10 +44,31 @@ export default function AdminMatricePage() {
   const [states, setStates] = useState(getAllStates());
   const [zoomId, setZoomId] = useState<string | null>(null);
   const [batchRunning, setBatchRunning] = useState(false);
+  const [lexicons, setLexicons] = useState<Record<string, string>>({});
   const cancelRef = useRef(false);
   const tableScrollRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => subscribe(() => setStates(getAllStates())), []);
+
+  useEffect(() => {
+    (async () => {
+      const { data, error } = await supabase
+        .from("matrice_trigger_lexicon")
+        .select("matrice_id, lexicon_yaml");
+      if (error) return;
+      const map: Record<string, string> = {};
+      (data ?? []).forEach((r: any) => { map[r.matrice_id] = r.lexicon_yaml ?? ""; });
+      setLexicons(map);
+    })();
+  }, []);
+
+  const saveLexicon = useCallback(async (matriceId: string, yaml: string) => {
+    setLexicons((prev) => ({ ...prev, [matriceId]: yaml }));
+    const { error } = await supabase
+      .from("matrice_trigger_lexicon")
+      .upsert({ matrice_id: matriceId, lexicon_yaml: yaml }, { onConflict: "matrice_id" });
+    if (error) toast.error(`Sauvegarde lexicon : ${error.message}`);
+  }, []);
 
   useEffect(() => {
     const resetHorizontalScroll = () => {
@@ -198,7 +226,7 @@ export default function AdminMatricePage() {
           <Table
             containerRef={tableScrollRef}
             containerClassName="w-full overflow-x-auto"
-            className="min-w-[1120px]"
+            className="min-w-[1480px]"
           >
             <TableHeader>
               <TableRow>
@@ -211,6 +239,7 @@ export default function AdminMatricePage() {
                 <TableHead>Matrice</TableHead>
                 <TableHead>Catégorie</TableHead>
                 <TableHead className="w-[260px]">Commentaire IA</TableHead>
+                <TableHead className="w-[320px]">Trigger lexicon</TableHead>
                 <TableHead className="w-[120px]">Miniature</TableHead>
                 <TableHead className="w-[180px]">Actions</TableHead>
                 <TableHead className="w-[120px]">Statut</TableHead>
@@ -244,6 +273,19 @@ export default function AdminMatricePage() {
                           }
                         }}
                         className="text-xs min-h-[44px]"
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Textarea
+                        key={`lex-${m.id}-${lexicons[m.id] !== undefined ? "loaded" : "empty"}`}
+                        rows={6}
+                        placeholder="# trigger_lexicon YAML…"
+                        defaultValue={lexicons[m.id] ?? ""}
+                        onBlur={(e) => {
+                          const v = e.target.value;
+                          if (v !== (lexicons[m.id] ?? "")) saveLexicon(m.id, v);
+                        }}
+                        className="font-mono text-[11px] leading-snug min-h-[120px]"
                       />
                     </TableCell>
                     <TableCell>
