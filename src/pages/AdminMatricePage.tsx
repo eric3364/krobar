@@ -24,7 +24,14 @@ import {
   getAllStates, getState, setState, subscribe, removeFromLibrary,
 } from "@/lib/matriceLibrary";
 
-type Matrice = { id: string; category: string; name: string; usage: string };
+type Matrice = {
+  id: string;
+  category: string;
+  name: string;
+  usage: string;
+  components?: string[];
+  components_status?: "verified" | "to_verify";
+};
 
 const CATALOG = matricesData as Matrice[];
 const ALL_CATEGORIES = Array.from(new Set(CATALOG.map((m) => m.category)));
