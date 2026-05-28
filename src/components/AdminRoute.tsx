@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Navigate, Link } from "react-router-dom";
+import { Navigate, Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Loader2, LayoutDashboard, Palette, Pencil, Grid3x3, Flag, BookOpen, Brain, Library, FilePlus2, BarChart3, Shapes, Settings, FileText, FileImage } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -32,7 +32,7 @@ const sicaiNav = {
 };
 
 function AdminLayoutInner({ children }: { children: ReactNode }) {
-  useAuth();
+  const { pathname } = useLocation();
 
   return (
     <>
