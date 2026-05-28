@@ -239,6 +239,7 @@ export default function AdminMatricePage() {
                 <TableHead>Matrice</TableHead>
                 <TableHead>Catégorie</TableHead>
                 <TableHead className="w-[260px]">Commentaire IA</TableHead>
+                <TableHead className="w-[320px]">Trigger lexicon</TableHead>
                 <TableHead className="w-[120px]">Miniature</TableHead>
                 <TableHead className="w-[180px]">Actions</TableHead>
                 <TableHead className="w-[120px]">Statut</TableHead>
