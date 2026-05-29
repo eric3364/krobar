@@ -603,6 +603,7 @@ export default function AdminMatricePage() {
                   />
                 </TableHead>
                 <TableHead>Matrice</TableHead>
+                <TableHead className="w-[80px]">Aperçu</TableHead>
                 <TableHead>Catégorie</TableHead>
                 <TableHead className="w-[260px]">Archétype</TableHead>
 
