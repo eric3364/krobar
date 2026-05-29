@@ -126,9 +126,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m009",
@@ -379,9 +379,9 @@
       "Carte perceptuelle faible / Perceptual map faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m025",
@@ -4110,9 +4110,9 @@
       "Catégorie Z"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "linear_sequence_3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m268",
@@ -4817,9 +4817,9 @@
       "Résultats"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "linear_sequence_3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m329",
