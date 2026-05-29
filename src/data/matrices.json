@@ -29,9 +29,9 @@
       "Légal"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "hub_spokes_6",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m003",
@@ -62,9 +62,9 @@
       "Poids morts"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m005",
@@ -78,9 +78,9 @@
       "Mckinsey faible / Ge faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m006",
@@ -110,9 +110,9 @@
       "Diversification"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m008",
@@ -220,9 +220,9 @@
       "D’attractivité marché faible / Compétitivité faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m015",
@@ -446,9 +446,9 @@
       "Produit faible / Marché faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m029",
@@ -462,9 +462,9 @@
       "Prix faible / Valeur faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m030",
@@ -605,9 +605,9 @@
       "De notoriété faible / Image faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m040",
@@ -652,9 +652,9 @@
       "Satisfaction faible / Fidélité faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m043",
@@ -668,9 +668,9 @@
       "Importance faible / Performance faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m044",
@@ -779,9 +779,9 @@
       "Contenu faible / Parcours d’achat faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m051",
@@ -795,9 +795,9 @@
       "Action"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "linear_sequence_4",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m052",
@@ -826,9 +826,9 @@
       "Acquisition faible / Rétention faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m054",
@@ -906,9 +906,9 @@
       "Clv faible / Cac faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m060",
@@ -922,9 +922,9 @@
       "Seo impact faible / Effort faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m061",
@@ -938,9 +938,9 @@
       "Mots-clés intention faible / Volume faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m062",
@@ -954,9 +954,9 @@
       "Contenu evergreen faible / Actualité faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m063",
@@ -970,9 +970,9 @@
       "Contenu faible / Intention de recherche faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m064",
@@ -986,9 +986,9 @@
       "Social media engagement faible / Portée faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m065",
@@ -1002,9 +1002,9 @@
       "Paid media coût faible / Conversion faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m066",
@@ -1018,9 +1018,9 @@
       "Roas faible / Marge faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m067",
@@ -1066,9 +1066,9 @@
       "Crm valeur faible / Engagement faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m070",
@@ -1082,9 +1082,9 @@
       "Taux de conversion faible / Trafic faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m071",
@@ -1098,9 +1098,9 @@
       "Ux impact faible / Friction faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m072",
@@ -1114,9 +1114,9 @@
       "Analytics kpi faible / Objectif faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m073",
@@ -1130,9 +1130,9 @@
       "Canal faible / Attribution faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m074",
@@ -1193,9 +1193,9 @@
       "Privacy faible / Performance faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m078",
@@ -1242,9 +1242,9 @@
       "Pouvoir faible / Intérêt faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m081",
@@ -1258,9 +1258,9 @@
       "Influence faible / Impact faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m082",
@@ -1274,9 +1274,9 @@
       "Responsabilité faible / Autonomie faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m083",
@@ -1290,9 +1290,9 @@
       "Ni urgent ni important"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m084",
@@ -1306,9 +1306,9 @@
       "Effort faible / Impact faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m085",
@@ -1322,9 +1322,9 @@
       "Complexité faible / Valeur faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m086",
@@ -1338,9 +1338,9 @@
       "Risque faible / Impact faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m088",
@@ -1386,9 +1386,9 @@
       "Compétences faible / Tâches faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m091",
@@ -1402,9 +1402,9 @@
       "Charge faible / Capacité faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m092",
@@ -1418,9 +1418,9 @@
       "Alignement faible / Engagement faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m093",
@@ -1450,9 +1450,9 @@
       "Centralisation faible / Autonomie faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m095",
@@ -1466,9 +1466,9 @@
       "Processus faible / Responsabilité faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m096",
@@ -1482,9 +1482,9 @@
       "Performance faible / Potentiel faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m097",
@@ -1579,9 +1579,9 @@
       "Impact faible / Effort faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m104",
@@ -1595,9 +1595,9 @@
       "Valeur faible / Complexité faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m105",
@@ -1754,9 +1754,9 @@
       "De décision go faible / No go faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m118",
@@ -1802,9 +1802,9 @@
       "Risques faible / Opportunités faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m121",
@@ -1927,9 +1927,9 @@
       "Impact faible / Effort produit faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m128",
@@ -1943,9 +1943,9 @@
       "Valeur utilisateur faible / Valeur business faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m129",
@@ -1959,9 +1959,9 @@
       "Innovation incrémentale faible / Rupture faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m130",
@@ -2005,9 +2005,9 @@
       "Technologie faible / Marché faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m133",
@@ -2021,9 +2021,9 @@
       "Attractivité faible / Faisabilité faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m134",
@@ -2052,9 +2052,9 @@
       "Expérimentation faible / Apprentissage faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m136",
@@ -2100,9 +2100,9 @@
       "Pain faible / Gain faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m139",
@@ -2196,9 +2196,9 @@
       "Compétences faible / Postes faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m145",
@@ -2260,9 +2260,9 @@
       "Motivation faible / Compétence faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m149",
@@ -2276,9 +2276,9 @@
       "Engagement faible / Satisfaction faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m150",
@@ -2308,9 +2308,9 @@
       "Formation impact faible / Urgence faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m152",
@@ -2387,9 +2387,9 @@
       "Attractivité faible / Rétention faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m157",
@@ -2433,9 +2433,9 @@
       "Objectifs faible / Compétences faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m160",
@@ -2465,9 +2465,9 @@
       "Tutorat faible / Apprentissage faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m162",
@@ -2481,9 +2481,9 @@
       "Certification faible / Blocs de compétences faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m165",
@@ -2512,9 +2512,9 @@
       "Marge faible / Volume faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m167",
@@ -2528,9 +2528,9 @@
       "Coût faible / Valeur faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m168",
@@ -2544,9 +2544,9 @@
       "Roi faible / Risque faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m169",
@@ -2560,9 +2560,9 @@
       "Rentabilité faible / Croissance faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m170",
@@ -2576,9 +2576,9 @@
       "Cash-flow faible / Profitabilité faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m171",
@@ -2592,9 +2592,9 @@
       "Prix faible / Marge faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m172",
@@ -2608,9 +2608,9 @@
       "Coût fixe faible / Coût variable faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m173",
@@ -2640,9 +2640,9 @@
       "Tco faible / Bénéfices faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m175",
@@ -2656,9 +2656,9 @@
       "Capex faible / Opex faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m176",
@@ -2672,9 +2672,9 @@
       "Budget faible / Impact faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m177",
@@ -2688,9 +2688,9 @@
       "Performance faible / Coût faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m178",
@@ -2704,9 +2704,9 @@
       "Client rentable faible / Non rentable faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m179",
@@ -2767,9 +2767,9 @@
       "Prospects faible / Potentiel faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m183",
@@ -2783,9 +2783,9 @@
       "Opportunité faible / Probabilité faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m184",
@@ -2799,9 +2799,9 @@
       "Valeur compte faible / Accessibilité faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m185",
@@ -2831,9 +2831,9 @@
       "Pouvoir faible / Influence acheteur faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m187",
@@ -2847,9 +2847,9 @@
       "Besoin faible / Maturité client faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m188",
@@ -2863,9 +2863,9 @@
       "Objections faible / Réponses faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m189",
@@ -2879,9 +2879,9 @@
       "Solution faible / Douleur client faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m190",
@@ -2895,9 +2895,9 @@
       "Urgence faible / Budget faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m191",
@@ -2977,9 +2977,9 @@
       "Cross-sell faible / Up-sell faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m196",
@@ -2993,9 +2993,9 @@
       "Fidélisation faible / Expansion faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m197",
@@ -3025,9 +3025,9 @@
       "Satisfaction faible / Valeur faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m199",
@@ -3058,9 +3058,9 @@
       "Control"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "cycle_5",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m201",
@@ -3110,9 +3110,9 @@
       "Pourquoi 5"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "linear_sequence_5",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m204",
@@ -3157,9 +3157,9 @@
       "Qualité faible / Coût faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m207",
@@ -3173,9 +3173,9 @@
       "Conformité faible / Risque faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m208",
@@ -3189,9 +3189,9 @@
       "Processus faible / Performance faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m209",
@@ -3221,9 +3221,9 @@
       "Valeur ajoutée faible / Non-valeur ajoutée faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m211",
@@ -3237,9 +3237,9 @@
       "Contrôle faible / Fréquence faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m212",
@@ -3269,9 +3269,9 @@
       "Satisfaction faible / Réclamation faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m214",
@@ -3349,9 +3349,9 @@
       "Ux impact faible / Effort faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m219",
@@ -3365,9 +3365,9 @@
       "Friction faible / Fréquence faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m220",
@@ -3381,9 +3381,9 @@
       "Accessibilité faible / Impact faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m221",
@@ -3397,9 +3397,9 @@
       "Besoins faible / Fonctionnalités faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m222",
@@ -3413,9 +3413,9 @@
       "Persona faible / Besoins faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m223",
@@ -3429,9 +3429,9 @@
       "Tâches faible / Émotions faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m224",
@@ -3461,9 +3461,9 @@
       "Utilisabilité faible / Désirabilité faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m226",
@@ -3477,9 +3477,9 @@
       "Contenu faible / Contexte faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m227",
@@ -3493,9 +3493,9 @@
       "Wireframe faible / Objectif faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m228",
@@ -3588,9 +3588,9 @@
       "Cas d’usage ia impact faible / Faisabilité faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m234",
@@ -3604,9 +3604,9 @@
       "Risque ia faible / Valeur faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m235",
@@ -3620,9 +3620,9 @@
       "Automatisation faible / Complexité faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m236",
@@ -3636,9 +3636,9 @@
       "Données disponibles faible / Données nécessaires faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m237",
@@ -3682,9 +3682,9 @@
       "Sécurité faible / Accessibilité faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m240",
@@ -3698,9 +3698,9 @@
       "Ia générative usage faible / Risque faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m241",
@@ -3730,9 +3730,9 @@
       "Humain faible / Machine faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m243",
@@ -3746,9 +3746,9 @@
       "Augmentation faible / Automatisation faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m244",
@@ -3762,9 +3762,9 @@
       "Prompt faible / Tâche faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m246",
@@ -3793,9 +3793,9 @@
       "Message faible / Cible faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m248",
@@ -3809,9 +3809,9 @@
       "Canal faible / Objectif faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m249",
@@ -3825,9 +3825,9 @@
       "Tonalité faible / Audience faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m250",
@@ -3857,9 +3857,9 @@
       "Réputation faible / Visibilité faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m252",
@@ -3873,9 +3873,9 @@
       "Crise impact faible / Probabilité faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m253",
@@ -3905,9 +3905,9 @@
       "Influence faible / Relais faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m255",
@@ -3921,9 +3921,9 @@
       "Contenu faible / Objectif faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m256",
@@ -3937,9 +3937,9 @@
       "Preuve faible / Promesse faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m257",
@@ -3984,9 +3984,9 @@
       "Perception faible / Réalité faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m260",
@@ -4016,9 +4016,9 @@
       "Fournisseurs risque faible / Valeur faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m262",
@@ -4080,9 +4080,9 @@
       "Stock rotation faible / Valeur faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m266",
@@ -4126,9 +4126,9 @@
       "Abc faible / Xyz faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m269",
@@ -4142,9 +4142,9 @@
       "Capacité faible / Demande faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m270",
@@ -4158,9 +4158,9 @@
       "Flux faible / Contraintes faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m271",
@@ -4205,9 +4205,9 @@
       "Empreinte carbone faible / Coût faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m274",
@@ -4237,9 +4237,9 @@
       "Conformité faible / Impact faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m276",
@@ -4253,9 +4253,9 @@
       "Rgpd risque faible / Données faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m277",
@@ -4269,9 +4269,9 @@
       "Probabilité faible / Gravité faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m278",
@@ -4301,9 +4301,9 @@
       "Responsabilité faible / Contrôle faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m280",
@@ -4317,9 +4317,9 @@
       "Audit faible / Preuve faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m281",
@@ -4333,9 +4333,9 @@
       "Contrats faible / Risques faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m282",
@@ -4349,9 +4349,9 @@
       "Litiges faible / Exposition faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m283",
@@ -4365,9 +4365,9 @@
       "Corruption faible / Exposition faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m284",
@@ -4381,9 +4381,9 @@
       "Cybersécurité impact faible / Probabilité faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m285",
@@ -4413,9 +4413,9 @@
       "Ai act risque faible / Usage faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m287",
@@ -4431,9 +4431,9 @@
       "Créer"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "pyramid_levels_6",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m288",
@@ -4463,9 +4463,9 @@
       "Compétences faible / Preuves faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m290",
@@ -4479,9 +4479,9 @@
       "Niveau faible / Compétence faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m291",
@@ -4495,9 +4495,9 @@
       "Prérequis faible / Objectifs faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m292",
@@ -4526,9 +4526,9 @@
       "Synchrone faible / Asynchrone faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m294",
@@ -4542,9 +4542,9 @@
       "Individuel faible / Collectif faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m295",
@@ -4558,9 +4558,9 @@
       "Effort apprenant faible / Valeur pédagogique faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m296",
@@ -4574,9 +4574,9 @@
       "Évaluation formative faible / Sommative faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m297",
@@ -4590,9 +4590,9 @@
       "Résultats"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "pyramid_levels_4",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m298",
@@ -4606,9 +4606,9 @@
       "Compétences faible / Badges faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m299",
@@ -4622,9 +4622,9 @@
       "Motivation faible / Difficulté faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m300",
@@ -4638,9 +4638,9 @@
       "Feedback faible / Progression faible"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "proposed"
   },
   {
     "id": "m318",
@@ -4671,9 +4671,9 @@
       "Agir"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "cycle_4",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m320",
@@ -4722,9 +4722,9 @@
       "Valeurs partagées"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "hub_spokes_6",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m323",
@@ -4884,9 +4884,9 @@
       "Ancrer les nouvelles approches"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "linear_sequence_grid_8",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m333",
@@ -4901,9 +4901,9 @@
       "Renforcement"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "linear_sequence_5",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m334",
@@ -4916,9 +4916,9 @@
       "Recongeler"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "linear_sequence_3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m335",
@@ -5000,5 +5000,60 @@
     "archetype_canonical": null,
     "archetype_alternatives": [],
     "archetype_status": "unknown"
+  },
+  {
+    "id": "m_maslow",
+    "category": "Psychologie",
+    "name": "Pyramide de Maslow",
+    "usage": "Hiérarchie des besoins humains",
+    "components": [
+      "Besoins physiologiques",
+      "Besoins de sécurité",
+      "Besoins d'appartenance",
+      "Besoins d'estime",
+      "Besoin d'accomplissement"
+    ],
+    "components_status": "verified",
+    "archetype_canonical": "pyramid_levels_5",
+    "archetype_alternatives": [],
+    "archetype_status": "verified"
+  },
+  {
+    "id": "m_cadia",
+    "category": "Intelligence artificielle",
+    "name": "CADIA — Canevas de déploiement de l'intelligence artificielle",
+    "usage": "Canevas de déploiement IA en 9 blocs (diagnostic, valeur, gouvernance)",
+    "components": [
+      "Diagnostic métier 1",
+      "Diagnostic métier 2",
+      "Diagnostic métier 3",
+      "Valeur 1",
+      "Architecture",
+      "Valeur 2",
+      "Gouvernance 1",
+      "Gouvernance 2",
+      "Exécution"
+    ],
+    "components_status": "verified",
+    "archetype_canonical": "cadia_canvas",
+    "archetype_alternatives": [],
+    "archetype_status": "verified"
+  },
+  {
+    "id": "m_5s",
+    "category": "Qualité / Lean",
+    "name": "Méthode 5S",
+    "usage": "Cycle d'organisation Lean en 5 étapes",
+    "components": [
+      "Seiri",
+      "Seiton",
+      "Seiso",
+      "Seiketsu",
+      "Shitsuke"
+    ],
+    "components_status": "verified",
+    "archetype_canonical": "cycle_5",
+    "archetype_alternatives": [],
+    "archetype_status": "verified"
   }
 ]
