@@ -173,10 +173,11 @@ export default function AdminMatricePage() {
   };
 
   const [exporting, setExporting] = useState(false);
-  const [skeletonRunning, setSkeletonRunning] = useState(false);
-
-  const [exporting, setExporting] = useState(false);
   const [skeletonRunning, setSkeletonRunning] = useState<string | null>(null);
+
+  const runGenerateSkeleton = async (archetype: string) => {
+    setSkeletonRunning(archetype);
+    try {
 
   const runGenerateSkeleton = async (archetype: string) => {
     setSkeletonRunning(archetype);
