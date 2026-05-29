@@ -521,7 +521,14 @@ export default function AdminMatricePage() {
                           <div className="space-y-1">
                             <Select
                               value={a.canonical ?? "__none__"}
-                              onValueChange={(v) => saveArchetype(m.id, { canonical: v === "__none__" ? null : v })}
+                              onValueChange={(v) => {
+                                if (v === "__none__") {
+                                  saveArchetype(m.id, { canonical: null, alternatives: [], status: "unknown" });
+                                } else if (v !== a.canonical) {
+                                  // Édition manuelle explicite → verified
+                                  saveArchetype(m.id, { canonical: v, status: "verified" });
+                                }
+                              }}
                             >
                               <SelectTrigger className="h-7 text-xs"><SelectValue /></SelectTrigger>
                               <SelectContent className="max-h-72">
