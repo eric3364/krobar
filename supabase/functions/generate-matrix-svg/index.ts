@@ -23,7 +23,9 @@ function extractSvg(text: string): string | null {
 function skeletonSystemPrompt(archetype: string): string {
   if (archetype !== "grid_2x2") {
     throw new Error(`Archetype non supporté: ${archetype}. Seul "grid_2x2" est implémenté.`);
+  }
   return `Tu es un illustrateur de gabarits SVG-KR. Tu produis UNIQUEMENT un fichier SVG valide, sans aucun texte autour, sans markdown, sans explication.
+
 
 CONVENTION SVG-KR v0.1 — OBLIGATOIRE.
 
