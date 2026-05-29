@@ -186,7 +186,7 @@ function audit(svg: string, archetype: string): CheckResult[] {
   }
 
   // Check 4 — Slot-groups quadrants
-  const quadrantGroups = [...svg.matchAll(/<g\b[^>]*class="slot-group"[^>]*data-slot-key="quadrant"[^>]*>([\s\S]*?)<\/g>/g)];
+  const quadrantGroups = [...svg.matchAll(/<g\b[^>]*class="slot-group"[^>]*data-slot-key="quadrant(?:_\d+)?"[^>]*>([\s\S]*?)<\/g>/g)];
   {
     const reasons: string[] = [];
     if (quadrantGroups.length !== 4) reasons.push(`${quadrantGroups.length} slot-group quadrant (attendu 4)`);
