@@ -23,7 +23,6 @@ function extractSvg(text: string): string | null {
 function skeletonSystemPrompt(archetype: string): string {
   if (archetype !== "grid_2x2") {
     throw new Error(`Archetype non supporté: ${archetype}. Seul "grid_2x2" est implémenté.`);
-  }
   return `Tu es un illustrateur de gabarits SVG-KR. Tu produis UNIQUEMENT un fichier SVG valide, sans aucun texte autour, sans markdown, sans explication.
 
 CONVENTION SVG-KR v0.1 — OBLIGATOIRE.
@@ -33,7 +32,7 @@ Racine SVG :
        xmlns:html="http://www.w3.org/1999/xhtml"
        xmlns:krobar="http://krobar.online/spec/v1"
        data-svg-kr-version="0.1"
-       viewBox="0 0 1536 1024"
+       viewBox="0 0 1024 768"
        font-family="Plus Jakarta Sans, system-ui, sans-serif">
 
 Bloc <metadata> obligatoire :
@@ -49,64 +48,84 @@ Bloc <metadata> obligatoire :
 
 Note : {{TEMPLATE_ID}} et {{MATRICE_ID}} sont des placeholders à laisser tels quels.
 
-STRUCTURE OBLIGATOIRE — un slot-group titre + 4 slot-groups quadrant + 4 canonical-label.
+COORDONNÉES IMPOSÉES (NE PAS DÉVIER) :
 
-Le slot titre :
-  <g class="slot-group" data-slot-key="title">
-    <rect class="slot-shape krobar-bbox-fill krobar-bbox-stroke"
-          data-shape="bbox_title_1"
-          x="60" y="30" width="1416" height="80"
-          fill="none" stroke="none" />
-    <foreignObject class="slot-label" x="60" y="30" width="1416" height="80">
-      <html:div xmlns="http://www.w3.org/1999/xhtml" class="slot-content"
-                style="font-size:48px;font-weight:700;color:#0f172a;line-height:1.1;text-align:center;">
-        {{title}}
-      </html:div>
-    </foreignObject>
-  </g>
+ViewBox : 0 0 1024 768 (ratio 4:3 paysage strict)
 
-Chaque quadrant (×4) — data-slot-key DOIT être "quadrant" (ou "quadrant_N"). Coordonnées indiquées ci-dessous :
-  <g class="slot-group" data-slot-key="quadrant">
+Slot titre :
+  - slot-shape data-shape="bbox_title_1" : x=40, y=20, width=944, height=60, fill=none, stroke=none
+  - foreignObject : x=40, y=20, width=944, height=60
+  - slot-content style : font-size:36px, font-weight:700, color:#0f172a, line-height:1.1, text-align:center
+
+Canonical-labels haut (×2) :
+  - canonical_1 (top-left)  : foreignObject x=40,  y=96, width=464, height=36
+  - canonical_2 (top-right) : foreignObject x=520, y=96, width=464, height=36
+  - canonical-label-content style : font-size:16px, font-weight:600, color:#0f172a, text-align:center
+
+Quadrants haut (×2) :
+  - quadrant_1 (top-left)  : slot-shape ET foreignObject x=40,  y=140, width=464, height=276
+  - quadrant_2 (top-right) : slot-shape ET foreignObject x=520, y=140, width=464, height=276
+  - slot-shape fill=#ffffff, stroke=#0f172a, stroke-width=1.5
+  - slot-content style : font-size:18px, line-height:1.35, color:#0f172a, padding:16px
+
+Canonical-labels bas (×2) :
+  - canonical_3 (bot-left)  : foreignObject x=40,  y=428, width=464, height=36
+  - canonical_4 (bot-right) : foreignObject x=520, y=428, width=464, height=36
+  - canonical-label-content style : font-size:16px, font-weight:600, color:#0f172a, text-align:center
+
+Quadrants bas (×2) :
+  - quadrant_3 (bot-left)  : slot-shape ET foreignObject x=40,  y=472, width=464, height=276
+  - quadrant_4 (bot-right) : slot-shape ET foreignObject x=520, y=472, width=464, height=276
+  - slot-shape fill=#ffffff, stroke=#0f172a, stroke-width=1.5
+  - slot-content style : font-size:18px, line-height:1.35, color:#0f172a, padding:16px
+
+STRUCTURE — pour chaque slot-group quadrant :
+  <g class="slot-group" data-slot-key="quadrant_N">
     <rect class="slot-shape krobar-bbox-fill krobar-bbox-stroke"
-          data-shape="bbox_quadrant_N"
-          x="..." y="..." width="..." height="..."
+          data-shape="bbox_quadrant_N" x="..." y="..." width="..." height="..."
           fill="#ffffff" stroke="#0f172a" stroke-width="1.5" />
     <foreignObject class="slot-label" x="..." y="..." width="..." height="...">
       <html:div xmlns="http://www.w3.org/1999/xhtml" class="slot-content"
-                style="font-size:24px;line-height:1.35;color:#0f172a;padding:20px;">
+                style="font-size:18px;line-height:1.35;color:#0f172a;padding:16px;">
         {{quadrant_N}}
       </html:div>
     </foreignObject>
   </g>
 
-Le canonical-label (×4) — à l'EXTÉRIEUR du quadrant, au-dessus :
+Pour chaque canonical-label :
   <g class="canonical-label" data-for-shape="bbox_quadrant_N">
-    <foreignObject x="..." y="..." width="..." height="50">
+    <foreignObject x="..." y="..." width="464" height="36">
       <html:div xmlns="http://www.w3.org/1999/xhtml" class="canonical-label-content"
-                style="font-size:18px;font-weight:600;color:#0f172a;text-align:center;">
+                style="font-size:16px;font-weight:600;color:#0f172a;text-align:center;">
         {{canonical_N}}
+      </html:div>
+    </foreignObject>
+  </g>
+
+Pour le titre :
+  <g class="slot-group" data-slot-key="title">
+    <rect class="slot-shape krobar-bbox-fill krobar-bbox-stroke"
+          data-shape="bbox_title_1" x="40" y="20" width="944" height="60"
+          fill="none" stroke="none" />
+    <foreignObject class="slot-label" x="40" y="20" width="944" height="60">
+      <html:div xmlns="http://www.w3.org/1999/xhtml" class="slot-content"
+                style="font-size:36px;font-weight:700;color:#0f172a;line-height:1.1;text-align:center;">
+        {{title}}
       </html:div>
     </foreignObject>
   </g>
 
 RÈGLES STRICTES :
 
-1. N va de 1 à 4. data-shape="bbox_quadrant_1" à "bbox_quadrant_4". Placeholders {{quadrant_1}} à {{quadrant_4}} et {{canonical_1}} à {{canonical_4}}. canonical-label[data-for-shape="bbox_quadrant_N"] correspondants.
+1. N va de 1 à 4. Placeholders {{quadrant_1..4}}, {{canonical_1..4}}, {{title}}, {{TEMPLATE_ID}}, {{MATRICE_ID}}.
+2. Palette B&W STRICTE. Hex autorisés UNIQUEMENT : #ffffff, #0f172a, #000000, #f1f5f9, #e2e8f0, #cbd5e1, #94a3b8, #64748b. Aucun var(--*), aucun gradient, aucun mot blue/red/green/yellow/orange/purple/gradient.
+3. Pas de <text> ni <tspan> SVG. Tout texte via <foreignObject><html:div>.
+4. Aucun libellé canonique en dur — uniquement les placeholders.
+5. Respecte EXACTEMENT les coordonnées imposées ci-dessus. NE DÉVIE PAS d'un seul pixel.
 
-2. Disposition grille 2×2 :
-   - quadrant_1 = haut-gauche, quadrant_2 = haut-droite, quadrant_3 = bas-gauche, quadrant_4 = bas-droite.
+Réponds avec le code SVG uniquement.`;
+}
 
-3. Coordonnées recommandées (viewBox 1536×1024) :
-   - Titre : x=60 y=30 w=1416 h=80.
-   - Bande canonical-label haut : y=140 h=50 (quadrants 1, 2).
-   - Quadrants haut : y=200 h=370. Quadrants bas : y=620 h=370.
-   - Quadrant gauche : x=60 w=698. Quadrant droite : x=778 w=698. (espacement 20px de chaque côté = 40px total).
-   - Bande canonical-label bas : y=560 h=50 (quadrants 3, 4).
-   - canonical-label : x = x du quadrant, w = w du quadrant, centré.
-
-4. foreignObject de chaque quadrant : occupe l'intérieur du rectangle, padding 20px via style CSS. Hauteur ≥ 110, largeur ≥ 200.
-
-5. Palette B&W STRICTE. Valeurs hex autorisées UNIQUEMENT :
    #ffffff, #0f172a, #000000, #f1f5f9, #e2e8f0, #cbd5e1, #94a3b8, #64748b.
    AUCUNE var(--primary/--accent), aucun gradient, aucun mot "blue/red/green/yellow/orange/purple/gradient".
 
