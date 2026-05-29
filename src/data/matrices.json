@@ -810,9 +810,9 @@
       "Fidélisation"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "funnel_horizontal_3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m053",
@@ -3093,9 +3093,9 @@
       "Mesure"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "fishbone_6",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m203",
@@ -4997,9 +4997,9 @@
       "Recommandation"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "funnel_horizontal_5",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m_maslow",
