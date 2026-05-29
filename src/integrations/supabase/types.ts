@@ -41,6 +41,30 @@ export type Database = {
         }
         Relationships: []
       }
+      matrice_archetype: {
+        Row: {
+          archetype_alternatives: Json
+          archetype_canonical: string | null
+          archetype_status: string
+          matrice_id: string
+          updated_at: string
+        }
+        Insert: {
+          archetype_alternatives?: Json
+          archetype_canonical?: string | null
+          archetype_status?: string
+          matrice_id: string
+          updated_at?: string
+        }
+        Update: {
+          archetype_alternatives?: Json
+          archetype_canonical?: string | null
+          archetype_status?: string
+          matrice_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       matrice_trigger_lexicon: {
         Row: {
           lexicon_yaml: string
