@@ -94,9 +94,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m007",
@@ -188,9 +188,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m013",
@@ -557,9 +557,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "pyramid_levels_4",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m037",
@@ -684,9 +684,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "hub_spokes_4",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m045",
@@ -732,9 +732,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m048",
@@ -1498,9 +1498,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grouped_grid_3x3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m099",
@@ -1514,9 +1514,9 @@
       "Délégatif"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m100",
@@ -1643,9 +1643,9 @@
       "Won't have"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m110",
@@ -1674,9 +1674,9 @@
       "Effort"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m112",
@@ -1690,9 +1690,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m114",
@@ -2068,9 +2068,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m137",
@@ -2084,9 +2084,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m138",
@@ -2244,9 +2244,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grouped_grid_3x3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m148",
@@ -2911,9 +2911,9 @@
       "Timing"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m192",
@@ -2945,9 +2945,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m194",
@@ -3205,9 +3205,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "hub_spokes_4",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m210",
@@ -3445,9 +3445,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m225",
@@ -4000,9 +4000,9 @@
       "Articles simples"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m261",
@@ -4048,9 +4048,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m264",
@@ -4687,9 +4687,9 @@
       "Organisation"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "linear_sequence_4",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m321",
@@ -4703,9 +4703,9 @@
       "Non-substituabilité"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "hub_spokes_4",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m322",
@@ -4754,9 +4754,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "hub_spokes_4",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m325",
@@ -4770,9 +4770,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "hub_spokes_4",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m326",
@@ -4786,9 +4786,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "linear_sequence_4",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m327",
@@ -4802,9 +4802,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "linear_sequence_4",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m328",
@@ -4848,9 +4848,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m331",
@@ -4864,9 +4864,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "linear_sequence_4",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m332",
@@ -4980,9 +4980,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "hub_spokes_4",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m339",
