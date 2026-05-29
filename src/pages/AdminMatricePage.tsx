@@ -409,6 +409,8 @@ export default function AdminMatricePage() {
                 </TableHead>
                 <TableHead>Matrice</TableHead>
                 <TableHead>Catégorie</TableHead>
+                <TableHead className="w-[260px]">Archétype</TableHead>
+
                 <TableHead className="w-[260px]">Commentaire IA</TableHead>
                 <TableHead className="w-[320px]">Trigger lexicon</TableHead>
                 <TableHead className="w-[120px]">Miniature</TableHead>
