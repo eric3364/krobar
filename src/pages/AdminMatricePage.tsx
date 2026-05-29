@@ -217,6 +217,7 @@ export default function AdminMatricePage() {
     }
   };
 
+  const runExport = async () => {
     setExporting(true);
     try {
       const { data, error } = await supabase.functions.invoke("matrice-export", {
