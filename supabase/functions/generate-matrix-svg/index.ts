@@ -31,7 +31,9 @@ type ArchetypeSpec = {
 const ARCHETYPES: Record<string, ArchetypeSpec> = {
   grid_2x2:          { slotKey: "quadrant", shapePrefix: "bbox_quadrant", placeholderPrefix: "quadrant", count: 4 },
   linear_sequence_4: { slotKey: "step",     shapePrefix: "bbox_step",     placeholderPrefix: "step",     count: 4 },
+  triangle_3:        { slotKey: "level",    shapePrefix: "bbox_level",    placeholderPrefix: "level",    count: 3 },
 };
+
 
 // ============================================================
 // SKELETON PROMPTS — per archetype
