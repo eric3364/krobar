@@ -25,6 +25,7 @@ import {
   getAllStates, getState, setState, subscribe, removeFromLibrary,
 } from "@/lib/matriceLibrary";
 
+type ArchetypeStatus = "verified" | "proposed" | "unknown";
 type Matrice = {
   id: string;
   category: string;
@@ -32,10 +33,30 @@ type Matrice = {
   usage: string;
   components?: string[];
   components_status?: "verified" | "to_verify";
+  archetype_canonical?: string | null;
+  archetype_alternatives?: string[];
+  archetype_status?: ArchetypeStatus;
 };
+
+export const ARCHETYPE_OPTIONS: string[] = [
+  "grid_2x2",
+  "linear_sequence_4",
+  "pyramid_levels_3", "pyramid_levels_4", "pyramid_levels_5", "pyramid_levels_6",
+  "cycle_3", "cycle_4", "cycle_5", "cycle_6", "cycle_7", "cycle_8",
+  "grouped_grid_3x3",
+  "hub_spokes_3", "hub_spokes_4", "hub_spokes_5", "hub_spokes_6",
+  "bmc_canvas", "cadia_canvas", "porter5_canvas",
+];
 
 const CATALOG = matricesData as Matrice[];
 const ALL_CATEGORIES = Array.from(new Set(CATALOG.map((m) => m.category)));
+
+type ArchetypeOverride = {
+  canonical: string | null;
+  alternatives: string[];
+  status: ArchetypeStatus;
+};
+
 
 export default function AdminMatricePage() {
   const [search, setSearch] = useState("");
@@ -70,6 +91,62 @@ export default function AdminMatricePage() {
       .upsert({ matrice_id: matriceId, lexicon_yaml: yaml }, { onConflict: "matrice_id" });
     if (error) toast.error(`Sauvegarde lexicon : ${error.message}`);
   }, []);
+
+  const [archetypeOverrides, setArchetypeOverrides] = useState<Record<string, ArchetypeOverride>>({});
+
+  useEffect(() => {
+    (async () => {
+      const { data, error } = await (supabase as any)
+        .from("matrice_archetype")
+        .select("matrice_id, archetype_canonical, archetype_alternatives, archetype_status");
+      if (error) return;
+      const map: Record<string, ArchetypeOverride> = {};
+      (data ?? []).forEach((r: any) => {
+        map[r.matrice_id] = {
+          canonical: r.archetype_canonical ?? null,
+          alternatives: Array.isArray(r.archetype_alternatives) ? r.archetype_alternatives : [],
+          status: (r.archetype_status as ArchetypeStatus) ?? "unknown",
+        };
+      });
+      setArchetypeOverrides(map);
+    })();
+  }, []);
+
+  const getArchetype = useCallback((m: Matrice): ArchetypeOverride => {
+    const ov = archetypeOverrides[m.id];
+    if (ov) return ov;
+    return {
+      canonical: m.archetype_canonical ?? null,
+      alternatives: m.archetype_alternatives ?? [],
+      status: (m.archetype_status as ArchetypeStatus) ?? "unknown",
+    };
+  }, [archetypeOverrides]);
+
+  const saveArchetype = useCallback(async (matriceId: string, patch: Partial<ArchetypeOverride>) => {
+    setArchetypeOverrides((prev) => {
+      const cur = prev[matriceId] ?? { canonical: null, alternatives: [], status: "unknown" as ArchetypeStatus };
+      const next = { ...cur, ...patch };
+      // Coherence: if canonical null → status unknown; if status verified → canonical required
+      if (next.canonical === null && next.status === "verified") next.status = "unknown";
+      if (next.canonical === null) next.alternatives = next.alternatives.filter(Boolean);
+      next.alternatives = next.alternatives.filter((a) => a !== next.canonical);
+      const merged = { ...prev, [matriceId]: next };
+      (async () => {
+        const { error } = await (supabase as any)
+          .from("matrice_archetype")
+          .upsert({
+            matrice_id: matriceId,
+            archetype_canonical: next.canonical,
+            archetype_alternatives: next.alternatives,
+            archetype_status: next.status,
+          }, { onConflict: "matrice_id" });
+        if (error) toast.error(`Sauvegarde archétype : ${error.message}`);
+      })();
+      return merged;
+    });
+  }, []);
+
+
 
   useEffect(() => {
     const resetHorizontalScroll = () => {
@@ -320,7 +397,7 @@ export default function AdminMatricePage() {
           <Table
             containerRef={tableScrollRef}
             containerClassName="w-full overflow-x-auto"
-            className="min-w-[1480px]"
+            className="min-w-[1760px]"
           >
             <TableHeader>
               <TableRow>
@@ -332,6 +409,8 @@ export default function AdminMatricePage() {
                 </TableHead>
                 <TableHead>Matrice</TableHead>
                 <TableHead>Catégorie</TableHead>
+                <TableHead className="w-[260px]">Archétype</TableHead>
+
                 <TableHead className="w-[260px]">Commentaire IA</TableHead>
                 <TableHead className="w-[320px]">Trigger lexicon</TableHead>
                 <TableHead className="w-[120px]">Miniature</TableHead>
@@ -356,6 +435,56 @@ export default function AdminMatricePage() {
                       <div className="text-xs text-muted-foreground line-clamp-1">{m.usage}</div>
                     </TableCell>
                     <TableCell className="text-xs text-muted-foreground">{m.category}</TableCell>
+                    <TableCell>
+                      {(() => {
+                        const a = getArchetype(m);
+                        const statusColor =
+                          a.status === "verified" ? "default" :
+                          a.status === "proposed" ? "secondary" : "outline";
+                        return (
+                          <div className="space-y-1">
+                            <Select
+                              value={a.canonical ?? "__none__"}
+                              onValueChange={(v) => saveArchetype(m.id, { canonical: v === "__none__" ? null : v })}
+                            >
+                              <SelectTrigger className="h-7 text-xs"><SelectValue /></SelectTrigger>
+                              <SelectContent className="max-h-72">
+                                <SelectItem value="__none__">— non attribué —</SelectItem>
+                                {ARCHETYPE_OPTIONS.map((o) => (
+                                  <SelectItem key={o} value={o}>{o}</SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <div className="flex items-center gap-1">
+                              <Select
+                                value={a.status}
+                                onValueChange={(v) => saveArchetype(m.id, { status: v as ArchetypeStatus })}
+                              >
+                                <SelectTrigger className="h-6 text-[10px] w-[110px]"><SelectValue /></SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="verified">verified</SelectItem>
+                                  <SelectItem value="proposed">proposed</SelectItem>
+                                  <SelectItem value="unknown">unknown</SelectItem>
+                                </SelectContent>
+                              </Select>
+                              <Badge variant={statusColor as any} className="text-[10px]">{a.status}</Badge>
+                            </div>
+                            <Input
+                              placeholder="alt1, alt2…"
+                              defaultValue={a.alternatives.join(", ")}
+                              onBlur={(e) => {
+                                const list = e.target.value.split(",").map((s) => s.trim()).filter(Boolean);
+                                const invalid = list.filter((x) => !ARCHETYPE_OPTIONS.includes(x));
+                                if (invalid.length) { toast.error(`Archétypes invalides : ${invalid.join(", ")}`); return; }
+                                saveArchetype(m.id, { alternatives: list });
+                              }}
+                              className="h-6 text-[10px]"
+                            />
+                          </div>
+                        );
+                      })()}
+                    </TableCell>
+
                     <TableCell>
                       <Textarea
                         rows={2}
