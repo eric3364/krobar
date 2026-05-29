@@ -178,39 +178,45 @@ export default function AdminMatricePage() {
   const runGenerateSkeleton = async () => {
     setSkeletonRunning(true);
     try {
+  const [exporting, setExporting] = useState(false);
+  const [skeletonRunning, setSkeletonRunning] = useState<string | null>(null);
+
+  const runGenerateSkeleton = async (archetype: string) => {
+    setSkeletonRunning(archetype);
+    try {
       const { data, error } = await supabase.functions.invoke("generate-matrix-svg", {
-        body: { archetype: "grid_2x2" },
+        body: { archetype },
       });
       if (error) throw new Error(error.message);
       const payload = data as {
         status: string;
         checks_passed: number;
         checks_failed: number;
+        total_checks?: number;
         failed_checks?: { id: number; name: string; reason: string }[];
         svg: string | null;
       };
+      const total = payload.total_checks ?? 11;
       // eslint-disable-next-line no-console
-      console.log("[generate-matrix-svg] skeleton grid_2x2 audit", payload);
+      console.log(`[generate-matrix-svg] skeleton ${archetype} audit`, payload);
       if (payload.status !== "valid" || !payload.svg) {
         const failed = (payload.failed_checks ?? []).map((f) => `#${f.id} ${f.name}: ${f.reason}`).join(" · ");
-        toast.error(`Audit ${payload.checks_passed}/8 — ${failed || "échec"}`);
+        toast.error(`Audit ${payload.checks_passed}/${total} — ${failed || "échec"}`);
         return;
       }
       const blob = new Blob([payload.svg], { type: "image/svg+xml" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
-      a.href = url; a.download = "grid_2x2_skeleton.svg"; a.click();
+      a.href = url; a.download = `${archetype}_skeleton.svg`; a.click();
       URL.revokeObjectURL(url);
-      toast.success(`Squelette grid_2x2 validé 8/8 — téléchargé`);
+      toast.success(`Squelette ${archetype} validé ${total}/${total} — téléchargé`);
     } catch (e) {
-      toast.error(`Squelette : ${(e as Error).message}`);
+      toast.error(`Squelette ${archetype} : ${(e as Error).message}`);
     } finally {
-      setSkeletonRunning(false);
+      setSkeletonRunning(null);
     }
   };
 
-
-  const runExport = async () => {
     setExporting(true);
     try {
       const { data, error } = await supabase.functions.invoke("matrice-export", {
