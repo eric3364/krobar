@@ -157,9 +157,9 @@
       "Focalisation"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "hub_spokes_3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m011",
@@ -172,9 +172,9 @@
       "Concentration"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m012",
@@ -331,9 +331,9 @@
       "Positionnement"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "linear_sequence_3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m022",
@@ -430,9 +430,9 @@
       "Preuve physique"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "linear_sequence_grid_7",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m028",
@@ -509,9 +509,9 @@
       "Différenciation"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "hub_spokes_3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m034",
@@ -636,9 +636,9 @@
       "Montant"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "hub_spokes_3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m042",
@@ -763,9 +763,9 @@
       "Sociaux"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "hub_spokes_3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m050",
@@ -1145,9 +1145,9 @@
       "Conversion"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "hub_spokes_3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m075",
@@ -1226,9 +1226,9 @@
       "Decide"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "hub_spokes_5",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m080",
@@ -1531,9 +1531,9 @@
       "Management d'équipe (9,9)"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m101",
@@ -1658,9 +1658,9 @@
       "Ease"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "hub_spokes_3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m111",
@@ -1844,9 +1844,9 @@
       "Avantage déloyal"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "bmc_canvas",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m123",
@@ -1878,9 +1878,9 @@
       "Soulageurs de douleurs"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "bmc_canvas",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m125",
@@ -1911,9 +1911,9 @@
       "Rejet"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "linear_sequence_5",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m127",
@@ -1974,9 +1974,9 @@
       "Transformational"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "linear_sequence_3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m131",
@@ -1989,9 +1989,9 @@
       "Horizon 3 — innovations de rupture"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "linear_sequence_3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m132",
@@ -2036,9 +2036,9 @@
       "Viabilité"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "hub_spokes_3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m135",
@@ -2323,9 +2323,9 @@
       "Évolution"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "linear_sequence_3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m153",
@@ -2496,9 +2496,9 @@
       "Évaluations"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "linear_sequence_3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m166",
@@ -2719,9 +2719,9 @@
       "Risques"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "linear_sequence_3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m180",
@@ -2929,9 +2929,9 @@
       "Champion"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "linear_sequence_6",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m193",
@@ -3075,9 +3075,9 @@
       "Customers"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "linear_sequence_5",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m202",
@@ -3141,9 +3141,9 @@
       "Détection"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "linear_sequence_3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m206",
@@ -3524,9 +3524,9 @@
       "Corrections"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "linear_sequence_3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m230",
@@ -3651,9 +3651,9 @@
       "Fraîcheur"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "hub_spokes_3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m238",
@@ -3666,9 +3666,9 @@
       "Responsabilités"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "hub_spokes_3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m239",
@@ -3777,9 +3777,9 @@
       "Responsabilité"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "hub_spokes_3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m247",
@@ -3952,9 +3952,9 @@
       "Transformation"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "linear_sequence_3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m258",
@@ -4095,9 +4095,9 @@
       "Catégorie C"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "pyramid_levels_3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m267",
@@ -4173,9 +4173,9 @@
       "Dépendance"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "hub_spokes_3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m272",
@@ -4510,9 +4510,9 @@
       "Évaluation"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "linear_sequence_3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m293",
@@ -4655,9 +4655,9 @@
       "Désordre"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m319",
@@ -4832,9 +4832,9 @@
       "Urgence"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "hub_spokes_3",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m330",
