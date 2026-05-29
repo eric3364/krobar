@@ -68,6 +68,10 @@ type ArchetypeOverride = {
 };
 
 
+function normalize(s: string) {
+  return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+}
+
 export default function AdminMatricePage() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<string>("all");
@@ -79,6 +83,18 @@ export default function AdminMatricePage() {
   const [lexicons, setLexicons] = useState<Record<string, string>>({});
   const cancelRef = useRef(false);
   const tableScrollRef = useRef<HTMLDivElement | null>(null);
+
+  // Archetype attribution UI state (Option B)
+  const [archStatusOn, setArchStatusOn] = useState<Record<ArchetypeStatus, boolean>>({
+    verified: true, proposed: true, unknown: true,
+  });
+  const [archetypeFilter, setArchetypeFilter] = useState<Set<string>>(new Set()); // empty = all; "__none__" for unattributed
+  const [cardinalityFilter, setCardinalityFilter] = useState<string>("all");
+  const [confirm, setConfirm] = useState<
+    | { kind: "validate"; ids: string[] }
+    | { kind: "reject"; ids: string[] }
+    | null
+  >(null);
 
   useEffect(() => subscribe(() => setStates(getAllStates())), []);
 
