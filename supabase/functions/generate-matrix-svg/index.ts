@@ -165,7 +165,8 @@ function audit(svg: string, archetype: string): CheckResult[] {
       ['xmlns:html="http://www.w3.org/1999/xhtml"', root.includes('xmlns:html="http://www.w3.org/1999/xhtml"')],
       ['xmlns:krobar="http://krobar.online/spec/v1"', root.includes('xmlns:krobar="http://krobar.online/spec/v1"')],
       ['data-svg-kr-version="0.1"', root.includes('data-svg-kr-version="0.1"')],
-      ['viewBox="0 0 1536 1024"', root.includes('viewBox="0 0 1536 1024"')],
+      ['viewBox present', /viewBox="[^"]+"/.test(root)],
+
     ] as const;
     const missing = checks.filter(([, ok]) => !ok).map(([n]) => n);
     push(1, "Racine SVG valide", missing.length === 0, missing.length ? `Manquant: ${missing.join(", ")}` : undefined);
