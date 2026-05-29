@@ -92,6 +92,62 @@ export default function AdminMatricePage() {
     if (error) toast.error(`Sauvegarde lexicon : ${error.message}`);
   }, []);
 
+  const [archetypeOverrides, setArchetypeOverrides] = useState<Record<string, ArchetypeOverride>>({});
+
+  useEffect(() => {
+    (async () => {
+      const { data, error } = await (supabase as any)
+        .from("matrice_archetype")
+        .select("matrice_id, archetype_canonical, archetype_alternatives, archetype_status");
+      if (error) return;
+      const map: Record<string, ArchetypeOverride> = {};
+      (data ?? []).forEach((r: any) => {
+        map[r.matrice_id] = {
+          canonical: r.archetype_canonical ?? null,
+          alternatives: Array.isArray(r.archetype_alternatives) ? r.archetype_alternatives : [],
+          status: (r.archetype_status as ArchetypeStatus) ?? "unknown",
+        };
+      });
+      setArchetypeOverrides(map);
+    })();
+  }, []);
+
+  const getArchetype = useCallback((m: Matrice): ArchetypeOverride => {
+    const ov = archetypeOverrides[m.id];
+    if (ov) return ov;
+    return {
+      canonical: m.archetype_canonical ?? null,
+      alternatives: m.archetype_alternatives ?? [],
+      status: (m.archetype_status as ArchetypeStatus) ?? "unknown",
+    };
+  }, [archetypeOverrides]);
+
+  const saveArchetype = useCallback(async (matriceId: string, patch: Partial<ArchetypeOverride>) => {
+    setArchetypeOverrides((prev) => {
+      const cur = prev[matriceId] ?? { canonical: null, alternatives: [], status: "unknown" as ArchetypeStatus };
+      const next = { ...cur, ...patch };
+      // Coherence: if canonical null → status unknown; if status verified → canonical required
+      if (next.canonical === null && next.status === "verified") next.status = "unknown";
+      if (next.canonical === null) next.alternatives = next.alternatives.filter(Boolean);
+      next.alternatives = next.alternatives.filter((a) => a !== next.canonical);
+      const merged = { ...prev, [matriceId]: next };
+      (async () => {
+        const { error } = await (supabase as any)
+          .from("matrice_archetype")
+          .upsert({
+            matrice_id: matriceId,
+            archetype_canonical: next.canonical,
+            archetype_alternatives: next.alternatives,
+            archetype_status: next.status,
+          }, { onConflict: "matrice_id" });
+        if (error) toast.error(`Sauvegarde archétype : ${error.message}`);
+      })();
+      return merged;
+    });
+  }, []);
+
+
+
   useEffect(() => {
     const resetHorizontalScroll = () => {
       const node = tableScrollRef.current;
