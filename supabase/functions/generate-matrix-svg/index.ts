@@ -126,19 +126,7 @@ RÈGLES STRICTES :
 Réponds avec le code SVG uniquement.`;
 }
 
-   #ffffff, #0f172a, #000000, #f1f5f9, #e2e8f0, #cbd5e1, #94a3b8, #64748b.
-   AUCUNE var(--primary/--accent), aucun gradient, aucun mot "blue/red/green/yellow/orange/purple/gradient".
 
-6. Pas de <text> ni <tspan> SVG. Tout texte est dans <foreignObject><html:div>.
-
-7. Aucun libellé canonique en dur — uniquement les placeholders {{...}}. C'est un SQUELETTE générique.
-
-8. Aucune étiquette de catégorie, aucun sous-titre, aucune mention de famille.
-
-9. Décoration éventuelle (séparateurs) dans <g class="krobar-decoration">, sans interactivité.
-
-Réponds avec le code SVG uniquement.`;
-}
 
 // ============================================================
 // AUDIT — 8 checks
