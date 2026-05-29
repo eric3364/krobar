@@ -175,15 +175,13 @@ export default function AdminMatricePage() {
   const [exporting, setExporting] = useState(false);
   const [skeletonRunning, setSkeletonRunning] = useState(false);
 
-  const runGenerateSkeleton = async () => {
-    setSkeletonRunning(true);
-    try {
   const [exporting, setExporting] = useState(false);
   const [skeletonRunning, setSkeletonRunning] = useState<string | null>(null);
 
   const runGenerateSkeleton = async (archetype: string) => {
     setSkeletonRunning(archetype);
     try {
+
       const { data, error } = await supabase.functions.invoke("generate-matrix-svg", {
         body: { archetype },
       });
