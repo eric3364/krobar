@@ -473,10 +473,11 @@ Deno.serve(async (req) => {
       const results = audit(svg, archetype);
       const passed = results.filter((r) => r.ok).length;
       const failed = results.filter((r) => !r.ok);
-      console.log(`[generate-matrix-svg] audit ${archetype}: ${passed}/8 passed, failed: [${failed.map((f) => f.id).join(", ")}]`);
+      console.log(`[generate-matrix-svg] audit ${archetype}: ${passed}/10 passed, failed: [${failed.map((f) => f.id).join(", ")}]`);
       if (failed.length === 0) {
         return new Response(JSON.stringify({
-          status: "valid", checks_passed: 8, checks_failed: 0, svg,
+          status: "valid", checks_passed: 10, checks_failed: 0, svg,
+
         }), {
           status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
