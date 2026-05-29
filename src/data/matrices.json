@@ -430,9 +430,9 @@
       "Preuve physique"
     ],
     "components_status": "verified",
-    "archetype_canonical": "linear_sequence_4",
+    "archetype_canonical": null,
     "archetype_alternatives": [],
-    "archetype_status": "verified"
+    "archetype_status": "unknown"
   },
   {
     "id": "m028",
