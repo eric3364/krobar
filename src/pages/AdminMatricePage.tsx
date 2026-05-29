@@ -173,6 +173,43 @@ export default function AdminMatricePage() {
   };
 
   const [exporting, setExporting] = useState(false);
+  const [skeletonRunning, setSkeletonRunning] = useState(false);
+
+  const runGenerateSkeleton = async () => {
+    setSkeletonRunning(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("generate-matrix-svg", {
+        body: { archetype: "grid_2x2" },
+      });
+      if (error) throw new Error(error.message);
+      const payload = data as {
+        status: string;
+        checks_passed: number;
+        checks_failed: number;
+        failed_checks?: { id: number; name: string; reason: string }[];
+        svg: string | null;
+      };
+      // eslint-disable-next-line no-console
+      console.log("[generate-matrix-svg] skeleton grid_2x2 audit", payload);
+      if (payload.status !== "valid" || !payload.svg) {
+        const failed = (payload.failed_checks ?? []).map((f) => `#${f.id} ${f.name}: ${f.reason}`).join(" · ");
+        toast.error(`Audit ${payload.checks_passed}/8 — ${failed || "échec"}`);
+        return;
+      }
+      const blob = new Blob([payload.svg], { type: "image/svg+xml" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = "grid_2x2_skeleton.svg"; a.click();
+      URL.revokeObjectURL(url);
+      toast.success(`Squelette grid_2x2 validé 8/8 — téléchargé`);
+    } catch (e) {
+      toast.error(`Squelette : ${(e as Error).message}`);
+    } finally {
+      setSkeletonRunning(false);
+    }
+  };
+
+
   const runExport = async () => {
     setExporting(true);
     try {
