@@ -469,6 +469,125 @@ export default function AdminMatricePage() {
 
         </Card>
 
+        {/* Filtres archétype + actions bulk (Option B) */}
+        <Card className="p-4 space-y-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="text-xs font-medium text-muted-foreground">Statut :</span>
+            {(["verified", "proposed", "unknown"] as ArchetypeStatus[]).map((s) => {
+              const on = archStatusOn[s];
+              const color =
+                s === "verified" ? "bg-emerald-500" :
+                s === "proposed" ? "bg-amber-500" : "bg-slate-400";
+              return (
+                <button
+                  key={s}
+                  type="button"
+                  onClick={() => toggleArchStatus(s)}
+                  className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs transition ${
+                    on ? "bg-background border-foreground/40" : "bg-muted/40 border-transparent opacity-50"
+                  }`}
+                >
+                  <span className={`w-2 h-2 rounded-full ${color}`} />
+                  {s}
+                </button>
+              );
+            })}
+
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="sm" className="gap-1">
+                  Archétypes
+                  {archetypeFilter.size > 0 && (
+                    <Badge variant="secondary" className="ml-1 text-[10px]">{archetypeFilter.size}</Badge>
+                  )}
+                  <ChevronDown className="w-3 h-3" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-72 max-h-[60vh] overflow-y-auto p-2">
+                <div className="space-y-1">
+                  <button
+                    type="button"
+                    onClick={() => setArchetypeFilter(new Set())}
+                    className="w-full text-left text-xs px-2 py-1 rounded hover:bg-muted"
+                  >
+                    Tous (réinitialiser)
+                  </button>
+                  <div className="border-t my-1" />
+                  {ARCHETYPE_OPTIONS.map((opt) => (
+                    <label key={opt} className="flex items-center gap-2 px-2 py-1 text-xs hover:bg-muted rounded cursor-pointer">
+                      <Checkbox
+                        checked={archetypeFilter.has(opt)}
+                        onCheckedChange={() => toggleArchetypeOption(opt)}
+                      />
+                      <span className="font-mono">{opt}</span>
+                    </label>
+                  ))}
+                  <div className="border-t my-1" />
+                  <label className="flex items-center gap-2 px-2 py-1 text-xs hover:bg-muted rounded cursor-pointer">
+                    <Checkbox
+                      checked={archetypeFilter.has("__none__")}
+                      onCheckedChange={() => toggleArchetypeOption("__none__")}
+                    />
+                    <span className="italic">(non attribué)</span>
+                  </label>
+                </div>
+              </PopoverContent>
+            </Popover>
+
+            <Select value={cardinalityFilter} onValueChange={setCardinalityFilter}>
+              <SelectTrigger className="w-[140px] h-9 text-xs"><SelectValue placeholder="Cardinalité" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Toutes cardinalités</SelectItem>
+                {[2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
+                  <SelectItem key={n} value={String(n)}>{n} composants</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <div className="ml-auto text-xs text-muted-foreground">
+              <span className="font-medium text-foreground">{filtered.length}</span> / {CATALOG.length} matrices
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t">
+            <span className="text-xs text-muted-foreground">
+              {selected.size > 0 ? `${selected.size} sélectionnée(s)` : "Aucune sélection"}
+            </span>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span>
+                    <Button
+                      size="sm"
+                      variant="default"
+                      disabled={selected.size === 0 || !allSelectedProposed}
+                      onClick={() => setConfirm({ kind: "validate", ids: [...selected] })}
+                    >
+                      <Check className="w-4 h-4" /> Valider en verified
+                    </Button>
+                  </span>
+                </TooltipTrigger>
+                {selected.size > 0 && !allSelectedProposed && (
+                  <TooltipContent>Action applicable uniquement aux propositions</TooltipContent>
+                )}
+              </Tooltip>
+            </TooltipProvider>
+            <Button
+              size="sm"
+              variant="destructive"
+              disabled={selected.size === 0 || !allSelectedProposed}
+              onClick={() => setConfirm({ kind: "reject", ids: [...selected] })}
+            >
+              <X className="w-4 h-4" /> Rejeter
+            </Button>
+            {selected.size > 0 && (
+              <Button size="sm" variant="ghost" onClick={() => setSelected(new Set())}>
+                Tout désélectionner
+              </Button>
+            )}
+          </div>
+        </Card>
+
         <Card className="overflow-hidden">
           <Table
             containerRef={tableScrollRef}
