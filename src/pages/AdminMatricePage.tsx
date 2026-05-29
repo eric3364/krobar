@@ -771,6 +771,17 @@ export default function AdminMatricePage() {
                             <Trash2 className="w-3 h-3" />
                           </Button>
                         )}
+                        {getArchetype(m).status === "proposed" && (
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            title="Rejeter cette proposition d'archétype"
+                            onClick={() => setConfirm({ kind: "reject", ids: [m.id] })}
+                            className="text-destructive hover:text-destructive"
+                          >
+                            <Trash2 className="w-3 h-3" /> Rejet
+                          </Button>
+                        )}
                       </div>
                     </TableCell>
                     <TableCell>
