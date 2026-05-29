@@ -18,12 +18,21 @@ import {
 } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Loader2, Sparkles, Check, X, ZoomIn, Trash2 } from "lucide-react";
+import { Loader2, Sparkles, Check, X, ZoomIn, Trash2, ChevronDown } from "lucide-react";
 import KrobarSvg from "@/components/KrobarSvg";
 import { Download } from "lucide-react";
 import {
   getAllStates, getState, setState, subscribe, removeFromLibrary,
 } from "@/lib/matriceLibrary";
+import ArchetypeThumbnail from "@/components/admin/ArchetypeThumbnail";
+import {
+  Popover, PopoverContent, PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 type ArchetypeStatus = "verified" | "proposed" | "unknown";
 type Matrice = {
