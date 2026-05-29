@@ -361,7 +361,7 @@ function audit(svg: string, archetype: string): CheckResult[] {
   return results;
 }
 
-}
+
 
 // ============================================================
 // LEGACY MODE prompt (kept for backward compat with current UI)
