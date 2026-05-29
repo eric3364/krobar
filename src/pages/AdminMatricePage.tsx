@@ -821,6 +821,37 @@ export default function AdminMatricePage() {
           )}
         </DialogContent>
       </Dialog>
+
+      <AlertDialog open={!!confirm} onOpenChange={(o) => !o && setConfirm(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {confirm?.kind === "validate"
+                ? `Valider ${confirm.ids.length} matrice(s) en verified ?`
+                : `Rejeter ${confirm?.ids.length ?? 0} proposition(s) ?`}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {confirm?.kind === "validate"
+                ? "Cette action conserve l'archétype attribué et change le statut en verified."
+                : "Les matrices repasseront en non attribuées (statut unknown, archétype effacé)."}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (!confirm) return;
+                if (confirm.kind === "validate") bulkValidate(confirm.ids);
+                else bulkReject(confirm.ids);
+                setConfirm(null);
+              }}
+            >
+              Confirmer
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
+
   );
 }
