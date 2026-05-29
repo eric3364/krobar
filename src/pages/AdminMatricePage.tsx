@@ -615,7 +615,7 @@ export default function AdminMatricePage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filtered.slice(0, 200).map((m) => {
+              {filtered.map((m) => {
                 const st = states[m.id] ?? { status: "idle" as const };
                 const thumb = st.svg ?? st.validatedSvg;
                 return (
