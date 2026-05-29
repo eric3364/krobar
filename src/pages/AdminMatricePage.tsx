@@ -630,6 +630,15 @@ export default function AdminMatricePage() {
                       <div className="font-medium">{m.name}</div>
                       <div className="text-xs text-muted-foreground line-clamp-1">{m.usage}</div>
                     </TableCell>
+                    <TableCell>
+                      {(() => {
+                        const a = getArchetype(m);
+                        const title = a.canonical
+                          ? `${a.canonical} · ${(m.components ?? []).length} composants`
+                          : "Archétype non attribué";
+                        return <ArchetypeThumbnail archetype={a.canonical} status={a.status} title={title} />;
+                      })()}
+                    </TableCell>
                     <TableCell className="text-xs text-muted-foreground">{m.category}</TableCell>
                     <TableCell>
                       {(() => {
