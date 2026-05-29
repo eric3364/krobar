@@ -65,7 +65,7 @@ Le slot titre :
     </foreignObject>
   </g>
 
-Chaque quadrant (×4) — utiliser les coordonnées indiquées ci-dessous :
+Chaque quadrant (×4) — data-slot-key DOIT être "quadrant" (ou "quadrant_N"). Coordonnées indiquées ci-dessous :
   <g class="slot-group" data-slot-key="quadrant">
     <rect class="slot-shape krobar-bbox-fill krobar-bbox-stroke"
           data-shape="bbox_quadrant_N"
@@ -186,7 +186,7 @@ function audit(svg: string, archetype: string): CheckResult[] {
   }
 
   // Check 4 — Slot-groups quadrants
-  const quadrantGroups = [...svg.matchAll(/<g\b[^>]*class="slot-group"[^>]*data-slot-key="quadrant"[^>]*>([\s\S]*?)<\/g>/g)];
+  const quadrantGroups = [...svg.matchAll(/<g\b[^>]*class="slot-group"[^>]*data-slot-key="quadrant(?:_\d+)?"[^>]*>([\s\S]*?)<\/g>/g)];
   {
     const reasons: string[] = [];
     if (quadrantGroups.length !== 4) reasons.push(`${quadrantGroups.length} slot-group quadrant (attendu 4)`);
