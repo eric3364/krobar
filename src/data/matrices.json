@@ -10,7 +10,10 @@
       "Opportunités",
       "Menaces"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": "grid_2x2",
+    "archetype_alternatives": [],
+    "archetype_status": "verified"
   },
   {
     "id": "m002",
@@ -25,7 +28,10 @@
       "Écologique",
       "Légal"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m003",
@@ -39,7 +45,10 @@
       "Menace des nouveaux entrants",
       "Menace des produits de substitution"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": "porter5_canvas",
+    "archetype_alternatives": [],
+    "archetype_status": "verified"
   },
   {
     "id": "m004",
@@ -52,7 +61,10 @@
       "Dilemmes",
       "Poids morts"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m005",
@@ -65,7 +77,10 @@
       "Mckinsey faible / Ge fort",
       "Mckinsey faible / Ge faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m006",
@@ -78,7 +93,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m007",
@@ -91,7 +109,10 @@
       "Développement de marché",
       "Diversification"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m008",
@@ -104,7 +125,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m009",
@@ -117,7 +141,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": "hub_spokes_4",
+    "archetype_alternatives": [],
+    "archetype_status": "proposed"
   },
   {
     "id": "m010",
@@ -129,7 +156,10 @@
       "Différenciation",
       "Focalisation"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m011",
@@ -141,7 +171,10 @@
       "Différenciation",
       "Concentration"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m012",
@@ -154,7 +187,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m013",
@@ -167,7 +203,10 @@
       "Stratégies WO (Faiblesses-Opportunités)",
       "Stratégies WT (Faiblesses-Menaces)"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": "grid_2x2",
+    "archetype_alternatives": [],
+    "archetype_status": "verified"
   },
   {
     "id": "m014",
@@ -180,7 +219,10 @@
       "D’attractivité marché faible / Compétitivité fort",
       "D’attractivité marché faible / Compétitivité faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m015",
@@ -193,7 +235,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": "grid_2x2",
+    "archetype_alternatives": [],
+    "archetype_status": "proposed"
   },
   {
     "id": "m016",
@@ -206,7 +251,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m017",
@@ -219,7 +267,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m018",
@@ -232,7 +283,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m019",
@@ -245,7 +299,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m020",
@@ -258,7 +315,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m021",
@@ -270,7 +330,10 @@
       "Ciblage",
       "Positionnement"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m022",
@@ -283,7 +346,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m023",
@@ -296,7 +362,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m024",
@@ -309,7 +378,10 @@
       "Carte perceptuelle faible / Perceptual map fort",
       "Carte perceptuelle faible / Perceptual map faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m025",
@@ -322,7 +394,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m026",
@@ -335,7 +410,10 @@
       "Place",
       "Promotion"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": "linear_sequence_4",
+    "archetype_alternatives": [],
+    "archetype_status": "verified"
   },
   {
     "id": "m027",
@@ -351,7 +429,10 @@
       "Processus",
       "Preuve physique"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": "linear_sequence_4",
+    "archetype_alternatives": [],
+    "archetype_status": "verified"
   },
   {
     "id": "m028",
@@ -364,7 +445,10 @@
       "Produit faible / Marché fort",
       "Produit faible / Marché faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m029",
@@ -377,7 +461,10 @@
       "Prix faible / Valeur fort",
       "Prix faible / Valeur faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m030",
@@ -390,7 +477,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m031",
@@ -403,7 +493,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": "hub_spokes_4",
+    "archetype_alternatives": [],
+    "archetype_status": "proposed"
   },
   {
     "id": "m032",
@@ -415,7 +508,10 @@
       "Preuves",
       "Différenciation"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m034",
@@ -428,7 +524,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m035",
@@ -441,7 +540,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m036",
@@ -454,7 +556,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m037",
@@ -467,7 +572,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": "pyramid_levels_4",
+    "archetype_alternatives": [],
+    "archetype_status": "proposed"
   },
   {
     "id": "m038",
@@ -480,7 +588,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m039",
@@ -493,7 +604,10 @@
       "De notoriété faible / Image fort",
       "De notoriété faible / Image faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m040",
@@ -506,7 +620,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m041",
@@ -518,7 +635,10 @@
       "Fréquence",
       "Montant"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m042",
@@ -531,7 +651,10 @@
       "Satisfaction faible / Fidélité fort",
       "Satisfaction faible / Fidélité faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m043",
@@ -544,7 +667,10 @@
       "Importance faible / Performance fort",
       "Importance faible / Performance faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m044",
@@ -557,7 +683,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m045",
@@ -570,7 +699,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m046",
@@ -583,7 +715,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m047",
@@ -596,7 +731,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m048",
@@ -609,7 +747,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m049",
@@ -621,7 +762,10 @@
       "Émotionnels",
       "Sociaux"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m050",
@@ -634,7 +778,10 @@
       "Contenu faible / Parcours d’achat fort",
       "Contenu faible / Parcours d’achat faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m051",
@@ -647,7 +794,10 @@
       "Désir",
       "Action"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m052",
@@ -659,7 +809,10 @@
       "Conversion",
       "Fidélisation"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m053",
@@ -672,7 +825,10 @@
       "Acquisition faible / Rétention fort",
       "Acquisition faible / Rétention faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m054",
@@ -685,7 +841,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m055",
@@ -698,7 +857,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m057",
@@ -711,7 +873,10 @@
       "Canaux",
       "KPI"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m058",
@@ -724,7 +889,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m059",
@@ -737,7 +905,10 @@
       "Clv faible / Cac fort",
       "Clv faible / Cac faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m060",
@@ -750,7 +921,10 @@
       "Seo impact faible / Effort fort",
       "Seo impact faible / Effort faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m061",
@@ -763,7 +937,10 @@
       "Mots-clés intention faible / Volume fort",
       "Mots-clés intention faible / Volume faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m062",
@@ -776,7 +953,10 @@
       "Contenu evergreen faible / Actualité fort",
       "Contenu evergreen faible / Actualité faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m063",
@@ -789,7 +969,10 @@
       "Contenu faible / Intention de recherche fort",
       "Contenu faible / Intention de recherche faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m064",
@@ -802,7 +985,10 @@
       "Social media engagement faible / Portée fort",
       "Social media engagement faible / Portée faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m065",
@@ -815,7 +1001,10 @@
       "Paid media coût faible / Conversion fort",
       "Paid media coût faible / Conversion faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m066",
@@ -828,7 +1017,10 @@
       "Roas faible / Marge fort",
       "Roas faible / Marge faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m067",
@@ -841,7 +1033,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m068",
@@ -854,7 +1049,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m069",
@@ -867,7 +1065,10 @@
       "Crm valeur faible / Engagement fort",
       "Crm valeur faible / Engagement faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m070",
@@ -880,7 +1081,10 @@
       "Taux de conversion faible / Trafic fort",
       "Taux de conversion faible / Trafic faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m071",
@@ -893,7 +1097,10 @@
       "Ux impact faible / Friction fort",
       "Ux impact faible / Friction faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m072",
@@ -906,7 +1113,10 @@
       "Analytics kpi faible / Objectif fort",
       "Analytics kpi faible / Objectif faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m073",
@@ -919,7 +1129,10 @@
       "Canal faible / Attribution fort",
       "Canal faible / Attribution faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m074",
@@ -931,7 +1144,10 @@
       "Clic",
       "Conversion"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m075",
@@ -944,7 +1160,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m076",
@@ -957,7 +1176,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m077",
@@ -970,7 +1192,10 @@
       "Privacy faible / Performance fort",
       "Privacy faible / Performance faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m078",
@@ -983,7 +1208,10 @@
       "Consulted (Consulté)",
       "Informed (Informé)"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m079",
@@ -997,7 +1225,10 @@
       "Input",
       "Decide"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m080",
@@ -1010,7 +1241,10 @@
       "Pouvoir faible / Intérêt fort",
       "Pouvoir faible / Intérêt faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m081",
@@ -1023,7 +1257,10 @@
       "Influence faible / Impact fort",
       "Influence faible / Impact faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m082",
@@ -1036,7 +1273,10 @@
       "Responsabilité faible / Autonomie fort",
       "Responsabilité faible / Autonomie faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m083",
@@ -1049,7 +1289,10 @@
       "Urgent non important",
       "Ni urgent ni important"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m084",
@@ -1062,7 +1305,10 @@
       "Effort faible / Impact fort",
       "Effort faible / Impact faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m085",
@@ -1075,7 +1321,10 @@
       "Complexité faible / Valeur fort",
       "Complexité faible / Valeur faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m086",
@@ -1088,7 +1337,10 @@
       "Risque faible / Impact fort",
       "Risque faible / Impact faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m088",
@@ -1101,7 +1353,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m089",
@@ -1114,7 +1369,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m090",
@@ -1127,7 +1385,10 @@
       "Compétences faible / Tâches fort",
       "Compétences faible / Tâches faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m091",
@@ -1140,7 +1401,10 @@
       "Charge faible / Capacité fort",
       "Charge faible / Capacité faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m092",
@@ -1153,7 +1417,10 @@
       "Alignement faible / Engagement fort",
       "Alignement faible / Engagement faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m093",
@@ -1166,7 +1433,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m094",
@@ -1179,7 +1449,10 @@
       "Centralisation faible / Autonomie fort",
       "Centralisation faible / Autonomie faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m095",
@@ -1192,7 +1465,10 @@
       "Processus faible / Responsabilité fort",
       "Processus faible / Responsabilité faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m096",
@@ -1205,7 +1481,10 @@
       "Performance faible / Potentiel fort",
       "Performance faible / Potentiel faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m097",
@@ -1218,7 +1497,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m099",
@@ -1231,7 +1513,10 @@
       "Participatif",
       "Délégatif"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m100",
@@ -1245,7 +1530,10 @@
       "Management intermédiaire (5,5)",
       "Management d'équipe (9,9)"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m101",
@@ -1258,7 +1546,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m102",
@@ -1271,7 +1562,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m103",
@@ -1284,7 +1578,10 @@
       "Impact faible / Effort fort",
       "Impact faible / Effort faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m104",
@@ -1297,7 +1594,10 @@
       "Valeur faible / Complexité fort",
       "Valeur faible / Complexité faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m105",
@@ -1310,7 +1610,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m106",
@@ -1323,7 +1626,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m108",
@@ -1336,7 +1642,10 @@
       "Could have",
       "Won't have"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m110",
@@ -1348,7 +1657,10 @@
       "Confidence",
       "Ease"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m111",
@@ -1361,7 +1673,10 @@
       "Confidence",
       "Effort"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m112",
@@ -1374,7 +1689,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m114",
@@ -1387,7 +1705,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m115",
@@ -1400,7 +1721,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m116",
@@ -1413,7 +1737,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m117",
@@ -1426,7 +1753,10 @@
       "De décision go faible / No go fort",
       "De décision go faible / No go faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m118",
@@ -1439,7 +1769,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m119",
@@ -1452,7 +1785,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m120",
@@ -1465,7 +1801,10 @@
       "Risques faible / Opportunités fort",
       "Risques faible / Opportunités faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m121",
@@ -1483,7 +1822,10 @@
       "Partenaires clés",
       "Structure de coûts"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": "bmc_canvas",
+    "archetype_alternatives": [],
+    "archetype_status": "verified"
   },
   {
     "id": "m122",
@@ -1501,7 +1843,10 @@
       "Indicateurs clés",
       "Avantage déloyal"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m123",
@@ -1514,7 +1859,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m124",
@@ -1529,7 +1877,10 @@
       "Créateurs de gains",
       "Soulageurs de douleurs"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m125",
@@ -1542,7 +1893,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m126",
@@ -1556,7 +1910,10 @@
       "Indifférent",
       "Rejet"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m127",
@@ -1569,7 +1926,10 @@
       "Impact faible / Effort produit fort",
       "Impact faible / Effort produit faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m128",
@@ -1582,7 +1942,10 @@
       "Valeur utilisateur faible / Valeur business fort",
       "Valeur utilisateur faible / Valeur business faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m129",
@@ -1595,7 +1958,10 @@
       "Innovation incrémentale faible / Rupture fort",
       "Innovation incrémentale faible / Rupture faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m130",
@@ -1607,7 +1973,10 @@
       "Adjacent",
       "Transformational"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m131",
@@ -1619,7 +1988,10 @@
       "Horizon 2 — relais de croissance",
       "Horizon 3 — innovations de rupture"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m132",
@@ -1632,7 +2004,10 @@
       "Technologie faible / Marché fort",
       "Technologie faible / Marché faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m133",
@@ -1645,7 +2020,10 @@
       "Attractivité faible / Faisabilité fort",
       "Attractivité faible / Faisabilité faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m134",
@@ -1657,7 +2035,10 @@
       "Faisabilité",
       "Viabilité"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m135",
@@ -1670,7 +2051,10 @@
       "Expérimentation faible / Apprentissage fort",
       "Expérimentation faible / Apprentissage faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m136",
@@ -1683,7 +2067,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m137",
@@ -1696,7 +2083,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m138",
@@ -1709,7 +2099,10 @@
       "Pain faible / Gain fort",
       "Pain faible / Gain faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m139",
@@ -1722,7 +2115,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m140",
@@ -1735,7 +2131,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m141",
@@ -1748,7 +2147,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m142",
@@ -1761,7 +2163,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m143",
@@ -1774,7 +2179,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m144",
@@ -1787,7 +2195,10 @@
       "Compétences faible / Postes fort",
       "Compétences faible / Postes faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m145",
@@ -1800,7 +2211,10 @@
       "Compétences faible / Niveaux fort",
       "Compétences faible / Niveaux faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": "pyramid_levels_4",
+    "archetype_alternatives": [],
+    "archetype_status": "proposed"
   },
   {
     "id": "m146",
@@ -1813,7 +2227,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m147",
@@ -1826,7 +2243,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m148",
@@ -1839,7 +2259,10 @@
       "Motivation faible / Compétence fort",
       "Motivation faible / Compétence faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m149",
@@ -1852,7 +2275,10 @@
       "Engagement faible / Satisfaction fort",
       "Engagement faible / Satisfaction faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m150",
@@ -1865,7 +2291,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m151",
@@ -1878,7 +2307,10 @@
       "Formation impact faible / Urgence fort",
       "Formation impact faible / Urgence faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m152",
@@ -1890,7 +2322,10 @@
       "Compétences",
       "Évolution"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m153",
@@ -1903,7 +2338,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m154",
@@ -1916,7 +2354,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m155",
@@ -1929,7 +2370,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m156",
@@ -1942,7 +2386,10 @@
       "Attractivité faible / Rétention fort",
       "Attractivité faible / Rétention faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m157",
@@ -1953,7 +2400,10 @@
       "Risque de départ",
       "Désengagement"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m158",
@@ -1966,7 +2416,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m159",
@@ -1979,7 +2432,10 @@
       "Objectifs faible / Compétences fort",
       "Objectifs faible / Compétences faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m160",
@@ -1992,7 +2448,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m161",
@@ -2005,7 +2464,10 @@
       "Tutorat faible / Apprentissage fort",
       "Tutorat faible / Apprentissage faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m162",
@@ -2018,7 +2480,10 @@
       "Certification faible / Blocs de compétences fort",
       "Certification faible / Blocs de compétences faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m165",
@@ -2030,7 +2495,10 @@
       "Activités",
       "Évaluations"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m166",
@@ -2043,7 +2511,10 @@
       "Marge faible / Volume fort",
       "Marge faible / Volume faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m167",
@@ -2056,7 +2527,10 @@
       "Coût faible / Valeur fort",
       "Coût faible / Valeur faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m168",
@@ -2069,7 +2543,10 @@
       "Roi faible / Risque fort",
       "Roi faible / Risque faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m169",
@@ -2082,7 +2559,10 @@
       "Rentabilité faible / Croissance fort",
       "Rentabilité faible / Croissance faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m170",
@@ -2095,7 +2575,10 @@
       "Cash-flow faible / Profitabilité fort",
       "Cash-flow faible / Profitabilité faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m171",
@@ -2108,7 +2591,10 @@
       "Prix faible / Marge fort",
       "Prix faible / Marge faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m172",
@@ -2121,7 +2607,10 @@
       "Coût fixe faible / Coût variable fort",
       "Coût fixe faible / Coût variable faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m173",
@@ -2134,7 +2623,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m174",
@@ -2147,7 +2639,10 @@
       "Tco faible / Bénéfices fort",
       "Tco faible / Bénéfices faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m175",
@@ -2160,7 +2655,10 @@
       "Capex faible / Opex fort",
       "Capex faible / Opex faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m176",
@@ -2173,7 +2671,10 @@
       "Budget faible / Impact fort",
       "Budget faible / Impact faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m177",
@@ -2186,7 +2687,10 @@
       "Performance faible / Coût fort",
       "Performance faible / Coût faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m178",
@@ -2199,7 +2703,10 @@
       "Client rentable faible / Non rentable fort",
       "Client rentable faible / Non rentable faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m179",
@@ -2211,7 +2718,10 @@
       "Coûts",
       "Risques"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m180",
@@ -2224,7 +2734,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m181",
@@ -2237,7 +2750,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m182",
@@ -2250,7 +2766,10 @@
       "Prospects faible / Potentiel fort",
       "Prospects faible / Potentiel faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m183",
@@ -2263,7 +2782,10 @@
       "Opportunité faible / Probabilité fort",
       "Opportunité faible / Probabilité faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m184",
@@ -2276,7 +2798,10 @@
       "Valeur compte faible / Accessibilité fort",
       "Valeur compte faible / Accessibilité faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m185",
@@ -2289,7 +2814,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m186",
@@ -2302,7 +2830,10 @@
       "Pouvoir faible / Influence acheteur fort",
       "Pouvoir faible / Influence acheteur faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m187",
@@ -2315,7 +2846,10 @@
       "Besoin faible / Maturité client fort",
       "Besoin faible / Maturité client faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m188",
@@ -2328,7 +2862,10 @@
       "Objections faible / Réponses fort",
       "Objections faible / Réponses faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m189",
@@ -2341,7 +2878,10 @@
       "Solution faible / Douleur client fort",
       "Solution faible / Douleur client faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m190",
@@ -2354,7 +2894,10 @@
       "Urgence faible / Budget fort",
       "Urgence faible / Budget faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m191",
@@ -2367,7 +2910,10 @@
       "Need",
       "Timing"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m192",
@@ -2382,7 +2928,10 @@
       "Identify pain",
       "Champion"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m193",
@@ -2395,7 +2944,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m194",
@@ -2408,7 +2960,10 @@
       "Cycle de vente faible / Contenu fort",
       "Cycle de vente faible / Contenu faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": "cycle_4",
+    "archetype_alternatives": [],
+    "archetype_status": "proposed"
   },
   {
     "id": "m195",
@@ -2421,7 +2976,10 @@
       "Cross-sell faible / Up-sell fort",
       "Cross-sell faible / Up-sell faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m196",
@@ -2434,7 +2992,10 @@
       "Fidélisation faible / Expansion fort",
       "Fidélisation faible / Expansion faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m197",
@@ -2447,7 +3008,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m198",
@@ -2460,7 +3024,10 @@
       "Satisfaction faible / Valeur fort",
       "Satisfaction faible / Valeur faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m199",
@@ -2473,7 +3040,10 @@
       "Check",
       "Act"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": "cycle_4",
+    "archetype_alternatives": [],
+    "archetype_status": "verified"
   },
   {
     "id": "m200",
@@ -2487,7 +3057,10 @@
       "Improve",
       "Control"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m201",
@@ -2501,7 +3074,10 @@
       "Outputs",
       "Customers"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m202",
@@ -2516,7 +3092,10 @@
       "Milieu",
       "Mesure"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m203",
@@ -2530,7 +3109,10 @@
       "Pourquoi 4",
       "Pourquoi 5"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m204",
@@ -2543,7 +3125,10 @@
       "Détection",
       "Criticité (IPR)"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m205",
@@ -2555,7 +3140,10 @@
       "Occurrence",
       "Détection"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m206",
@@ -2568,7 +3156,10 @@
       "Qualité faible / Coût fort",
       "Qualité faible / Coût faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m207",
@@ -2581,7 +3172,10 @@
       "Conformité faible / Risque fort",
       "Conformité faible / Risque faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m208",
@@ -2594,7 +3188,10 @@
       "Processus faible / Performance fort",
       "Processus faible / Performance faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m209",
@@ -2607,7 +3204,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m210",
@@ -2620,7 +3220,10 @@
       "Valeur ajoutée faible / Non-valeur ajoutée fort",
       "Valeur ajoutée faible / Non-valeur ajoutée faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m211",
@@ -2633,7 +3236,10 @@
       "Contrôle faible / Fréquence fort",
       "Contrôle faible / Fréquence faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m212",
@@ -2646,7 +3252,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m213",
@@ -2659,7 +3268,10 @@
       "Satisfaction faible / Réclamation fort",
       "Satisfaction faible / Réclamation faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m214",
@@ -2672,7 +3284,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m215",
@@ -2685,7 +3300,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m216",
@@ -2698,7 +3316,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m217",
@@ -2711,7 +3332,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m218",
@@ -2724,7 +3348,10 @@
       "Ux impact faible / Effort fort",
       "Ux impact faible / Effort faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m219",
@@ -2737,7 +3364,10 @@
       "Friction faible / Fréquence fort",
       "Friction faible / Fréquence faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m220",
@@ -2750,7 +3380,10 @@
       "Accessibilité faible / Impact fort",
       "Accessibilité faible / Impact faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m221",
@@ -2763,7 +3396,10 @@
       "Besoins faible / Fonctionnalités fort",
       "Besoins faible / Fonctionnalités faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m222",
@@ -2776,7 +3412,10 @@
       "Persona faible / Besoins fort",
       "Persona faible / Besoins faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m223",
@@ -2789,7 +3428,10 @@
       "Tâches faible / Émotions fort",
       "Tâches faible / Émotions faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m224",
@@ -2802,7 +3444,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m225",
@@ -2815,7 +3460,10 @@
       "Utilisabilité faible / Désirabilité fort",
       "Utilisabilité faible / Désirabilité faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m226",
@@ -2828,7 +3476,10 @@
       "Contenu faible / Contexte fort",
       "Contenu faible / Contexte faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m227",
@@ -2841,7 +3492,10 @@
       "Wireframe faible / Objectif fort",
       "Wireframe faible / Objectif faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m228",
@@ -2854,7 +3508,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m229",
@@ -2866,7 +3523,10 @@
       "Résultats",
       "Corrections"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m230",
@@ -2879,7 +3539,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m231",
@@ -2892,7 +3555,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m232",
@@ -2905,7 +3571,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m233",
@@ -2918,7 +3587,10 @@
       "Cas d’usage ia impact faible / Faisabilité fort",
       "Cas d’usage ia impact faible / Faisabilité faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m234",
@@ -2931,7 +3603,10 @@
       "Risque ia faible / Valeur fort",
       "Risque ia faible / Valeur faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m235",
@@ -2944,7 +3619,10 @@
       "Automatisation faible / Complexité fort",
       "Automatisation faible / Complexité faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m236",
@@ -2957,7 +3635,10 @@
       "Données disponibles faible / Données nécessaires fort",
       "Données disponibles faible / Données nécessaires faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m237",
@@ -2969,7 +3650,10 @@
       "Complétude",
       "Fraîcheur"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m238",
@@ -2981,7 +3665,10 @@
       "Règles",
       "Responsabilités"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m239",
@@ -2994,7 +3681,10 @@
       "Sécurité faible / Accessibilité fort",
       "Sécurité faible / Accessibilité faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m240",
@@ -3007,7 +3697,10 @@
       "Ia générative usage faible / Risque fort",
       "Ia générative usage faible / Risque faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m241",
@@ -3020,7 +3713,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m242",
@@ -3033,7 +3729,10 @@
       "Humain faible / Machine fort",
       "Humain faible / Machine faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m243",
@@ -3046,7 +3745,10 @@
       "Augmentation faible / Automatisation fort",
       "Augmentation faible / Automatisation faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m244",
@@ -3059,7 +3761,10 @@
       "Prompt faible / Tâche fort",
       "Prompt faible / Tâche faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m246",
@@ -3071,7 +3776,10 @@
       "Transparence",
       "Responsabilité"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m247",
@@ -3084,7 +3792,10 @@
       "Message faible / Cible fort",
       "Message faible / Cible faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m248",
@@ -3097,7 +3808,10 @@
       "Canal faible / Objectif fort",
       "Canal faible / Objectif faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m249",
@@ -3110,7 +3824,10 @@
       "Tonalité faible / Audience fort",
       "Tonalité faible / Audience faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m250",
@@ -3123,7 +3840,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m251",
@@ -3136,7 +3856,10 @@
       "Réputation faible / Visibilité fort",
       "Réputation faible / Visibilité faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m252",
@@ -3149,7 +3872,10 @@
       "Crise impact faible / Probabilité fort",
       "Crise impact faible / Probabilité faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m253",
@@ -3162,7 +3888,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m254",
@@ -3175,7 +3904,10 @@
       "Influence faible / Relais fort",
       "Influence faible / Relais faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m255",
@@ -3188,7 +3920,10 @@
       "Contenu faible / Objectif fort",
       "Contenu faible / Objectif faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m256",
@@ -3201,7 +3936,10 @@
       "Preuve faible / Promesse fort",
       "Preuve faible / Promesse faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m257",
@@ -3213,7 +3951,10 @@
       "Conflit",
       "Transformation"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m258",
@@ -3226,7 +3967,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m259",
@@ -3239,7 +3983,10 @@
       "Perception faible / Réalité fort",
       "Perception faible / Réalité faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m260",
@@ -3252,7 +3999,10 @@
       "Articles à goulot d'étranglement",
       "Articles simples"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m261",
@@ -3265,7 +4015,10 @@
       "Fournisseurs risque faible / Valeur fort",
       "Fournisseurs risque faible / Valeur faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m262",
@@ -3278,7 +4031,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m263",
@@ -3291,7 +4047,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m264",
@@ -3304,7 +4063,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m265",
@@ -3317,7 +4079,10 @@
       "Stock rotation faible / Valeur fort",
       "Stock rotation faible / Valeur faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m266",
@@ -3329,7 +4094,10 @@
       "Catégorie B",
       "Catégorie C"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m267",
@@ -3341,7 +4109,10 @@
       "Catégorie Y",
       "Catégorie Z"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m268",
@@ -3354,7 +4125,10 @@
       "Abc faible / Xyz fort",
       "Abc faible / Xyz faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m269",
@@ -3367,7 +4141,10 @@
       "Capacité faible / Demande fort",
       "Capacité faible / Demande faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m270",
@@ -3380,7 +4157,10 @@
       "Flux faible / Contraintes fort",
       "Flux faible / Contraintes faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m271",
@@ -3392,7 +4172,10 @@
       "Délai",
       "Dépendance"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m272",
@@ -3405,7 +4188,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m273",
@@ -3418,7 +4204,10 @@
       "Empreinte carbone faible / Coût fort",
       "Empreinte carbone faible / Coût faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m274",
@@ -3431,7 +4220,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m275",
@@ -3444,7 +4236,10 @@
       "Conformité faible / Impact fort",
       "Conformité faible / Impact faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m276",
@@ -3457,7 +4252,10 @@
       "Rgpd risque faible / Données fort",
       "Rgpd risque faible / Données faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m277",
@@ -3470,7 +4268,10 @@
       "Probabilité faible / Gravité fort",
       "Probabilité faible / Gravité faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m278",
@@ -3483,7 +4284,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m279",
@@ -3496,7 +4300,10 @@
       "Responsabilité faible / Contrôle fort",
       "Responsabilité faible / Contrôle faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m280",
@@ -3509,7 +4316,10 @@
       "Audit faible / Preuve fort",
       "Audit faible / Preuve faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m281",
@@ -3522,7 +4332,10 @@
       "Contrats faible / Risques fort",
       "Contrats faible / Risques faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m282",
@@ -3535,7 +4348,10 @@
       "Litiges faible / Exposition fort",
       "Litiges faible / Exposition faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m283",
@@ -3548,7 +4364,10 @@
       "Corruption faible / Exposition fort",
       "Corruption faible / Exposition faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m284",
@@ -3561,7 +4380,10 @@
       "Cybersécurité impact faible / Probabilité fort",
       "Cybersécurité impact faible / Probabilité faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m285",
@@ -3574,7 +4396,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m286",
@@ -3587,7 +4412,10 @@
       "Ai act risque faible / Usage fort",
       "Ai act risque faible / Usage faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m287",
@@ -3602,7 +4430,10 @@
       "Évaluer",
       "Créer"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m288",
@@ -3615,7 +4446,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m289",
@@ -3628,7 +4462,10 @@
       "Compétences faible / Preuves fort",
       "Compétences faible / Preuves faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m290",
@@ -3641,7 +4478,10 @@
       "Niveau faible / Compétence fort",
       "Niveau faible / Compétence faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m291",
@@ -3654,7 +4494,10 @@
       "Prérequis faible / Objectifs fort",
       "Prérequis faible / Objectifs faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m292",
@@ -3666,7 +4509,10 @@
       "Activité",
       "Évaluation"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m293",
@@ -3679,7 +4525,10 @@
       "Synchrone faible / Asynchrone fort",
       "Synchrone faible / Asynchrone faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m294",
@@ -3692,7 +4541,10 @@
       "Individuel faible / Collectif fort",
       "Individuel faible / Collectif faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m295",
@@ -3705,7 +4557,10 @@
       "Effort apprenant faible / Valeur pédagogique fort",
       "Effort apprenant faible / Valeur pédagogique faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m296",
@@ -3718,7 +4573,10 @@
       "Évaluation formative faible / Sommative fort",
       "Évaluation formative faible / Sommative faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m297",
@@ -3731,7 +4589,10 @@
       "Comportement",
       "Résultats"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m298",
@@ -3744,7 +4605,10 @@
       "Compétences faible / Badges fort",
       "Compétences faible / Badges faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m299",
@@ -3757,7 +4621,10 @@
       "Motivation faible / Difficulté fort",
       "Motivation faible / Difficulté faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m300",
@@ -3770,7 +4637,10 @@
       "Feedback faible / Progression fort",
       "Feedback faible / Progression faible"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m318",
@@ -3784,7 +4654,10 @@
       "Chaotique",
       "Désordre"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m319",
@@ -3797,7 +4670,10 @@
       "Décider",
       "Agir"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m320",
@@ -3810,7 +4686,10 @@
       "Inimitabilité",
       "Organisation"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m321",
@@ -3823,7 +4702,10 @@
       "Inimitabilité",
       "Non-substituabilité"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m322",
@@ -3839,7 +4721,10 @@
       "Compétences",
       "Valeurs partagées"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m323",
@@ -3852,7 +4737,10 @@
       "Processus internes",
       "Apprentissage et croissance"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m324",
@@ -3865,7 +4753,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m325",
@@ -3878,7 +4769,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m326",
@@ -3891,7 +4785,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m327",
@@ -3904,7 +4801,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m328",
@@ -3916,7 +4816,10 @@
       "Activités",
       "Résultats"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m329",
@@ -3928,7 +4831,10 @@
       "Légitimité",
       "Urgence"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m330",
@@ -3941,7 +4847,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m331",
@@ -3954,7 +4863,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m332",
@@ -3971,7 +4883,10 @@
       "Consolider les gains",
       "Ancrer les nouvelles approches"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m333",
@@ -3985,7 +4900,10 @@
       "Capacité",
       "Renforcement"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m334",
@@ -3997,7 +4915,10 @@
       "Changer",
       "Recongeler"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m335",
@@ -4010,7 +4931,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": "pyramid_levels_4",
+    "archetype_alternatives": [],
+    "archetype_status": "proposed"
   },
   {
     "id": "m336",
@@ -4023,7 +4947,10 @@
       "Développer",
       "Livrer"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m337",
@@ -4036,7 +4963,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m338",
@@ -4049,7 +4979,10 @@
       "Quadrant 3",
       "Quadrant 4"
     ],
-    "components_status": "to_verify"
+    "components_status": "to_verify",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   },
   {
     "id": "m339",
@@ -4063,6 +4996,9 @@
       "Revenu",
       "Recommandation"
     ],
-    "components_status": "verified"
+    "components_status": "verified",
+    "archetype_canonical": null,
+    "archetype_alternatives": [],
+    "archetype_status": "unknown"
   }
 ]
