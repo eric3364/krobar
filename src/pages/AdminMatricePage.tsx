@@ -194,19 +194,69 @@ export default function AdminMatricePage() {
   }, []);
 
   const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase();
+    const q = normalize(search.trim());
     return CATALOG.filter((m) => {
       if (category !== "all" && m.category !== category) return false;
-      if (q && !`${m.name} ${m.usage} ${m.category}`.toLowerCase().includes(q)) return false;
+      if (q && !normalize(`${m.name} ${m.usage} ${m.category}`).includes(q)) return false;
       const st = states[m.id]?.status ?? "idle";
       const inProd = states[m.id]?.inProduction;
       if (statusFilter === "production" && !inProd) return false;
       if (statusFilter === "library" && !states[m.id]?.validatedSvg) return false;
       if (statusFilter === "pending" && st !== "pending") return false;
       if (statusFilter === "untouched" && st !== "idle") return false;
+
+      // Archetype attribution filters (Option B)
+      const a = getArchetype(m);
+      if (!archStatusOn[a.status]) return false;
+      if (archetypeFilter.size > 0) {
+        const key = a.canonical ?? "__none__";
+        if (!archetypeFilter.has(key)) return false;
+      }
+      if (cardinalityFilter !== "all") {
+        const n = (m.components ?? []).length;
+        if (String(n) !== cardinalityFilter) return false;
+      }
       return true;
     });
-  }, [search, category, statusFilter, states]);
+  }, [search, category, statusFilter, states, getArchetype, archStatusOn, archetypeFilter, cardinalityFilter]);
+
+  // Bulk action helpers
+  const selectedMatrices = useMemo(
+    () => filtered.filter((m) => selected.has(m.id)),
+    [filtered, selected],
+  );
+  const allSelectedProposed = selectedMatrices.length > 0 &&
+    selectedMatrices.every((m) => getArchetype(m).status === "proposed");
+
+  const bulkValidate = useCallback(async (ids: string[]) => {
+    for (const id of ids) await saveArchetype(id, { status: "verified" });
+    toast.success(`${ids.length} matrice(s) validée(s)`);
+    setSelected(new Set());
+  }, [saveArchetype]);
+
+  const bulkReject = useCallback(async (ids: string[]) => {
+    for (const id of ids) await saveArchetype(id, { canonical: null, alternatives: [], status: "unknown" });
+    toast.success(`${ids.length} matrice(s) rejetée(s)`);
+    setSelected(new Set());
+  }, [saveArchetype]);
+
+  const toggleArchStatus = (s: ArchetypeStatus) => {
+    setArchStatusOn((prev) => {
+      const next = { ...prev, [s]: !prev[s] };
+      // Au moins une active
+      if (!next.verified && !next.proposed && !next.unknown) return prev;
+      return next;
+    });
+  };
+
+  const toggleArchetypeOption = (key: string) => {
+    setArchetypeFilter((prev) => {
+      const next = new Set(prev);
+      next.has(key) ? next.delete(key) : next.add(key);
+      return next;
+    });
+  };
+
 
   const generate = useCallback(async (m: Matrice) => {
     const s = getState(m.id);
