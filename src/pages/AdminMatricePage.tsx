@@ -796,11 +796,6 @@ export default function AdminMatricePage() {
               })}
             </TableBody>
           </Table>
-          {filtered.length > 200 && (
-            <p className="p-3 text-xs text-muted-foreground text-center">
-              {filtered.length - 200} lignes supplémentaires masquées — affinez la recherche.
-            </p>
-          )}
         </Card>
       </div>
 
