@@ -284,10 +284,15 @@ export default function AdminMatricePage() {
             </SelectContent>
           </Select>
           <div className="ml-auto flex items-center gap-2">
-            <Button size="sm" variant="outline" onClick={runGenerateSkeleton} disabled={skeletonRunning}>
-              {skeletonRunning ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
-              Générer squelette grid_2x2
+            <Button size="sm" variant="outline" onClick={() => runGenerateSkeleton("grid_2x2")} disabled={skeletonRunning !== null}>
+              {skeletonRunning === "grid_2x2" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+              Squelette grid_2x2
             </Button>
+            <Button size="sm" variant="outline" onClick={() => runGenerateSkeleton("linear_sequence_4")} disabled={skeletonRunning !== null}>
+              {skeletonRunning === "linear_sequence_4" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+              Squelette linear_sequence_4
+            </Button>
+
             <Button size="sm" variant="outline" onClick={runExport} disabled={exporting}>
               {exporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
               Export Matcher
