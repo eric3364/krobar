@@ -51,9 +51,11 @@ export const ARCHETYPE_OPTIONS: string[] = [
   "grid_2x2",
   "linear_sequence_3", "linear_sequence_4", "linear_sequence_5", "linear_sequence_6",
   "linear_sequence_grid_7", "linear_sequence_grid_8",
+  "funnel_horizontal_3", "funnel_horizontal_4", "funnel_horizontal_5", "funnel_horizontal_6",
   "pyramid_levels_3", "pyramid_levels_4", "pyramid_levels_5", "pyramid_levels_6",
   "cycle_3", "cycle_4", "cycle_5", "cycle_6", "cycle_7", "cycle_8",
   "grouped_grid_3x3",
+  "fishbone_4", "fishbone_5", "fishbone_6", "fishbone_7", "fishbone_8",
   "hub_spokes_3", "hub_spokes_4", "hub_spokes_5", "hub_spokes_6",
   "bmc_canvas", "cadia_canvas", "porter5_canvas",
 ];
