@@ -292,6 +292,11 @@ export default function AdminMatricePage() {
               {skeletonRunning === "linear_sequence_4" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
               Squelette linear_sequence_4
             </Button>
+            <Button size="sm" variant="outline" onClick={() => runGenerateSkeleton("triangle_3")} disabled={skeletonRunning !== null}>
+              {skeletonRunning === "triangle_3" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+              Squelette triangle_3
+            </Button>
+
 
             <Button size="sm" variant="outline" onClick={runExport} disabled={exporting}>
               {exporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
