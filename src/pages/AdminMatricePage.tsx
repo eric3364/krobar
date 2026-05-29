@@ -245,6 +245,10 @@ export default function AdminMatricePage() {
             </SelectContent>
           </Select>
           <div className="ml-auto flex items-center gap-2">
+            <Button size="sm" variant="outline" onClick={runExport} disabled={exporting}>
+              {exporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+              Export Matcher
+            </Button>
             <span className="text-sm text-muted-foreground">{selected.size} sélectionnée(s)</span>
             {batchRunning ? (
               <Button variant="destructive" size="sm" onClick={() => { cancelRef.current = true; }}>
