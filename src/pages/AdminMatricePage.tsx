@@ -20,6 +20,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2, Sparkles, Check, X, ZoomIn, Trash2 } from "lucide-react";
 import KrobarSvg from "@/components/KrobarSvg";
+import { Download } from "lucide-react";
 import {
   getAllStates, getState, setState, subscribe, removeFromLibrary,
 } from "@/lib/matriceLibrary";
