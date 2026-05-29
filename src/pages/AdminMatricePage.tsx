@@ -18,12 +18,21 @@ import {
 } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Loader2, Sparkles, Check, X, ZoomIn, Trash2 } from "lucide-react";
+import { Loader2, Sparkles, Check, X, ZoomIn, Trash2, ChevronDown } from "lucide-react";
 import KrobarSvg from "@/components/KrobarSvg";
 import { Download } from "lucide-react";
 import {
   getAllStates, getState, setState, subscribe, removeFromLibrary,
 } from "@/lib/matriceLibrary";
+import ArchetypeThumbnail from "@/components/admin/ArchetypeThumbnail";
+import {
+  Popover, PopoverContent, PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 type ArchetypeStatus = "verified" | "proposed" | "unknown";
 type Matrice = {
@@ -59,6 +68,10 @@ type ArchetypeOverride = {
 };
 
 
+function normalize(s: string) {
+  return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+}
+
 export default function AdminMatricePage() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<string>("all");
@@ -70,6 +83,18 @@ export default function AdminMatricePage() {
   const [lexicons, setLexicons] = useState<Record<string, string>>({});
   const cancelRef = useRef(false);
   const tableScrollRef = useRef<HTMLDivElement | null>(null);
+
+  // Archetype attribution UI state (Option B)
+  const [archStatusOn, setArchStatusOn] = useState<Record<ArchetypeStatus, boolean>>({
+    verified: true, proposed: true, unknown: true,
+  });
+  const [archetypeFilter, setArchetypeFilter] = useState<Set<string>>(new Set()); // empty = all; "__none__" for unattributed
+  const [cardinalityFilter, setCardinalityFilter] = useState<string>("all");
+  const [confirm, setConfirm] = useState<
+    | { kind: "validate"; ids: string[] }
+    | { kind: "reject"; ids: string[] }
+    | null
+  >(null);
 
   useEffect(() => subscribe(() => setStates(getAllStates())), []);
 
@@ -169,19 +194,69 @@ export default function AdminMatricePage() {
   }, []);
 
   const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase();
+    const q = normalize(search.trim());
     return CATALOG.filter((m) => {
       if (category !== "all" && m.category !== category) return false;
-      if (q && !`${m.name} ${m.usage} ${m.category}`.toLowerCase().includes(q)) return false;
+      if (q && !normalize(`${m.name} ${m.usage} ${m.category}`).includes(q)) return false;
       const st = states[m.id]?.status ?? "idle";
       const inProd = states[m.id]?.inProduction;
       if (statusFilter === "production" && !inProd) return false;
       if (statusFilter === "library" && !states[m.id]?.validatedSvg) return false;
       if (statusFilter === "pending" && st !== "pending") return false;
       if (statusFilter === "untouched" && st !== "idle") return false;
+
+      // Archetype attribution filters (Option B)
+      const a = getArchetype(m);
+      if (!archStatusOn[a.status]) return false;
+      if (archetypeFilter.size > 0) {
+        const key = a.canonical ?? "__none__";
+        if (!archetypeFilter.has(key)) return false;
+      }
+      if (cardinalityFilter !== "all") {
+        const n = (m.components ?? []).length;
+        if (String(n) !== cardinalityFilter) return false;
+      }
       return true;
     });
-  }, [search, category, statusFilter, states]);
+  }, [search, category, statusFilter, states, getArchetype, archStatusOn, archetypeFilter, cardinalityFilter]);
+
+  // Bulk action helpers
+  const selectedMatrices = useMemo(
+    () => filtered.filter((m) => selected.has(m.id)),
+    [filtered, selected],
+  );
+  const allSelectedProposed = selectedMatrices.length > 0 &&
+    selectedMatrices.every((m) => getArchetype(m).status === "proposed");
+
+  const bulkValidate = useCallback(async (ids: string[]) => {
+    for (const id of ids) await saveArchetype(id, { status: "verified" });
+    toast.success(`${ids.length} matrice(s) validée(s)`);
+    setSelected(new Set());
+  }, [saveArchetype]);
+
+  const bulkReject = useCallback(async (ids: string[]) => {
+    for (const id of ids) await saveArchetype(id, { canonical: null, alternatives: [], status: "unknown" });
+    toast.success(`${ids.length} matrice(s) rejetée(s)`);
+    setSelected(new Set());
+  }, [saveArchetype]);
+
+  const toggleArchStatus = (s: ArchetypeStatus) => {
+    setArchStatusOn((prev) => {
+      const next = { ...prev, [s]: !prev[s] };
+      // Au moins une active
+      if (!next.verified && !next.proposed && !next.unknown) return prev;
+      return next;
+    });
+  };
+
+  const toggleArchetypeOption = (key: string) => {
+    setArchetypeFilter((prev) => {
+      const next = new Set(prev);
+      next.has(key) ? next.delete(key) : next.add(key);
+      return next;
+    });
+  };
+
 
   const generate = useCallback(async (m: Matrice) => {
     const s = getState(m.id);
@@ -394,6 +469,125 @@ export default function AdminMatricePage() {
 
         </Card>
 
+        {/* Filtres archétype + actions bulk (Option B) */}
+        <Card className="p-4 space-y-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="text-xs font-medium text-muted-foreground">Statut :</span>
+            {(["verified", "proposed", "unknown"] as ArchetypeStatus[]).map((s) => {
+              const on = archStatusOn[s];
+              const color =
+                s === "verified" ? "bg-emerald-500" :
+                s === "proposed" ? "bg-amber-500" : "bg-slate-400";
+              return (
+                <button
+                  key={s}
+                  type="button"
+                  onClick={() => toggleArchStatus(s)}
+                  className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs transition ${
+                    on ? "bg-background border-foreground/40" : "bg-muted/40 border-transparent opacity-50"
+                  }`}
+                >
+                  <span className={`w-2 h-2 rounded-full ${color}`} />
+                  {s}
+                </button>
+              );
+            })}
+
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="sm" className="gap-1">
+                  Archétypes
+                  {archetypeFilter.size > 0 && (
+                    <Badge variant="secondary" className="ml-1 text-[10px]">{archetypeFilter.size}</Badge>
+                  )}
+                  <ChevronDown className="w-3 h-3" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-72 max-h-[60vh] overflow-y-auto p-2">
+                <div className="space-y-1">
+                  <button
+                    type="button"
+                    onClick={() => setArchetypeFilter(new Set())}
+                    className="w-full text-left text-xs px-2 py-1 rounded hover:bg-muted"
+                  >
+                    Tous (réinitialiser)
+                  </button>
+                  <div className="border-t my-1" />
+                  {ARCHETYPE_OPTIONS.map((opt) => (
+                    <label key={opt} className="flex items-center gap-2 px-2 py-1 text-xs hover:bg-muted rounded cursor-pointer">
+                      <Checkbox
+                        checked={archetypeFilter.has(opt)}
+                        onCheckedChange={() => toggleArchetypeOption(opt)}
+                      />
+                      <span className="font-mono">{opt}</span>
+                    </label>
+                  ))}
+                  <div className="border-t my-1" />
+                  <label className="flex items-center gap-2 px-2 py-1 text-xs hover:bg-muted rounded cursor-pointer">
+                    <Checkbox
+                      checked={archetypeFilter.has("__none__")}
+                      onCheckedChange={() => toggleArchetypeOption("__none__")}
+                    />
+                    <span className="italic">(non attribué)</span>
+                  </label>
+                </div>
+              </PopoverContent>
+            </Popover>
+
+            <Select value={cardinalityFilter} onValueChange={setCardinalityFilter}>
+              <SelectTrigger className="w-[140px] h-9 text-xs"><SelectValue placeholder="Cardinalité" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Toutes cardinalités</SelectItem>
+                {[2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
+                  <SelectItem key={n} value={String(n)}>{n} composants</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <div className="ml-auto text-xs text-muted-foreground">
+              <span className="font-medium text-foreground">{filtered.length}</span> / {CATALOG.length} matrices
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t">
+            <span className="text-xs text-muted-foreground">
+              {selected.size > 0 ? `${selected.size} sélectionnée(s)` : "Aucune sélection"}
+            </span>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span>
+                    <Button
+                      size="sm"
+                      variant="default"
+                      disabled={selected.size === 0 || !allSelectedProposed}
+                      onClick={() => setConfirm({ kind: "validate", ids: [...selected] })}
+                    >
+                      <Check className="w-4 h-4" /> Valider en verified
+                    </Button>
+                  </span>
+                </TooltipTrigger>
+                {selected.size > 0 && !allSelectedProposed && (
+                  <TooltipContent>Action applicable uniquement aux propositions</TooltipContent>
+                )}
+              </Tooltip>
+            </TooltipProvider>
+            <Button
+              size="sm"
+              variant="destructive"
+              disabled={selected.size === 0 || !allSelectedProposed}
+              onClick={() => setConfirm({ kind: "reject", ids: [...selected] })}
+            >
+              <X className="w-4 h-4" /> Rejeter
+            </Button>
+            {selected.size > 0 && (
+              <Button size="sm" variant="ghost" onClick={() => setSelected(new Set())}>
+                Tout désélectionner
+              </Button>
+            )}
+          </div>
+        </Card>
+
         <Card className="overflow-hidden">
           <Table
             containerRef={tableScrollRef}
@@ -409,6 +603,7 @@ export default function AdminMatricePage() {
                   />
                 </TableHead>
                 <TableHead>Matrice</TableHead>
+                <TableHead className="w-[80px]">Aperçu</TableHead>
                 <TableHead>Catégorie</TableHead>
                 <TableHead className="w-[260px]">Archétype</TableHead>
 
@@ -420,7 +615,7 @@ export default function AdminMatricePage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filtered.slice(0, 200).map((m) => {
+              {filtered.map((m) => {
                 const st = states[m.id] ?? { status: "idle" as const };
                 const thumb = st.svg ?? st.validatedSvg;
                 return (
@@ -435,6 +630,15 @@ export default function AdminMatricePage() {
                       <div className="font-medium">{m.name}</div>
                       <div className="text-xs text-muted-foreground line-clamp-1">{m.usage}</div>
                     </TableCell>
+                    <TableCell>
+                      {(() => {
+                        const a = getArchetype(m);
+                        const title = a.canonical
+                          ? `${a.canonical} · ${(m.components ?? []).length} composants`
+                          : "Archétype non attribué";
+                        return <ArchetypeThumbnail archetype={a.canonical} status={a.status} title={title} />;
+                      })()}
+                    </TableCell>
                     <TableCell className="text-xs text-muted-foreground">{m.category}</TableCell>
                     <TableCell>
                       {(() => {
@@ -446,7 +650,14 @@ export default function AdminMatricePage() {
                           <div className="space-y-1">
                             <Select
                               value={a.canonical ?? "__none__"}
-                              onValueChange={(v) => saveArchetype(m.id, { canonical: v === "__none__" ? null : v })}
+                              onValueChange={(v) => {
+                                if (v === "__none__") {
+                                  saveArchetype(m.id, { canonical: null, alternatives: [], status: "unknown" });
+                                } else if (v !== a.canonical) {
+                                  // Édition manuelle explicite → verified
+                                  saveArchetype(m.id, { canonical: v, status: "verified" });
+                                }
+                              }}
                             >
                               <SelectTrigger className="h-7 text-xs"><SelectValue /></SelectTrigger>
                               <SelectContent className="max-h-72">
@@ -560,6 +771,17 @@ export default function AdminMatricePage() {
                             <Trash2 className="w-3 h-3" />
                           </Button>
                         )}
+                        {getArchetype(m).status === "proposed" && (
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            title="Rejeter cette proposition d'archétype"
+                            onClick={() => setConfirm({ kind: "reject", ids: [m.id] })}
+                            className="text-destructive hover:text-destructive"
+                          >
+                            <Trash2 className="w-3 h-3" /> Rejet
+                          </Button>
+                        )}
                       </div>
                     </TableCell>
                     <TableCell>
@@ -574,11 +796,6 @@ export default function AdminMatricePage() {
               })}
             </TableBody>
           </Table>
-          {filtered.length > 200 && (
-            <p className="p-3 text-xs text-muted-foreground text-center">
-              {filtered.length - 200} lignes supplémentaires masquées — affinez la recherche.
-            </p>
-          )}
         </Card>
       </div>
 
@@ -604,6 +821,37 @@ export default function AdminMatricePage() {
           )}
         </DialogContent>
       </Dialog>
+
+      <AlertDialog open={!!confirm} onOpenChange={(o) => !o && setConfirm(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {confirm?.kind === "validate"
+                ? `Valider ${confirm.ids.length} matrice(s) en verified ?`
+                : `Rejeter ${confirm?.ids.length ?? 0} proposition(s) ?`}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {confirm?.kind === "validate"
+                ? "Cette action conserve l'archétype attribué et change le statut en verified."
+                : "Les matrices repasseront en non attribuées (statut unknown, archétype effacé)."}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (!confirm) return;
+                if (confirm.kind === "validate") bulkValidate(confirm.ids);
+                else bulkReject(confirm.ids);
+                setConfirm(null);
+              }}
+            >
+              Confirmer
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
+
   );
 }
