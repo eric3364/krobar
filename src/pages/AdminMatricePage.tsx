@@ -25,6 +25,7 @@ import {
   getAllStates, getState, setState, subscribe, removeFromLibrary,
 } from "@/lib/matriceLibrary";
 
+type ArchetypeStatus = "verified" | "proposed" | "unknown";
 type Matrice = {
   id: string;
   category: string;
@@ -32,10 +33,30 @@ type Matrice = {
   usage: string;
   components?: string[];
   components_status?: "verified" | "to_verify";
+  archetype_canonical?: string | null;
+  archetype_alternatives?: string[];
+  archetype_status?: ArchetypeStatus;
 };
+
+export const ARCHETYPE_OPTIONS: string[] = [
+  "grid_2x2",
+  "linear_sequence_4",
+  "pyramid_levels_3", "pyramid_levels_4", "pyramid_levels_5", "pyramid_levels_6",
+  "cycle_3", "cycle_4", "cycle_5", "cycle_6", "cycle_7", "cycle_8",
+  "grouped_grid_3x3",
+  "hub_spokes_3", "hub_spokes_4", "hub_spokes_5", "hub_spokes_6",
+  "bmc_canvas", "cadia_canvas", "porter5_canvas",
+];
 
 const CATALOG = matricesData as Matrice[];
 const ALL_CATEGORIES = Array.from(new Set(CATALOG.map((m) => m.category)));
+
+type ArchetypeOverride = {
+  canonical: string | null;
+  alternatives: string[];
+  status: ArchetypeStatus;
+};
+
 
 export default function AdminMatricePage() {
   const [search, setSearch] = useState("");
