@@ -26,6 +26,7 @@ function skeletonSystemPrompt(archetype: string): string {
   }
   return `Tu es un illustrateur de gabarits SVG-KR. Tu produis UNIQUEMENT un fichier SVG valide, sans aucun texte autour, sans markdown, sans explication.
 
+
 CONVENTION SVG-KR v0.1 — OBLIGATOIRE.
 
 Racine SVG :
@@ -33,7 +34,7 @@ Racine SVG :
        xmlns:html="http://www.w3.org/1999/xhtml"
        xmlns:krobar="http://krobar.online/spec/v1"
        data-svg-kr-version="0.1"
-       viewBox="0 0 1536 1024"
+       viewBox="0 0 1024 768"
        font-family="Plus Jakarta Sans, system-ui, sans-serif">
 
 Bloc <metadata> obligatoire :
@@ -49,77 +50,85 @@ Bloc <metadata> obligatoire :
 
 Note : {{TEMPLATE_ID}} et {{MATRICE_ID}} sont des placeholders à laisser tels quels.
 
-STRUCTURE OBLIGATOIRE — un slot-group titre + 4 slot-groups quadrant + 4 canonical-label.
+COORDONNÉES IMPOSÉES (NE PAS DÉVIER) :
 
-Le slot titre :
-  <g class="slot-group" data-slot-key="title">
-    <rect class="slot-shape krobar-bbox-fill krobar-bbox-stroke"
-          data-shape="bbox_title_1"
-          x="60" y="30" width="1416" height="80"
-          fill="none" stroke="none" />
-    <foreignObject class="slot-label" x="60" y="30" width="1416" height="80">
-      <html:div xmlns="http://www.w3.org/1999/xhtml" class="slot-content"
-                style="font-size:48px;font-weight:700;color:#0f172a;line-height:1.1;text-align:center;">
-        {{title}}
-      </html:div>
-    </foreignObject>
-  </g>
+ViewBox : 0 0 1024 768 (ratio 4:3 paysage strict)
 
-Chaque quadrant (×4) — data-slot-key DOIT être "quadrant" (ou "quadrant_N"). Coordonnées indiquées ci-dessous :
-  <g class="slot-group" data-slot-key="quadrant">
+Slot titre :
+  - slot-shape data-shape="bbox_title_1" : x=40, y=20, width=944, height=60, fill=none, stroke=none
+  - foreignObject : x=40, y=20, width=944, height=60
+  - slot-content style : font-size:36px, font-weight:700, color:#0f172a, line-height:1.1, text-align:center
+
+Canonical-labels haut (×2) :
+  - canonical_1 (top-left)  : foreignObject x=40,  y=96, width=464, height=36
+  - canonical_2 (top-right) : foreignObject x=520, y=96, width=464, height=36
+  - canonical-label-content style : font-size:16px, font-weight:600, color:#0f172a, text-align:center
+
+Quadrants haut (×2) :
+  - quadrant_1 (top-left)  : slot-shape ET foreignObject x=40,  y=140, width=464, height=276
+  - quadrant_2 (top-right) : slot-shape ET foreignObject x=520, y=140, width=464, height=276
+  - slot-shape fill=#ffffff, stroke=#0f172a, stroke-width=1.5
+  - slot-content style : font-size:18px, line-height:1.35, color:#0f172a, padding:16px
+
+Canonical-labels bas (×2) :
+  - canonical_3 (bot-left)  : foreignObject x=40,  y=428, width=464, height=36
+  - canonical_4 (bot-right) : foreignObject x=520, y=428, width=464, height=36
+  - canonical-label-content style : font-size:16px, font-weight:600, color:#0f172a, text-align:center
+
+Quadrants bas (×2) :
+  - quadrant_3 (bot-left)  : slot-shape ET foreignObject x=40,  y=472, width=464, height=276
+  - quadrant_4 (bot-right) : slot-shape ET foreignObject x=520, y=472, width=464, height=276
+  - slot-shape fill=#ffffff, stroke=#0f172a, stroke-width=1.5
+  - slot-content style : font-size:18px, line-height:1.35, color:#0f172a, padding:16px
+
+STRUCTURE — pour chaque slot-group quadrant :
+  <g class="slot-group" data-slot-key="quadrant_N">
     <rect class="slot-shape krobar-bbox-fill krobar-bbox-stroke"
-          data-shape="bbox_quadrant_N"
-          x="..." y="..." width="..." height="..."
+          data-shape="bbox_quadrant_N" x="..." y="..." width="..." height="..."
           fill="#ffffff" stroke="#0f172a" stroke-width="1.5" />
     <foreignObject class="slot-label" x="..." y="..." width="..." height="...">
       <html:div xmlns="http://www.w3.org/1999/xhtml" class="slot-content"
-                style="font-size:24px;line-height:1.35;color:#0f172a;padding:20px;">
+                style="font-size:18px;line-height:1.35;color:#0f172a;padding:16px;">
         {{quadrant_N}}
       </html:div>
     </foreignObject>
   </g>
 
-Le canonical-label (×4) — à l'EXTÉRIEUR du quadrant, au-dessus :
+Pour chaque canonical-label :
   <g class="canonical-label" data-for-shape="bbox_quadrant_N">
-    <foreignObject x="..." y="..." width="..." height="50">
+    <foreignObject x="..." y="..." width="464" height="36">
       <html:div xmlns="http://www.w3.org/1999/xhtml" class="canonical-label-content"
-                style="font-size:18px;font-weight:600;color:#0f172a;text-align:center;">
+                style="font-size:16px;font-weight:600;color:#0f172a;text-align:center;">
         {{canonical_N}}
+      </html:div>
+    </foreignObject>
+  </g>
+
+Pour le titre :
+  <g class="slot-group" data-slot-key="title">
+    <rect class="slot-shape krobar-bbox-fill krobar-bbox-stroke"
+          data-shape="bbox_title_1" x="40" y="20" width="944" height="60"
+          fill="none" stroke="none" />
+    <foreignObject class="slot-label" x="40" y="20" width="944" height="60">
+      <html:div xmlns="http://www.w3.org/1999/xhtml" class="slot-content"
+                style="font-size:36px;font-weight:700;color:#0f172a;line-height:1.1;text-align:center;">
+        {{title}}
       </html:div>
     </foreignObject>
   </g>
 
 RÈGLES STRICTES :
 
-1. N va de 1 à 4. data-shape="bbox_quadrant_1" à "bbox_quadrant_4". Placeholders {{quadrant_1}} à {{quadrant_4}} et {{canonical_1}} à {{canonical_4}}. canonical-label[data-for-shape="bbox_quadrant_N"] correspondants.
-
-2. Disposition grille 2×2 :
-   - quadrant_1 = haut-gauche, quadrant_2 = haut-droite, quadrant_3 = bas-gauche, quadrant_4 = bas-droite.
-
-3. Coordonnées recommandées (viewBox 1536×1024) :
-   - Titre : x=60 y=30 w=1416 h=80.
-   - Bande canonical-label haut : y=140 h=50 (quadrants 1, 2).
-   - Quadrants haut : y=200 h=370. Quadrants bas : y=620 h=370.
-   - Quadrant gauche : x=60 w=698. Quadrant droite : x=778 w=698. (espacement 20px de chaque côté = 40px total).
-   - Bande canonical-label bas : y=560 h=50 (quadrants 3, 4).
-   - canonical-label : x = x du quadrant, w = w du quadrant, centré.
-
-4. foreignObject de chaque quadrant : occupe l'intérieur du rectangle, padding 20px via style CSS. Hauteur ≥ 110, largeur ≥ 200.
-
-5. Palette B&W STRICTE. Valeurs hex autorisées UNIQUEMENT :
-   #ffffff, #0f172a, #000000, #f1f5f9, #e2e8f0, #cbd5e1, #94a3b8, #64748b.
-   AUCUNE var(--primary/--accent), aucun gradient, aucun mot "blue/red/green/yellow/orange/purple/gradient".
-
-6. Pas de <text> ni <tspan> SVG. Tout texte est dans <foreignObject><html:div>.
-
-7. Aucun libellé canonique en dur — uniquement les placeholders {{...}}. C'est un SQUELETTE générique.
-
-8. Aucune étiquette de catégorie, aucun sous-titre, aucune mention de famille.
-
-9. Décoration éventuelle (séparateurs) dans <g class="krobar-decoration">, sans interactivité.
+1. N va de 1 à 4. Placeholders {{quadrant_1..4}}, {{canonical_1..4}}, {{title}}, {{TEMPLATE_ID}}, {{MATRICE_ID}}.
+2. Palette B&W STRICTE. Hex autorisés UNIQUEMENT : #ffffff, #0f172a, #000000, #f1f5f9, #e2e8f0, #cbd5e1, #94a3b8, #64748b. Aucun var(--*), aucun gradient, aucun mot blue/red/green/yellow/orange/purple/gradient.
+3. Pas de <text> ni <tspan> SVG. Tout texte via <foreignObject><html:div>.
+4. Aucun libellé canonique en dur — uniquement les placeholders.
+5. Respecte EXACTEMENT les coordonnées imposées ci-dessus. NE DÉVIE PAS d'un seul pixel.
 
 Réponds avec le code SVG uniquement.`;
 }
+
+
 
 // ============================================================
 // AUDIT — 8 checks
@@ -146,7 +155,8 @@ function audit(svg: string, archetype: string): CheckResult[] {
       ['xmlns:html="http://www.w3.org/1999/xhtml"', root.includes('xmlns:html="http://www.w3.org/1999/xhtml"')],
       ['xmlns:krobar="http://krobar.online/spec/v1"', root.includes('xmlns:krobar="http://krobar.online/spec/v1"')],
       ['data-svg-kr-version="0.1"', root.includes('data-svg-kr-version="0.1"')],
-      ['viewBox="0 0 1536 1024"', root.includes('viewBox="0 0 1536 1024"')],
+      ['viewBox present', /viewBox="[^"]+"/.test(root)],
+
     ] as const;
     const missing = checks.filter(([, ok]) => !ok).map(([n]) => n);
     push(1, "Racine SVG valide", missing.length === 0, missing.length ? `Manquant: ${missing.join(", ")}` : undefined);
@@ -274,7 +284,6 @@ function audit(svg: string, archetype: string): CheckResult[] {
     const uniq = Array.from(new Set(reasons));
     push(7, "Palette B&W stricte", uniq.length === 0, uniq.slice(0, 5).join(" · ") || undefined);
   }
-
   // Check 8 — Pas de <text> natif
   {
     const reasons: string[] = [];
@@ -283,8 +292,80 @@ function audit(svg: string, archetype: string): CheckResult[] {
     push(8, "Pas de <text> natif SVG", reasons.length === 0, reasons.join(" · ") || undefined);
   }
 
+  // Check 9 — ViewBox 4:3 strict
+  {
+    const root = svg.match(/<svg\b[^>]*>/i)?.[0] ?? "";
+    const m = root.match(/viewBox="([^"]+)"/);
+    const got = m?.[1] ?? "(absent)";
+    const ok = got === "0 0 1024 768";
+    push(9, "ViewBox 4:3 strict", ok, ok ? undefined : `Trouvé viewBox='${got}', attendu '0 0 1024 768'`);
+  }
+
+  // Check 10 — Non-chevauchement géométrique
+  {
+    type Rect = { id: string; x: number; y: number; w: number; h: number };
+    const overlap = (a: Rect, b: Rect) =>
+      a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
+
+    const slotShapes: Rect[] = [];
+    const rectRe = /<rect\b([^>]*)\/?>/g;
+    let rm: RegExpExecArray | null;
+    while ((rm = rectRe.exec(svg)) !== null) {
+      const attrs = rm[1];
+      if (!/\bclass="[^"]*\bslot-shape\b/.test(attrs)) continue;
+      const ds = attrs.match(/data-shape="([^"]+)"/)?.[1];
+      const x = parseFloat(attrs.match(/\bx="([^"]+)"/)?.[1] ?? "NaN");
+      const y = parseFloat(attrs.match(/\by="([^"]+)"/)?.[1] ?? "NaN");
+      const w = parseFloat(attrs.match(/\bwidth="([^"]+)"/)?.[1] ?? "NaN");
+      const h = parseFloat(attrs.match(/\bheight="([^"]+)"/)?.[1] ?? "NaN");
+      if (ds && [x, y, w, h].every((n) => !isNaN(n))) slotShapes.push({ id: ds, x, y, w, h });
+    }
+
+    const canonicalRects: Array<Rect & { forShape: string }> = [];
+    const canonGroupRe = /<g\b[^>]*class="canonical-label"[^>]*data-for-shape="([^"]+)"[^>]*>([\s\S]*?)<\/g>/g;
+    let cgm: RegExpExecArray | null;
+    while ((cgm = canonGroupRe.exec(svg)) !== null) {
+      const forShape = cgm[1];
+      const inner = cgm[2];
+      const fo = inner.match(/<foreignObject\b([^>]*)>/);
+      if (!fo) continue;
+      const attrs = fo[1];
+      const x = parseFloat(attrs.match(/\bx="([^"]+)"/)?.[1] ?? "NaN");
+      const y = parseFloat(attrs.match(/\by="([^"]+)"/)?.[1] ?? "NaN");
+      const w = parseFloat(attrs.match(/\bwidth="([^"]+)"/)?.[1] ?? "NaN");
+      const h = parseFloat(attrs.match(/\bheight="([^"]+)"/)?.[1] ?? "NaN");
+      if ([x, y, w, h].every((n) => !isNaN(n))) {
+        canonicalRects.push({ id: `canonical(${forShape})`, forShape, x, y, w, h });
+      }
+    }
+
+    const reasons: string[] = [];
+    for (let i = 0; i < slotShapes.length; i++) {
+      for (let j = i + 1; j < slotShapes.length; j++) {
+        const a = slotShapes[i], b = slotShapes[j];
+        // Title bbox has fill=none — but still must not overlap quadrants geometrically.
+        if (overlap(a, b)) {
+          reasons.push(`slot-shape ${a.id} (x=${a.x},y=${a.y},w=${a.w},h=${a.h}) chevauche slot-shape ${b.id} (x=${b.x},y=${b.y},w=${b.w},h=${b.h})`);
+        }
+      }
+    }
+    for (const c of canonicalRects) {
+      for (const s of slotShapes) {
+        if (s.id === c.forShape) continue;
+        if (overlap(c, s)) {
+          reasons.push(`canonical-label data-for-shape='${c.forShape}' (y=${c.y},h=${c.h}) chevauche slot-shape '${s.id}' (y=${s.y},h=${s.h})`);
+        }
+      }
+    }
+    push(10, "Non-chevauchement géométrique", reasons.length === 0, reasons.slice(0, 5).join(" · ") || undefined);
+  }
+
   return results;
 }
+
+
+
+
 
 // ============================================================
 // LEGACY MODE prompt (kept for backward compat with current UI)
@@ -384,10 +465,11 @@ Deno.serve(async (req) => {
       const results = audit(svg, archetype);
       const passed = results.filter((r) => r.ok).length;
       const failed = results.filter((r) => !r.ok);
-      console.log(`[generate-matrix-svg] audit ${archetype}: ${passed}/8 passed, failed: [${failed.map((f) => f.id).join(", ")}]`);
+      console.log(`[generate-matrix-svg] audit ${archetype}: ${passed}/10 passed, failed: [${failed.map((f) => f.id).join(", ")}]`);
       if (failed.length === 0) {
         return new Response(JSON.stringify({
-          status: "valid", checks_passed: 8, checks_failed: 0, svg,
+          status: "valid", checks_passed: 10, checks_failed: 0, svg,
+
         }), {
           status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
