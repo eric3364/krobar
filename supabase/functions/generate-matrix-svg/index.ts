@@ -294,7 +294,6 @@ function audit(svg: string, archetype: string): CheckResult[] {
     const uniq = Array.from(new Set(reasons));
     push(7, "Palette B&W stricte", uniq.length === 0, uniq.slice(0, 5).join(" · ") || undefined);
   }
-
   // Check 8 — Pas de <text> natif
   {
     const reasons: string[] = [];
@@ -303,7 +302,77 @@ function audit(svg: string, archetype: string): CheckResult[] {
     push(8, "Pas de <text> natif SVG", reasons.length === 0, reasons.join(" · ") || undefined);
   }
 
+  // Check 9 — ViewBox 4:3 strict
+  {
+    const root = svg.match(/<svg\b[^>]*>/i)?.[0] ?? "";
+    const m = root.match(/viewBox="([^"]+)"/);
+    const got = m?.[1] ?? "(absent)";
+    const ok = got === "0 0 1024 768";
+    push(9, "ViewBox 4:3 strict", ok, ok ? undefined : `Trouvé viewBox='${got}', attendu '0 0 1024 768'`);
+  }
+
+  // Check 10 — Non-chevauchement géométrique
+  {
+    type Rect = { id: string; x: number; y: number; w: number; h: number };
+    const overlap = (a: Rect, b: Rect) =>
+      a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
+
+    const slotShapes: Rect[] = [];
+    const rectRe = /<rect\b([^>]*)\/?>/g;
+    let rm: RegExpExecArray | null;
+    while ((rm = rectRe.exec(svg)) !== null) {
+      const attrs = rm[1];
+      if (!/\bclass="[^"]*\bslot-shape\b/.test(attrs)) continue;
+      const ds = attrs.match(/data-shape="([^"]+)"/)?.[1];
+      const x = parseFloat(attrs.match(/\bx="([^"]+)"/)?.[1] ?? "NaN");
+      const y = parseFloat(attrs.match(/\by="([^"]+)"/)?.[1] ?? "NaN");
+      const w = parseFloat(attrs.match(/\bwidth="([^"]+)"/)?.[1] ?? "NaN");
+      const h = parseFloat(attrs.match(/\bheight="([^"]+)"/)?.[1] ?? "NaN");
+      if (ds && [x, y, w, h].every((n) => !isNaN(n))) slotShapes.push({ id: ds, x, y, w, h });
+    }
+
+    const canonicalRects: Array<Rect & { forShape: string }> = [];
+    const canonGroupRe = /<g\b[^>]*class="canonical-label"[^>]*data-for-shape="([^"]+)"[^>]*>([\s\S]*?)<\/g>/g;
+    let cgm: RegExpExecArray | null;
+    while ((cgm = canonGroupRe.exec(svg)) !== null) {
+      const forShape = cgm[1];
+      const inner = cgm[2];
+      const fo = inner.match(/<foreignObject\b([^>]*)>/);
+      if (!fo) continue;
+      const attrs = fo[1];
+      const x = parseFloat(attrs.match(/\bx="([^"]+)"/)?.[1] ?? "NaN");
+      const y = parseFloat(attrs.match(/\by="([^"]+)"/)?.[1] ?? "NaN");
+      const w = parseFloat(attrs.match(/\bwidth="([^"]+)"/)?.[1] ?? "NaN");
+      const h = parseFloat(attrs.match(/\bheight="([^"]+)"/)?.[1] ?? "NaN");
+      if ([x, y, w, h].every((n) => !isNaN(n))) {
+        canonicalRects.push({ id: `canonical(${forShape})`, forShape, x, y, w, h });
+      }
+    }
+
+    const reasons: string[] = [];
+    for (let i = 0; i < slotShapes.length; i++) {
+      for (let j = i + 1; j < slotShapes.length; j++) {
+        const a = slotShapes[i], b = slotShapes[j];
+        // Title bbox has fill=none — but still must not overlap quadrants geometrically.
+        if (overlap(a, b)) {
+          reasons.push(`slot-shape ${a.id} (x=${a.x},y=${a.y},w=${a.w},h=${a.h}) chevauche slot-shape ${b.id} (x=${b.x},y=${b.y},w=${b.w},h=${b.h})`);
+        }
+      }
+    }
+    for (const c of canonicalRects) {
+      for (const s of slotShapes) {
+        if (s.id === c.forShape) continue;
+        if (overlap(c, s)) {
+          reasons.push(`canonical-label data-for-shape='${c.forShape}' (y=${c.y},h=${c.h}) chevauche slot-shape '${s.id}' (y=${s.y},h=${s.h})`);
+        }
+      }
+    }
+    push(10, "Non-chevauchement géométrique", reasons.length === 0, reasons.slice(0, 5).join(" · ") || undefined);
+  }
+
   return results;
+}
+
 }
 
 // ============================================================
