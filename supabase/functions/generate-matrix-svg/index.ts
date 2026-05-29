@@ -235,11 +235,115 @@ RÈGLES STRICTES :
 Réponds avec le code SVG uniquement.`;
 }
 
+function trianglePrompt(): string {
+  return `Tu es un générateur de squelettes SVG-KR v0.1 (matrices Krobar).
+Réponds UNIQUEMENT avec le code SVG, sans markdown, sans commentaire.
+
+CONVENTION SVG-KR v0.1 — OBLIGATOIRE.
+
+Racine SVG :
+  <svg xmlns="http://www.w3.org/2000/svg"
+       xmlns:html="http://www.w3.org/1999/xhtml"
+       xmlns:krobar="http://krobar.online/spec/v1"
+       data-svg-kr-version="0.1"
+       viewBox="0 0 1024 768"
+       font-family="Plus Jakarta Sans, system-ui, sans-serif">
+
+Bloc <metadata> obligatoire :
+  <metadata>
+    <krobar:krobar-meta>
+      <krobar:id>{{TEMPLATE_ID}}</krobar:id>
+      <krobar:tier>canonical-matrix</krobar:tier>
+      <krobar:archetype>triangle_3</krobar:archetype>
+      <krobar:matrice-id>{{MATRICE_ID}}</krobar:matrice-id>
+      <krobar:components-count>3</krobar:components-count>
+    </krobar:krobar-meta>
+  </metadata>
+
+COORDONNÉES IMPOSÉES (NE PAS DÉVIER) :
+
+ViewBox : 0 0 1024 768 (ratio 4:3 paysage strict)
+
+Slot titre :
+  - slot-shape data-shape="bbox_title_1" : x=40, y=20, width=944, height=60, fill=none, stroke=none
+  - foreignObject : x=40, y=20, width=944, height=60
+  - slot-content style : font-size:36px, font-weight:700, color:#0f172a, line-height:1.1, text-align:center
+
+Niveau 3 (APEX, en haut, le plus étroit) :
+  - canonical_3 : foreignObject x=332, y=112, width=360, height=36
+  - level_3 (data-shape="bbox_level_3") : slot-shape ET foreignObject x=332, y=156, width=360, height=162
+
+Niveau 2 (MILIEU) :
+  - canonical_2 : foreignObject x=242, y=326, width=540, height=36
+  - level_2 (data-shape="bbox_level_2") : slot-shape ET foreignObject x=242, y=370, width=540, height=162
+
+Niveau 1 (BASE, en bas, le plus large) :
+  - canonical_1 : foreignObject x=152, y=540, width=720, height=36
+  - level_1 (data-shape="bbox_level_1") : slot-shape ET foreignObject x=152, y=584, width=720, height=162
+
+Styles communs aux 3 niveaux :
+  - canonical-label-content style : font-size:16px, font-weight:600, color:#0f172a, text-align:center
+  - slot-shape fill=#ffffff, stroke=#0f172a, stroke-width=1.5
+  - slot-content style : font-size:18px;line-height:1.35;color:#0f172a;padding:24px;display:flex;flex-direction:column;justify-content:center;height:100%;box-sizing:border-box;
+
+Décoration pyramidale optionnelle (recommandée), dans <g class="krobar-decoration"> :
+  - 2 lignes diagonales reliant coin extérieur bas de level_1 au coin extérieur haut de level_3 :
+    <line x1="152" y1="746" x2="332" y2="156" stroke="#0f172a" stroke-width="1" opacity="0.4" />
+    <line x1="872" y1="746" x2="692" y2="156" stroke="#0f172a" stroke-width="1" opacity="0.4" />
+
+STRUCTURE — pour chaque slot-group level (CONVENTION STRICTE : data-slot-key="level", PAS "level_N") :
+  <g class="slot-group" data-slot-key="level">
+    <rect class="slot-shape krobar-bbox-fill krobar-bbox-stroke"
+          data-shape="bbox_level_N" x="..." y="..." width="..." height="..."
+          fill="#ffffff" stroke="#0f172a" stroke-width="1.5" />
+    <foreignObject class="slot-label" x="..." y="..." width="..." height="...">
+      <html:div xmlns="http://www.w3.org/1999/xhtml" class="slot-content"
+                style="font-size:18px;line-height:1.35;color:#0f172a;padding:24px;display:flex;flex-direction:column;justify-content:center;height:100%;box-sizing:border-box;">
+        {{level_N}}
+      </html:div>
+    </foreignObject>
+  </g>
+
+Pour chaque canonical-label :
+  <g class="canonical-label" data-for-shape="bbox_level_N">
+    <foreignObject x="..." y="..." width="..." height="36">
+      <html:div xmlns="http://www.w3.org/1999/xhtml" class="canonical-label-content"
+                style="font-size:16px;font-weight:600;color:#0f172a;text-align:center;">
+        {{canonical_N}}
+      </html:div>
+    </foreignObject>
+  </g>
+
+Pour le titre :
+  <g class="slot-group" data-slot-key="title">
+    <rect class="slot-shape krobar-bbox-fill krobar-bbox-stroke"
+          data-shape="bbox_title_1" x="40" y="20" width="944" height="60" fill="none" stroke="none" />
+    <foreignObject class="slot-label" x="40" y="20" width="944" height="60">
+      <html:div xmlns="http://www.w3.org/1999/xhtml" class="slot-content"
+                style="font-size:36px;font-weight:700;color:#0f172a;line-height:1.1;text-align:center;">
+        {{title}}
+      </html:div>
+    </foreignObject>
+  </g>
+
+RÈGLES STRICTES :
+1. N va de 1 à 3. Placeholders {{level_1..3}}, {{canonical_1..3}}, {{title}}, {{TEMPLATE_ID}}, {{MATRICE_ID}}.
+2. Palette B&W STRICTE. Hex autorisés UNIQUEMENT : #ffffff, #0f172a, #000000, #f1f5f9, #e2e8f0, #cbd5e1, #94a3b8, #64748b.
+3. Pas de <text> ni <tspan>. Tout texte via <foreignObject><html:div>.
+4. Padding 24px sur slot-content des 3 niveaux (règle universelle ≥ 1.2 × font-size).
+5. data-slot-key="level" pour les 3 slot-groups niveaux (PAS "level_1/2/3"). Distinction par data-shape="bbox_level_N".
+6. Respecte EXACTEMENT les coordonnées.
+
+Réponds avec le code SVG uniquement.`;
+}
+
 function skeletonSystemPrompt(archetype: string): string {
   if (archetype === "grid_2x2") return gridPrompt();
   if (archetype === "linear_sequence_4") return linearSequence4Prompt();
+  if (archetype === "triangle_3") return trianglePrompt();
   throw new Error(`Archetype non supporté: ${archetype}. Supportés: ${Object.keys(ARCHETYPES).join(", ")}`);
 }
+
 
 // ============================================================
 // AUDIT — 11 checks (archetype-aware)
