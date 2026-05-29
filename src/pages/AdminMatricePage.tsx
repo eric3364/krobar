@@ -20,6 +20,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2, Sparkles, Check, X, ZoomIn, Trash2 } from "lucide-react";
 import KrobarSvg from "@/components/KrobarSvg";
+import { Download } from "lucide-react";
 import {
   getAllStates, getState, setState, subscribe, removeFromLibrary,
 } from "@/lib/matriceLibrary";
@@ -171,6 +172,41 @@ export default function AdminMatricePage() {
     });
   };
 
+  const [exporting, setExporting] = useState(false);
+  const runExport = async () => {
+    setExporting(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("matrice-export", {
+        body: { matrices: CATALOG },
+      });
+      if (error) throw new Error(error.message);
+      const { filename, audit, entries } = data as {
+        filename: string;
+        audit: Record<string, unknown>;
+        entries: unknown[];
+      };
+      // Trigger download (entries-only payload, sorted by id).
+      const blob = new Blob([JSON.stringify(entries, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = filename; a.click();
+      URL.revokeObjectURL(url);
+      // eslint-disable-next-line no-console
+      console.log("[matrice-export] audit", audit);
+      const fc = (audit as any).flag_counts ?? {};
+      const issues: string[] = [];
+      if (!(audit as any).cardinality_ok) issues.push(`cardinalité ${(audit as any).total_entries}/312`);
+      if (!(audit as any).cross_integrity_ok) issues.push("intégrité croisée KO");
+      if (!(audit as any).ready_ratio_in_expected_range) issues.push(`ratio ready inhabituel`);
+      if (issues.length) toast.warning(`Export livré avec alertes : ${issues.join(" · ")} (voir console)`);
+      else toast.success(`Export OK — ${fc.is_matcher_ready_true} ready / ${fc.is_matcher_ready_false} non ready`);
+    } catch (e) {
+      toast.error(`Export : ${(e as Error).message}`);
+    } finally {
+      setExporting(false);
+    }
+  };
+
   const zoomMatrice = zoomId ? CATALOG.find((m) => m.id === zoomId) : null;
   const zoomSvg = zoomId ? (states[zoomId]?.svg ?? states[zoomId]?.validatedSvg) : null;
 
@@ -209,6 +245,10 @@ export default function AdminMatricePage() {
             </SelectContent>
           </Select>
           <div className="ml-auto flex items-center gap-2">
+            <Button size="sm" variant="outline" onClick={runExport} disabled={exporting}>
+              {exporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+              Export Matcher
+            </Button>
             <span className="text-sm text-muted-foreground">{selected.size} sélectionnée(s)</span>
             {batchRunning ? (
               <Button variant="destructive" size="sm" onClick={() => { cancelRef.current = true; }}>
