@@ -282,6 +282,12 @@ export default function ArchetypeThumbnail({ archetype, status, title, className
   if (archetype === "linear_sequence_grid_7") return wrap(linearGrid(4, 3), label, className);
   if (archetype === "linear_sequence_grid_8") return wrap(linearGrid(4, 4), label, className);
 
+  const funMatch = /^funnel_horizontal_(\d)$/.exec(archetype);
+  if (funMatch) return wrap(funnelHorizontal(parseInt(funMatch[1], 10)), label, className);
+
+  const fishMatch = /^fishbone_(\d)$/.exec(archetype);
+  if (fishMatch) return wrap(fishbone(parseInt(fishMatch[1], 10)), label, className);
+
   const pyMatch = /^pyramid_levels_(\d)$/.exec(archetype);
   if (pyMatch) return wrap(pyramid(parseInt(pyMatch[1], 10)), label, className);
 
