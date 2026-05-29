@@ -65,7 +65,7 @@ Le slot titre :
     </foreignObject>
   </g>
 
-Chaque quadrant (×4) — utiliser les coordonnées indiquées ci-dessous :
+Chaque quadrant (×4) — data-slot-key DOIT être "quadrant" (ou "quadrant_N"). Coordonnées indiquées ci-dessous :
   <g class="slot-group" data-slot-key="quadrant">
     <rect class="slot-shape krobar-bbox-fill krobar-bbox-stroke"
           data-shape="bbox_quadrant_N"
