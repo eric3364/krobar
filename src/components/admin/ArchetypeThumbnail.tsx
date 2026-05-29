@@ -213,6 +213,51 @@ function porter5() {
   return <>{elems}</>;
 }
 
+function funnelHorizontal(n: number) {
+  const xL = 4, xR = 76;
+  const topL = 6, botL = 54, topR = 24, botR = 36;
+  const poly = `${xL},${topL} ${xR},${topR} ${xR},${botR} ${xL},${botL}`;
+  const divs: React.ReactNode[] = [];
+  for (let i = 1; i < n; i++) {
+    const t = i / n;
+    const x = xL + (xR - xL) * t;
+    const yt = topL + (topR - topL) * t;
+    const yb = botL + (botR - botL) * t;
+    divs.push(<line key={i} x1={x} y1={yt} x2={x} y2={yb} stroke={STROKE} strokeWidth={0.8} opacity={0.6} />);
+  }
+  return (
+    <>
+      <polygon points={poly} fill="none" stroke={STROKE} strokeWidth={SW} />
+      {divs}
+    </>
+  );
+}
+
+function fishbone(n: number) {
+  const top = Math.ceil(n / 2);
+  const bot = n - top;
+  const elems: React.ReactNode[] = [];
+  elems.push(<line key="ax" x1={6} y1={30} x2={60} y2={30} stroke={STROKE} strokeWidth={1.5} />);
+  elems.push(<polygon key="tip" points="60,30 55,26 55,34" fill={STROKE} />);
+  elems.push(<rect key="head" x={60} y={22} width={16} height={16} rx={2} fill={STROKE} />);
+  function anchors(count: number): number[] {
+    if (count <= 0) return [];
+    if (count === 1) return [30];
+    const arr: number[] = [];
+    for (let i = 0; i < count; i++) arr.push(12 + ((48 - 12) * i) / (count - 1));
+    return arr;
+  }
+  anchors(top).forEach((ax, i) =>
+    elems.push(<line key={`t${i}`} x1={ax} y1={30} x2={ax - 10} y2={14} stroke={STROKE} strokeWidth={1} opacity={0.7} />)
+  );
+  anchors(bot).forEach((ax, i) =>
+    elems.push(<line key={`b${i}`} x1={ax} y1={30} x2={ax - 10} y2={46} stroke={STROKE} strokeWidth={1} opacity={0.7} />)
+  );
+  return <>{elems}</>;
+}
+
+
+
 export default function ArchetypeThumbnail({ archetype, status, title, className }: Props) {
   const label = title ?? (archetype ?? "Archétype non attribué");
 
@@ -236,6 +281,12 @@ export default function ArchetypeThumbnail({ archetype, status, title, className
 
   if (archetype === "linear_sequence_grid_7") return wrap(linearGrid(4, 3), label, className);
   if (archetype === "linear_sequence_grid_8") return wrap(linearGrid(4, 4), label, className);
+
+  const funMatch = /^funnel_horizontal_(\d)$/.exec(archetype);
+  if (funMatch) return wrap(funnelHorizontal(parseInt(funMatch[1], 10)), label, className);
+
+  const fishMatch = /^fishbone_(\d)$/.exec(archetype);
+  if (fishMatch) return wrap(fishbone(parseInt(fishMatch[1], 10)), label, className);
 
   const pyMatch = /^pyramid_levels_(\d)$/.exec(archetype);
   if (pyMatch) return wrap(pyramid(parseInt(pyMatch[1], 10)), label, className);
