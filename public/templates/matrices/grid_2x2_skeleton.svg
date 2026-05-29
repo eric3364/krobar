@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:html="http://www.w3.org/1999/xhtml"
+     xmlns:krobar="http://krobar.online/spec/v1"
+     data-svg-kr-version="0.1"
+     viewBox="0 0 1536 1024"
+     font-family="Plus Jakarta Sans, system-ui, sans-serif">
+  <metadata>
+    <krobar:krobar-meta>
+      <krobar:id>{{TEMPLATE_ID}}</krobar:id>
+      <krobar:tier>canonical-matrix</krobar:tier>
+      <krobar:archetype>grid_2x2</krobar:archetype>
+      <krobar:matrice-id>{{MATRICE_ID}}</krobar:matrice-id>
+      <krobar:components-count>4</krobar:components-count>
+    </krobar:krobar-meta>
+  </metadata>
+
+  <!-- Title Slot -->
+  <g class="slot-group" data-slot-key="title">
+    <rect class="slot-shape krobar-bbox-fill krobar-bbox-stroke"
+          data-shape="bbox_title_1"
+          x="60" y="30" width="1416" height="80"
+          fill="none" stroke="none" />
+    <foreignObject class="slot-label" x="60" y="30" width="1416" height="80">
+      <html:div xmlns="http://www.w3.org/1999/xhtml" class="slot-content"
+                style="font-size:48px;font-weight:700;color:#0f172a;line-height:1.1;text-align:center;">
+        {{title}}
+      </html:div>
+    </foreignObject>
+  </g>
+
+  <!-- Canonical Label 1 (Top-Left) -->
+  <g class="canonical-label" data-for-shape="bbox_quadrant_1">
+    <foreignObject x="60" y="140" width="698" height="50">
+      <html:div xmlns="http://www.w3.org/1999/xhtml" class="canonical-label-content"
+                style="font-size:18px;font-weight:600;color:#0f172a;text-align:center;">
+        {{canonical_1}}
+      </html:div>
+    </foreignObject>
+  </g>
+  <!-- Quadrant 1 (Top-Left) -->
+  <g class="slot-group" data-slot-key="quadrant">
+    <rect class="slot-shape krobar-bbox-fill krobar-bbox-stroke"
+          data-shape="bbox_quadrant_1"
+          x="60" y="200" width="698" height="370"
+          fill="#ffffff" stroke="#0f172a" stroke-width="1.5" />
+    <foreignObject class="slot-label" x="60" y="200" width="698" height="370">
+      <html:div xmlns="http://www.w3.org/1999/xhtml" class="slot-content"
+                style="font-size:24px;line-height:1.35;color:#0f172a;padding:20px;">
+        {{quadrant_1}}
+      </html:div>
+    </foreignObject>
+  </g>
+
+  <!-- Canonical Label 2 (Top-Right) -->
+  <g class="canonical-label" data-for-shape="bbox_quadrant_2">
+    <foreignObject x="778" y="140" width="698" height="50">
+      <html:div xmlns="http://www.w3.org/1999/xhtml" class="canonical-label-content"
+                style="font-size:18px;font-weight:600;color:#0f172a;text-align:center;">
+        {{canonical_2}}
+      </html:div>
+    </foreignObject>
+  </g>
+  <!-- Quadrant 2 (Top-Right) -->
+  <g class="slot-group" data-slot-key="quadrant">
+    <rect class="slot-shape krobar-bbox-fill krobar-bbox-stroke"
+          data-shape="bbox_quadrant_2"
+          x="778" y="200" width="698" height="370"
+          fill="#ffffff" stroke="#0f172a" stroke-width="1.5" />
+    <foreignObject class="slot-label" x="778" y="200" width="698" height="370">
+      <html:div xmlns="http://www.w3.org/1999/xhtml" class="slot-content"
+                style="font-size:24px;line-height:1.35;color:#0f172a;padding:20px;">
+        {{quadrant_2}}
+      </html:div>
+    </foreignObject>
+  </g>
+
+  <!-- Canonical Label 3 (Bottom-Left) -->
+  <g class="canonical-label" data-for-shape="bbox_quadrant_3">
+    <foreignObject x="60" y="560" width="698" height="50">
+      <html:div xmlns="http://www.w3.org/1999/xhtml" class="canonical-label-content"
+                style="font-size:18px;font-weight:600;color:#0f172a;text-align:center;">
+        {{canonical_3}}
+      </html:div>
+    </foreignObject>
+  </g>
+  <!-- Quadrant 3 (Bottom-Left) -->
+  <g class="slot-group" data-slot-key="quadrant">
+    <rect class="slot-shape krobar-bbox-fill krobar-bbox-stroke"
+          data-shape="bbox_quadrant_3"
+          x="60" y="620" width="698" height="370"
+          fill="#ffffff" stroke="#0f172a" stroke-width="1.5" />
+    <foreignObject class="slot-label" x="60" y="620" width="698" height="370">
+      <html:div xmlns="http://www.w3.org/1999/xhtml" class="slot-content"
+                style="font-size:24px;line-height:1.35;color:#0f172a;padding:20px;">
+        {{quadrant_3}}
+      </html:div>
+    </foreignObject>
+  </g>
+
+  <!-- Canonical Label 4 (Bottom-Right) -->
+  <g class="canonical-label" data-for-shape="bbox_quadrant_4">
+    <foreignObject x="778" y="560" width="698" height="50">
+      <html:div xmlns="http://www.w3.org/1999/xhtml" class="canonical-label-content"
+                style="font-size:18px;font-weight:600;color:#0f172a;text-align:center;">
+        {{canonical_4}}
+      </html:div>
+    </foreignObject>
+  </g>
+  <!-- Quadrant 4 (Bottom-Right) -->
+  <g class="slot-group" data-slot-key="quadrant">
+    <rect class="slot-shape krobar-bbox-fill krobar-bbox-stroke"
+          data-shape="bbox_quadrant_4"
+          x="778" y="620" width="698" height="370"
+          fill="#ffffff" stroke="#0f172a" stroke-width="1.5" />
+    <foreignObject class="slot-label" x="778" y="620" width="698" height="370">
+      <html:div xmlns="http://www.w3.org/1999/xhtml" class="slot-content"
+                style="font-size:24px;line-height:1.35;color:#0f172a;padding:20px;">
+        {{quadrant_4}}
+      </html:div>
+    </foreignObject>
+  </g>
+</svg>
