@@ -360,6 +360,7 @@ function audit(svg: string, archetype: string): CheckResult[] {
 
   return results;
 }
+}
 
 
 
