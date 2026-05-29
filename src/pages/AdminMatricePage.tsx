@@ -436,6 +436,56 @@ export default function AdminMatricePage() {
                     </TableCell>
                     <TableCell className="text-xs text-muted-foreground">{m.category}</TableCell>
                     <TableCell>
+                      {(() => {
+                        const a = getArchetype(m);
+                        const statusColor =
+                          a.status === "verified" ? "default" :
+                          a.status === "proposed" ? "secondary" : "outline";
+                        return (
+                          <div className="space-y-1">
+                            <Select
+                              value={a.canonical ?? "__none__"}
+                              onValueChange={(v) => saveArchetype(m.id, { canonical: v === "__none__" ? null : v })}
+                            >
+                              <SelectTrigger className="h-7 text-xs"><SelectValue /></SelectTrigger>
+                              <SelectContent className="max-h-72">
+                                <SelectItem value="__none__">— non attribué —</SelectItem>
+                                {ARCHETYPE_OPTIONS.map((o) => (
+                                  <SelectItem key={o} value={o}>{o}</SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <div className="flex items-center gap-1">
+                              <Select
+                                value={a.status}
+                                onValueChange={(v) => saveArchetype(m.id, { status: v as ArchetypeStatus })}
+                              >
+                                <SelectTrigger className="h-6 text-[10px] w-[110px]"><SelectValue /></SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="verified">verified</SelectItem>
+                                  <SelectItem value="proposed">proposed</SelectItem>
+                                  <SelectItem value="unknown">unknown</SelectItem>
+                                </SelectContent>
+                              </Select>
+                              <Badge variant={statusColor as any} className="text-[10px]">{a.status}</Badge>
+                            </div>
+                            <Input
+                              placeholder="alt1, alt2…"
+                              defaultValue={a.alternatives.join(", ")}
+                              onBlur={(e) => {
+                                const list = e.target.value.split(",").map((s) => s.trim()).filter(Boolean);
+                                const invalid = list.filter((x) => !ARCHETYPE_OPTIONS.includes(x));
+                                if (invalid.length) { toast.error(`Archétypes invalides : ${invalid.join(", ")}`); return; }
+                                saveArchetype(m.id, { alternatives: list });
+                              }}
+                              className="h-6 text-[10px]"
+                            />
+                          </div>
+                        );
+                      })()}
+                    </TableCell>
+
+                    <TableCell>
                       <Textarea
                         rows={2}
                         placeholder="Indications de style, composition…"
