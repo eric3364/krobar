@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:html="http://www.w3.org/1999/xhtml"
+     xmlns:krobar="http://krobar.online/spec/v1"
+     data-svg-kr-version="0.1"
+     viewBox="0 0 1024 768"
+     font-family="Plus Jakarta Sans, system-ui, sans-serif">
+  <metadata>
+    <krobar:krobar-meta>
+      <krobar:id>{{TEMPLATE_ID}}</krobar:id>
+      <krobar:tier>canonical-matrix</krobar:tier>
+      <krobar:archetype>linear_sequence_4</krobar:archetype>
+      <krobar:matrice-id>{{MATRICE_ID}}</krobar:matrice-id>
+      <krobar:components-count>4</krobar:components-count>
+    </krobar:krobar-meta>
+  </metadata>
+  <g class="slot-group" data-slot-key="title">
+    <rect class="slot-shape krobar-bbox-fill krobar-bbox-stroke"
+          data-shape="bbox_title_1" x="40" y="20" width="944" height="60" fill="none" stroke="none" />
+    <foreignObject class="slot-label" x="40" y="20" width="944" height="60">
+      <html:div xmlns="http://www.w3.org/1999/xhtml" class="slot-content"
+                style="font-size:36px;font-weight:700;color:#0f172a;line-height:1.1;text-align:center;">
+        {{title}}
+      </html:div>
+    </foreignObject>
+  </g>
+  <g class="canonical-label" data-for-shape="bbox_step_1">
+    <foreignObject x="40" y="112" width="212" height="36">
+      <html:div xmlns="http://www.w3.org/1999/xhtml" class="canonical-label-content"
+                style="font-size:16px;font-weight:600;color:#0f172a;text-align:center;">
+        {{canonical_1}}
+      </html:div>
+    </foreignObject>
+  </g>
+  <g class="canonical-label" data-for-shape="bbox_step_2">
+    <foreignObject x="284" y="112" width="212" height="36">
+      <html:div xmlns="http://www.w3.org/1999/xhtml" class="canonical-label-content"
+                style="font-size:16px;font-weight:600;color:#0f172a;text-align:center;">
+        {{canonical_2}}
+      </html:div>
+    </foreignObject>
+  </g>
+  <g class="canonical-label" data-for-shape="bbox_step_3">
+    <foreignObject x="528" y="112" width="212" height="36">
+      <html:div xmlns="http://www.w3.org/1999/xhtml" class="canonical-label-content"
+                style="font-size:16px;font-weight:600;color:#0f172a;text-align:center;">
+        {{canonical_3}}
+      </html:div>
+    </foreignObject>
+  </g>
+  <g class="canonical-label" data-for-shape="bbox_step_4">
+    <foreignObject x="772" y="112" width="212" height="36">
+      <html:div xmlns="http://www.w3.org/1999/xhtml" class="canonical-label-content"
+                style="font-size:16px;font-weight:600;color:#0f172a;text-align:center;">
+        {{canonical_4}}
+      </html:div>
+    </foreignObject>
+  </g>
+  <g class="slot-group" data-slot-key="step_1">
+    <rect class="slot-shape krobar-bbox-fill krobar-bbox-stroke"
+          data-shape="bbox_step_1" x="40" y="156" width="212" height="520" fill="#ffffff" stroke="#0f172a" stroke-width="1.5" />
+    <foreignObject class="slot-label" x="40" y="156" width="212" height="520">
+      <html:div xmlns="http://www.w3.org/1999/xhtml" class="slot-content"
+                style="font-size:18px;line-height:1.35;color:#0f172a;padding:24px;">
+        {{step_1}}
+      </html:div>
+    </foreignObject>
+  </g>
+  <g class="slot-group" data-slot-key="step_2">
+    <rect class="slot-shape krobar-bbox-fill krobar-bbox-stroke"
+          data-shape="bbox_step_2" x="284" y="156" width="212" height="520" fill="#ffffff" stroke="#0f172a" stroke-width="1.5" />
+    <foreignObject class="slot-label" x="284" y="156" width="212" height="520">
+      <html:div xmlns="http://www.w3.org/1999/xhtml" class="slot-content"
+                style="font-size:18px;line-height:1.35;color:#0f172a;padding:24px;">
+        {{step_2}}
+      </html:div>
+    </foreignObject>
+  </g>
+  <g class="slot-group" data-slot-key="step_3">
+    <rect class="slot-shape krobar-bbox-fill krobar-bbox-stroke"
+          data-shape="bbox_step_3" x="528" y="156" width="212" height="520" fill="#ffffff" stroke="#0f172a" stroke-width="1.5" />
+    <foreignObject class="slot-label" x="528" y="156" width="212" height="520">
+      <html:div xmlns="http://www.w3.org/1999/xhtml" class="slot-content"
+                style="font-size:18px;line-height:1.35;color:#0f172a;padding:24px;">
+        {{step_3}}
+      </html:div>
+    </foreignObject>
+  </g>
+  <g class="slot-group" data-slot-key="step_4">
+    <rect class="slot-shape krobar-bbox-fill krobar-bbox-stroke"
+          data-shape="bbox_step_4" x="772" y="156" width="212" height="520" fill="#ffffff" stroke="#0f172a" stroke-width="1.5" />
+    <foreignObject class="slot-label" x="772" y="156" width="212" height="520">
+      <html:div xmlns="http://www.w3.org/1999/xhtml" class="slot-content"
+                style="font-size:18px;line-height:1.35;color:#0f172a;padding:24px;">
+        {{step_4}}
+      </html:div>
+    </foreignObject>
+  </g>
+  <g class="krobar-decoration">
+    <path d="M252,408 L274,408 L274,402 L284,416 L274,430 L274,424 L252,424 Z" fill="#0f172a" stroke="#0f172a" stroke-width="1.5" />
+  </g>
+  <g class="krobar-decoration">
+    <path d="M496,408 L518,408 L518,402 L528,416 L518,430 L518,424 L496,424 Z" fill="#0f172a" stroke="#0f172a" stroke-width="1.5" />
+  </g>
+  <g class="krobar-decoration">
+    <path d="M740,408 L762,408 L762,402 L772,416 L762,430 L762,424 L740,424 Z" fill="#0f172a" stroke="#0f172a" stroke-width="1.5" />
+  </g>
+</svg>
