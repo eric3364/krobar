@@ -213,6 +213,257 @@ function porter5() {
   return <>{elems}</>;
 }
 
+// === Helpers pour les 19 nouveaux archétypes (LOT3 + m157) ===
+
+function canvasGrid(variant: "lean" | "brandkey") {
+  const pad = 4;
+  const innerW = VB_W - 2 * pad;
+  const innerH = VB_H - 2 * pad;
+  const items: { x: number; y: number; w: number; h: number }[] = [];
+  if (variant === "lean") {
+    const topH = innerH * 0.62;
+    const botH = innerH - topH - 2;
+    const colW = (innerW - 4 * 1.5) / 5;
+    for (let i = 0; i < 5; i++) {
+      items.push({ x: pad + i * (colW + 1.5), y: pad, w: colW, h: topH });
+    }
+    const botColW = (innerW - 1.5) / 2;
+    items.push({ x: pad, y: pad + topH + 2, w: botColW, h: botH });
+    items.push({ x: pad + botColW + 1.5, y: pad + topH + 2, w: botColW, h: botH });
+    return rects(items);
+  } else {
+    const topH = innerH * 0.42;
+    const midH = innerH * 0.18;
+    const botH = innerH - topH - midH - 4;
+    items.push({ x: pad, y: pad, w: innerW / 2 - 1, h: topH });
+    items.push({ x: pad + innerW / 2 + 1, y: pad, w: innerW / 2 - 1, h: topH });
+    items.push({ x: pad, y: pad + topH + 2, w: innerW, h: midH });
+    items.push({ x: pad, y: pad + topH + midH + 4, w: innerW / 2 - 1, h: botH });
+    items.push({ x: pad + innerW / 2 + 1, y: pad + topH + midH + 4, w: innerW / 2 - 1, h: botH });
+    const out = rects(items);
+    const ex = pad + innerW / 4;
+    const ey = pad + topH * 0.25;
+    return (
+      <>
+        {out}
+        <rect x={ex} y={ey} width={innerW / 2} height={topH * 0.6}
+          fill="white" stroke={STROKE} strokeWidth={1.5} />
+      </>
+    );
+  }
+}
+
+function vpcShape() {
+  const pad = 4;
+  const size = VB_H - 2 * pad;
+  return (
+    <>
+      <rect x={pad} y={pad} width={size} height={size} fill="none" stroke={STROKE} strokeWidth={SW} />
+      <circle cx={VB_W - pad - size / 2} cy={VB_H / 2} r={size / 2} fill="none" stroke={STROKE} strokeWidth={SW} />
+    </>
+  );
+}
+
+function tabularGrid(cols: number, rows: number, hasHeader: boolean) {
+  const pad = 4;
+  const innerW = VB_W - 2 * pad;
+  const innerH = VB_H - 2 * pad;
+  const headerH = hasHeader ? Math.max(6, innerH * 0.18) : 0;
+  const dataH = innerH - headerH;
+  const cellW = innerW / cols;
+  const cellH = dataH / rows;
+  const elems: React.ReactNode[] = [];
+  elems.push(<rect key="frame" x={pad} y={pad} width={innerW} height={innerH}
+    fill="none" stroke={STROKE} strokeWidth={SW} />);
+  if (hasHeader) {
+    elems.push(<rect key="hdr" x={pad} y={pad} width={innerW} height={headerH}
+      fill={STROKE} stroke={STROKE} strokeWidth={SW} />);
+  }
+  for (let c = 1; c < cols; c++) {
+    const x = pad + c * cellW;
+    elems.push(<line key={`v${c}`} x1={x} y1={pad} x2={x} y2={pad + innerH}
+      stroke={STROKE} strokeWidth={0.6} />);
+  }
+  for (let r = 1; r < rows; r++) {
+    const y = pad + headerH + r * cellH;
+    elems.push(<line key={`h${r}`} x1={pad} y1={y} x2={pad + innerW} y2={y}
+      stroke={STROKE} strokeWidth={0.6} />);
+  }
+  return <>{elems}</>;
+}
+
+function empathyMap() {
+  const pad = 4;
+  const w = (VB_W - 2 * pad - 2) / 2;
+  const h = (VB_H - 2 * pad - 2) / 2;
+  const cx = VB_W / 2;
+  const cy = VB_H / 2;
+  return (
+    <>
+      {rects([
+        { x: pad, y: pad, w, h },
+        { x: pad + w + 2, y: pad, w, h },
+        { x: pad, y: pad + h + 2, w, h },
+        { x: pad + w + 2, y: pad + h + 2, w, h },
+      ])}
+      <circle cx={cx} cy={cy} r={7} fill="white" stroke={STROKE} strokeWidth={1.5} />
+    </>
+  );
+}
+
+function jtbdForces() {
+  const cx = VB_W / 2;
+  const cy = VB_H / 2;
+  const hw = 10;
+  const hh = 7;
+  return (
+    <>
+      <defs>
+        <marker id="arrJtbd" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill={STROKE} />
+        </marker>
+      </defs>
+      <rect x={cx - hw} y={cy - hh} width={hw * 2} height={hh * 2} fill="none" stroke={STROKE} strokeWidth={1.5} />
+      <line x1={6} y1={cy} x2={cx - hw - 2} y2={cy} stroke={STROKE} strokeWidth={SW} markerEnd="url(#arrJtbd)" />
+      <line x1={VB_W - 6} y1={cy} x2={cx + hw + 2} y2={cy} stroke={STROKE} strokeWidth={SW} markerEnd="url(#arrJtbd)" />
+      <line x1={cx} y1={4} x2={cx} y2={cy - hh - 2} stroke={STROKE} strokeWidth={SW} markerEnd="url(#arrJtbd)" />
+      <line x1={cx} y1={VB_H - 4} x2={cx} y2={cy + hh + 2} stroke={STROKE} strokeWidth={SW} markerEnd="url(#arrJtbd)" />
+    </>
+  );
+}
+
+function opportunityTree() {
+  const elems: React.ReactNode[] = [];
+  const levels = [
+    { y: 8, n: 1 },
+    { y: 22, n: 3 },
+    { y: 38, n: 6 },
+    { y: 52, n: 3 },
+  ];
+  const positions: { x: number; y: number }[][] = [];
+  levels.forEach((lvl) => {
+    const arr: { x: number; y: number }[] = [];
+    const step = (VB_W - 8) / (lvl.n + 1);
+    for (let i = 0; i < lvl.n; i++) {
+      arr.push({ x: 4 + step * (i + 1), y: lvl.y });
+    }
+    positions.push(arr);
+  });
+  for (let l = 0; l < positions.length - 1; l++) {
+    const parents = positions[l];
+    const children = positions[l + 1];
+    children.forEach((c, i) => {
+      const parent = parents[Math.floor((i * parents.length) / children.length)];
+      elems.push(<line key={`L${l}_${i}`} x1={parent.x} y1={parent.y} x2={c.x} y2={c.y}
+        stroke={STROKE} strokeWidth={0.6} />);
+    });
+  }
+  positions.forEach((arr, l) =>
+    arr.forEach((p, i) =>
+      elems.push(<circle key={`n${l}_${i}`} cx={p.x} cy={p.y} r={2.5} fill="white" stroke={STROKE} strokeWidth={SW} />)
+    )
+  );
+  return <>{elems}</>;
+}
+
+function doubleDiamond() {
+  const cy = VB_H / 2;
+  const p1 = `8,${cy} 24,8 40,${cy} 24,${VB_H - 8}`;
+  const p2 = `40,${cy} 56,8 72,${cy} 56,${VB_H - 8}`;
+  return (
+    <>
+      <polygon points={p1} fill="none" stroke={STROKE} strokeWidth={SW} />
+      <polygon points={p2} fill="none" stroke={STROKE} strokeWidth={SW} />
+    </>
+  );
+}
+
+function wardleyMap() {
+  const pad = 6;
+  const elems: React.ReactNode[] = [];
+  elems.push(<line key="x" x1={pad} y1={VB_H - pad} x2={VB_W - pad} y2={VB_H - pad}
+    stroke={STROKE} strokeWidth={SW} />);
+  elems.push(<line key="y" x1={pad} y1={pad} x2={pad} y2={VB_H - pad}
+    stroke={STROKE} strokeWidth={SW} />);
+  const nodes = [
+    { x: 18, y: 14 },
+    { x: 32, y: 24 },
+    { x: 46, y: 22 },
+    { x: 58, y: 36 },
+    { x: 68, y: 30 },
+  ];
+  for (let i = 0; i < nodes.length - 1; i++) {
+    elems.push(<line key={`l${i}`} x1={nodes[i].x} y1={nodes[i].y}
+      x2={nodes[i + 1].x} y2={nodes[i + 1].y} stroke={STROKE} strokeWidth={0.6} />);
+  }
+  nodes.forEach((n, i) =>
+    elems.push(<circle key={`n${i}`} cx={n.x} cy={n.y} r={2.5} fill="white" stroke={STROKE} strokeWidth={SW} />)
+  );
+  return <>{elems}</>;
+}
+
+function curveComparison() {
+  const c1 = "M6,46 Q20,30 36,28 Q52,26 74,12";
+  const c2 = "M6,40 Q20,38 36,36 Q52,34 74,30";
+  return (
+    <>
+      <path d={c1} fill="none" stroke={STROKE} strokeWidth={1.2} />
+      <path d={c2} fill="none" stroke={STROKE} strokeWidth={1.2} strokeDasharray="3,2" />
+    </>
+  );
+}
+
+function spiralCoil() {
+  const cx = VB_W / 2;
+  const cy = VB_H / 2;
+  const steps = 60;
+  const rMax = 22;
+  const turns = 3;
+  let d = "";
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps;
+    const angle = t * turns * 2 * Math.PI - Math.PI / 2;
+    const r = rMax * t;
+    const x = cx + r * Math.cos(angle);
+    const y = cy + r * Math.sin(angle);
+    d += i === 0 ? `M${x.toFixed(1)},${y.toFixed(1)}` : ` L${x.toFixed(1)},${y.toFixed(1)}`;
+  }
+  return <path d={d} fill="none" stroke={STROKE} strokeWidth={SW} />;
+}
+
+function onionEllipses() {
+  const leftX = 8;
+  const cy = VB_H / 2;
+  const rxs = [10, 18, 26, 34];
+  const rys = [6, 10, 14, 18];
+  return (
+    <>
+      {rxs.map((rx, i) => (
+        <ellipse key={i} cx={leftX + rx} cy={cy} rx={rx} ry={rys[i]}
+          fill="none" stroke={STROKE} strokeWidth={SW} />
+      ))}
+    </>
+  );
+}
+
+function bscCross() {
+  const cx = VB_W / 2;
+  const cy = VB_H / 2;
+  const elems: React.ReactNode[] = [];
+  elems.push(<rect key="top" x={cx - 10} y={4} width={20} height={12} fill="none" stroke={STROKE} strokeWidth={SW} />);
+  elems.push(<rect key="bot" x={cx - 10} y={VB_H - 16} width={20} height={12} fill="none" stroke={STROKE} strokeWidth={SW} />);
+  elems.push(<rect key="lft" x={4} y={cy - 6} width={20} height={12} fill="none" stroke={STROKE} strokeWidth={SW} />);
+  elems.push(<rect key="rgt" x={VB_W - 24} y={cy - 6} width={20} height={12} fill="none" stroke={STROKE} strokeWidth={SW} />);
+  elems.push(<rect key="center" x={cx - 8} y={cy - 5} width={16} height={10}
+    fill="white" stroke={STROKE} strokeWidth={1.5} />);
+  elems.push(<line key="ct" x1={cx} y1={16} x2={cx} y2={cy - 5} stroke={STROKE} strokeWidth={0.6} />);
+  elems.push(<line key="cb" x1={cx} y1={VB_H - 16} x2={cx} y2={cy + 5} stroke={STROKE} strokeWidth={0.6} />);
+  elems.push(<line key="cl" x1={24} y1={cy} x2={cx - 8} y2={cy} stroke={STROKE} strokeWidth={0.6} />);
+  elems.push(<line key="cr" x1={VB_W - 24} y1={cy} x2={cx + 8} y2={cy} stroke={STROKE} strokeWidth={0.6} />);
+  return <>{elems}</>;
+}
+
+
 function funnelHorizontal(n: number) {
   const xL = 4, xR = 76;
   const topL = 6, botL = 54, topR = 24, botR = 36;
@@ -302,6 +553,29 @@ export default function ArchetypeThumbnail({ archetype, status, title, className
   if (archetype === "cadia_canvas") return wrap(grid3x3(false), label, className);
   if (archetype === "bmc_canvas") return wrap(bmc(), label, className);
   if (archetype === "porter5_canvas") return wrap(porter5(), label, className);
+
+  // === 19 nouveaux archétypes (LOT3 + m157) ===
+  if (archetype === "lean_canvas") return wrap(canvasGrid("lean"), label, className);
+  if (archetype === "vpc_canvas") return wrap(vpcShape(), label, className);
+  if (archetype === "customer_journey_map") return wrap(tabularGrid(5, 4, true), label, className);
+  if (archetype === "empathy_map_canvas") return wrap(empathyMap(), label, className);
+  if (archetype === "experience_map") return wrap(tabularGrid(5, 4, true), label, className);
+  if (archetype === "service_blueprint") return wrap(tabularGrid(5, 5, true), label, className);
+  if (archetype === "product_market_fit_canvas") return wrap(pyramid(5), label, className);
+  if (archetype === "jobs_to_be_done") return wrap(jtbdForces(), label, className);
+  if (archetype === "opportunity_solution_tree") return wrap(opportunityTree(), label, className);
+  if (archetype === "double_diamond") return wrap(doubleDiamond(), label, className);
+  if (archetype === "wardley_map") return wrap(wardleyMap(), label, className);
+  if (archetype === "curve_comparison_n") return wrap(curveComparison(), label, className);
+  if (archetype === "spiral_n") return wrap(spiralCoil(), label, className);
+  if (archetype === "brand_key_canvas") return wrap(canvasGrid("brandkey"), label, className);
+  if (archetype === "brand_onion_canvas") return wrap(onionEllipses(), label, className);
+  if (archetype === "kapferer_prism") return wrap(tabularGrid(2, 3, false), label, className);
+  if (archetype === "amdec_table") return wrap(tabularGrid(9, 4, true), label, className);
+  if (archetype === "design_system_matrix") return wrap(tabularGrid(5, 5, true), label, className);
+  if (archetype === "balanced_scorecard_canvas") return wrap(bscCross(), label, className);
+
+
 
   // Fallback : rectangle vide.
   return wrap(<rect x={4} y={4} width={VB_W - 8} height={VB_H - 8} fill="none" stroke={STROKE} strokeWidth={SW} />, label, className);
