@@ -554,6 +554,29 @@ export default function ArchetypeThumbnail({ archetype, status, title, className
   if (archetype === "bmc_canvas") return wrap(bmc(), label, className);
   if (archetype === "porter5_canvas") return wrap(porter5(), label, className);
 
+  // === 19 nouveaux archétypes (LOT3 + m157) ===
+  if (archetype === "lean_canvas") return wrap(canvasGrid("lean"), label, className);
+  if (archetype === "vpc_canvas") return wrap(vpcShape(), label, className);
+  if (archetype === "customer_journey_map") return wrap(tabularGrid(5, 4, true), label, className);
+  if (archetype === "empathy_map_canvas") return wrap(empathyMap(), label, className);
+  if (archetype === "experience_map") return wrap(tabularGrid(5, 4, true), label, className);
+  if (archetype === "service_blueprint") return wrap(tabularGrid(5, 5, true), label, className);
+  if (archetype === "product_market_fit_canvas") return wrap(pyramid(5), label, className);
+  if (archetype === "jobs_to_be_done") return wrap(jtbdForces(), label, className);
+  if (archetype === "opportunity_solution_tree") return wrap(opportunityTree(), label, className);
+  if (archetype === "double_diamond") return wrap(doubleDiamond(), label, className);
+  if (archetype === "wardley_map") return wrap(wardleyMap(), label, className);
+  if (archetype === "curve_comparison_n") return wrap(curveComparison(), label, className);
+  if (archetype === "spiral_n") return wrap(spiralCoil(), label, className);
+  if (archetype === "brand_key_canvas") return wrap(canvasGrid("brandkey"), label, className);
+  if (archetype === "brand_onion_canvas") return wrap(onionEllipses(), label, className);
+  if (archetype === "kapferer_prism") return wrap(tabularGrid(2, 3, false), label, className);
+  if (archetype === "amdec_table") return wrap(tabularGrid(9, 4, true), label, className);
+  if (archetype === "design_system_matrix") return wrap(tabularGrid(5, 5, true), label, className);
+  if (archetype === "balanced_scorecard_canvas") return wrap(bscCross(), label, className);
+
+
+
   // Fallback : rectangle vide.
   return wrap(<rect x={4} y={4} width={VB_W - 8} height={VB_H - 8} fill="none" stroke={STROKE} strokeWidth={SW} />, label, className);
 }
