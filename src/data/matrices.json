@@ -2395,15 +2395,29 @@
     "id": "m157",
     "category": "RH, compétences et formation",
     "name": "Matrice risques RH",
-    "usage": "Risque de départ, désengagement",
+    "usage": "Cartographier les collaborateurs selon leur risque de départ et leur niveau de désengagement, pour cibler les actions de rétention",
+    "axes": {
+      "x": {
+        "label": "Désengagement",
+        "low": "Faible",
+        "high": "Élevé"
+      },
+      "y": {
+        "label": "Risque de départ",
+        "low": "Faible",
+        "high": "Élevé"
+      }
+    },
     "components": [
-      "Risque de départ",
-      "Désengagement"
+      "Collaborateur ancré (engagement fort + stable)",
+      "Talent en fuite (engagé mais sur le départ)",
+      "Collaborateur résigné (présent mais désengagé)",
+      "Zone critique (désengagement élevé + risque de départ élevé)"
     ],
-    "components_status": "to_verify",
-    "archetype_canonical": null,
+    "components_status": "verified",
+    "archetype_canonical": "grid_2x2",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m158",
