@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" data-svg-kr-version="2.1" data-archetype="spiral_n">
+  <metadata><krobar-meta>
+    <archetype>spiral_n</archetype>
+    <family>PROCEDURALE_SEQUENTIELLE</family>
+    <cardinality>MULTIPLE</cardinality>
+    <regime>SEMI_METAPHORIQUE</regime>
+  </krobar-meta></metadata>
+  <style>
+    .krobar-bbox-fill { fill: white; }
+    .krobar-bbox-stroke { stroke: #0f172a; stroke-width: 1.5; }
+    .krobar-canvas-title { font-family: -apple-system, system-ui, sans-serif; font-size: 22px; font-weight: 800; fill: #0f172a; text-anchor: middle; }
+    .krobar-level-num { font-family: -apple-system, system-ui, sans-serif; font-size: 13px; font-weight: 800; fill: #0f172a; text-anchor: middle; dominant-baseline: central; }
+    .krobar-slot-content { font-family: -apple-system, system-ui, sans-serif; font-size: 11px; line-height: 1.35; color: #1e293b; padding: 4px 10px; height: 100%; box-sizing: border-box; overflow: hidden; word-wrap: break-word; }
+    .sp-spiral { stroke: #0f172a; stroke-width: 1.5; fill: none; }
+    .sp-level-node { fill: white; stroke: #0f172a; stroke-width: 2; }
+    .sp-link { stroke: #0f172a; stroke-width: 0.8; stroke-dasharray: 3,3; fill: none; }
+  </style>
+
+  <text x="512" y="32" class="krobar-canvas-title">SPIRALE DE DÉVELOPPEMENT</text>
+
+  <!-- Spirale -->
+  <path d="M 512.0,370.0 L 513.9,369.5 L 515.9,369.1 L 517.9,368.9 L 520.0,368.7 L 522.1,368.8 L 524.3,368.9 L 526.5,369.3 L 528.6,369.7 L 530.8,370.4 L 533.0,371.1 L 535.1,372.1 L 537.2,373.2 L 539.2,374.4 L 541.2,375.8 L 543.1,377.4 L 545.0,379.1 L 546.7,380.9 L 548.4,382.9 L 549.9,385.0 L 551.3,387.2 L 552.6,389.6 L 553.7,392.0 L 554.7,394.6 L 555.5,397.3 L 556.2,400.0 L 556.6,402.8 L 556.9,405.7 L 557.1,408.6 L 557.0,411.5 L 556.7,414.5 L 556.2,417.5 L 555.6,420.5 L 554.7,423.5 L 553.6,426.4 L 552.3,429.3 L 550.8,432.1 L 549.2,434.9 L 547.3,437.6 L 545.2,440.1 L 543.0,442.6 L 540.5,444.9 L 537.9,447.1 L 535.1,449.2 L 532.2,451.1 L 529.2,452.8 L 525.9,454.3 L 522.6,455.6 L 519.2,456.7 L 515.6,457.7 L 512.0,458.3 L 508.3,458.8 L 504.5,459.0 L 500.8,459.0 L 496.9,458.7 L 493.1,458.2 L 489.3,457.4 L 485.5,456.4 L 481.7,455.1 L 478.0,453.6 L 474.4,451.8 L 470.8,449.7 L 467.4,447.5 L 464.1,445.0 L 460.9,442.2 L 457.9,439.3 L 455.1,436.1 L 452.4,432.7 L 450.0,429.2 L 447.8,425.4 L 445.7,421.5 L 444.0,417.5 L 442.5,413.3 L 441.2,408.9 L 440.2,404.5 L 439.5,400.0 L 439.1,395.4 L 438.9,390.8 L 439.1,386.1 L 439.6,381.4 L 440.4,376.7 L 441.4,372.1 L 442.8,367.4 L 444.5,362.9 L 446.5,358.4 L 448.8,354.1 L 451.3,349.8 L 454.2,345.7 L 457.3,341.8 L 460.7,338.0 L 464.4,334.5 L 468.3,331.1 L 472.4,328.0 L 476.8,325.2 L 481.3,322.6 L 486.1,320.3 L 491.0,318.3 L 496.1,316.5 L 501.3,315.1 L 506.6,314.1 L 512.0,313.3 L 517.5,312.9 L 523.0,312.9 L 528.6,313.2 L 534.1,313.9 L 539.7,314.9 L 545.2,316.3 L 550.6,318.0 L 555.9,320.1 L 561.2,322.5 L 566.3,325.3 L 571.2,328.4 L 576.0,331.9 L 580.5,335.6 L 584.9,339.7 L 589.0,344.1 L 592.8,348.7 L 596.4,353.6 L 599.6,358.8 L 602.6,364.1 L 605.2,369.7 L 607.5,375.5 L 609.4,381.4 L 610.9,387.5 L 612.1,393.7 L 612.8,400.0 L 613.2,406.4 L 613.2,412.8 L 612.7,419.2 L 611.9,425.6 L 610.6,432.0 L 608.9,438.4 L 606.8,444.6 L 604.3,450.8 L 601.4,456.8 L 598.2,462.6 L 594.5,468.2 L 590.5,473.7 L 586.1,478.9 L 581.3,483.8 L 576.3,488.5 L 570.9,492.8 L 565.2,496.8 L 559.3,500.5 L 553.1,503.8 L 546.7,506.7 L 540.0,509.2 L 533.2,511.3 L 526.3,513.0 L 519.2,514.2 L 512.0,515.0 L 504.7,515.3 L 497.4,515.2 L 490.1,514.6 L 482.8,513.6 L 475.6,512.1 L 468.4,510.1 L 461.3,507.6 L 454.4,504.7 L 447.6,501.4 L 441.1,497.6 L 434.7,493.4 L 428.6,488.8 L 422.8,483.8 L 417.3,478.4 L 412.1,472.6 L 407.2,466.5 L 402.8,460.0 L 398.7,453.3 L 395.1,446.3 L 391.8,439.0 L 389.1,431.6 L 386.8,423.9 L 385.0,416.0 L 383.7,408.1 L 382.8,400.0 L 382.5,391.9 L 382.7,383.7 L 383.5,375.5 L 384.7,367.3 L 386.5,359.2 L 388.7,351.2 L 391.5,343.3 L 394.8,335.6 L 398.6,328.1 L 402.9,320.7 L 407.7,313.7 L 412.9,306.9 L 418.5,300.5 L 424.6,294.4 L 431.1,288.6 L 437.9,283.3 L 445.1,278.4 L 452.7,273.9 L 460.5,269.9 L 468.6,266.4 L 476.9,263.4 L 485.5,260.9 L 494.2,258.9 L 503.0,257.5 L 512.0,256.7 L 521.0,256.4 L 530.1,256.7 L 539.2,257.5 L 548.2,259.0 L 557.2,261.0 L 566.0,263.6 L 574.7,266.7 L 583.2,270.4 L 591.5,274.7 L 599.6,279.5 L 607.3,284.8 L 614.8,290.6 L 621.9,296.8 L 628.6,303.6 L 634.8,310.8 L 640.7,318.3 L 646.0,326.3 L 650.9,334.6 L 655.3,343.3 L 659.1,352.2 L 662.4,361.4 L 665.0,370.8 L 667.1,380.4 L 668.6,390.1 L 669.5,400.0 L 669.8,409.9 L 669.4,419.9 L 668.4,429.8 L 666.7,439.7 L 664.5,449.5 L 661.6,459.2 L 658.1,468.7 L 654.0,478.1 L 649.3,487.1 L 644.0,495.9 L 638.2,504.4 L 631.8,512.5 L 624.9,520.2 L 617.5,527.5 L 609.6,534.3 L 601.3,540.6 L 592.5,546.5 L 583.4,551.7 L 573.9,556.5 L 564.2,560.6 L 554.1,564.1 L 543.8,567.0 L 533.4,569.2 L 522.7,570.8 L 512.0,571.7 L 501.2,571.9 L 490.3,571.4 L 479.5,570.3 L 468.7,568.5 L 458.1,566.0 L 447.6,562.8 L 437.2,558.9 L 427.1,554.4 L 417.3,549.2 L 407.8,543.5 L 398.6,537.1 L 389.8,530.1 L 381.5,522.6 L 373.6,514.5 L 366.2,505.9 L 359.4,496.8 L 353.1,487.3 L 347.4,477.4 L 342.4,467.2 L 338.0,456.6 L 334.2,445.7 L 331.1,434.5 L 328.8,423.1 L 327.1,411.6 L 326.2,400.0 L 326.0,388.3 L 326.5,376.6 L 327.8,364.9 L 329.8,353.2 L 332.6,341.7 L 336.1,330.3 L 340.3,319.2 L 345.2,308.3 L 350.8,297.7 L 357.1,287.4 L 364.0,277.6 L 371.6,268.1 L 379.7,259.2 L 388.5,250.7 L 397.8,242.8 L 407.6,235.4 L 417.8,228.7 L 428.5,222.6 L 439.6,217.2 L 451.1,212.5 L 462.8,208.5 L 474.8,205.2 L 487.1,202.7 L 499.5,201.0 L 512.0,200.0" class="sp-spiral"/>
+
+  <!-- Connexions niveau → label -->
+  <path d="M 748 362 L 512 370" class="sp-link"/>
+  <path d="M 748 530 L 536 449" class="sp-link"/>
+  <path d="M 276 362 L 451 351" class="sp-link"/>
+  <path d="M 748 446 L 612 423" class="sp-link"/>
+  <path d="M 276 446 L 388 428" class="sp-link"/>
+  <path d="M 748 278 L 630 306" class="sp-link"/>
+  <path d="M 276 530 L 436 558" class="sp-link"/>
+  <path d="M 276 278 L 512 200" class="sp-link"/>
+
+  <!-- Labels niveaux (slots) -->
+  <g class="krobar-slot" data-slot-key="block_niveau_1_content">
+    <rect x="748" y="330" width="260" height="64" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="748" y="330" width="260" height="64">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Beige — Survivalisme. Instincts physiologiques, survie immédiate, nourriture.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_niveau_2_content">
+    <rect x="748" y="498" width="260" height="64" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="748" y="498" width="260" height="64">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Violet — Tribal. Magie, ancêtres, sécurité du clan, rituels.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_niveau_3_content">
+    <rect x="16" y="330" width="260" height="64" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="16" y="330" width="260" height="64">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Rouge — Égocentrique. Pouvoir, conquête, héros, peu de remords.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_niveau_4_content">
+    <rect x="748" y="414" width="260" height="64" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="748" y="414" width="260" height="64">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Bleu — Conformiste. Ordre, autorité, vérité unique, sens du devoir.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_niveau_5_content">
+    <rect x="16" y="414" width="260" height="64" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="16" y="414" width="260" height="64">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Orange — Stratège. Succès, compétition, science, rationalité, ambition.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_niveau_6_content">
+    <rect x="748" y="246" width="260" height="64" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="748" y="246" width="260" height="64">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Vert — Communautaire. Égalité, consensus, écologie, dialogue, sensibilité.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_niveau_7_content">
+    <rect x="16" y="498" width="260" height="64" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="16" y="498" width="260" height="64">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Jaune — Intégratif. Systémique, flexibilité, complexité acceptée.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_niveau_8_content">
+    <rect x="16" y="246" width="260" height="64" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="16" y="246" width="260" height="64">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Turquoise — Holistique. Conscience planétaire, interconnexion, spiritualité laïque.</div>
+    </foreignObject>
+  </g>
+
+  <!-- Nœuds niveaux -->
+  <circle cx="512" cy="370" r="14" class="sp-level-node"/>
+  <text x="512" y="370" class="krobar-level-num">1</text>
+  <circle cx="536" cy="449" r="14" class="sp-level-node"/>
+  <text x="536" y="449" class="krobar-level-num">2</text>
+  <circle cx="451" cy="351" r="14" class="sp-level-node"/>
+  <text x="451" y="351" class="krobar-level-num">3</text>
+  <circle cx="612" cy="423" r="14" class="sp-level-node"/>
+  <text x="612" y="423" class="krobar-level-num">4</text>
+  <circle cx="388" cy="428" r="14" class="sp-level-node"/>
+  <text x="388" y="428" class="krobar-level-num">5</text>
+  <circle cx="630" cy="306" r="14" class="sp-level-node"/>
+  <text x="630" y="306" class="krobar-level-num">6</text>
+  <circle cx="436" cy="558" r="14" class="sp-level-node"/>
+  <text x="436" y="558" class="krobar-level-num">7</text>
+  <circle cx="512" cy="200" r="14" class="sp-level-node"/>
+  <text x="512" y="200" class="krobar-level-num">8</text>
+
+</svg>

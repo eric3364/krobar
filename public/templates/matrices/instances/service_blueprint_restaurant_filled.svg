@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" data-svg-kr-version="2.1" data-archetype="service_blueprint">
+  <metadata><krobar-meta>
+    <archetype>service_blueprint</archetype>
+    <family>EXPLICATIVE_SCHEMATIQUE</family>
+    <cardinality>MULTIPLE</cardinality>
+    <regime>ABSTRAIT_SYSTEMIQUE</regime>
+  </krobar-meta></metadata>
+  <style>
+    .krobar-bbox-fill { fill: white; }
+    .krobar-bbox-stroke { stroke: #0f172a; stroke-width: 1.5; }
+    .krobar-canvas-title { font-family: -apple-system, system-ui, sans-serif; font-size: 26px; font-weight: 800; fill: #0f172a; text-anchor: middle; }
+    .krobar-step-header { font-family: -apple-system, system-ui, sans-serif; font-size: 13px; font-weight: 700; color: white; line-height: 1.2; text-align: center; padding: 6px 4px; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
+    .krobar-row-label-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 11px; font-weight: 700; color: #475569; text-align: center; height: 100%; display: flex; align-items: center; justify-content: center; padding: 4px; line-height: 1.3; letter-spacing: 0.5px; box-sizing: border-box; text-transform: uppercase; }
+    .krobar-slot-content { font-family: -apple-system, system-ui, sans-serif; font-size: 11px; line-height: 1.35; color: #1e293b; padding: 6px 8px; height: 100%; box-sizing: border-box; overflow: hidden; word-wrap: break-word; }
+    .step-header-bg { fill: #0f172a; }
+    .signature-line { stroke: #0f172a; stroke-width: 2.5; stroke-dasharray: 8,4; fill: none; }
+    .signature-label { font-family: -apple-system, system-ui, sans-serif; font-size: 9px; font-weight: 700; fill: #475569; letter-spacing: 0.8px; text-transform: uppercase; }
+    .support-bg { fill: #f1f5f9; }
+  </style>
+
+  <text x="512" y="40" class="krobar-canvas-title">PLAN DE SERVICE</text>
+
+  <!-- Zone Processus support (fond gris) -->
+  <rect x="140" y="554" width="870" height="166" class="support-bg"/>
+
+  <rect x="140" y="80" width="870" height="640" fill="none" stroke="#0f172a" stroke-width="2"/>
+
+  <line x1="314.0" y1="80" x2="314.0" y2="720" class="krobar-bbox-stroke"/>
+  <line x1="488.0" y1="80" x2="488.0" y2="720" class="krobar-bbox-stroke"/>
+  <line x1="662.0" y1="80" x2="662.0" y2="720" class="krobar-bbox-stroke"/>
+  <line x1="836.0" y1="80" x2="836.0" y2="720" class="krobar-bbox-stroke"/>
+
+  <line x1="140" y1="124" x2="1010" y2="124" class="krobar-bbox-stroke"/>
+  <line x1="140" y1="224" x2="1010" y2="224" class="krobar-bbox-stroke"/>
+  <!-- Ligne d'interaction -->
+  <line x1="140" y1="334" x2="1010" y2="334" class="signature-line"/>
+  <text x="1002" y="330" text-anchor="end" class="signature-label">Ligne d'interaction</text>
+  <!-- Ligne de visibilité -->
+  <line x1="140" y1="444" x2="1010" y2="444" class="signature-line"/>
+  <text x="1002" y="440" text-anchor="end" class="signature-label">Ligne de visibilité</text>
+  <!-- Ligne d'interaction interne -->
+  <line x1="140" y1="554" x2="1010" y2="554" class="signature-line"/>
+  <text x="1002" y="550" text-anchor="end" class="signature-label">Ligne d'interaction interne</text>
+
+  <rect x="140" y="80" width="870" height="44" class="step-header-bg"/>
+
+  <foreignObject x="140.0" y="80" width="174.0" height="44">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-step-header">Conscience</div>
+  </foreignObject>
+  <foreignObject x="314.0" y="80" width="174.0" height="44">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-step-header">Engagement</div>
+  </foreignObject>
+  <foreignObject x="488.0" y="80" width="174.0" height="44">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-step-header">Découverte</div>
+  </foreignObject>
+  <foreignObject x="662.0" y="80" width="174.0" height="44">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-step-header">Décision</div>
+  </foreignObject>
+  <foreignObject x="836.0" y="80" width="174.0" height="44">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-step-header">Action</div>
+  </foreignObject>
+
+  <foreignObject x="6" y="80" width="130" height="44">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-row-label-fo">Phases</div>
+  </foreignObject>
+  <foreignObject x="6" y="124" width="130" height="100">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-row-label-fo">Preuves physiques</div>
+  </foreignObject>
+  <foreignObject x="6" y="224" width="130" height="110">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-row-label-fo">Actions du client</div>
+  </foreignObject>
+  <foreignObject x="6" y="334" width="130" height="110">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-row-label-fo">Actions visibles</div>
+  </foreignObject>
+  <foreignObject x="6" y="444" width="130" height="110">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-row-label-fo">Actions internes</div>
+  </foreignObject>
+  <foreignObject x="6" y="554" width="130" height="166">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-row-label-fo">Processus support</div>
+  </foreignObject>
+
+  <g class="krobar-slot" data-slot-key="block_preuves_physiques_conscience_content">
+    <foreignObject x="148.0" y="132.0" width="158.0" height="84.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Site web, photos plats, étoiles Michelin, devanture du restaurant.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_preuves_physiques_engagement_content">
+    <foreignObject x="322.0" y="132.0" width="158.0" height="84.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Email confirmation, plan d'accès, code vestimentaire affiché.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_preuves_physiques_decouverte_content">
+    <foreignObject x="496.0" y="132.0" width="158.0" height="84.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Entrée chaleureuse, vestiaire, salle, déco, art de la table.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_preuves_physiques_decision_content">
+    <foreignObject x="670.0" y="132.0" width="158.0" height="84.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Carte des plats, suggestion sommelier, carte des desserts.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_preuves_physiques_action_content">
+    <foreignObject x="844.0" y="132.0" width="158.0" height="84.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Note de fin, sac doggy bag, carte de remerciement.</div>
+    </foreignObject>
+  </g>
+
+  <g class="krobar-slot" data-slot-key="block_actions_client_conscience_content">
+    <foreignObject x="148.0" y="232.0" width="158.0" height="94.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Découvre le restaurant via guide ou bouche-à-oreille. Lit critiques en ligne.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_actions_client_engagement_content">
+    <foreignObject x="322.0" y="232.0" width="158.0" height="94.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Réserve table (par téléphone ou TheFork). Confirme nombre de couverts.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_actions_client_decouverte_content">
+    <foreignObject x="496.0" y="232.0" width="158.0" height="94.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Arrive, s'installe, consulte la carte. Discute avec le maître d'hôtel.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_actions_client_decision_content">
+    <foreignObject x="670.0" y="232.0" width="158.0" height="94.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Choisit menu/plats à la carte. Demande conseils. Mange, savoure.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_actions_client_action_content">
+    <foreignObject x="844.0" y="232.0" width="158.0" height="94.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Demande l'addition, paie, laisse un avis Google ou TripAdvisor.</div>
+    </foreignObject>
+  </g>
+
+  <g class="krobar-slot" data-slot-key="block_actions_visibles_conscience_content">
+    <foreignObject x="148.0" y="342.0" width="158.0" height="94.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Le restaurant maintient site web, photos, profil Michelin.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_actions_visibles_engagement_content">
+    <foreignObject x="322.0" y="342.0" width="158.0" height="94.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Maître d'hôtel prend la réservation, confirme par email.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_actions_visibles_decouverte_content">
+    <foreignObject x="496.0" y="342.0" width="158.0" height="94.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Accueil chaleureux, vestiaire, conduite à table. Présente la carte.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_actions_visibles_decision_content">
+    <foreignObject x="670.0" y="342.0" width="158.0" height="94.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Prend commande, conseille le sommelier, suit le service.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_actions_visibles_action_content">
+    <foreignObject x="844.0" y="342.0" width="158.0" height="94.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Présente l'addition, raccompagne, prend congé chaleureusement.</div>
+    </foreignObject>
+  </g>
+
+  <g class="krobar-slot" data-slot-key="block_actions_internes_conscience_content">
+    <foreignObject x="148.0" y="452.0" width="158.0" height="94.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Chef et équipe entretiennent réputation : presse, concours, formation continue.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_actions_internes_engagement_content">
+    <foreignObject x="322.0" y="452.0" width="158.0" height="94.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Maître d'hôtel saisit réservation dans le système. Prépare plan de table.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_actions_internes_decouverte_content">
+    <foreignObject x="496.0" y="452.0" width="158.0" height="94.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Cuisine prépare mise en place. Sommelier vérifie cave. Chef brief équipe.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_actions_internes_decision_content">
+    <foreignObject x="670.0" y="452.0" width="158.0" height="94.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Cuisine reçoit commande, exécute, dresse. Service envoie plats. Sommelier sert vin.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_actions_internes_action_content">
+    <foreignObject x="844.0" y="452.0" width="158.0" height="94.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Comptable édite addition. Plonge nettoie. Équipe debrief.</div>
+    </foreignObject>
+  </g>
+
+  <g class="krobar-slot" data-slot-key="block_processus_support_conscience_content">
+    <foreignObject x="148.0" y="562.0" width="158.0" height="150.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Marketing (RP, photographe), gestion réputation en ligne, partenariats guides.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_processus_support_engagement_content">
+    <foreignObject x="322.0" y="562.0" width="158.0" height="150.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Système de réservation (TheFork, propre back-office), CRM, base clients VIP.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_processus_support_decouverte_content">
+    <foreignObject x="496.0" y="562.0" width="158.0" height="150.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Achats produits frais (mareyeur, maraîcher), gestion stock, fournisseurs premium.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_processus_support_decision_content">
+    <foreignObject x="670.0" y="562.0" width="158.0" height="150.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Logiciel caisse, gestion compte client, fiche allergènes et régimes spéciaux.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_processus_support_action_content">
+    <foreignObject x="844.0" y="562.0" width="158.0" height="150.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">TPE bancaire, comptabilité, plateforme avis (Google, TripAdvisor), CRM fidélité.</div>
+    </foreignObject>
+  </g>
+
+</svg>

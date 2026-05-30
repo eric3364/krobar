@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" data-svg-kr-version="2.1" data-archetype="kapferer_prism">
+  <metadata><krobar-meta>
+    <archetype>kapferer_prism</archetype>
+    <family>CONCEPTUELLE_SYSTEMIQUE</family>
+    <cardinality>MULTIPLE</cardinality>
+    <regime>ABSTRAIT_SYSTEMIQUE</regime>
+  </krobar-meta></metadata>
+  <style>
+    .krobar-bbox-fill { fill: white; }
+    .krobar-bbox-stroke { stroke: #0f172a; stroke-width: 1.5; }
+    .krobar-canvas-title { font-family: -apple-system, system-ui, sans-serif; font-size: 22px; font-weight: 800; fill: #0f172a; text-anchor: middle; }
+    .krobar-axis-label { font-family: -apple-system, system-ui, sans-serif; font-size: 11px; font-weight: 700; fill: #475569; letter-spacing: 1.5px; text-transform: uppercase; text-anchor: middle; }
+    .krobar-canonical-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 14px; font-weight: 800; color: #0f172a; line-height: 1.2; text-align: center; padding: 6px 8px 2px; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
+    .krobar-subtitle-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 10px; font-weight: 600; color: #64748b; line-height: 1.2; text-align: center; padding: 0 8px; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; font-style: italic; }
+    .krobar-slot-content { font-family: -apple-system, system-ui, sans-serif; font-size: 11px; line-height: 1.4; color: #1e293b; padding: 6px 10px; height: 100%; box-sizing: border-box; overflow: hidden; word-wrap: break-word; }
+    .kp-bracket { stroke: #475569; stroke-width: 1; fill: none; }
+  </style>
+
+  <text x="512" y="36" class="krobar-canvas-title">PRISME D'IDENTITÉ DE MARQUE</text>
+
+  <rect x="140" y="100" width="744" height="600" fill="white" stroke="#0f172a" stroke-width="2"/>
+
+  <line x1="512.0" y1="100" x2="512.0" y2="700" class="krobar-bbox-stroke"/>
+  <line x1="140" y1="300.0" x2="884" y2="300.0" class="krobar-bbox-stroke"/>
+  <line x1="140" y1="500.0" x2="884" y2="500.0" class="krobar-bbox-stroke"/>
+
+  <!-- Annotations axe vertical -->
+  <path d="M 140 90 L 140 70 L 884 70 L 884 90" class="kp-bracket"/>
+  <text x="512.0" y="62" class="krobar-axis-label">Image de l'émetteur</text>
+  <path d="M 140 710 L 140 730 L 884 730 L 884 710" class="kp-bracket"/>
+  <text x="512.0" y="748" class="krobar-axis-label">Image du destinataire</text>
+
+  <!-- Annotations axe horizontal -->
+  <path d="M 130 100 L 110 100 L 110 700 L 130 700" class="kp-bracket"/>
+  <text x="102" y="400.0" class="krobar-axis-label" transform="rotate(-90 102 400.0)">Externalisation</text>
+  <path d="M 894 100 L 914 100 L 914 700 L 894 700" class="kp-bracket"/>
+  <text x="922" y="400.0" class="krobar-axis-label" transform="rotate(90 922 400.0)">Internalisation</text>
+
+  <!-- Physique -->
+  <g class="krobar-slot" data-slot-key="block_physique_content">
+    <foreignObject x="140.0" y="106.0" width="372.0" height="26">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Physique</div>
+    </foreignObject>
+    <foreignObject x="140.0" y="130.0" width="372.0" height="18">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-subtitle-fo">Aspects tangibles</div>
+    </foreignObject>
+    <foreignObject x="152" y="154" width="348" height="138">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Petite robe noire, parfum N°5, sac matelassé 2.55, logo CC entrelacé, packaging blanc et noir, boutiques épurées.</div>
+    </foreignObject>
+  </g>
+
+  <!-- Personnalité -->
+  <g class="krobar-slot" data-slot-key="block_personnalite_content">
+    <foreignObject x="512.0" y="106.0" width="372.0" height="26">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Personnalité</div>
+    </foreignObject>
+    <foreignObject x="512.0" y="130.0" width="372.0" height="18">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-subtitle-fo">Caractère humain de la marque</div>
+    </foreignObject>
+    <foreignObject x="524" y="154" width="348" height="138">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Élégante, indépendante, sophistiquée, audacieuse, intemporelle. Personnalité féminine forte à la Coco Chanel.</div>
+    </foreignObject>
+  </g>
+
+  <!-- Relation -->
+  <g class="krobar-slot" data-slot-key="block_relation_content">
+    <foreignObject x="140.0" y="306.0" width="372.0" height="26">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Relation</div>
+    </foreignObject>
+    <foreignObject x="140.0" y="330.0" width="372.0" height="18">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-subtitle-fo">Lien marque ↔ client</div>
+    </foreignObject>
+    <foreignObject x="152" y="354" width="348" height="138">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Relation d'admiration et d'aspiration. Le client se sent appartenir à une élite raffinée et cultivée.</div>
+    </foreignObject>
+  </g>
+
+  <!-- Culture -->
+  <g class="krobar-slot" data-slot-key="block_culture_content">
+    <foreignObject x="512.0" y="306.0" width="372.0" height="26">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Culture</div>
+    </foreignObject>
+    <foreignObject x="512.0" y="330.0" width="372.0" height="18">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-subtitle-fo">Valeurs et système culturel</div>
+    </foreignObject>
+    <foreignObject x="524" y="354" width="348" height="138">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Héritage français, art de vivre parisien, modernité du XXe siècle, féminisme libérateur, code noir-blanc-or.</div>
+    </foreignObject>
+  </g>
+
+  <!-- Reflet -->
+  <g class="krobar-slot" data-slot-key="block_reflet_content">
+    <foreignObject x="140.0" y="506.0" width="372.0" height="26">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Reflet</div>
+    </foreignObject>
+    <foreignObject x="140.0" y="530.0" width="372.0" height="18">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-subtitle-fo">Image du client typique</div>
+    </foreignObject>
+    <foreignObject x="152" y="554" width="348" height="138">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Une femme moderne, indépendante, urbaine, qui réussit et cultive son style avec finesse.</div>
+    </foreignObject>
+  </g>
+
+  <!-- Mentalisation -->
+  <g class="krobar-slot" data-slot-key="block_mentalisation_content">
+    <foreignObject x="512.0" y="506.0" width="372.0" height="26">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Mentalisation</div>
+    </foreignObject>
+    <foreignObject x="512.0" y="530.0" width="372.0" height="18">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-subtitle-fo">Image que se fait le client de lui-même</div>
+    </foreignObject>
+    <foreignObject x="524" y="554" width="348" height="138">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">« En portant Chanel, je suis cette femme intemporelle, sophistiquée, qui ne suit pas la mode mais l'incarne. »</div>
+    </foreignObject>
+  </g>
+
+</svg>

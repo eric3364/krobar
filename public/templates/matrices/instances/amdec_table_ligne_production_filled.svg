@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" data-svg-kr-version="2.1" data-archetype="amdec_table">
+  <metadata><krobar-meta>
+    <archetype>amdec_table</archetype>
+    <family>EXPLICATIVE_SCHEMATIQUE</family>
+    <cardinality>MULTIPLE</cardinality>
+    <regime>ABSTRAIT_SYSTEMIQUE</regime>
+  </krobar-meta></metadata>
+  <style>
+    .krobar-bbox-fill { fill: white; }
+    .krobar-bbox-stroke { stroke: #0f172a; stroke-width: 1.5; }
+    .krobar-canvas-title { font-family: -apple-system, system-ui, sans-serif; font-size: 22px; font-weight: 800; fill: #0f172a; text-anchor: middle; }
+    .krobar-header-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 12px; font-weight: 700; color: white; line-height: 1.2; text-align: center; padding: 4px 6px; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; letter-spacing: 0.3px; }
+    .krobar-slot-content { font-family: -apple-system, system-ui, sans-serif; font-size: 10px; line-height: 1.35; color: #1e293b; padding: 4px 6px; height: 100%; box-sizing: border-box; overflow: hidden; word-wrap: break-word; }
+    .krobar-slot-content-center { font-family: -apple-system, system-ui, sans-serif; font-size: 14px; font-weight: 700; line-height: 1.2; color: #0f172a; padding: 4px; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; text-align: center; }
+    .header-bg { fill: #0f172a; }
+  </style>
+
+  <text x="512" y="36" class="krobar-canvas-title">TABLEAU AMDEC</text>
+
+  <rect x="15" y="80" width="994" height="600" fill="white" stroke="#0f172a" stroke-width="2"/>
+
+  <rect x="15" y="80" width="994" height="50" class="header-bg"/>
+
+  <line x1="145" y1="80" x2="145" y2="680" class="krobar-bbox-stroke"/>
+  <line x1="285" y1="80" x2="285" y2="680" class="krobar-bbox-stroke"/>
+  <line x1="425" y1="80" x2="425" y2="680" class="krobar-bbox-stroke"/>
+  <line x1="565" y1="80" x2="565" y2="680" class="krobar-bbox-stroke"/>
+  <line x1="613" y1="80" x2="613" y2="680" class="krobar-bbox-stroke"/>
+  <line x1="661" y1="80" x2="661" y2="680" class="krobar-bbox-stroke"/>
+  <line x1="709" y1="80" x2="709" y2="680" class="krobar-bbox-stroke"/>
+  <line x1="769" y1="80" x2="769" y2="680" class="krobar-bbox-stroke"/>
+
+  <line x1="15" y1="240" x2="1009" y2="240" class="krobar-bbox-stroke"/>
+  <line x1="15" y1="350" x2="1009" y2="350" class="krobar-bbox-stroke"/>
+  <line x1="15" y1="460" x2="1009" y2="460" class="krobar-bbox-stroke"/>
+  <line x1="15" y1="570" x2="1009" y2="570" class="krobar-bbox-stroke"/>
+
+  <foreignObject x="15" y="80" width="130" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-header-fo">Fonction</div>
+  </foreignObject>
+  <foreignObject x="145" y="80" width="140" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-header-fo">Mode de défaillance</div>
+  </foreignObject>
+  <foreignObject x="285" y="80" width="140" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-header-fo">Effet</div>
+  </foreignObject>
+  <foreignObject x="425" y="80" width="140" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-header-fo">Cause</div>
+  </foreignObject>
+  <foreignObject x="565" y="80" width="48" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-header-fo">G</div>
+  </foreignObject>
+  <foreignObject x="613" y="80" width="48" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-header-fo">O</div>
+  </foreignObject>
+  <foreignObject x="661" y="80" width="48" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-header-fo">D</div>
+  </foreignObject>
+  <foreignObject x="709" y="80" width="60" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-header-fo">C</div>
+  </foreignObject>
+  <foreignObject x="769" y="80" width="240" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-header-fo">Action corrective</div>
+  </foreignObject>
+
+  <g class="krobar-slot" data-slot-key="block_ligne_1_fonction_content">
+    <foreignObject x="15" y="130" width="130" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Pompe de remplissage des bouteilles</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_1_mode_defaillance_content">
+    <foreignObject x="145" y="130" width="140" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Volume insuffisant injecté</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_1_effet_content">
+    <foreignObject x="285" y="130" width="140" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Bouteilles sous-remplies expédiées au client</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_1_cause_content">
+    <foreignObject x="425" y="130" width="140" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Usure du piston de la pompe</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_1_gravite_content">
+    <foreignObject x="565" y="130" width="48" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content-center">8</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_1_occurrence_content">
+    <foreignObject x="613" y="130" width="48" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content-center">3</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_1_detection_content">
+    <foreignObject x="661" y="130" width="48" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content-center">4</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_1_criticite_content">
+    <foreignObject x="709" y="130" width="60" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content-center">96</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_1_action_content">
+    <foreignObject x="769" y="130" width="240" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Pose d'une pesée automatique en fin de ligne + remplacement piston tous les 6 mois</div>
+    </foreignObject>
+  </g>
+
+  <g class="krobar-slot" data-slot-key="block_ligne_2_fonction_content">
+    <foreignObject x="15" y="240" width="130" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Étiqueteuse automatique</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_2_mode_defaillance_content">
+    <foreignObject x="145" y="240" width="140" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Étiquette mal positionnée</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_2_effet_content">
+    <foreignObject x="285" y="240" width="140" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Refus en grande distribution, rappel possible</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_2_cause_content">
+    <foreignObject x="425" y="240" width="140" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Capteur de positionnement encrassé</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_2_gravite_content">
+    <foreignObject x="565" y="240" width="48" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content-center">6</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_2_occurrence_content">
+    <foreignObject x="613" y="240" width="48" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content-center">5</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_2_detection_content">
+    <foreignObject x="661" y="240" width="48" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content-center">3</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_2_criticite_content">
+    <foreignObject x="709" y="240" width="60" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content-center">90</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_2_action_content">
+    <foreignObject x="769" y="240" width="240" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Procédure de nettoyage capteur 2× par poste + contrôle visuel par opérateur</div>
+    </foreignObject>
+  </g>
+
+  <g class="krobar-slot" data-slot-key="block_ligne_3_fonction_content">
+    <foreignObject x="15" y="350" width="130" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Pasteurisateur</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_3_mode_defaillance_content">
+    <foreignObject x="145" y="350" width="140" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Température insuffisante</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_3_effet_content">
+    <foreignObject x="285" y="350" width="140" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Risque sanitaire grave, rappel obligatoire</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_3_cause_content">
+    <foreignObject x="425" y="350" width="140" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Sonde de température défectueuse</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_3_gravite_content">
+    <foreignObject x="565" y="350" width="48" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content-center">10</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_3_occurrence_content">
+    <foreignObject x="613" y="350" width="48" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content-center">2</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_3_detection_content">
+    <foreignObject x="661" y="350" width="48" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content-center">2</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_3_criticite_content">
+    <foreignObject x="709" y="350" width="60" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content-center">40</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_3_action_content">
+    <foreignObject x="769" y="350" width="240" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Double sonde redondante + arrêt automatique si écart &gt; 1°C</div>
+    </foreignObject>
+  </g>
+
+  <g class="krobar-slot" data-slot-key="block_ligne_4_fonction_content">
+    <foreignObject x="15" y="460" width="130" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Boucheuse</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_4_mode_defaillance_content">
+    <foreignObject x="145" y="460" width="140" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Bouchon mal serré</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_4_effet_content">
+    <foreignObject x="285" y="460" width="140" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Fuite produit, DLC raccourcie</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_4_cause_content">
+    <foreignObject x="425" y="460" width="140" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Réglage couple de serrage dérivé</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_4_gravite_content">
+    <foreignObject x="565" y="460" width="48" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content-center">5</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_4_occurrence_content">
+    <foreignObject x="613" y="460" width="48" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content-center">4</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_4_detection_content">
+    <foreignObject x="661" y="460" width="48" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content-center">5</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_4_criticite_content">
+    <foreignObject x="709" y="460" width="60" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content-center">100</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_4_action_content">
+    <foreignObject x="769" y="460" width="240" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Contrôleur de couple en ligne avec rejet automatique + calibration hebdomadaire</div>
+    </foreignObject>
+  </g>
+
+  <g class="krobar-slot" data-slot-key="block_ligne_5_fonction_content">
+    <foreignObject x="15" y="570" width="130" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Robot de palettisation</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_5_mode_defaillance_content">
+    <foreignObject x="145" y="570" width="140" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Chute de carton</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_5_effet_content">
+    <foreignObject x="285" y="570" width="140" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Casse, blessure opérateur, perte produit</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_5_cause_content">
+    <foreignObject x="425" y="570" width="140" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Programme défaillant lors de changement format</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_5_gravite_content">
+    <foreignObject x="565" y="570" width="48" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content-center">7</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_5_occurrence_content">
+    <foreignObject x="613" y="570" width="48" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content-center">2</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_5_detection_content">
+    <foreignObject x="661" y="570" width="48" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content-center">3</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_5_criticite_content">
+    <foreignObject x="709" y="570" width="60" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content-center">42</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_ligne_5_action_content">
+    <foreignObject x="769" y="570" width="240" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Test à blanc systématique après changement de format + barrière sécurité</div>
+    </foreignObject>
+  </g>
+
+  <!-- Légende -->
+  <text x="23" y="694" font-family="-apple-system,system-ui,sans-serif" font-size="10" fill="#64748b" font-style="italic">G : Gravité (1-10) | O : Occurrence (1-10) | D : Détection (1-10) | C : Criticité (G × O × D)</text>
+</svg>

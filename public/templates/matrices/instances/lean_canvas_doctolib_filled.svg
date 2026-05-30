@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" data-svg-kr-version="2.1" data-archetype="lean_canvas">
+  <metadata><krobar-meta>
+    <archetype>lean_canvas</archetype>
+    <family>CONCEPTUELLE_SYSTEMIQUE</family>
+    <cardinality>MULTIPLE</cardinality>
+    <regime>ABSTRAIT_SYSTEMIQUE</regime>
+  </krobar-meta></metadata>
+  <style>
+    .krobar-bbox-fill { fill: white; }
+    .krobar-bbox-stroke { stroke: #0f172a; stroke-width: 1.5; }
+    .krobar-canvas-title { font-family: -apple-system, system-ui, sans-serif; font-size: 28px; font-weight: 800; fill: #0f172a; text-anchor: middle; }
+    .krobar-canonical-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 14px; font-weight: 700; color: #0f172a; line-height: 1.2; text-align: center; padding: 6px 4px; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
+    .krobar-slot-content { font-family: -apple-system, system-ui, sans-serif; font-size: 13px; line-height: 1.45; color: #1e293b; padding: 8px 10px; height: 100%; box-sizing: border-box; overflow: hidden; word-wrap: break-word; }
+  </style>
+
+  <text x="512" y="48" class="krobar-canvas-title">LEAN CANVAS</text>
+
+  <!-- Problème -->
+  <g class="krobar-slot" data-slot-key="block_probleme_content">
+    <rect x="24" y="80" width="196" height="460" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="24" y="80" width="196" height="44">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Problème</div>
+    </foreignObject>
+    <foreignObject x="36" y="124" width="172" height="404">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Prendre un rendez-vous médical en France est un parcours du combattant. Téléphone qui sonne dans le vide, secrétariats saturés, créneaux non visibles. Les patients renoncent ou attendent des semaines.</div>
+    </foreignObject>
+  </g>
+
+  <!-- Solution -->
+  <g class="krobar-slot" data-slot-key="block_solution_content">
+    <rect x="220" y="80" width="195" height="230" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="220" y="80" width="195" height="44">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Solution</div>
+    </foreignObject>
+    <foreignObject x="232" y="124" width="171" height="174">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Plateforme web et mobile de prise de rendez-vous médicaux 24/7. Recherche par spécialité, géolocalisation, créneaux en temps réel.</div>
+    </foreignObject>
+  </g>
+
+  <!-- Indicateurs clés -->
+  <g class="krobar-slot" data-slot-key="block_indicateurs_cles_content">
+    <rect x="220" y="310" width="195" height="230" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="220" y="310" width="195" height="44">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Indicateurs clés</div>
+    </foreignObject>
+    <foreignObject x="232" y="354" width="171" height="174">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Nombre de rendez-vous pris/mois. Taux de no-show. Praticiens actifs sur la plateforme. Temps moyen pour trouver un créneau.</div>
+    </foreignObject>
+  </g>
+
+  <!-- Proposition de valeur unique -->
+  <g class="krobar-slot" data-slot-key="block_proposition_valeur_content">
+    <rect x="415" y="80" width="195" height="460" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="415" y="80" width="195" height="44">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Proposition de valeur unique</div>
+    </foreignObject>
+    <foreignObject x="427" y="124" width="171" height="404">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Trouver un médecin et prendre rendez-vous en moins de 2 minutes, n'importe où en France, n'importe quand. Sans téléphoner, sans attendre.</div>
+    </foreignObject>
+  </g>
+
+  <!-- Avantage concurrentiel -->
+  <g class="krobar-slot" data-slot-key="block_avantage_concurrentiel_content">
+    <rect x="610" y="80" width="195" height="230" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="610" y="80" width="195" height="44">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Avantage concurrentiel</div>
+    </foreignObject>
+    <foreignObject x="622" y="124" width="171" height="174">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Densité du réseau de praticiens (effet de réseau). Intégration profonde dans les logiciels métiers des praticiens. Données accumulées sur les flux de soins.</div>
+    </foreignObject>
+  </g>
+
+  <!-- Canaux -->
+  <g class="krobar-slot" data-slot-key="block_canaux_content">
+    <rect x="610" y="310" width="195" height="230" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="610" y="310" width="195" height="44">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Canaux</div>
+    </foreignObject>
+    <foreignObject x="622" y="354" width="171" height="174">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Application mobile (iOS, Android). Site web. Bouche-à-oreille des patients. Présence sur les annuaires médicaux et SEO.</div>
+    </foreignObject>
+  </g>
+
+  <!-- Segments de clientèle -->
+  <g class="krobar-slot" data-slot-key="block_segments_clientele_content">
+    <rect x="805" y="80" width="195" height="460" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="805" y="80" width="195" height="44">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Segments de clientèle</div>
+    </foreignObject>
+    <foreignObject x="817" y="124" width="171" height="404">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Patients : actifs urbains de 25 à 65 ans qui valorisent la rapidité. Praticiens : médecins libéraux qui veulent désengorger leur secrétariat.</div>
+    </foreignObject>
+  </g>
+
+  <!-- Structure de coûts -->
+  <g class="krobar-slot" data-slot-key="block_structure_couts_content">
+    <rect x="24" y="540" width="488" height="204" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="24" y="540" width="488" height="44">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Structure de coûts</div>
+    </foreignObject>
+    <foreignObject x="36" y="584" width="464" height="148">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Salaires développeurs et commerciaux (gros poste). Infrastructure cloud. Acquisition praticiens (équipe terrain). Conformité données de santé (HDS).</div>
+    </foreignObject>
+  </g>
+
+  <!-- Flux de revenus -->
+  <g class="krobar-slot" data-slot-key="block_flux_revenus_content">
+    <rect x="512" y="540" width="488" height="204" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="512" y="540" width="488" height="44">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Flux de revenus</div>
+    </foreignObject>
+    <foreignObject x="524" y="584" width="464" height="148">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Abonnement mensuel des praticiens (~109€/mois). Modules complémentaires (téléconsultation, agenda partagé). Pas de paiement côté patient.</div>
+    </foreignObject>
+  </g>
+
+</svg>

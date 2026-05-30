@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" data-svg-kr-version="2.1" data-archetype="opportunity_solution_tree">
+  <metadata><krobar-meta>
+    <archetype>opportunity_solution_tree</archetype>
+    <family>CONCEPTUELLE_SYSTEMIQUE</family>
+    <cardinality>MULTIPLE</cardinality>
+    <regime>ABSTRAIT_SYSTEMIQUE</regime>
+  </krobar-meta></metadata>
+  <style>
+    .krobar-bbox-fill { fill: white; }
+    .krobar-bbox-stroke { stroke: #0f172a; stroke-width: 1.5; }
+    .krobar-canvas-title { font-family: -apple-system, system-ui, sans-serif; font-size: 22px; font-weight: 800; fill: #0f172a; text-anchor: middle; }
+    .krobar-level-label { font-family: -apple-system, system-ui, sans-serif; font-size: 10px; font-weight: 700; fill: #475569; letter-spacing: 1px; text-transform: uppercase; }
+    .krobar-canonical-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 11px; font-weight: 700; color: #0f172a; line-height: 1.2; text-align: center; padding: 3px 6px; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
+    .krobar-slot-content { font-family: -apple-system, system-ui, sans-serif; font-size: 11px; line-height: 1.35; color: #1e293b; padding: 4px 8px; height: 100%; box-sizing: border-box; overflow: hidden; word-wrap: break-word; text-align: center; }
+    .tree-line { stroke: #0f172a; stroke-width: 1.2; fill: none; }
+    .outcome-frame { stroke: #0f172a; stroke-width: 2.5; fill: white; }
+  </style>
+
+  <text x="512" y="32" class="krobar-canvas-title">ARBRE OPPORTUNITÉS - SOLUTIONS</text>
+
+  <text x="14" y="118" class="krobar-level-label">Résultat business</text>
+  <text x="14" y="285" class="krobar-level-label">Opportunités</text>
+  <text x="14" y="455" class="krobar-level-label">Solutions</text>
+  <text x="14" y="625" class="krobar-level-label">Expérimentations</text>
+
+  <!-- Connexions hiérarchiques -->
+  <path d="M 512.0 170 L 512.0 205.0 L 171 205.0 L 171 240" class="tree-line"/>
+  <path d="M 512.0 170 L 512.0 205.0 L 512 205.0 L 512 240" class="tree-line"/>
+  <path d="M 512.0 170 L 512.0 205.0 L 853 205.0 L 853 240" class="tree-line"/>
+
+  <path d="M 171 340 L 171 375.0 L 86 375.0 L 86 410" class="tree-line"/>
+  <path d="M 171 340 L 171 375.0 L 256 375.0 L 256 410" class="tree-line"/>
+  <path d="M 512 340 L 512 375.0 L 427 375.0 L 427 410" class="tree-line"/>
+  <path d="M 512 340 L 512 375.0 L 597 375.0 L 597 410" class="tree-line"/>
+  <path d="M 853 340 L 853 375.0 L 768 375.0 L 768 410" class="tree-line"/>
+  <path d="M 853 340 L 853 375.0 L 938 375.0 L 938 410" class="tree-line"/>
+
+  <path d="M 256 510 L 256 545.0 L 171 545.0 L 171 580" class="tree-line"/>
+  <path d="M 597 510 L 597 545.0 L 512 545.0 L 512 580" class="tree-line"/>
+  <path d="M 938 510 L 938 545.0 L 853 545.0 L 853 580" class="tree-line"/>
+
+  <!-- Outcome (résultat business) -->
+  <g class="krobar-slot" data-slot-key="block_outcome_content">
+    <rect x="362" y="80" width="300" height="90" class="outcome-frame"/>
+    <foreignObject x="372" y="90" width="280" height="70">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="font-weight:600;">{{block_outcome_content}}</div>
+    </foreignObject>
+  </g>
+
+  <!-- Opportunities -->
+  <g class="krobar-slot" data-slot-key="block_opportunity_1_content">
+    <rect x="51" y="240" width="240" height="100" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="61" y="250" width="220" height="80">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_opportunity_1_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_opportunity_2_content">
+    <rect x="392" y="240" width="240" height="100" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="402" y="250" width="220" height="80">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_opportunity_2_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_opportunity_3_content">
+    <rect x="733" y="240" width="240" height="100" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="743" y="250" width="220" height="80">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_opportunity_3_content}}</div>
+    </foreignObject>
+  </g>
+
+  <!-- Solutions -->
+  <g class="krobar-slot" data-slot-key="block_solution_1_1_content">
+    <rect x="11" y="410" width="150" height="100" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="21" y="420" width="130" height="80">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_solution_1_1_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_solution_1_2_content">
+    <rect x="181" y="410" width="150" height="100" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="191" y="420" width="130" height="80">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_solution_1_2_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_solution_2_1_content">
+    <rect x="352" y="410" width="150" height="100" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="362" y="420" width="130" height="80">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_solution_2_1_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_solution_2_2_content">
+    <rect x="522" y="410" width="150" height="100" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="532" y="420" width="130" height="80">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_solution_2_2_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_solution_3_1_content">
+    <rect x="693" y="410" width="150" height="100" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="703" y="420" width="130" height="80">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_solution_3_1_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_solution_3_2_content">
+    <rect x="863" y="410" width="150" height="100" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="873" y="420" width="130" height="80">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_solution_3_2_content}}</div>
+    </foreignObject>
+  </g>
+
+  <!-- Expérimentations -->
+  <g class="krobar-slot" data-slot-key="block_experiment_1_content">
+    <rect x="71" y="580" width="200" height="100" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="81" y="590" width="180" height="80">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_experiment_1_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_experiment_2_content">
+    <rect x="412" y="580" width="200" height="100" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="422" y="590" width="180" height="80">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_experiment_2_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_experiment_3_content">
+    <rect x="753" y="580" width="200" height="100" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="763" y="590" width="180" height="80">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_experiment_3_content}}</div>
+    </foreignObject>
+  </g>
+
+</svg>

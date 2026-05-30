@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" data-svg-kr-version="2.1" data-archetype="wardley_map">
+  <metadata><krobar-meta>
+    <archetype>wardley_map</archetype>
+    <family>CONCEPTUELLE_SYSTEMIQUE</family>
+    <cardinality>MULTIPLE</cardinality>
+    <regime>ABSTRAIT_SYSTEMIQUE</regime>
+  </krobar-meta></metadata>
+  <style>
+    .krobar-bbox-fill { fill: white; }
+    .krobar-bbox-stroke { stroke: #0f172a; stroke-width: 1.5; }
+    .krobar-canvas-title { font-family: -apple-system, system-ui, sans-serif; font-size: 22px; font-weight: 800; fill: #0f172a; text-anchor: middle; }
+    .krobar-axis-label { font-family: -apple-system, system-ui, sans-serif; font-size: 12px; font-weight: 700; fill: #475569; letter-spacing: 1px; text-transform: uppercase; }
+    .krobar-zone-label { font-family: -apple-system, system-ui, sans-serif; font-size: 11px; font-weight: 600; fill: #475569; text-anchor: middle; font-style: italic; }
+    .krobar-axis-end { font-family: -apple-system, system-ui, sans-serif; font-size: 10px; fill: #64748b; font-style: italic; }
+    .krobar-node-label-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 11px; font-weight: 700; color: #0f172a; line-height: 1.2; text-align: center; padding: 2px; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
+    .wm-axis { stroke: #0f172a; stroke-width: 1.5; fill: none; }
+    .wm-zone-sep { stroke: #cbd5e1; stroke-width: 1; stroke-dasharray: 3,3; }
+    .wm-connection { stroke: #0f172a; stroke-width: 1; fill: none; }
+    .wm-node { fill: white; stroke: #0f172a; stroke-width: 2; }
+  </style>
+
+  <text x="512" y="32" class="krobar-canvas-title">CARTE DE WARDLEY</text>
+
+  <!-- Plan -->
+  <rect x="100" y="100" width="880" height="560" fill="white" stroke="#0f172a" stroke-width="1.5"/>
+
+  <!-- Séparateurs zones évolution -->
+  <line x1="320" y1="100" x2="320" y2="660" class="wm-zone-sep"/>
+  <line x1="540" y1="100" x2="540" y2="660" class="wm-zone-sep"/>
+  <line x1="760" y1="100" x2="760" y2="660" class="wm-zone-sep"/>
+
+  <text x="210" y="682" class="krobar-zone-label">Genèse</text>
+  <text x="430" y="682" class="krobar-zone-label">Sur mesure</text>
+  <text x="650" y="682" class="krobar-zone-label">Produit</text>
+  <text x="870" y="682" class="krobar-zone-label">Commodité</text>
+
+  <!-- Axe Y (Visibilité chaîne de valeur) -->
+  <text x="36" y="380.0" class="krobar-axis-label" transform="rotate(-90 36 380.0)" text-anchor="middle">Visibilité</text>
+  <text x="108" y="112" class="krobar-axis-end">+ Visible</text>
+  <text x="108" y="656" class="krobar-axis-end">+ Invisible</text>
+
+  <!-- Axe X (Évolution) -->
+  <text x="540.0" y="710" class="krobar-axis-label" text-anchor="middle">Évolution</text>
+
+  <!-- Connexions value chain -->
+  <line x1="496" y1="128" x2="452" y2="212" class="wm-connection"/>
+  <line x1="452" y1="212" x2="408" y2="352" class="wm-connection"/>
+  <line x1="408" y1="352" x2="646" y2="464" class="wm-connection"/>
+  <line x1="408" y1="352" x2="848" y2="593" class="wm-connection"/>
+  <line x1="646" y1="464" x2="848" y2="593" class="wm-connection"/>
+
+  <!-- Nœuds value chain -->
+  <g class="krobar-slot" data-slot-key="block_user_content">
+    <circle cx="496" cy="128" r="16" class="wm-node"/>
+    <foreignObject x="518" y="112" width="140" height="32">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-node-label-fo">PME utilisateurs Krobar</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_besoin_visible_content">
+    <circle cx="452" cy="212" r="16" class="wm-node"/>
+    <foreignObject x="474" y="196" width="140" height="32">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-node-label-fo">Produire un visuel pro à partir d'un texte</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_composant_central_content">
+    <circle cx="408" cy="352" r="16" class="wm-node"/>
+    <foreignObject x="430" y="336" width="140" height="32">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-node-label-fo">Moteur multi-agents IA</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_brique_metier_content">
+    <circle cx="646" cy="464" r="16" class="wm-node"/>
+    <foreignObject x="668" y="448" width="140" height="32">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-node-label-fo">Catalogue de templates</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_infrastructure_content">
+    <circle cx="848" cy="593" r="16" class="wm-node"/>
+    <foreignObject x="870" y="577" width="140" height="32">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-node-label-fo">Cloud + API LLM tierces</div>
+    </foreignObject>
+  </g>
+
+</svg>

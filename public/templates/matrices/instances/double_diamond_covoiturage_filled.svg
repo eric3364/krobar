@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" data-svg-kr-version="2.1" data-archetype="double_diamond">
+  <metadata><krobar-meta>
+    <archetype>double_diamond</archetype>
+    <family>PROCEDURALE_SEQUENTIELLE</family>
+    <cardinality>MULTIPLE</cardinality>
+    <regime>SEMI_METAPHORIQUE</regime>
+  </krobar-meta></metadata>
+  <style>
+    .krobar-bbox-fill { fill: white; }
+    .krobar-bbox-stroke { stroke: #0f172a; stroke-width: 1.5; }
+    .krobar-canvas-title { font-family: -apple-system, system-ui, sans-serif; font-size: 24px; font-weight: 800; fill: #0f172a; text-anchor: middle; }
+    .krobar-phase-label { font-family: -apple-system, system-ui, sans-serif; font-size: 14px; font-weight: 700; fill: #0f172a; text-anchor: middle; }
+    .krobar-mode-label { font-family: -apple-system, system-ui, sans-serif; font-size: 10px; fill: #64748b; text-anchor: middle; font-style: italic; }
+    .krobar-side-label { font-family: -apple-system, system-ui, sans-serif; font-size: 11px; font-weight: 700; fill: #475569; letter-spacing: 1.5px; text-transform: uppercase; }
+    .krobar-canonical-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 13px; font-weight: 700; color: #0f172a; line-height: 1.2; text-align: center; padding: 6px 8px; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
+    .krobar-slot-content { font-family: -apple-system, system-ui, sans-serif; font-size: 12px; line-height: 1.4; color: #1e293b; padding: 6px 12px; height: 100%; box-sizing: border-box; overflow: hidden; word-wrap: break-word; }
+    .diamond-fill { fill: white; }
+    .diamond-stroke { stroke: #0f172a; stroke-width: 2; fill: none; }
+    .diamond-mid-line { stroke: #0f172a; stroke-width: 1; stroke-dasharray: 3,3; }
+  </style>
+
+  <text x="512" y="32" class="krobar-canvas-title">DOUBLE DIAMANT</text>
+
+  <text x="271.0" y="62" class="krobar-side-label">PROBLÈME</text>
+  <text x="753.0" y="62" class="krobar-side-label">SOLUTION</text>
+
+  <!-- Diamant 1 : Découvrir + Définir -->
+  <polygon points="40,230.0 271.0,120 502,230.0 271.0,340" class="diamond-fill diamond-stroke"/>
+  <line x1="271.0" y1="120" x2="271.0" y2="340" class="diamond-mid-line"/>
+
+  <!-- Diamant 2 : Développer + Livrer -->
+  <polygon points="522,230.0 753.0,120 984,230.0 753.0,340" class="diamond-fill diamond-stroke"/>
+  <line x1="753.0" y1="120" x2="753.0" y2="340" class="diamond-mid-line"/>
+
+  <text x="156" y="105" class="krobar-phase-label">Découvrir</text>
+  <text x="156" y="358" class="krobar-mode-label">Divergence</text>
+  <text x="386" y="105" class="krobar-phase-label">Définir</text>
+  <text x="386" y="358" class="krobar-mode-label">Convergence</text>
+  <text x="638" y="105" class="krobar-phase-label">Développer</text>
+  <text x="638" y="358" class="krobar-mode-label">Divergence</text>
+  <text x="868" y="105" class="krobar-phase-label">Livrer</text>
+  <text x="868" y="358" class="krobar-mode-label">Convergence</text>
+
+  <!-- Espace entre les deux diamants -->
+  <line x1="512" y1="110" x2="512" y2="350" stroke="#cbd5e1" stroke-width="1"/>
+
+  <!-- Zones de contenu (slots variables) -->
+  <g class="krobar-slot" data-slot-key="block_decouvrir_content">
+    <rect x="23" y="400" width="240" height="320" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="23" y="404" width="240" height="30">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Découvrir</div>
+    </foreignObject>
+    <foreignObject x="35" y="436" width="216" height="276">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Entretiens avec 20 commuters quotidiens. Observation aux heures de pointe. Analyse des plaintes en ligne. Tour des solutions existantes (Klaxit, BlaBlaCar Daily).</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_definir_content">
+    <rect x="269" y="400" width="240" height="320" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="269" y="404" width="240" height="30">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Définir</div>
+    </foreignObject>
+    <foreignObject x="281" y="436" width="216" height="276">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Problème clé : « Les conducteurs solos en zone périurbaine perdent 90 min/jour seuls dans les bouchons, alors que 80% pourraient partager le trajet avec un voisin. »</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_developper_content">
+    <rect x="515" y="400" width="240" height="320" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="515" y="404" width="240" height="30">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Développer</div>
+    </foreignObject>
+    <foreignObject x="527" y="436" width="216" height="276">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Idéation : 30 concepts. Sélection : 3 prototypes papier. Tests sur 12 utilisateurs. Itérations sur l'onboarding et le matching algorithmique.</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_livrer_content">
+    <rect x="761" y="400" width="240" height="320" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="761" y="404" width="240" height="30">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Livrer</div>
+    </foreignObject>
+    <foreignObject x="773" y="436" width="216" height="276">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">MVP lancé sur 1 quartier-test (Cugnaux). 200 inscrits en 3 semaines. KPIs : 65 trajets/jour, satisfaction 4.2/5. Décision Go/No-Go pour scaling régional.</div>
+    </foreignObject>
+  </g>
+
+</svg>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" data-svg-kr-version="2.1" data-archetype="brand_key_canvas">
+  <metadata><krobar-meta>
+    <archetype>brand_key_canvas</archetype>
+    <family>CONCEPTUELLE_SYSTEMIQUE</family>
+    <cardinality>MULTIPLE</cardinality>
+    <regime>ABSTRAIT_SYSTEMIQUE</regime>
+  </krobar-meta></metadata>
+  <style>
+    .krobar-bbox-fill { fill: white; }
+    .krobar-bbox-stroke { stroke: #0f172a; stroke-width: 1.5; }
+    .krobar-canvas-title { font-family: -apple-system, system-ui, sans-serif; font-size: 22px; font-weight: 800; fill: #0f172a; text-anchor: start; }
+    .krobar-num { font-family: -apple-system, system-ui, sans-serif; font-size: 14px; font-weight: 800; fill: #0f172a; }
+    .krobar-canonical-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 12px; font-weight: 700; color: #0f172a; line-height: 1.2; padding: 4px 8px 4px 28px; height: 100%; display: flex; align-items: center; justify-content: flex-start; box-sizing: border-box; }
+    .krobar-canonical-fo-central { font-family: -apple-system, system-ui, sans-serif; font-size: 13px; font-weight: 800; color: #0f172a; line-height: 1.2; text-align: center; padding: 4px 8px; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
+    .krobar-slot-content { font-family: -apple-system, system-ui, sans-serif; font-size: 11px; line-height: 1.4; color: #1e293b; padding: 4px 10px; height: 100%; box-sizing: border-box; overflow: hidden; word-wrap: break-word; }
+    .krobar-slot-content-central { font-family: -apple-system, system-ui, sans-serif; font-size: 11px; line-height: 1.4; color: #1e293b; padding: 4px 10px; height: 100%; box-sizing: border-box; overflow: hidden; word-wrap: break-word; text-align: center; }
+    .bk-frame { stroke: #0f172a; stroke-width: 2.5; fill: none; }
+  </style>
+
+  <text x="14" y="34" class="krobar-canvas-title">Brand Key Canvas</text>
+
+  <!-- Cadre englobant haut (Brand definition) -->
+  <rect x="10" y="60" width="1004" height="290" class="bk-frame"/>
+
+  <!-- Cadre englobant bas (Market grounding) -->
+  <rect x="10" y="458" width="1004" height="262" class="bk-frame"/>
+
+  <!-- 5 Valeurs &amp; Personnalité -->
+  <g class="krobar-slot" data-slot-key="block_valeurs_personnalite_content">
+    <rect x="14" y="64" width="498" height="141" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <text x="24" y="86" class="krobar-num">5</text>
+    <foreignObject x="14" y="68" width="498" height="26">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Valeurs &amp; Personnalité</div>
+    </foreignObject>
+    <foreignObject x="24" y="94" width="478" height="105">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_valeurs_personnalite_content}}</div>
+    </foreignObject>
+  </g>
+
+  <!-- 6 Crédibilité -->
+  <g class="krobar-slot" data-slot-key="block_credibilite_content">
+    <rect x="512" y="64" width="498" height="141" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <text x="522" y="86" class="krobar-num">6</text>
+    <foreignObject x="512" y="68" width="498" height="26">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Crédibilité</div>
+    </foreignObject>
+    <foreignObject x="522" y="94" width="478" height="105">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_credibilite_content}}</div>
+    </foreignObject>
+  </g>
+
+  <!-- 4 Bénéfices -->
+  <g class="krobar-slot" data-slot-key="block_benefices_content">
+    <rect x="14" y="205" width="498" height="141" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <text x="24" y="227" class="krobar-num">4</text>
+    <foreignObject x="14" y="209" width="498" height="26">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Bénéfices</div>
+    </foreignObject>
+    <foreignObject x="24" y="235" width="478" height="105">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_benefices_content}}</div>
+    </foreignObject>
+  </g>
+
+  <!-- 7 Discriminateur -->
+  <g class="krobar-slot" data-slot-key="block_discriminateur_content">
+    <rect x="512" y="205" width="498" height="141" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <text x="1000" y="227" class="krobar-num" text-anchor="end">7</text>
+    <foreignObject x="512" y="209" width="498" height="26">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo" style="padding:4px 28px 4px 8px;justify-content:flex-end;">Discriminateur</div>
+    </foreignObject>
+    <foreignObject x="522" y="235" width="478" height="105">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_discriminateur_content}}</div>
+    </foreignObject>
+  </g>
+
+  <!-- 1 Concurrence -->
+  <g class="krobar-slot" data-slot-key="block_concurrence_content">
+    <rect x="14" y="462" width="498" height="120" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <text x="24" y="484" class="krobar-num">1</text>
+    <foreignObject x="14" y="466" width="498" height="26">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Concurrence</div>
+    </foreignObject>
+    <foreignObject x="24" y="492" width="478" height="84">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_concurrence_content}}</div>
+    </foreignObject>
+  </g>
+
+  <!-- 2 Groupe cible -->
+  <g class="krobar-slot" data-slot-key="block_cible_content">
+    <rect x="512" y="462" width="498" height="120" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <text x="1000" y="484" class="krobar-num" text-anchor="end">2</text>
+    <foreignObject x="512" y="466" width="498" height="26">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo" style="padding:4px 28px 4px 8px;justify-content:flex-end;">Groupe cible</div>
+    </foreignObject>
+    <foreignObject x="522" y="492" width="478" height="84">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_cible_content}}</div>
+    </foreignObject>
+  </g>
+
+  <!-- 0 Forces racines (Root strengths) -->
+  <g class="krobar-slot" data-slot-key="block_root_strengths_content">
+    <rect x="14" y="585" width="996" height="131" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <text x="24" y="607" class="krobar-num">0</text>
+    <foreignObject x="14" y="589" width="996" height="26">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Forces racines (Root strengths)</div>
+    </foreignObject>
+    <foreignObject x="24" y="615" width="976" height="95">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_root_strengths_content}}</div>
+    </foreignObject>
+  </g>
+
+  <!-- 8 Essence de marque -->
+  <g class="krobar-slot" data-slot-key="block_essence_content">
+    <rect x="312" y="125" width="400" height="150" fill="white" stroke="#0f172a" stroke-width="3"/>
+    <rect x="317" y="130" width="390" height="140" fill="none" stroke="#0f172a" stroke-width="0.8"/>
+    <foreignObject x="312" y="133" width="400" height="26">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo-central">8 — Essence de marque</div>
+    </foreignObject>
+    <foreignObject x="322" y="163" width="380" height="104">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content-central">{{block_essence_content}}</div>
+    </foreignObject>
+  </g>
+
+  <!-- 3 Insight consommateur -->
+  <g class="krobar-slot" data-slot-key="block_insight_content">
+    <rect x="180" y="354" width="664" height="100" fill="white" stroke="#0f172a" stroke-width="3"/>
+    <rect x="185" y="359" width="654" height="90" fill="none" stroke="#0f172a" stroke-width="0.8"/>
+    <foreignObject x="180" y="362" width="664" height="26">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo-central">3 — Insight consommateur</div>
+    </foreignObject>
+    <foreignObject x="190" y="392" width="644" height="54">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content-central">{{block_insight_content}}</div>
+    </foreignObject>
+  </g>
+
+</svg>

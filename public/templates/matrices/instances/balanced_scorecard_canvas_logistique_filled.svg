@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" data-svg-kr-version="2.1" data-archetype="balanced_scorecard_canvas">
+  <metadata><krobar-meta>
+    <archetype>balanced_scorecard_canvas</archetype>
+    <family>CONCEPTUELLE_SYSTEMIQUE</family>
+    <cardinality>MULTIPLE</cardinality>
+    <regime>ABSTRAIT_SYSTEMIQUE</regime>
+  </krobar-meta></metadata>
+  <style>
+    .krobar-bbox-fill { fill: white; }
+    .krobar-bbox-stroke { stroke: #0f172a; stroke-width: 1.5; }
+    .krobar-canvas-title { font-family: -apple-system, system-ui, sans-serif; font-size: 22px; font-weight: 800; fill: #0f172a; text-anchor: middle; }
+    .krobar-canonical-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 13px; font-weight: 800; color: #0f172a; line-height: 1.2; text-align: center; padding: 4px 8px; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; letter-spacing: 0.3px; }
+    .krobar-canonical-fo-center { font-family: -apple-system, system-ui, sans-serif; font-size: 15px; font-weight: 800; color: #0f172a; line-height: 1.2; text-align: center; padding: 4px 8px; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; letter-spacing: 0.5px; }
+    .krobar-subtitle-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 10px; font-weight: 600; color: #64748b; line-height: 1.2; text-align: center; padding: 0px 8px; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; font-style: italic; }
+    .krobar-sub-label-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 9px; font-weight: 700; color: #475569; line-height: 1.2; text-align: left; padding: 2px 6px; height: 100%; display: flex; align-items: center; box-sizing: border-box; text-transform: uppercase; letter-spacing: 0.5px; }
+    .krobar-slot-content { font-family: -apple-system, system-ui, sans-serif; font-size: 10px; line-height: 1.35; color: #1e293b; padding: 2px 6px; height: 100%; box-sizing: border-box; overflow: hidden; word-wrap: break-word; }
+    .bsc-arrow { stroke: #0f172a; stroke-width: 1; fill: #0f172a; }
+  </style>
+
+  <text x="512" y="36" class="krobar-canvas-title">TABLEAU DE BORD ÉQUILIBRÉ</text>
+
+  <!-- Flèches : chaque perspective ↔ vision -->
+<line x1="512" y1="252" x2="512" y2="298" stroke="#0f172a" stroke-width="1.2"/>
+<polygon points="512,304 508,296 516,296" class="bsc-arrow"/>
+<line x1="376" y1="384" x2="382" y2="384" stroke="#0f172a" stroke-width="1.2"/>
+<polygon points="388,384 380,388 380,380" class="bsc-arrow"/>
+<line x1="648" y1="384" x2="642" y2="384" stroke="#0f172a" stroke-width="1.2"/>
+<polygon points="636,384 644,380 644,388" class="bsc-arrow"/>
+<line x1="512" y1="516" x2="512" y2="470" stroke="#0f172a" stroke-width="1.2"/>
+<polygon points="512,464 516,472 508,472" class="bsc-arrow"/>
+
+  <!-- Perspective Perspective financière -->
+  <g class="krobar-perspective">
+    <rect x="247" y="70" width="530" height="180" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="247" y="76" width="530" height="28">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Perspective financière</div>
+    </foreignObject>
+    <foreignObject x="247" y="100" width="530" height="16">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-subtitle-fo">« Comment voient-nous nos actionnaires ? »</div>
+    </foreignObject>
+    <rect x="255" y="122" width="253" height="58" fill="none" stroke="#cbd5e1" stroke-width="0.8"/>
+    <foreignObject x="255" y="122" width="253" height="16">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-sub-label-fo">Objectifs</div>
+    </foreignObject>
+    <g class="krobar-slot" data-slot-key="block_financiere_objectifs_content">
+      <foreignObject x="255" y="138" width="253" height="42">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Croissance CA, marge nette, ROI</div>
+      </foreignObject>
+    </g>
+    <rect x="516" y="122" width="253" height="58" fill="none" stroke="#cbd5e1" stroke-width="0.8"/>
+    <foreignObject x="516" y="122" width="253" height="16">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-sub-label-fo">Indicateurs</div>
+    </foreignObject>
+    <g class="krobar-slot" data-slot-key="block_financiere_indicateurs_content">
+      <foreignObject x="516" y="138" width="253" height="42">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">CA annuel, EBITDA, ROCE</div>
+      </foreignObject>
+    </g>
+    <rect x="255" y="188" width="253" height="58" fill="none" stroke="#cbd5e1" stroke-width="0.8"/>
+    <foreignObject x="255" y="188" width="253" height="16">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-sub-label-fo">Cibles</div>
+    </foreignObject>
+    <g class="krobar-slot" data-slot-key="block_financiere_cibles_content">
+      <foreignObject x="255" y="204" width="253" height="42">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">+25%/an, marge 12%, ROCE 18%</div>
+      </foreignObject>
+    </g>
+    <rect x="516" y="188" width="253" height="58" fill="none" stroke="#cbd5e1" stroke-width="0.8"/>
+    <foreignObject x="516" y="188" width="253" height="16">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-sub-label-fo">Initiatives</div>
+    </foreignObject>
+    <g class="krobar-slot" data-slot-key="block_financiere_initiatives_content">
+      <foreignObject x="516" y="204" width="253" height="42">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Diversification clients grands comptes</div>
+      </foreignObject>
+    </g>
+  </g>
+
+  <!-- Perspective Perspective client -->
+  <g class="krobar-perspective">
+    <rect x="14" y="268" width="360" height="232" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="14" y="274" width="360" height="28">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Perspective client</div>
+    </foreignObject>
+    <foreignObject x="14" y="298" width="360" height="16">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-subtitle-fo">« Comment nous voient les clients ? »</div>
+    </foreignObject>
+    <rect x="22" y="320" width="168" height="84" fill="none" stroke="#cbd5e1" stroke-width="0.8"/>
+    <foreignObject x="22" y="320" width="168" height="16">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-sub-label-fo">Objectifs</div>
+    </foreignObject>
+    <g class="krobar-slot" data-slot-key="block_client_objectifs_content">
+      <foreignObject x="22" y="336" width="168" height="68">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Satisfaction, fidélisation, NPS élevé</div>
+      </foreignObject>
+    </g>
+    <rect x="198" y="320" width="168" height="84" fill="none" stroke="#cbd5e1" stroke-width="0.8"/>
+    <foreignObject x="198" y="320" width="168" height="16">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-sub-label-fo">Indicateurs</div>
+    </foreignObject>
+    <g class="krobar-slot" data-slot-key="block_client_indicateurs_content">
+      <foreignObject x="198" y="336" width="168" height="68">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">NPS, taux de churn, satisfaction client</div>
+      </foreignObject>
+    </g>
+    <rect x="22" y="412" width="168" height="84" fill="none" stroke="#cbd5e1" stroke-width="0.8"/>
+    <foreignObject x="22" y="412" width="168" height="16">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-sub-label-fo">Cibles</div>
+    </foreignObject>
+    <g class="krobar-slot" data-slot-key="block_client_cibles_content">
+      <foreignObject x="22" y="428" width="168" height="68">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">NPS &gt; 50, churn &lt; 5%, CSAT &gt; 4.5/5</div>
+      </foreignObject>
+    </g>
+    <rect x="198" y="412" width="168" height="84" fill="none" stroke="#cbd5e1" stroke-width="0.8"/>
+    <foreignObject x="198" y="412" width="168" height="16">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-sub-label-fo">Initiatives</div>
+    </foreignObject>
+    <g class="krobar-slot" data-slot-key="block_client_initiatives_content">
+      <foreignObject x="198" y="428" width="168" height="68">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Portail self-service, support 24/7</div>
+      </foreignObject>
+    </g>
+  </g>
+
+  <!-- Perspective Processus internes -->
+  <g class="krobar-perspective">
+    <rect x="650" y="268" width="360" height="232" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="650" y="274" width="360" height="28">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Processus internes</div>
+    </foreignObject>
+    <foreignObject x="650" y="298" width="360" height="16">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-subtitle-fo">« Où devons-nous exceller ? »</div>
+    </foreignObject>
+    <rect x="658" y="320" width="168" height="84" fill="none" stroke="#cbd5e1" stroke-width="0.8"/>
+    <foreignObject x="658" y="320" width="168" height="16">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-sub-label-fo">Objectifs</div>
+    </foreignObject>
+    <g class="krobar-slot" data-slot-key="block_processus_objectifs_content">
+      <foreignObject x="658" y="336" width="168" height="68">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Efficacité opérationnelle, qualité service</div>
+      </foreignObject>
+    </g>
+    <rect x="834" y="320" width="168" height="84" fill="none" stroke="#cbd5e1" stroke-width="0.8"/>
+    <foreignObject x="834" y="320" width="168" height="16">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-sub-label-fo">Indicateurs</div>
+    </foreignObject>
+    <g class="krobar-slot" data-slot-key="block_processus_indicateurs_content">
+      <foreignObject x="834" y="336" width="168" height="68">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Délai livraison, taux d'erreur, OTIF</div>
+      </foreignObject>
+    </g>
+    <rect x="658" y="412" width="168" height="84" fill="none" stroke="#cbd5e1" stroke-width="0.8"/>
+    <foreignObject x="658" y="412" width="168" height="16">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-sub-label-fo">Cibles</div>
+    </foreignObject>
+    <g class="krobar-slot" data-slot-key="block_processus_cibles_content">
+      <foreignObject x="658" y="428" width="168" height="68">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Délai &lt; 24h, erreur &lt; 0.5%, OTIF 98%</div>
+      </foreignObject>
+    </g>
+    <rect x="834" y="412" width="168" height="84" fill="none" stroke="#cbd5e1" stroke-width="0.8"/>
+    <foreignObject x="834" y="412" width="168" height="16">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-sub-label-fo">Initiatives</div>
+    </foreignObject>
+    <g class="krobar-slot" data-slot-key="block_processus_initiatives_content">
+      <foreignObject x="834" y="428" width="168" height="68">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Automatisation entrepôts, IA prédictive</div>
+      </foreignObject>
+    </g>
+  </g>
+
+  <!-- Perspective Apprentissage &amp; croissance -->
+  <g class="krobar-perspective">
+    <rect x="247" y="518" width="530" height="200" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="247" y="524" width="530" height="28">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Apprentissage &amp; croissance</div>
+    </foreignObject>
+    <foreignObject x="247" y="548" width="530" height="16">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-subtitle-fo">« Comment maintenir la capacité de changer ? »</div>
+    </foreignObject>
+    <rect x="255" y="570" width="253" height="68" fill="none" stroke="#cbd5e1" stroke-width="0.8"/>
+    <foreignObject x="255" y="570" width="253" height="16">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-sub-label-fo">Objectifs</div>
+    </foreignObject>
+    <g class="krobar-slot" data-slot-key="block_apprentissage_objectifs_content">
+      <foreignObject x="255" y="586" width="253" height="52">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Compétences, culture, innovation</div>
+      </foreignObject>
+    </g>
+    <rect x="516" y="570" width="253" height="68" fill="none" stroke="#cbd5e1" stroke-width="0.8"/>
+    <foreignObject x="516" y="570" width="253" height="16">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-sub-label-fo">Indicateurs</div>
+    </foreignObject>
+    <g class="krobar-slot" data-slot-key="block_apprentissage_indicateurs_content">
+      <foreignObject x="516" y="586" width="253" height="52">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">% formation, satisfaction interne, idées proposées</div>
+      </foreignObject>
+    </g>
+    <rect x="255" y="646" width="253" height="68" fill="none" stroke="#cbd5e1" stroke-width="0.8"/>
+    <foreignObject x="255" y="646" width="253" height="16">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-sub-label-fo">Cibles</div>
+    </foreignObject>
+    <g class="krobar-slot" data-slot-key="block_apprentissage_cibles_content">
+      <foreignObject x="255" y="662" width="253" height="52">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">5j/an de formation, eNPS &gt; 30, 10 idées/équipe/an</div>
+      </foreignObject>
+    </g>
+    <rect x="516" y="646" width="253" height="68" fill="none" stroke="#cbd5e1" stroke-width="0.8"/>
+    <foreignObject x="516" y="646" width="253" height="16">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-sub-label-fo">Initiatives</div>
+    </foreignObject>
+    <g class="krobar-slot" data-slot-key="block_apprentissage_initiatives_content">
+      <foreignObject x="516" y="662" width="253" height="52">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Académie interne, programme intrapreneurial</div>
+      </foreignObject>
+    </g>
+  </g>
+
+  <!-- Vision & Stratégie (centre) -->
+  <g class="krobar-slot" data-slot-key="block_vision_content">
+    <rect x="392" y="308" width="240" height="152" fill="white" stroke="#0f172a" stroke-width="3"/>
+    <rect x="397" y="313" width="230" height="142" fill="none" stroke="#0f172a" stroke-width="0.8"/>
+    <foreignObject x="392" y="318" width="240" height="28">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo-center">Vision &amp; Stratégie</div>
+    </foreignObject>
+    <foreignObject x="402" y="352" width="220" height="98">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="text-align:center;font-weight:500;">Devenir le partenaire logistique de référence du e-commerce mid-market français d'ici 3 ans.</div>
+    </foreignObject>
+  </g>
+
+</svg>

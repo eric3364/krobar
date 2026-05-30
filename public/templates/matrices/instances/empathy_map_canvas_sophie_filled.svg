@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" data-svg-kr-version="2.1" data-archetype="empathy_map_canvas">
+  <metadata><krobar-meta>
+    <archetype>empathy_map_canvas</archetype>
+    <family>NARRATIVE_SCENIQUE</family>
+    <cardinality>MULTIPLE</cardinality>
+    <regime>SEMI_METAPHORIQUE</regime>
+  </krobar-meta></metadata>
+  <style>
+    .krobar-bbox-fill { fill: white; }
+    .krobar-bbox-stroke { stroke: #0f172a; stroke-width: 1.5; }
+    .krobar-canvas-title { font-family: -apple-system, system-ui, sans-serif; font-size: 26px; font-weight: 800; fill: #0f172a; text-anchor: middle; }
+    .krobar-canonical-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 16px; font-weight: 700; color: #0f172a; line-height: 1.2; text-align: left; padding: 8px 12px; height: 100%; display: flex; align-items: center; justify-content: flex-start; box-sizing: border-box; }
+    .krobar-canonical-fo-right { font-family: -apple-system, system-ui, sans-serif; font-size: 16px; font-weight: 700; color: #0f172a; line-height: 1.2; text-align: right; padding: 8px 12px; height: 100%; display: flex; align-items: center; justify-content: flex-end; box-sizing: border-box; }
+    .krobar-slot-content { font-family: -apple-system, system-ui, sans-serif; font-size: 13px; line-height: 1.45; color: #1e293b; padding: 8px 12px; height: 100%; box-sizing: border-box; overflow: hidden; word-wrap: break-word; }
+    .face-fill { fill: white; }
+    .face-line { stroke: #0f172a; stroke-width: 1.5; fill: none; }
+  </style>
+
+  <!-- Titre -->
+  <text x="512" y="40" class="krobar-canvas-title">CARTE D'EMPATHIE</text>
+
+  <!-- Conteneur englobant -->
+  <rect x="24" y="80" width="976" height="640" fill="none" stroke="#0f172a" stroke-width="2"/>
+
+  <!-- Séparateur quadrants / bandes -->
+  <line x1="24" y1="560" x2="1000" y2="560" stroke="#0f172a" stroke-width="2"/>
+
+  <!-- Séparateur vertical -->
+  <line x1="512" y1="80" x2="512" y2="720" class="krobar-bbox-stroke"/>
+
+  <!-- Séparateur horizontal des quadrants -->
+  <line x1="24" y1="320" x2="1000" y2="320" class="krobar-bbox-stroke"/>
+
+  <!-- Dit -->
+  <g class="krobar-slot" data-slot-key="block_dit_content">
+    <foreignObject x="24" y="80" width="488" height="36">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Dit</div>
+    </foreignObject>
+    <foreignObject x="38.0" y="130.0" width="386.0" height="176.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">« Mes slides sont moches, c'est gênant en CODIR. » « Je n'ai pas le temps de soigner le design. » « Mon collègue de la com sait faire ça en 10 minutes, moi pas. »</div>
+    </foreignObject>
+  </g>
+
+  <!-- Pense -->
+  <g class="krobar-slot" data-slot-key="block_pense_content">
+    <foreignObject x="512" y="80" width="488" height="36">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo-right">Pense</div>
+    </foreignObject>
+    <foreignObject x="600.0" y="130.0" width="386.0" height="176.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Doit-elle prendre une formation Canva ? La direction la juge sur le fond mais le visuel pèse plus qu'elle ne pense. Elle se sent moins crédible à cause du rendu de ses supports.</div>
+    </foreignObject>
+  </g>
+
+  <!-- Fait -->
+  <g class="krobar-slot" data-slot-key="block_fait_content">
+    <foreignObject x="24" y="320" width="488" height="36">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Fait</div>
+    </foreignObject>
+    <foreignObject x="38.0" y="370.0" width="386.0" height="176.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Recycle des templates PowerPoint vieillots. Copie-colle des fishbones depuis Google Images. Demande de l'aide à la com en interne mais avec délai d'attente.</div>
+    </foreignObject>
+  </g>
+
+  <!-- Ressent -->
+  <g class="krobar-slot" data-slot-key="block_ressent_content">
+    <foreignObject x="512" y="320" width="488" height="36">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo-right">Ressent</div>
+    </foreignObject>
+    <foreignObject x="600.0" y="370.0" width="386.0" height="176.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Frustration de perdre 2h sur un slide. Anxiété avant les présentations importantes. Soulagement quand un collègue l'aide. Envie de monter en compétence sans y passer ses soirées.</div>
+    </foreignObject>
+  </g>
+
+
+  <!-- Difficultés & Frustrations -->
+  <g class="krobar-slot" data-slot-key="block_difficultes_content">
+    <foreignObject x="24" y="560" width="488" height="36">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Difficultés &amp; Frustrations</div>
+    </foreignObject>
+    <foreignObject x="38.0" y="596.0" width="460.0" height="110.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Manque de temps pour apprendre des outils complexes (Illustrator, Figma). Ne sait pas dessiner. Outils existants (Canva, Genially) sont trop génériques pour le contenu business. Les modèles trouvés sur le web ne collent jamais exactement à son cas.</div>
+    </foreignObject>
+  </g>
+
+  <!-- Objectifs & Bénéfices recherchés -->
+  <g class="krobar-slot" data-slot-key="block_objectifs_content">
+    <foreignObject x="512" y="560" width="488" height="36">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo-right">Objectifs &amp; Bénéfices recherchés</div>
+    </foreignObject>
+    <foreignObject x="526.0" y="596.0" width="460.0" height="110.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Présenter des analyses avec des visuels professionnels en moins de 10 minutes. Être prise au sérieux par sa direction. Réutiliser ses visuels sur plusieurs slides sans recommencer à zéro. Avoir une bibliothèque de modèles métier (SWOT, fishbone, matrices) qui s'adapte à son contexte.</div>
+    </foreignObject>
+  </g>
+
+  <!-- Visage / persona central -->
+  <circle cx="512" cy="320" r="80" fill="white" stroke="#0f172a" stroke-width="1.5"/>
+  <circle cx="487" cy="305" r="5" fill="#0f172a"/>
+  <circle cx="537" cy="305" r="5" fill="#0f172a"/>
+  <path d="M 487 335 Q 512 355 537 335" class="face-line"/>
+
+</svg>

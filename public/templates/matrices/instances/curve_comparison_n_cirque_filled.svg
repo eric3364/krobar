@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" data-svg-kr-version="2.1" data-archetype="curve_comparison_n">
+  <metadata><krobar-meta>
+    <archetype>curve_comparison_n</archetype>
+    <family>OPPOSITION_TRANSFORMATION</family>
+    <cardinality>MULTIPLE</cardinality>
+    <regime>ABSTRAIT_SYSTEMIQUE</regime>
+  </krobar-meta></metadata>
+  <style>
+    .krobar-bbox-fill { fill: white; }
+    .krobar-canvas-title { font-family: -apple-system, system-ui, sans-serif; font-size: 22px; font-weight: 800; fill: #0f172a; text-anchor: middle; }
+    .krobar-subtitle { font-family: -apple-system, system-ui, sans-serif; font-size: 12px; font-weight: 600; fill: #475569; text-anchor: middle; font-style: italic; }
+    .krobar-axis-label { font-family: -apple-system, system-ui, sans-serif; font-size: 11px; font-weight: 700; fill: #475569; letter-spacing: 1px; text-transform: uppercase; }
+    .krobar-level-label { font-family: -apple-system, system-ui, sans-serif; font-size: 10px; fill: #64748b; text-anchor: end; }
+    .krobar-factor-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 10px; font-weight: 600; color: #0f172a; line-height: 1.2; text-align: center; padding: 2px; height: 100%; display: flex; align-items: flex-start; justify-content: center; box-sizing: border-box; }
+    .krobar-curve-label-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 11px; font-weight: 700; color: #0f172a; line-height: 1.2; padding: 4px; height: 100%; display: flex; align-items: center; box-sizing: border-box; }
+    .cc-axis { stroke: #0f172a; stroke-width: 1.5; fill: none; }
+    .cc-grid { stroke: #e2e8f0; stroke-width: 0.6; }
+    .cc-curve-solid { stroke: #0f172a; stroke-width: 2.5; fill: none; }
+    .cc-curve-dashed { stroke: #0f172a; stroke-width: 2.5; fill: none; stroke-dasharray: 8,4; }
+    .cc-point-solid { fill: #0f172a; }
+    .cc-point-dashed { fill: white; stroke: #0f172a; stroke-width: 2; }
+    .cc-legend-box { fill: white; stroke: #0f172a; stroke-width: 1.2; }
+  </style>
+
+  <text x="512" y="36" class="krobar-canvas-title">CANEVAS STRATÉGIQUE</text>
+
+  <!-- Grille -->
+  <line x1="100" y1="130" x2="980" y2="130" class="cc-grid"/>
+  <line x1="100" y1="280" x2="980" y2="280" class="cc-grid"/>
+  <line x1="100" y1="430" x2="980" y2="430" class="cc-grid"/>
+  <line x1="100" y1="580" x2="980" y2="580" class="cc-grid"/>
+
+  <!-- Axe Y -->
+  <line x1="100" y1="130" x2="100" y2="580" class="cc-axis"/>
+  <text x="94" y="134" class="krobar-level-label">Très élevé</text>
+  <text x="94" y="284" class="krobar-level-label">Élevé</text>
+  <text x="94" y="434" class="krobar-level-label">Bas</text>
+  <text x="94" y="584" class="krobar-level-label">Faible</text>
+  <text x="36" y="355.0" class="krobar-axis-label" transform="rotate(-90 36 355.0)" text-anchor="middle">Niveau d'offre</text>
+
+  <!-- Axe X -->
+  <line x1="100" y1="580" x2="980" y2="580" class="cc-axis"/>
+
+  <!-- Facteurs -->
+  <line x1="100" y1="580" x2="100" y2="584" class="cc-axis"/>
+  <g class="krobar-slot" data-slot-key="block_facteur_1_content">
+    <foreignObject x="30" y="586" width="140" height="50">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-factor-fo">Numéros animaux</div>
+    </foreignObject>
+  </g>
+  <line x1="276" y1="580" x2="276" y2="584" class="cc-axis"/>
+  <g class="krobar-slot" data-slot-key="block_facteur_2_content">
+    <foreignObject x="206" y="586" width="140" height="50">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-factor-fo">Star vedettes</div>
+    </foreignObject>
+  </g>
+  <line x1="452" y1="580" x2="452" y2="584" class="cc-axis"/>
+  <g class="krobar-slot" data-slot-key="block_facteur_3_content">
+    <foreignObject x="382" y="586" width="140" height="50">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-factor-fo">Plusieurs pistes</div>
+    </foreignObject>
+  </g>
+  <line x1="628" y1="580" x2="628" y2="584" class="cc-axis"/>
+  <g class="krobar-slot" data-slot-key="block_facteur_4_content">
+    <foreignObject x="558" y="586" width="140" height="50">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-factor-fo">Concessions sur place</div>
+    </foreignObject>
+  </g>
+  <line x1="804" y1="580" x2="804" y2="584" class="cc-axis"/>
+  <g class="krobar-slot" data-slot-key="block_facteur_5_content">
+    <foreignObject x="734" y="586" width="140" height="50">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-factor-fo">Thématique artistique</div>
+    </foreignObject>
+  </g>
+  <line x1="980" y1="580" x2="980" y2="584" class="cc-axis"/>
+  <g class="krobar-slot" data-slot-key="block_facteur_6_content">
+    <foreignObject x="910" y="586" width="140" height="50">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-factor-fo">Confort spectateurs</div>
+    </foreignObject>
+  </g>
+
+  <text x="540.0" y="658" class="krobar-axis-label" text-anchor="middle">Facteurs concurrentiels</text>
+
+  <!-- Courbe 1 (acteur de référence, trait plein) -->
+  <path d="M 100,130 L 276,280 L 452,280 L 628,130 L 804,430 L 980,280" class="cc-curve-solid"/>
+  <circle cx="100" cy="130" r="5" class="cc-point-solid"/>
+  <circle cx="276" cy="280" r="5" class="cc-point-solid"/>
+  <circle cx="452" cy="280" r="5" class="cc-point-solid"/>
+  <circle cx="628" cy="130" r="5" class="cc-point-solid"/>
+  <circle cx="804" cy="430" r="5" class="cc-point-solid"/>
+  <circle cx="980" cy="280" r="5" class="cc-point-solid"/>
+
+  <!-- Courbe 2 (nouvel acteur, trait pointillé) -->
+  <path d="M 100,580 L 276,430 L 452,130 L 628,580 L 804,130 L 980,580" class="cc-curve-dashed"/>
+  <circle cx="100" cy="580" r="5" class="cc-point-dashed"/>
+  <circle cx="276" cy="430" r="5" class="cc-point-dashed"/>
+  <circle cx="452" cy="130" r="5" class="cc-point-dashed"/>
+  <circle cx="628" cy="580" r="5" class="cc-point-dashed"/>
+  <circle cx="804" cy="130" r="5" class="cc-point-dashed"/>
+  <circle cx="980" cy="580" r="5" class="cc-point-dashed"/>
+
+  <!-- Légende horizontale en bandeau supérieur -->
+  <!-- Entrée 1 (courbe pleine) -->
+  <line x1="262" y1="92" x2="292" y2="92" stroke="#0f172a" stroke-width="2.5"/>
+  <circle cx="277" cy="92" r="4" fill="#0f172a"/>
+  <g class="krobar-slot" data-slot-key="block_courbe_1_nom_content">
+    <foreignObject x="300" y="78" width="220" height="28">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-curve-label-fo">Cirque traditionnel</div>
+    </foreignObject>
+  </g>
+  <!-- Entrée 2 (courbe pointillée) -->
+  <line x1="538" y1="92" x2="568" y2="92" stroke="#0f172a" stroke-width="2.5" stroke-dasharray="8,4"/>
+  <circle cx="553" cy="92" r="4" fill="white" stroke="#0f172a" stroke-width="2"/>
+  <g class="krobar-slot" data-slot-key="block_courbe_2_nom_content">
+    <foreignObject x="576" y="78" width="220" height="28">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-curve-label-fo">Cirque du Soleil</div>
+    </foreignObject>
+  </g>
+
+</svg>

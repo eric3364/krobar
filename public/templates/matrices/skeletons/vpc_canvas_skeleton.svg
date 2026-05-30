@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" data-svg-kr-version="2.1" data-archetype="vpc_canvas">
+  <metadata><krobar-meta>
+    <archetype>vpc_canvas</archetype>
+    <family>CONCEPTUELLE_SYSTEMIQUE</family>
+    <cardinality>MULTIPLE</cardinality>
+    <regime>ABSTRAIT_SYSTEMIQUE</regime>
+  </krobar-meta></metadata>
+  <style>
+    .krobar-bbox-fill { fill: white; }
+    .krobar-bbox-stroke { stroke: #0f172a; stroke-width: 1.5; }
+    .krobar-canvas-title { font-family: -apple-system, system-ui, sans-serif; font-size: 26px; font-weight: 800; fill: #0f172a; text-anchor: middle; }
+    .krobar-side-label { font-family: -apple-system, system-ui, sans-serif; font-size: 14px; font-weight: 700; fill: #475569; text-anchor: middle; letter-spacing: 1.5px; }
+    .krobar-canonical-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 14px; font-weight: 700; color: #0f172a; line-height: 1.2; text-align: center; padding: 6px 4px; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
+    .krobar-slot-content { font-family: -apple-system, system-ui, sans-serif; font-size: 13px; line-height: 1.45; color: #1e293b; padding: 6px 14px; height: 100%; box-sizing: border-box; overflow: hidden; word-wrap: break-word; }
+  </style>
+
+  <text x="512" y="40" class="krobar-canvas-title">CANEVAS DE PROPOSITION DE VALEUR</text>
+
+  <text x="256.0" y="118" class="krobar-side-label">CARTE DE VALEUR</text>
+  <text x="768" y="118" class="krobar-side-label">PROFIL CLIENT</text>
+
+  <!-- Carte de valeur englobant -->
+  <rect x="16" y="160" width="480" height="480" fill="none" stroke="#0f172a" stroke-width="2.5"/>
+
+  <!-- Profil client englobant -->
+  <circle cx="768" cy="400" r="240" fill="none" stroke="#0f172a" stroke-width="2.5"/>
+
+  <!-- Séparations Carte de valeur -->
+  <line x1="16" y1="320" x2="496" y2="320" class="krobar-bbox-stroke"/>
+  <line x1="16" y1="480" x2="496" y2="480" class="krobar-bbox-stroke"/>
+
+  <!-- Séparations Profil client (cordes) -->
+  <line x1="541.7" y1="320" x2="994.3" y2="320" class="krobar-bbox-stroke"/>
+  <line x1="541.7" y1="480" x2="994.3" y2="480" class="krobar-bbox-stroke"/>
+
+  <!-- Créateurs de bénéfices -->
+  <g class="krobar-slot" data-slot-key="block_createurs_benefices_content">
+    <foreignObject x="16" y="160" width="480" height="36">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Créateurs de bénéfices</div>
+    </foreignObject>
+    <foreignObject x="28" y="196" width="456" height="112">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_createurs_benefices_content}}</div>
+    </foreignObject>
+  </g>
+
+  <!-- Produits &amp; Services -->
+  <g class="krobar-slot" data-slot-key="block_produits_services_content">
+    <foreignObject x="16" y="320" width="480" height="36">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Produits &amp; Services</div>
+    </foreignObject>
+    <foreignObject x="28" y="356" width="456" height="112">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_produits_services_content}}</div>
+    </foreignObject>
+  </g>
+
+  <!-- Réducteurs de difficultés -->
+  <g class="krobar-slot" data-slot-key="block_reducteurs_difficultes_content">
+    <foreignObject x="16" y="480" width="480" height="36">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Réducteurs de difficultés</div>
+    </foreignObject>
+    <foreignObject x="28" y="516" width="456" height="112">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_reducteurs_difficultes_content}}</div>
+    </foreignObject>
+  </g>
+
+  <!-- Bénéfices -->
+  <g class="krobar-slot" data-slot-key="block_benefices_content">
+    <foreignObject x="587.0" y="170.0" width="362.0" height="36">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Bénéfices</div>
+    </foreignObject>
+    <foreignObject x="643.5" y="200.0" width="248.9" height="116.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_benefices_content}}</div>
+    </foreignObject>
+  </g>
+
+  <!-- Tâches du client -->
+  <g class="krobar-slot" data-slot-key="block_taches_client_content">
+    <foreignObject x="564.4" y="326.0" width="407.3" height="36">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Tâches du client</div>
+    </foreignObject>
+    <foreignObject x="564.4" y="356.0" width="407.3" height="118.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_taches_client_content}}</div>
+    </foreignObject>
+  </g>
+
+  <!-- Difficultés -->
+  <g class="krobar-slot" data-slot-key="block_difficultes_content">
+    <foreignObject x="587.0" y="486.0" width="362.0" height="36">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Difficultés</div>
+    </foreignObject>
+    <foreignObject x="643.5" y="516.0" width="248.9" height="94.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_difficultes_content}}</div>
+    </foreignObject>
+  </g>
+
+  <!-- Indicateur de fit -->
+  <line x1="496" y1="400" x2="528" y2="400" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+
+</svg>

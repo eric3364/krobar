@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" data-svg-kr-version="2.1" data-archetype="brand_onion_canvas">
+  <metadata><krobar-meta>
+    <archetype>brand_onion_canvas</archetype>
+    <family>CONCEPTUELLE_SYSTEMIQUE</family>
+    <cardinality>MULTIPLE</cardinality>
+    <regime>SEMI_METAPHORIQUE</regime>
+  </krobar-meta></metadata>
+  <style>
+    .krobar-canvas-title { font-family: -apple-system, system-ui, sans-serif; font-size: 22px; font-weight: 800; fill: #0f172a; text-anchor: start; }
+    .krobar-layer-title-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 13px; font-weight: 800; color: #0f172a; line-height: 1.2; text-align: center; padding: 2px 4px; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
+    .krobar-slot-content { font-family: -apple-system, system-ui, sans-serif; font-size: 11px; line-height: 1.4; color: #1e293b; padding: 4px 6px; height: 100%; box-sizing: border-box; overflow: hidden; word-wrap: break-word; text-align: center; }
+    .onion-ring { stroke: #0f172a; stroke-width: 1.5; fill: white; }
+  </style>
+
+  <text x="14" y="36" class="krobar-canvas-title">Oignon de marque</text>
+
+  <!-- Ellipses imbriquées (fond blanc) -->
+  <ellipse cx="510" cy="410" rx="460" ry="260" class="onion-ring"/>
+  <ellipse cx="450" cy="410" rx="400" ry="220" class="onion-ring"/>
+  <ellipse cx="385" cy="410" rx="335" ry="175" class="onion-ring"/>
+  <ellipse cx="295" cy="410" rx="245" ry="130" class="onion-ring"/>
+  <ellipse cx="200" cy="410" rx="150" ry="90" class="onion-ring"/>
+
+  <!-- Couche 1 : Essence -->
+  <g class="krobar-slot" data-slot-key="block_essence_content">
+    <foreignObject x="72" y="356" width="256" height="40">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-layer-title-fo">Essence</div>
+    </foreignObject>
+    <foreignObject x="72" y="400" width="256" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Sauver notre planète. La marque qui place l'écologie au cœur de chaque décision.</div>
+    </foreignObject>
+  </g>
+
+  <!-- Couche 2 : Raison d'être -->
+  <g class="krobar-slot" data-slot-key="block_purpose_content">
+    <foreignObject x="372" y="356" width="146" height="40">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-layer-title-fo">Raison d'être</div>
+    </foreignObject>
+    <foreignObject x="372" y="400" width="146" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Inspirer le changement environnemental par l'exemple.</div>
+    </foreignObject>
+  </g>
+
+  <!-- Couche 3 : Promesse -->
+  <g class="krobar-slot" data-slot-key="block_promise_content">
+    <foreignObject x="562" y="356" width="136" height="40">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-layer-title-fo">Promesse</div>
+    </foreignObject>
+    <foreignObject x="562" y="400" width="136" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Produits durables, réparables, garantis à vie.</div>
+    </foreignObject>
+  </g>
+
+  <!-- Couche 4 : Valeurs -->
+  <g class="krobar-slot" data-slot-key="block_values_content">
+    <foreignObject x="742" y="356" width="86" height="40">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-layer-title-fo">Valeurs</div>
+    </foreignObject>
+    <foreignObject x="742" y="400" width="86" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Qualité, intégrité, environnement, démocratie.</div>
+    </foreignObject>
+  </g>
+
+  <!-- Couche 5 : Raisons de croire -->
+  <g class="krobar-slot" data-slot-key="block_reasons_content">
+    <foreignObject x="872" y="356" width="76" height="40">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-layer-title-fo">Raisons de croire</div>
+    </foreignObject>
+    <foreignObject x="872" y="400" width="76" height="110">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">1% pour la planète, garantie à vie, ateliers de réparation.</div>
+    </foreignObject>
+  </g>
+
+</svg>

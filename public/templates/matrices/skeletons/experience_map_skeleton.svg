@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" data-svg-kr-version="2.1" data-archetype="experience_map">
+  <metadata><krobar-meta>
+    <archetype>experience_map</archetype>
+    <family>NARRATIVE_SCENIQUE</family>
+    <cardinality>MULTIPLE</cardinality>
+    <regime>ABSTRAIT_SYSTEMIQUE</regime>
+  </krobar-meta></metadata>
+  <style>
+    .krobar-bbox-fill { fill: white; }
+    .krobar-bbox-stroke { stroke: #0f172a; stroke-width: 1.5; }
+    .krobar-canvas-title { font-family: -apple-system, system-ui, sans-serif; font-size: 26px; font-weight: 800; fill: #0f172a; text-anchor: middle; }
+    .krobar-step-header { font-family: -apple-system, system-ui, sans-serif; font-size: 13px; font-weight: 700; color: white; line-height: 1.2; text-align: center; padding: 6px 4px; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
+    .krobar-row-label-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 11px; font-weight: 700; color: #475569; text-align: center; height: 100%; display: flex; align-items: center; justify-content: center; padding: 4px; line-height: 1.3; letter-spacing: 0.5px; box-sizing: border-box; text-transform: uppercase; }
+    .krobar-quote-content { font-family: -apple-system, system-ui, sans-serif; font-size: 11px; font-style: italic; line-height: 1.4; color: #475569; padding: 8px 10px; height: 100%; box-sizing: border-box; overflow: hidden; word-wrap: break-word; }
+    .krobar-slot-content { font-family: -apple-system, system-ui, sans-serif; font-size: 11px; line-height: 1.35; color: #1e293b; padding: 6px 8px; height: 100%; box-sizing: border-box; overflow: hidden; word-wrap: break-word; }
+    .step-header-bg { fill: #0f172a; }
+    .emotion-curve { stroke: #0f172a; stroke-width: 2; fill: none; }
+    .emotion-point { fill: white; stroke: #0f172a; stroke-width: 1.5; }
+    .emotion-bg { fill: #f8fafc; }
+  </style>
+
+  <text x="512" y="40" class="krobar-canvas-title">CARTE DE L'EXPÉRIENCE</text>
+
+  <rect x="140" y="80" width="870" height="640" fill="none" stroke="#0f172a" stroke-width="2"/>
+
+  <line x1="314.0" y1="80" x2="314.0" y2="720" class="krobar-bbox-stroke"/>
+  <line x1="488.0" y1="80" x2="488.0" y2="720" class="krobar-bbox-stroke"/>
+  <line x1="662.0" y1="80" x2="662.0" y2="720" class="krobar-bbox-stroke"/>
+  <line x1="836.0" y1="80" x2="836.0" y2="720" class="krobar-bbox-stroke"/>
+
+  <line x1="140" y1="124" x2="1010" y2="124" class="krobar-bbox-stroke"/>
+  <line x1="140" y1="216" x2="1010" y2="216" class="krobar-bbox-stroke"/>
+  <line x1="140" y1="326" x2="1010" y2="326" class="krobar-bbox-stroke"/>
+  <line x1="140" y1="456" x2="1010" y2="456" class="krobar-bbox-stroke"/>
+  <line x1="140" y1="566" x2="1010" y2="566" class="krobar-bbox-stroke"/>
+
+  <!-- Zone Courbe d'émotion (fond gris léger) -->
+  <rect x="140" y="326" width="870" height="130" class="emotion-bg"/>
+
+  <rect x="140" y="80" width="870" height="44" class="step-header-bg"/>
+
+  <foreignObject x="140.0" y="80" width="174.0" height="44">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-step-header">Conscience</div>
+  </foreignObject>
+  <foreignObject x="314.0" y="80" width="174.0" height="44">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-step-header">Engagement</div>
+  </foreignObject>
+  <foreignObject x="488.0" y="80" width="174.0" height="44">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-step-header">Découverte</div>
+  </foreignObject>
+  <foreignObject x="662.0" y="80" width="174.0" height="44">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-step-header">Décision</div>
+  </foreignObject>
+  <foreignObject x="836.0" y="80" width="174.0" height="44">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-step-header">Action</div>
+  </foreignObject>
+
+  <foreignObject x="6" y="80" width="130" height="44">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-row-label-fo">Phases</div>
+  </foreignObject>
+  <foreignObject x="6" y="124" width="130" height="92">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-row-label-fo">Citation client</div>
+  </foreignObject>
+  <foreignObject x="6" y="216" width="130" height="110">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-row-label-fo">Actions &amp; Comportements</div>
+  </foreignObject>
+  <foreignObject x="6" y="326" width="130" height="130">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-row-label-fo">Courbe d'émotion</div>
+  </foreignObject>
+  <foreignObject x="6" y="456" width="130" height="110">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-row-label-fo">Moments de vérité</div>
+  </foreignObject>
+  <foreignObject x="6" y="566" width="130" height="154">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-row-label-fo">Opportunités</div>
+  </foreignObject>
+
+  <g class="krobar-slot" data-slot-key="block_citation_conscience_content">
+    <foreignObject x="148.0" y="132.0" width="158.0" height="76.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-quote-content">{{block_citation_conscience_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_citation_engagement_content">
+    <foreignObject x="322.0" y="132.0" width="158.0" height="76.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-quote-content">{{block_citation_engagement_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_citation_decouverte_content">
+    <foreignObject x="496.0" y="132.0" width="158.0" height="76.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-quote-content">{{block_citation_decouverte_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_citation_decision_content">
+    <foreignObject x="670.0" y="132.0" width="158.0" height="76.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-quote-content">{{block_citation_decision_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_citation_action_content">
+    <foreignObject x="844.0" y="132.0" width="158.0" height="76.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-quote-content">{{block_citation_action_content}}</div>
+    </foreignObject>
+  </g>
+
+  <g class="krobar-slot" data-slot-key="block_actions_conscience_content">
+    <foreignObject x="148.0" y="224.0" width="158.0" height="94.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_actions_conscience_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_actions_engagement_content">
+    <foreignObject x="322.0" y="224.0" width="158.0" height="94.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_actions_engagement_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_actions_decouverte_content">
+    <foreignObject x="496.0" y="224.0" width="158.0" height="94.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_actions_decouverte_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_actions_decision_content">
+    <foreignObject x="670.0" y="224.0" width="158.0" height="94.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_actions_decision_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_actions_action_content">
+    <foreignObject x="844.0" y="224.0" width="158.0" height="94.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_actions_action_content}}</div>
+    </foreignObject>
+  </g>
+
+
+  <g class="krobar-slot" data-slot-key="block_moments_verite_conscience_content">
+    <foreignObject x="148.0" y="464.0" width="158.0" height="94.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_moments_verite_conscience_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_moments_verite_engagement_content">
+    <foreignObject x="322.0" y="464.0" width="158.0" height="94.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_moments_verite_engagement_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_moments_verite_decouverte_content">
+    <foreignObject x="496.0" y="464.0" width="158.0" height="94.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_moments_verite_decouverte_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_moments_verite_decision_content">
+    <foreignObject x="670.0" y="464.0" width="158.0" height="94.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_moments_verite_decision_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_moments_verite_action_content">
+    <foreignObject x="844.0" y="464.0" width="158.0" height="94.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_moments_verite_action_content}}</div>
+    </foreignObject>
+  </g>
+
+  <g class="krobar-slot" data-slot-key="block_opportunites_conscience_content">
+    <foreignObject x="148.0" y="574.0" width="158.0" height="138.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_opportunites_conscience_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_opportunites_engagement_content">
+    <foreignObject x="322.0" y="574.0" width="158.0" height="138.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_opportunites_engagement_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_opportunites_decouverte_content">
+    <foreignObject x="496.0" y="574.0" width="158.0" height="138.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_opportunites_decouverte_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_opportunites_decision_content">
+    <foreignObject x="670.0" y="574.0" width="158.0" height="138.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_opportunites_decision_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_opportunites_action_content">
+    <foreignObject x="844.0" y="574.0" width="158.0" height="138.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_opportunites_action_content}}</div>
+    </foreignObject>
+  </g>
+
+  <!-- Courbe d'émotion (template par défaut, modifiable) -->
+  <line x1="140" y1="391.0" x2="1010" y2="391.0" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="2,3"/>
+  <path d="M 227.0 382.7 Q 314.0 382.7 401.0 370.2 Q 488.0 370.2 575.0 357.7 Q 662.0 357.7 749.0 403.5 Q 836.0 403.5 923.0 374.4" class="emotion-curve"/>
+  <circle cx="227.0" cy="382.7" r="5" class="emotion-point"/>
+  <circle cx="401.0" cy="370.2" r="5" class="emotion-point"/>
+  <circle cx="575.0" cy="357.7" r="5" class="emotion-point"/>
+  <circle cx="749.0" cy="403.5" r="5" class="emotion-point"/>
+  <circle cx="923.0" cy="374.4" r="5" class="emotion-point"/>
+
+</svg>

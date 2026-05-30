@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" data-svg-kr-version="2.1" data-archetype="product_market_fit_canvas">
+  <metadata><krobar-meta>
+    <archetype>product_market_fit_canvas</archetype>
+    <family>CONCEPTUELLE_SYSTEMIQUE</family>
+    <cardinality>MULTIPLE</cardinality>
+    <regime>SEMI_METAPHORIQUE</regime>
+  </krobar-meta></metadata>
+  <style>
+    .krobar-bbox-fill { fill: white; }
+    .krobar-bbox-stroke { stroke: #0f172a; stroke-width: 1.5; }
+    .krobar-canvas-title { font-family: -apple-system, system-ui, sans-serif; font-size: 26px; font-weight: 800; fill: #0f172a; text-anchor: middle; }
+    .krobar-side-label { font-family: -apple-system, system-ui, sans-serif; font-size: 14px; font-weight: 700; fill: #475569; letter-spacing: 2px; }
+    .krobar-canonical-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 14px; font-weight: 700; color: #0f172a; line-height: 1.2; text-align: center; padding: 4px 8px; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
+    .krobar-slot-content { font-family: -apple-system, system-ui, sans-serif; font-size: 12px; line-height: 1.4; color: #1e293b; padding: 4px 14px; height: 100%; box-sizing: border-box; overflow: hidden; word-wrap: break-word; text-align: center; }
+    .pmf-fit-line { stroke: #0f172a; stroke-width: 2.5; stroke-dasharray: 10,4; fill: none; }
+    .pmf-fit-label { font-family: -apple-system, system-ui, sans-serif; font-size: 11px; font-weight: 700; fill: #0f172a; letter-spacing: 1px; text-transform: uppercase; }
+  </style>
+
+  <text x="512" y="40" class="krobar-canvas-title">PYRAMIDE PRODUIT-MARCHÉ</text>
+
+  <!-- Catégories latérales -->
+  <text x="60" y="600" class="krobar-side-label" transform="rotate(-90 60 600)" text-anchor="middle">MARCHÉ</text>
+  <text x="60" y="300" class="krobar-side-label" transform="rotate(-90 60 300)" text-anchor="middle">PRODUIT</text>
+
+  <!-- Niveau : Expérience utilisateur (UX) -->
+  <g class="krobar-slot" data-slot-key="block_ux_content">
+    <polygon points="412,120 612,120 660,240 364,240" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="412" y="124" width="200" height="28">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Expérience utilisateur (UX)</div>
+    </foreignObject>
+    <foreignObject x="426.0" y="154.0" width="172.0" height="82.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_ux_content}}</div>
+    </foreignObject>
+  </g>
+
+  <!-- Niveau : Fonctionnalités du MVP -->
+  <g class="krobar-slot" data-slot-key="block_fonctionnalites_content">
+    <polygon points="364,240 660,240 708,360 316,360" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="364" y="244" width="296" height="28">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Fonctionnalités du MVP</div>
+    </foreignObject>
+    <foreignObject x="378.0" y="274.0" width="268.0" height="82.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_fonctionnalites_content}}</div>
+    </foreignObject>
+  </g>
+
+  <!-- Niveau : Proposition de valeur -->
+  <g class="krobar-slot" data-slot-key="block_proposition_valeur_content">
+    <polygon points="316,360 708,360 756,480 268,480" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="316" y="364" width="392" height="28">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Proposition de valeur</div>
+    </foreignObject>
+    <foreignObject x="330.0" y="394.0" width="364.0" height="82.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_proposition_valeur_content}}</div>
+    </foreignObject>
+  </g>
+
+  <!-- Niveau : Besoins sous-servis -->
+  <g class="krobar-slot" data-slot-key="block_besoins_sous_servis_content">
+    <polygon points="268,480 756,480 804,600 220,600" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="312" y="484" width="400" height="28">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Besoins sous-servis</div>
+    </foreignObject>
+    <foreignObject x="282.0" y="514.0" width="460.0" height="82.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_besoins_sous_servis_content}}</div>
+    </foreignObject>
+  </g>
+
+  <!-- Niveau : Client cible -->
+  <g class="krobar-slot" data-slot-key="block_client_cible_content">
+    <polygon points="220,600 804,600 852,720 172,720" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="312" y="604" width="400" height="28">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Client cible</div>
+    </foreignObject>
+    <foreignObject x="234.0" y="634.0" width="556.0" height="82.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_client_cible_content}}</div>
+    </foreignObject>
+  </g>
+
+  <!-- Ligne du Product-Market Fit (signature) -->
+  <line x1="248" y1="480" x2="776" y2="480" class="pmf-fit-line"/>
+  <text x="784" y="478" class="pmf-fit-label">Product-Market Fit</text>
+
+</svg>

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" data-svg-kr-version="2.1" data-archetype="design_system_matrix">
+  <metadata><krobar-meta>
+    <archetype>design_system_matrix</archetype>
+    <family>CONCEPTUELLE_SYSTEMIQUE</family>
+    <cardinality>MULTIPLE</cardinality>
+    <regime>ABSTRAIT_SYSTEMIQUE</regime>
+  </krobar-meta></metadata>
+  <style>
+    .krobar-bbox-fill { fill: white; }
+    .krobar-bbox-stroke { stroke: #0f172a; stroke-width: 1.5; }
+    .krobar-canvas-title { font-family: -apple-system, system-ui, sans-serif; font-size: 22px; font-weight: 800; fill: #0f172a; text-anchor: middle; }
+    .krobar-header-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 12px; font-weight: 700; color: white; line-height: 1.2; text-align: center; padding: 4px 6px; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; letter-spacing: 0.3px; }
+    .krobar-component-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 12px; font-weight: 700; color: #0f172a; line-height: 1.2; text-align: left; padding: 6px 12px; height: 100%; display: flex; align-items: center; justify-content: flex-start; box-sizing: border-box; }
+    .krobar-slot-content { font-family: -apple-system, system-ui, sans-serif; font-size: 10px; line-height: 1.35; color: #1e293b; padding: 6px 8px; height: 100%; box-sizing: border-box; overflow: hidden; word-wrap: break-word; text-align: center; }
+    .header-bg { fill: #0f172a; }
+    .row-label-bg { fill: #f1f5f9; }
+  </style>
+
+  <text x="512" y="36" class="krobar-canvas-title">MATRICE DESIGN SYSTEM</text>
+
+  <rect x="14" y="80" width="996" height="650" fill="white" stroke="#0f172a" stroke-width="2"/>
+
+  <rect x="14" y="80" width="996" height="50" class="header-bg"/>
+
+  <rect x="14" y="130" width="196" height="600" class="row-label-bg"/>
+
+  <line x1="210" y1="80" x2="210" y2="730" class="krobar-bbox-stroke"/>
+  <line x1="370" y1="80" x2="370" y2="730" class="krobar-bbox-stroke"/>
+  <line x1="530" y1="80" x2="530" y2="730" class="krobar-bbox-stroke"/>
+  <line x1="690" y1="80" x2="690" y2="730" class="krobar-bbox-stroke"/>
+  <line x1="850" y1="80" x2="850" y2="730" class="krobar-bbox-stroke"/>
+
+  <line x1="14" y1="250" x2="1010" y2="250" class="krobar-bbox-stroke"/>
+  <line x1="14" y1="370" x2="1010" y2="370" class="krobar-bbox-stroke"/>
+  <line x1="14" y1="490" x2="1010" y2="490" class="krobar-bbox-stroke"/>
+  <line x1="14" y1="610" x2="1010" y2="610" class="krobar-bbox-stroke"/>
+
+  <foreignObject x="14" y="80" width="196" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-header-fo">Composants \ États</div>
+  </foreignObject>
+
+  <!-- Headers États (slots top) -->
+  <g class="krobar-slot" data-slot-key="block_header_etat_1_content">
+    <foreignObject x="210" y="80" width="160" height="50">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-header-fo">Défaut</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_header_etat_2_content">
+    <foreignObject x="370" y="80" width="160" height="50">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-header-fo">Survol</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_header_etat_3_content">
+    <foreignObject x="530" y="80" width="160" height="50">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-header-fo">Actif / Focus</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_header_etat_4_content">
+    <foreignObject x="690" y="80" width="160" height="50">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-header-fo">Désactivé</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_header_etat_5_content">
+    <foreignObject x="850" y="80" width="160" height="50">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-header-fo">Erreur</div>
+    </foreignObject>
+  </g>
+
+  <!-- Labels Composants (slots left) -->
+  <g class="krobar-slot" data-slot-key="block_label_composant_1_content">
+    <foreignObject x="14" y="130" width="196" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-component-fo">Bouton primaire</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_label_composant_2_content">
+    <foreignObject x="14" y="250" width="196" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-component-fo">Bouton secondaire</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_label_composant_3_content">
+    <foreignObject x="14" y="370" width="196" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-component-fo">Champ de saisie</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_label_composant_4_content">
+    <foreignObject x="14" y="490" width="196" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-component-fo">Sélecteur</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_label_composant_5_content">
+    <foreignObject x="14" y="610" width="196" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-component-fo">Case à cocher</div>
+    </foreignObject>
+  </g>
+
+  <!-- Cellules composant × état -->
+  <g class="krobar-slot" data-slot-key="block_composant_1_etat_1_content">
+    <foreignObject x="210" y="130" width="160" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Fond plein primaire, texte blanc, padding 12×24, radius 4</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_composant_1_etat_2_content">
+    <foreignObject x="370" y="130" width="160" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Assombrissement 8%, curseur main, transition 150ms</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_composant_1_etat_3_content">
+    <foreignObject x="530" y="130" width="160" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Outline 2px primaire, ombre douce</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_composant_1_etat_4_content">
+    <foreignObject x="690" y="130" width="160" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Opacité 40%, curseur not-allowed, pas d'interaction</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_composant_1_etat_5_content">
+    <foreignObject x="850" y="130" width="160" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Bordure rouge, message d'erreur attaché</div>
+    </foreignObject>
+  </g>
+
+  <g class="krobar-slot" data-slot-key="block_composant_2_etat_1_content">
+    <foreignObject x="210" y="250" width="160" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Fond blanc, bordure primaire, texte primaire</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_composant_2_etat_2_content">
+    <foreignObject x="370" y="250" width="160" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Fond primaire 10%, bordure inchangée</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_composant_2_etat_3_content">
+    <foreignObject x="530" y="250" width="160" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Outline focus 2px décalée</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_composant_2_etat_4_content">
+    <foreignObject x="690" y="250" width="160" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Opacité 40%, pointer events: none</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_composant_2_etat_5_content">
+    <foreignObject x="850" y="250" width="160" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Non applicable</div>
+    </foreignObject>
+  </g>
+
+  <g class="krobar-slot" data-slot-key="block_composant_3_etat_1_content">
+    <foreignObject x="210" y="370" width="160" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Bordure grise 1px, placeholder gris, label flottant</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_composant_3_etat_2_content">
+    <foreignObject x="370" y="370" width="160" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Bordure plus foncée</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_composant_3_etat_3_content">
+    <foreignObject x="530" y="370" width="160" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Bordure primaire 2px, label primaire</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_composant_3_etat_4_content">
+    <foreignObject x="690" y="370" width="160" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Fond gris, bordure ténue, curseur not-allowed</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_composant_3_etat_5_content">
+    <foreignObject x="850" y="370" width="160" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Bordure rouge, icône erreur, message sous le champ</div>
+    </foreignObject>
+  </g>
+
+  <g class="krobar-slot" data-slot-key="block_composant_4_etat_1_content">
+    <foreignObject x="210" y="490" width="160" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Bordure grise, chevron vers le bas, fond blanc</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_composant_4_etat_2_content">
+    <foreignObject x="370" y="490" width="160" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Bordure foncée, chevron tourne</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_composant_4_etat_3_content">
+    <foreignObject x="530" y="490" width="160" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Liste déroulée, item courant souligné</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_composant_4_etat_4_content">
+    <foreignObject x="690" y="490" width="160" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Opacité réduite, pas d'ouverture possible</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_composant_4_etat_5_content">
+    <foreignObject x="850" y="490" width="160" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Bordure rouge, message d'erreur en bas</div>
+    </foreignObject>
+  </g>
+
+  <g class="krobar-slot" data-slot-key="block_composant_5_etat_1_content">
+    <foreignObject x="210" y="610" width="160" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Carré vide 16px, bordure 1px</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_composant_5_etat_2_content">
+    <foreignObject x="370" y="610" width="160" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Bordure plus foncée, légère ombre</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_composant_5_etat_3_content">
+    <foreignObject x="530" y="610" width="160" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Carré rempli primaire, icône check blanche</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_composant_5_etat_4_content">
+    <foreignObject x="690" y="610" width="160" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Opacité 40%, pas d'interaction</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_composant_5_etat_5_content">
+    <foreignObject x="850" y="610" width="160" height="120">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Bordure rouge, état non valide</div>
+    </foreignObject>
+  </g>
+
+</svg>

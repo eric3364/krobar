@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" data-svg-kr-version="2.1" data-archetype="jobs_to_be_done">
+  <metadata><krobar-meta>
+    <archetype>jobs_to_be_done</archetype>
+    <family>EXPLICATIVE_SCHEMATIQUE</family>
+    <cardinality>MULTIPLE</cardinality>
+    <regime>SEMI_METAPHORIQUE</regime>
+  </krobar-meta></metadata>
+  <style>
+    .krobar-bbox-fill { fill: white; }
+    .krobar-bbox-stroke { stroke: #0f172a; stroke-width: 1.5; }
+    .krobar-canvas-title { font-family: -apple-system, system-ui, sans-serif; font-size: 26px; font-weight: 800; fill: #0f172a; text-anchor: middle; }
+    .krobar-canonical-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 14px; font-weight: 700; color: #0f172a; line-height: 1.2; text-align: center; padding: 4px 8px; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
+    .krobar-canonical-fo-job { font-family: -apple-system, system-ui, sans-serif; font-size: 16px; font-weight: 800; color: #0f172a; line-height: 1.2; text-align: center; padding: 6px 8px; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; letter-spacing: 0.5px; }
+    .krobar-subtitle-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 10px; font-weight: 600; color: #64748b; line-height: 1.2; text-align: center; padding: 0px 8px 4px; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; font-style: italic; }
+    .krobar-slot-content { font-family: -apple-system, system-ui, sans-serif; font-size: 12px; line-height: 1.4; color: #1e293b; padding: 6px 12px; height: 100%; box-sizing: border-box; overflow: hidden; word-wrap: break-word; }
+    .krobar-slot-content-job { font-family: -apple-system, system-ui, sans-serif; font-size: 13px; line-height: 1.4; color: #1e293b; padding: 6px 14px; height: 100%; box-sizing: border-box; overflow: hidden; word-wrap: break-word; text-align: center; font-weight: 500; }
+    .jtbd-arrow-solid { stroke: #0f172a; stroke-width: 2; fill: none; }
+    .jtbd-arrow-dashed { stroke: #0f172a; stroke-width: 2; fill: none; stroke-dasharray: 6,4; }
+    .jtbd-arrowhead { fill: #0f172a; stroke: none; }
+  </style>
+
+  <text x="512" y="40" class="krobar-canvas-title">DIAGRAMME DES FORCES JTBD</text>
+
+  <!-- Flèches : forces de progrès (trait plein) et de résistance (trait pointillé) -->
+  <line x1="330.0" y1="210.0" x2="360.6" y2="372.4" class="jtbd-arrow-solid"/>
+  <polygon points="362.0,380.0 354.6,370.2 365.4,368.2" class="jtbd-arrowhead"/>
+  <line x1="330.0" y1="590.0" x2="360.6" y2="427.6" class="jtbd-arrow-solid"/>
+  <polygon points="362.0,420.0 365.4,431.8 354.6,429.8" class="jtbd-arrowhead"/>
+  <line x1="694.0" y1="210.0" x2="663.4" y2="372.4" class="jtbd-arrow-dashed"/>
+  <polygon points="662.0,380.0 658.6,368.2 669.4,370.2" class="jtbd-arrowhead"/>
+  <line x1="694.0" y1="590.0" x2="663.4" y2="427.6" class="jtbd-arrow-dashed"/>
+  <polygon points="662.0,420.0 669.4,429.8 658.6,431.8" class="jtbd-arrowhead"/>
+
+  <!-- Le travail (Job) -->
+  <g class="krobar-slot" data-slot-key="block_job_content">
+    <rect x="362" y="300" width="300" height="200" fill="white" stroke="#0f172a" stroke-width="3"/>
+    <rect x="370" y="308" width="284" height="184" fill="none" stroke="#0f172a" stroke-width="0.8"/>
+    <foreignObject x="362" y="314" width="300" height="30">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo-job">Le travail (Job)</div>
+    </foreignObject>
+    <foreignObject x="380.0" y="350.0" width="264.0" height="138.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content-job">Capturer, organiser et retrouver mes idées professionnelles depuis n'importe quel appareil, sans perdre le fil de mes projets.</div>
+    </foreignObject>
+  </g>
+
+  <!-- Frustrations actuelles -->
+  <g class="krobar-slot" data-slot-key="block_pushes_content">
+    <rect x="40" y="110" width="290" height="200" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="40" y="114" width="290" height="30">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Frustrations actuelles</div>
+    </foreignObject>
+    <foreignObject x="40" y="142" width="290" height="20">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-subtitle-fo">Ce qui pousse à changer</div>
+    </foreignObject>
+    <foreignObject x="52.0" y="166.0" width="266.0" height="136.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Mes notes sont éparpillées sur 3 appareils, je perds du temps à les chercher. Pas de structure, juste un grand sac d'idées. Impossible de partager facilement avec mon équipe. Mes anciennes notes sont indéchiffrables 2 semaines plus tard.</div>
+    </foreignObject>
+  </g>
+
+  <!-- Attraits du nouveau -->
+  <g class="krobar-slot" data-slot-key="block_pulls_content">
+    <rect x="40" y="490" width="290" height="200" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="40" y="494" width="290" height="30">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Attraits du nouveau</div>
+    </foreignObject>
+    <foreignObject x="40" y="522" width="290" height="20">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-subtitle-fo">Ce qui attire la solution</div>
+    </foreignObject>
+    <foreignObject x="52.0" y="546.0" width="266.0" height="136.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Notion propose une organisation arborescente claire. Synchronisation parfaite entre desktop, tablette et mobile. Templates métier pour démarrer vite. Mes collègues l'utilisent déjà : effet de réseau. Prix raisonnable pour une licence pro.</div>
+    </foreignObject>
+  </g>
+
+  <!-- Anxiétés -->
+  <g class="krobar-slot" data-slot-key="block_anxieties_content">
+    <rect x="694" y="110" width="290" height="200" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="694" y="114" width="290" height="30">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Anxiétés</div>
+    </foreignObject>
+    <foreignObject x="694" y="142" width="290" height="20">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-subtitle-fo">Ce qui inquiète face au changement</div>
+    </foreignObject>
+    <foreignObject x="706.0" y="166.0" width="266.0" height="136.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Vais-je perdre du temps à migrer mes 200 notes existantes ? La courbe d'apprentissage est-elle abrupte ? Mes données sont-elles vraiment sécurisées sur leurs serveurs ? Que se passe-t-il si je veux quitter dans 2 ans ?</div>
+    </foreignObject>
+  </g>
+
+  <!-- Habitudes -->
+  <g class="krobar-slot" data-slot-key="block_habits_content">
+    <rect x="694" y="490" width="290" height="200" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="694" y="494" width="290" height="30">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-canonical-fo">Habitudes</div>
+    </foreignObject>
+    <foreignObject x="694" y="522" width="290" height="20">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-subtitle-fo">Ce qui ancre dans le statu quo</div>
+    </foreignObject>
+    <foreignObject x="706.0" y="546.0" width="266.0" height="136.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">J'ouvre l'app Notes par réflexe sur mon iPhone. J'ai mon système de tags personnel qui marche presque. Mon employeur a déjà payé Office 365 (OneNote inclus). Je n'aime pas changer d'outil tous les 6 mois.</div>
+    </foreignObject>
+  </g>
+
+  <!-- Légende -->
+  <g>
+    <line x1="200" y1="745" x2="240" y2="745" stroke="#0f172a" stroke-width="2"/>
+    <text x="245" y="749" font-family="-apple-system,system-ui,sans-serif" font-size="11" fill="#475569">Forces de progrès</text>
+    <line x1="540" y1="745" x2="580" y2="745" stroke="#0f172a" stroke-width="2" stroke-dasharray="6,4"/>
+    <text x="585" y="749" font-family="-apple-system,system-ui,sans-serif" font-size="11" fill="#475569">Forces de résistance</text>
+  </g>
+</svg>
