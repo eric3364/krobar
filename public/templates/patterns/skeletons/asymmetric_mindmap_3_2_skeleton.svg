@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" data-svg-kr-version="2.1" data-archetype="asymmetric_mindmap" data-cardinality-left="3" data-cardinality-right="2">
+  <metadata><krobar-meta>
+    <archetype>asymmetric_mindmap</archetype>
+    <family>CONCEPTUELLE_SYSTEMIQUE</family>
+    <cardinality>MULTIPLE</cardinality>
+    <regime>ABSTRAIT_SYSTEMIQUE</regime>
+    <conventional_graphic>true</conventional_graphic>
+    <family_graphic>centre_n_satellites_asymetrique</family_graphic>
+    <cardinality_left>3</cardinality_left>
+    <cardinality_right>2</cardinality_right>
+  </krobar-meta></metadata>
+  <style>
+    .krobar-bbox-fill { fill: white; }
+    .krobar-bbox-stroke { stroke: #0f172a; stroke-width: 1.5; }
+    .krobar-canvas-title { font-family: -apple-system, system-ui, sans-serif; font-size: 20px; font-weight: 800; fill: #0f172a; text-anchor: middle; letter-spacing: 0.5px; }
+    .am-center-title-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 16px; font-weight: 800; color: #0f172a; line-height: 1.2; text-align: center; padding: 6px 12px; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; letter-spacing: 0.3px; }
+    .krobar-slot-content { font-family: -apple-system, system-ui, sans-serif; font-size: 11px; line-height: 1.4; color: #1e293b; padding: 6px 10px; height: 100%; box-sizing: border-box; overflow: hidden; word-wrap: break-word; }
+    .am-branch { stroke: #0f172a; stroke-width: 1.2; fill: none; }
+    .am-dot { fill: white; stroke: #0f172a; stroke-width: 1.5; }
+  </style>
+
+  <text x="512.0" y="36" class="krobar-canvas-title">MINDMAP ASYMÉTRIQUE</text>
+
+  <!-- Branches gauches -->
+  <path d="M 422.7 343.9 C 363.2 343.9, 333.5 165.0, 274.0 165.0" class="am-branch"/>
+  <circle cx="274.0" cy="165.0" r="3" class="am-dot"/>
+  <path d="M 392.0 384.0 C 344.8 384.0, 321.2 384.0, 274.0 384.0" class="am-branch"/>
+  <circle cx="274.0" cy="384.0" r="3" class="am-dot"/>
+  <path d="M 422.7 424.1 C 363.2 424.1, 333.5 603.0, 274.0 603.0" class="am-branch"/>
+  <circle cx="274.0" cy="603.0" r="3" class="am-dot"/>
+
+  <!-- Branches droites -->
+  <path d="M 601.3 343.9 C 660.8 343.9, 690.5 165.0, 750.0 165.0" class="am-branch"/>
+  <circle cx="750.0" cy="165.0" r="3" class="am-dot"/>
+  <path d="M 601.3 424.1 C 660.8 424.1, 690.5 603.0, 750.0 603.0" class="am-branch"/>
+  <circle cx="750.0" cy="603.0" r="3" class="am-dot"/>
+
+  <!-- Labels gauches -->
+  <g class="krobar-slot" data-slot-key="block_left_1_content">
+    <rect x="18" y="130" width="250" height="70" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="18" y="130" width="250" height="70">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_left_1_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_left_2_content">
+    <rect x="18" y="349" width="250" height="70" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="18" y="349" width="250" height="70">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_left_2_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_left_3_content">
+    <rect x="18" y="568" width="250" height="70" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="18" y="568" width="250" height="70">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_left_3_content}}</div>
+    </foreignObject>
+  </g>
+
+  <!-- Labels droits -->
+  <g class="krobar-slot" data-slot-key="block_right_1_content">
+    <rect x="756" y="130" width="250" height="70" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="756" y="130" width="250" height="70">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_right_1_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_right_2_content">
+    <rect x="756" y="568" width="250" height="70" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="756" y="568" width="250" height="70">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_right_2_content}}</div>
+    </foreignObject>
+  </g>
+
+  <!-- Nœud central (double cadre) -->
+  <g class="krobar-slot" data-slot-key="block_central_content">
+    <ellipse cx="512" cy="384" rx="120" ry="60" fill="white" stroke="#0f172a" stroke-width="3"/>
+    <ellipse cx="512" cy="384" rx="113" ry="53" fill="none" stroke="#0f172a" stroke-width="0.8"/>
+    <foreignObject x="404" y="334" width="216" height="100">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="am-center-title-fo">{{block_central_content}}</div>
+    </foreignObject>
+  </g>
+
+</svg>

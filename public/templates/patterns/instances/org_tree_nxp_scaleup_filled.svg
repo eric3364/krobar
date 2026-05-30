@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" data-svg-kr-version="2.1" data-archetype="org_tree_nxp" data-cardinality-level1="4" data-cardinality-per-branch="3" data-depth="3">
+  <metadata><krobar-meta>
+    <archetype>org_tree_nxp</archetype>
+    <family>CONCEPTUELLE_SYSTEMIQUE</family>
+    <cardinality>MULTIPLE</cardinality>
+    <regime>ABSTRAIT_SYSTEMIQUE</regime>
+    <conventional_graphic>true</conventional_graphic>
+    <family_graphic>hierarchie_verticale_organigramme</family_graphic>
+    <direction>top_down</direction>
+    <cardinality_level1>4</cardinality_level1>
+    <cardinality_per_branch>3</cardinality_per_branch>
+    <depth>3</depth>
+  </krobar-meta></metadata>
+  <style>
+    .krobar-bbox-fill { fill: white; }
+    .krobar-bbox-stroke { stroke: #0f172a; stroke-width: 1.5; }
+    .krobar-canvas-title { font-family: -apple-system, system-ui, sans-serif; font-size: 20px; font-weight: 800; fill: #0f172a; text-anchor: middle; letter-spacing: 0.5px; }
+    .ot-root-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 15px; font-weight: 800; color: #0f172a; line-height: 1.25; text-align: center; padding: 8px 14px; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; letter-spacing: 0.3px; }
+    .ot-level1-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 12px; font-weight: 700; color: #0f172a; line-height: 1.3; text-align: center; padding: 6px 8px; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
+    .krobar-slot-content { font-family: -apple-system, system-ui, sans-serif; font-size: 10px; line-height: 1.35; color: #1e293b; padding: 6px 8px; height: 100%; box-sizing: border-box; overflow: hidden; word-wrap: break-word; }
+    .ot-link { stroke: #0f172a; stroke-width: 1.2; fill: none; }
+  </style>
+
+  <text x="512.0" y="36" class="krobar-canvas-title">ORGANIGRAMME</text>
+
+  <!-- Liens racine → niveau 1 -->
+  <line x1="512.0" y1="140.0" x2="512.0" y2="170.0" class="ot-link"/>
+  <line x1="164.0" y1="170.0" x2="860.0" y2="170.0" class="ot-link"/>
+  <line x1="164.0" y1="170.0" x2="164.0" y2="200.0" class="ot-link"/>
+  <line x1="396.0" y1="170.0" x2="396.0" y2="200.0" class="ot-link"/>
+  <line x1="628.0" y1="170.0" x2="628.0" y2="200.0" class="ot-link"/>
+  <line x1="860.0" y1="170.0" x2="860.0" y2="200.0" class="ot-link"/>
+
+  <!-- Liens niveau 1 → niveau 2 -->
+  <line x1="164.0" y1="270.0" x2="164.0" y2="322.0" class="ot-link"/>
+  <line x1="164.0" y1="322.0" x2="164.0" y2="330.0" class="ot-link"/>
+  <line x1="164.0" y1="270.0" x2="164.0" y2="410.0" class="ot-link"/>
+  <line x1="164.0" y1="410.0" x2="164.0" y2="418.0" class="ot-link"/>
+  <line x1="164.0" y1="270.0" x2="164.0" y2="498.0" class="ot-link"/>
+  <line x1="164.0" y1="498.0" x2="164.0" y2="506.0" class="ot-link"/>
+  <line x1="396.0" y1="270.0" x2="396.0" y2="322.0" class="ot-link"/>
+  <line x1="396.0" y1="322.0" x2="396.0" y2="330.0" class="ot-link"/>
+  <line x1="396.0" y1="270.0" x2="396.0" y2="410.0" class="ot-link"/>
+  <line x1="396.0" y1="410.0" x2="396.0" y2="418.0" class="ot-link"/>
+  <line x1="396.0" y1="270.0" x2="396.0" y2="498.0" class="ot-link"/>
+  <line x1="396.0" y1="498.0" x2="396.0" y2="506.0" class="ot-link"/>
+  <line x1="628.0" y1="270.0" x2="628.0" y2="322.0" class="ot-link"/>
+  <line x1="628.0" y1="322.0" x2="628.0" y2="330.0" class="ot-link"/>
+  <line x1="628.0" y1="270.0" x2="628.0" y2="410.0" class="ot-link"/>
+  <line x1="628.0" y1="410.0" x2="628.0" y2="418.0" class="ot-link"/>
+  <line x1="628.0" y1="270.0" x2="628.0" y2="498.0" class="ot-link"/>
+  <line x1="628.0" y1="498.0" x2="628.0" y2="506.0" class="ot-link"/>
+  <line x1="860.0" y1="270.0" x2="860.0" y2="322.0" class="ot-link"/>
+  <line x1="860.0" y1="322.0" x2="860.0" y2="330.0" class="ot-link"/>
+  <line x1="860.0" y1="270.0" x2="860.0" y2="410.0" class="ot-link"/>
+  <line x1="860.0" y1="410.0" x2="860.0" y2="418.0" class="ot-link"/>
+  <line x1="860.0" y1="270.0" x2="860.0" y2="498.0" class="ot-link"/>
+  <line x1="860.0" y1="498.0" x2="860.0" y2="506.0" class="ot-link"/>
+
+  <!-- Racine (slot) -->
+  <g class="krobar-slot" data-slot-key="block_root_content">
+    <rect x="372.0" y="70" width="280" height="70" fill="white" stroke="#0f172a" stroke-width="3"/>
+    <rect x="376.0" y="74" width="272" height="62" fill="none" stroke="#0f172a" stroke-width="0.6"/>
+    <foreignObject x="372.0" y="70" width="280" height="70">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="ot-root-fo">Direction Générale
+(CEO + COO)</div>
+    </foreignObject>
+  </g>
+
+  <!-- Niveau 1 (slots direct reports) -->
+  <g class="krobar-slot" data-slot-key="block_level1_1_content">
+    <rect x="54.0" y="200.0" width="220.0" height="70.0" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="54.0" y="200.0" width="220.0" height="70.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="ot-level1-fo">Direction Produit</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_level1_2_content">
+    <rect x="286.0" y="200.0" width="220.0" height="70.0" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="286.0" y="200.0" width="220.0" height="70.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="ot-level1-fo">Direction Technique</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_level1_3_content">
+    <rect x="518.0" y="200.0" width="220.0" height="70.0" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="518.0" y="200.0" width="220.0" height="70.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="ot-level1-fo">Direction Commerciale</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_level1_4_content">
+    <rect x="750.0" y="200.0" width="220.0" height="70.0" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="750.0" y="200.0" width="220.0" height="70.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="ot-level1-fo">Direction Opérations</div>
+    </foreignObject>
+  </g>
+
+  <!-- Niveau 2 (slots sub-reports) -->
+  <g class="krobar-slot" data-slot-key="block_level2_1_1_content">
+    <rect x="65.0" y="330.0" width="198.0" height="80.0" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="65.0" y="330.0" width="198.0" height="80.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Product Management : roadmap, vision, priorisation backlog</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_level2_1_2_content">
+    <rect x="65.0" y="418.0" width="198.0" height="80.0" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="65.0" y="418.0" width="198.0" height="80.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">UX/UI Design : recherche, prototypes, design system</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_level2_1_3_content">
+    <rect x="65.0" y="506.0" width="198.0" height="80.0" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="65.0" y="506.0" width="198.0" height="80.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Product Marketing : positionnement, launch, GTM</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_level2_2_1_content">
+    <rect x="297.0" y="330.0" width="198.0" height="80.0" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="297.0" y="330.0" width="198.0" height="80.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Plateforme &amp; Infra : cloud, DevOps, sécurité</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_level2_2_2_content">
+    <rect x="297.0" y="418.0" width="198.0" height="80.0" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="297.0" y="418.0" width="198.0" height="80.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Frontend &amp; Apps : web, mobile, intégrations</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_level2_2_3_content">
+    <rect x="297.0" y="506.0" width="198.0" height="80.0" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="297.0" y="506.0" width="198.0" height="80.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Data &amp; IA : analytics, modèles, pipelines</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_level2_3_1_content">
+    <rect x="529.0" y="330.0" width="198.0" height="80.0" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="529.0" y="330.0" width="198.0" height="80.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Sales mid-market : prospection, démos, deals &lt; 100k</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_level2_3_2_content">
+    <rect x="529.0" y="418.0" width="198.0" height="80.0" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="529.0" y="418.0" width="198.0" height="80.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Sales enterprise : grands comptes, deals stratégiques</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_level2_3_3_content">
+    <rect x="529.0" y="506.0" width="198.0" height="80.0" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="529.0" y="506.0" width="198.0" height="80.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Customer Success : onboarding, expansion, NPS</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_level2_4_1_content">
+    <rect x="761.0" y="330.0" width="198.0" height="80.0" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="761.0" y="330.0" width="198.0" height="80.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Finance &amp; Admin : compta, paie, contrats, légal</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_level2_4_2_content">
+    <rect x="761.0" y="418.0" width="198.0" height="80.0" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="761.0" y="418.0" width="198.0" height="80.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">RH &amp; Talents : recrutement, formation, culture</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_level2_4_3_content">
+    <rect x="761.0" y="506.0" width="198.0" height="80.0" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="761.0" y="506.0" width="198.0" height="80.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Support &amp; IT interne : helpdesk, outils, sécurité IT</div>
+    </foreignObject>
+  </g>
+
+</svg>

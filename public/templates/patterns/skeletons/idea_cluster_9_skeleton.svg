@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" data-svg-kr-version="2.1" data-archetype="idea_cluster" data-cardinality="9">
+  <metadata><krobar-meta>
+    <archetype>idea_cluster</archetype>
+    <family>DESCRIPTIVE_AMBIANCE</family>
+    <cardinality>MULTIPLE</cardinality>
+    <regime>SEMI_METAPHORIQUE</regime>
+    <conventional_graphic>true</conventional_graphic>
+    <family_graphic>grille_libre_post_it</family_graphic>
+    <direction>none</direction>
+    <cardinality_cards>9</cardinality_cards>
+  </krobar-meta></metadata>
+  <style>
+    .krobar-canvas-title { font-family: -apple-system, system-ui, sans-serif; font-size: 20px; font-weight: 800; fill: #0f172a; text-anchor: middle; letter-spacing: 0.5px; }
+    .ic-card-content { font-family: -apple-system, system-ui, sans-serif; font-size: 22px; line-height: 1.3; font-weight: 600; color: #1e293b; padding: 4px 6px; height: 100%; box-sizing: border-box; overflow: hidden; word-wrap: break-word; display: flex; align-items: center; justify-content: center; text-align: center; }
+  </style>
+
+  <text x="512.0" y="42" class="krobar-canvas-title">BRAINSTORMING</text>
+
+  <g class="krobar-slot ic-card" data-slot-key="block_card_1_content" transform="rotate(-1.31 254.7 175.3)">
+    <path d="M 145.1 80.0 L 338.4 80.0 L 364.4 106.0 L 364.4 270.7 L 145.1 270.7 Z" fill="white" stroke="#0f172a" stroke-width="1.5"/>
+    <path d="M 338.4 80.0 L 338.4 106.0 L 364.4 106.0" fill="none" stroke="#0f172a" stroke-width="1.2"/>
+    <foreignObject x="163.1" y="110.0" width="183.3" height="142.7">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="ic-card-content">{{block_card_1_content}}</div>
+    </foreignObject>
+  </g>
+
+  <g class="krobar-slot ic-card" data-slot-key="block_card_2_content" transform="rotate(2.03 512.0 175.3)">
+    <path d="M 402.4 80.0 L 621.6 80.0 L 621.6 270.7 L 428.4 270.7 L 402.4 244.7 Z" fill="white" stroke="#0f172a" stroke-width="1.5"/>
+    <path d="M 402.4 244.7 L 428.4 244.7 L 428.4 270.7" fill="none" stroke="#0f172a" stroke-width="1.2"/>
+    <foreignObject x="420.4" y="98.0" width="183.3" height="142.7">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="ic-card-content">{{block_card_2_content}}</div>
+    </foreignObject>
+  </g>
+
+  <g class="krobar-slot ic-card" data-slot-key="block_card_3_content" transform="rotate(0.91 769.3 175.3)">
+    <path d="M 659.6 80.0 L 878.9 80.0 L 878.9 270.7 L 685.6 270.7 L 659.6 244.7 Z" fill="white" stroke="#0f172a" stroke-width="1.5"/>
+    <path d="M 659.6 244.7 L 685.6 244.7 L 685.6 270.7" fill="none" stroke="#0f172a" stroke-width="1.2"/>
+    <foreignObject x="677.6" y="98.0" width="183.3" height="142.7">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="ic-card-content">{{block_card_3_content}}</div>
+    </foreignObject>
+  </g>
+
+  <g class="krobar-slot ic-card" data-slot-key="block_card_4_content" transform="rotate(2.07 254.7 404.0)">
+    <path d="M 145.1 308.7 L 338.4 308.7 L 364.4 334.7 L 364.4 499.3 L 145.1 499.3 Z" fill="white" stroke="#0f172a" stroke-width="1.5"/>
+    <path d="M 338.4 308.7 L 338.4 334.7 L 364.4 334.7" fill="none" stroke="#0f172a" stroke-width="1.2"/>
+    <foreignObject x="163.1" y="338.7" width="183.3" height="142.7">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="ic-card-content">{{block_card_4_content}}</div>
+    </foreignObject>
+  </g>
+
+  <g class="krobar-slot ic-card" data-slot-key="block_card_5_content" transform="rotate(-0.88 512.0 404.0)">
+    <path d="M 402.4 308.7 L 621.6 308.7 L 621.6 499.3 L 428.4 499.3 L 402.4 473.3 Z" fill="white" stroke="#0f172a" stroke-width="1.5"/>
+    <path d="M 402.4 473.3 L 428.4 473.3 L 428.4 499.3" fill="none" stroke="#0f172a" stroke-width="1.2"/>
+    <foreignObject x="420.4" y="326.7" width="183.3" height="142.7">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="ic-card-content">{{block_card_5_content}}</div>
+    </foreignObject>
+  </g>
+
+  <g class="krobar-slot ic-card" data-slot-key="block_card_6_content" transform="rotate(-0.51 769.3 404.0)">
+    <path d="M 659.6 308.7 L 852.9 308.7 L 878.9 334.7 L 878.9 499.3 L 659.6 499.3 Z" fill="white" stroke="#0f172a" stroke-width="1.5"/>
+    <path d="M 852.9 308.7 L 852.9 334.7 L 878.9 334.7" fill="none" stroke="#0f172a" stroke-width="1.2"/>
+    <foreignObject x="677.6" y="338.7" width="183.3" height="142.7">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="ic-card-content">{{block_card_6_content}}</div>
+    </foreignObject>
+  </g>
+
+  <g class="krobar-slot ic-card" data-slot-key="block_card_7_content" transform="rotate(1.89 254.7 632.7)">
+    <path d="M 145.1 537.3 L 364.4 537.3 L 364.4 728.0 L 171.1 728.0 L 145.1 702.0 Z" fill="white" stroke="#0f172a" stroke-width="1.5"/>
+    <path d="M 145.1 702.0 L 171.1 702.0 L 171.1 728.0" fill="none" stroke="#0f172a" stroke-width="1.2"/>
+    <foreignObject x="163.1" y="555.3" width="183.3" height="142.7">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="ic-card-content">{{block_card_7_content}}</div>
+    </foreignObject>
+  </g>
+
+  <g class="krobar-slot ic-card" data-slot-key="block_card_8_content" >
+    <path d="M 402.4 537.3 L 595.6 537.3 L 621.6 563.3 L 621.6 728.0 L 402.4 728.0 Z" fill="white" stroke="#0f172a" stroke-width="1.5"/>
+    <path d="M 595.6 537.3 L 595.6 563.3 L 621.6 563.3" fill="none" stroke="#0f172a" stroke-width="1.2"/>
+    <foreignObject x="420.4" y="567.3" width="183.3" height="142.7">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="ic-card-content">{{block_card_8_content}}</div>
+    </foreignObject>
+  </g>
+
+  <g class="krobar-slot ic-card" data-slot-key="block_card_9_content" transform="rotate(-2.49 769.3 632.7)">
+    <path d="M 659.6 537.3 L 878.9 537.3 L 878.9 728.0 L 685.6 728.0 L 659.6 702.0 Z" fill="white" stroke="#0f172a" stroke-width="1.5"/>
+    <path d="M 659.6 702.0 L 685.6 702.0 L 685.6 728.0" fill="none" stroke="#0f172a" stroke-width="1.2"/>
+    <foreignObject x="677.6" y="555.3" width="183.3" height="142.7">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="ic-card-content">{{block_card_9_content}}</div>
+    </foreignObject>
+  </g>
+
+</svg>

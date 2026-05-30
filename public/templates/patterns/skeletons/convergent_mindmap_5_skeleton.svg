@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" data-svg-kr-version="2.1" data-archetype="convergent_mindmap" data-cardinality-sources="5">
+  <metadata><krobar-meta>
+    <archetype>convergent_mindmap</archetype>
+    <family>EXPLICATIVE_SCHEMATIQUE</family>
+    <cardinality>MULTIPLE</cardinality>
+    <regime>ABSTRAIT_SYSTEMIQUE</regime>
+    <conventional_graphic>true</conventional_graphic>
+    <family_graphic>convergent_n_sources_vers_1_cible</family_graphic>
+    <direction>convergent</direction>
+    <cardinality_sources>5</cardinality_sources>
+  </krobar-meta></metadata>
+  <style>
+    .krobar-bbox-fill { fill: white; }
+    .krobar-bbox-stroke { stroke: #0f172a; stroke-width: 1.5; }
+    .krobar-canvas-title { font-family: -apple-system, system-ui, sans-serif; font-size: 20px; font-weight: 800; fill: #0f172a; text-anchor: middle; letter-spacing: 0.5px; }
+    .cm-target-title-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 17px; font-weight: 800; color: #0f172a; line-height: 1.25; text-align: center; padding: 8px 16px; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; letter-spacing: 0.3px; }
+    .krobar-slot-content { font-family: -apple-system, system-ui, sans-serif; font-size: 11px; line-height: 1.4; color: #1e293b; padding: 6px 10px; height: 100%; box-sizing: border-box; overflow: hidden; word-wrap: break-word; }
+    .cm-branch { stroke: #0f172a; stroke-width: 1.2; fill: none; }
+    .cm-dot { fill: white; stroke: #0f172a; stroke-width: 1.5; }
+  </style>
+
+  <text x="512.0" y="36" class="krobar-canvas-title">MINDMAP CONVERGENT</text>
+
+  <defs>
+    <marker id="cmArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0f172a"/>
+    </marker>
+  </defs>
+
+  <!-- Branches convergentes -->
+  <path d="M 312.0 125.0 C 484.5 125.0, 522.8 343.1, 695.3 343.1" class="cm-branch" marker-end="url(#cmArrow)"/>
+  <circle cx="312.0" cy="125.0" r="3" class="cm-dot"/>
+  <path d="M 312.0 254.5 C 479.6 254.5, 516.8 361.8, 684.3 361.8" class="cm-branch" marker-end="url(#cmArrow)"/>
+  <circle cx="312.0" cy="254.5" r="3" class="cm-dot"/>
+  <path d="M 312.0 384.0 C 477.6 384.0, 514.4 384.0, 680.0 384.0" class="cm-branch" marker-end="url(#cmArrow)"/>
+  <circle cx="312.0" cy="384.0" r="3" class="cm-dot"/>
+  <path d="M 312.0 513.5 C 479.6 513.5, 516.8 406.2, 684.3 406.2" class="cm-branch" marker-end="url(#cmArrow)"/>
+  <circle cx="312.0" cy="513.5" r="3" class="cm-dot"/>
+  <path d="M 312.0 643.0 C 484.5 643.0, 522.8 424.9, 695.3 424.9" class="cm-branch" marker-end="url(#cmArrow)"/>
+  <circle cx="312.0" cy="643.0" r="3" class="cm-dot"/>
+
+  <!-- Sources (slots gauche) -->
+  <g class="krobar-slot" data-slot-key="block_source_1_content">
+    <rect x="28" y="90" width="280" height="70" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="28" y="90" width="280" height="70">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_source_1_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_source_2_content">
+    <rect x="28" y="220" width="280" height="70" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="28" y="220" width="280" height="70">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_source_2_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_source_3_content">
+    <rect x="28" y="349" width="280" height="70" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="28" y="349" width="280" height="70">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_source_3_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_source_4_content">
+    <rect x="28" y="478" width="280" height="70" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="28" y="478" width="280" height="70">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_source_4_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_source_5_content">
+    <rect x="28" y="608" width="280" height="70" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="28" y="608" width="280" height="70">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{block_source_5_content}}</div>
+    </foreignObject>
+  </g>
+
+  <!-- Cible (slot droit) -->
+  <g class="krobar-slot" data-slot-key="block_target_content">
+    <ellipse cx="820" cy="384" rx="140" ry="90" fill="white" stroke="#0f172a" stroke-width="3"/>
+    <ellipse cx="820" cy="384" rx="133" ry="83" fill="none" stroke="#0f172a" stroke-width="0.8"/>
+    <foreignObject x="694" y="308" width="252" height="152">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="cm-target-title-fo">{{block_target_content}}</div>
+    </foreignObject>
+  </g>
+
+</svg>

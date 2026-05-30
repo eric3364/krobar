@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" data-svg-kr-version="2.1" data-archetype="org_tree_nxp" data-cardinality-level1="5" data-cardinality-per-branch="0" data-depth="2">
+  <metadata><krobar-meta>
+    <archetype>org_tree_nxp</archetype>
+    <family>CONCEPTUELLE_SYSTEMIQUE</family>
+    <cardinality>MULTIPLE</cardinality>
+    <regime>ABSTRAIT_SYSTEMIQUE</regime>
+    <conventional_graphic>true</conventional_graphic>
+    <family_graphic>hierarchie_verticale_organigramme</family_graphic>
+    <direction>top_down</direction>
+    <cardinality_level1>5</cardinality_level1>
+    <cardinality_per_branch>0</cardinality_per_branch>
+    <depth>2</depth>
+  </krobar-meta></metadata>
+  <style>
+    .krobar-bbox-fill { fill: white; }
+    .krobar-bbox-stroke { stroke: #0f172a; stroke-width: 1.5; }
+    .krobar-canvas-title { font-family: -apple-system, system-ui, sans-serif; font-size: 20px; font-weight: 800; fill: #0f172a; text-anchor: middle; letter-spacing: 0.5px; }
+    .ot-root-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 15px; font-weight: 800; color: #0f172a; line-height: 1.25; text-align: center; padding: 8px 14px; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; letter-spacing: 0.3px; }
+    .ot-level1-fo { font-family: -apple-system, system-ui, sans-serif; font-size: 12px; font-weight: 700; color: #0f172a; line-height: 1.3; text-align: center; padding: 6px 8px; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
+    .krobar-slot-content { font-family: -apple-system, system-ui, sans-serif; font-size: 10px; line-height: 1.35; color: #1e293b; padding: 6px 8px; height: 100%; box-sizing: border-box; overflow: hidden; word-wrap: break-word; }
+    .ot-link { stroke: #0f172a; stroke-width: 1.2; fill: none; }
+  </style>
+
+  <text x="512.0" y="36" class="krobar-canvas-title">ORGANIGRAMME</text>
+
+  <!-- Liens racine → niveau 1 -->
+  <line x1="512.0" y1="140.0" x2="512.0" y2="170.0" class="ot-link"/>
+  <line x1="108.8" y1="170.0" x2="915.2" y2="170.0" class="ot-link"/>
+  <line x1="108.8" y1="170.0" x2="108.8" y2="200.0" class="ot-link"/>
+  <line x1="310.4" y1="170.0" x2="310.4" y2="200.0" class="ot-link"/>
+  <line x1="512.0" y1="170.0" x2="512.0" y2="200.0" class="ot-link"/>
+  <line x1="713.6" y1="170.0" x2="713.6" y2="200.0" class="ot-link"/>
+  <line x1="915.2" y1="170.0" x2="915.2" y2="200.0" class="ot-link"/>
+
+  <!-- Racine (slot) -->
+  <g class="krobar-slot" data-slot-key="block_root_content">
+    <rect x="372.0" y="70" width="280" height="70" fill="white" stroke="#0f172a" stroke-width="3"/>
+    <rect x="376.0" y="74" width="272" height="62" fill="none" stroke="#0f172a" stroke-width="0.6"/>
+    <foreignObject x="372.0" y="70" width="280" height="70">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="ot-root-fo">{{block_root_content}}</div>
+    </foreignObject>
+  </g>
+
+  <!-- Niveau 1 (slots direct reports) -->
+  <g class="krobar-slot" data-slot-key="block_level1_1_content">
+    <rect x="14.0" y="200.0" width="189.6" height="70.0" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="14.0" y="200.0" width="189.6" height="70.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="ot-level1-fo">{{block_level1_1_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_level1_2_content">
+    <rect x="215.6" y="200.0" width="189.6" height="70.0" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="215.6" y="200.0" width="189.6" height="70.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="ot-level1-fo">{{block_level1_2_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_level1_3_content">
+    <rect x="417.2" y="200.0" width="189.6" height="70.0" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="417.2" y="200.0" width="189.6" height="70.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="ot-level1-fo">{{block_level1_3_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_level1_4_content">
+    <rect x="618.8" y="200.0" width="189.6" height="70.0" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="618.8" y="200.0" width="189.6" height="70.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="ot-level1-fo">{{block_level1_4_content}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot-key="block_level1_5_content">
+    <rect x="820.4" y="200.0" width="189.6" height="70.0" class="krobar-bbox-fill krobar-bbox-stroke"/>
+    <foreignObject x="820.4" y="200.0" width="189.6" height="70.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="ot-level1-fo">{{block_level1_5_content}}</div>
+    </foreignObject>
+  </g>
+
+</svg>
