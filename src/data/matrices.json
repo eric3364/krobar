@@ -142,9 +142,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "curve_comparison_n",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m010",
@@ -525,9 +525,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "brand_key_canvas",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m035",
@@ -541,9 +541,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "brand_onion_canvas",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m036",
@@ -589,9 +589,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "kapferer_prism",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m039",
@@ -700,9 +700,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "customer_journey_map",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m046",
@@ -716,9 +716,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "empathy_map_canvas",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m047",
@@ -1844,7 +1844,7 @@
       "Avantage déloyal"
     ],
     "components_status": "verified",
-    "archetype_canonical": "bmc_canvas",
+    "archetype_canonical": "lean_canvas",
     "archetype_alternatives": [],
     "archetype_status": "verified"
   },
@@ -1860,9 +1860,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "product_market_fit_canvas",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m124",
@@ -1878,7 +1878,7 @@
       "Soulageurs de douleurs"
     ],
     "components_status": "verified",
-    "archetype_canonical": "bmc_canvas",
+    "archetype_canonical": "vpc_canvas",
     "archetype_alternatives": [],
     "archetype_status": "verified"
   },
@@ -1894,9 +1894,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "jobs_to_be_done",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m126",
@@ -2132,9 +2132,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "opportunity_solution_tree",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m141",
@@ -3126,9 +3126,9 @@
       "Criticité (IPR)"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "amdec_table",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m205",
@@ -3285,9 +3285,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "empathy_map_canvas",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m215",
@@ -3301,9 +3301,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "customer_journey_map",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m216",
@@ -3317,9 +3317,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "experience_map",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m217",
@@ -3333,9 +3333,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "service_blueprint",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m218",
@@ -3509,9 +3509,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "design_system_matrix",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m229",
@@ -4738,9 +4738,9 @@
       "Apprentissage et croissance"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "balanced_scorecard_canvas",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m324",
@@ -4932,9 +4932,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "spiral_n",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m336",
@@ -4948,9 +4948,9 @@
       "Livrer"
     ],
     "components_status": "verified",
-    "archetype_canonical": null,
+    "archetype_canonical": "double_diamond",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m337",
@@ -4964,9 +4964,9 @@
       "Quadrant 4"
     ],
     "components_status": "to_verify",
-    "archetype_canonical": null,
+    "archetype_canonical": "wardley_map",
     "archetype_alternatives": [],
-    "archetype_status": "unknown"
+    "archetype_status": "verified"
   },
   {
     "id": "m338",
