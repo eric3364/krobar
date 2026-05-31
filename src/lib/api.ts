@@ -4,7 +4,7 @@
 
 import { supabase } from "@/integrations/supabase/client";
 
-type KrobarEndpoint = "analyze" | "render" | "templates" | "health";
+type KrobarEndpoint = "analyze" | "render" | "render-matrice" | "templates" | "health";
 
 type ProxyErrorBody = {
   detail?: string;
