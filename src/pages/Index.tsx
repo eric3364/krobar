@@ -1921,19 +1921,28 @@ const Index = () => {
             </div>
             <ul className="space-y-1.5">
               {matriceSuggestions.map((m) => (
-                <li key={m.id} className="flex items-start justify-between gap-2 text-sm">
-                  <span className="font-medium">{m.name}</span>
-                  {m.confidence && (
+                <li key={m.id}>
+                  <button
+                    onClick={() => handleRenderMatrice(m.id)}
+                    disabled={matriceLoading !== null}
+                    className="w-full flex items-start justify-between gap-2 text-sm text-left rounded px-1.5 py-1 hover:bg-foreground/5 transition disabled:opacity-50"
+                  >
+                    <span className="font-medium">{m.name}</span>
                     <span className="text-[10px] text-muted-foreground whitespace-nowrap">
-                      confiance {m.confidence}
+                      {matriceLoading === m.id ? "génération…" : (m.confidence ? `confiance ${m.confidence}` : "")}
                     </span>
-                  )}
+                  </button>
                 </li>
               ))}
             </ul>
             <p className="text-[11px] text-muted-foreground mt-2">
-              Ces matrices académiques correspondent à votre texte. Le rendu sera disponible prochainement.
+              Cliquez sur une matrice pour générer le visuel rempli.
             </p>
+            {matriceSvg && (
+              <div className="mt-3 border-2 border-border rounded-lg overflow-hidden bg-white">
+                <div dangerouslySetInnerHTML={{ __html: matriceSvg }} />
+              </div>
+            )}
           </div>
         )}
       </Card>
