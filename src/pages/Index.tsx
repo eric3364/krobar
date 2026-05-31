@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/resizable";
 import { formatScorePct, normalizeScore } from "@/lib/kroki";
 import { filterDeletedTemplates } from "@/lib/deletedTemplates";
-import { analyzeText, renderTemplate, getTemplates } from "@/lib/api";
+import { analyzeText, renderTemplate, renderMatrice, getTemplates } from "@/lib/api";
 import { useSlotIconInteractivity } from "@/hooks/useSlotIconInteractivity";
 import SlotIconBadge from "@/components/render/SlotIconBadge";
 import { Badge } from "@/components/ui/badge";
