@@ -50,6 +50,15 @@ export type RenderResponse = {
   icons?: Record<string, import("@/types/analyze").SlotIcon>;
 };
 
+export type RenderMatriceResponse = {
+  svg: string;
+  matrice_id: string;
+  name: string;
+  archetype: string;
+  title: string;
+};
+
+
 export type TemplateMetadata = {
   id: string;
   name: string;
