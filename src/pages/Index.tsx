@@ -1559,6 +1559,7 @@ const Index = () => {
     setLoading(true);
     setSuggestions([]);
     setMatriceSuggestions([]);
+    setMatriceSvg(null);
     setSelectedIdx(null);
 
     try {
