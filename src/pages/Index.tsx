@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/resizable";
 import { formatScorePct, normalizeScore } from "@/lib/kroki";
 import { filterDeletedTemplates } from "@/lib/deletedTemplates";
-import { analyzeText, renderTemplate, getTemplates } from "@/lib/api";
+import { analyzeText, renderTemplate, renderMatrice, getTemplates } from "@/lib/api";
 import { useSlotIconInteractivity } from "@/hooks/useSlotIconInteractivity";
 import SlotIconBadge from "@/components/render/SlotIconBadge";
 import { Badge } from "@/components/ui/badge";
@@ -321,6 +321,8 @@ const Index = () => {
   const [loading, setLoading] = useState(false);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [matriceSuggestions, setMatriceSuggestions] = useState<import("@/lib/api").MatriceSuggestion[]>([]);
+  const [matriceSvg, setMatriceSvg] = useState<string | null>(null);
+  const [matriceLoading, setMatriceLoading] = useState<string | null>(null);
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
   
   const [detailLevel, setDetailLevel] = useState<DetailLevel>(() => loadStoredDetailLevel());
@@ -1535,6 +1537,20 @@ const Index = () => {
 
 
 
+  const handleRenderMatrice = async (matriceId: string) => {
+    setMatriceLoading(matriceId);
+    setMatriceSvg(null);
+    try {
+      const res = await renderMatrice(matriceId, text, effectivePalette as unknown as Record<string, string>);
+      setMatriceSvg(res.svg);
+      toast.success(`Matrice « ${res.name} » générée`);
+    } catch (e) {
+      toast.error(`Rendu matrice : ${(e as Error).message}`);
+    } finally {
+      setMatriceLoading(null);
+    }
+  };
+
   const analyze = async () => {
     if (!text.trim()) {
       toast.error("Collez d'abord un texte à analyser.");
@@ -1557,6 +1573,7 @@ const Index = () => {
     setLoading(true);
     setSuggestions([]);
     setMatriceSuggestions([]);
+    setMatriceSvg(null);
     setSelectedIdx(null);
 
     try {
@@ -1904,19 +1921,28 @@ const Index = () => {
             </div>
             <ul className="space-y-1.5">
               {matriceSuggestions.map((m) => (
-                <li key={m.id} className="flex items-start justify-between gap-2 text-sm">
-                  <span className="font-medium">{m.name}</span>
-                  {m.confidence && (
+                <li key={m.id}>
+                  <button
+                    onClick={() => handleRenderMatrice(m.id)}
+                    disabled={matriceLoading !== null}
+                    className="w-full flex items-start justify-between gap-2 text-sm text-left rounded px-1.5 py-1 hover:bg-foreground/5 transition disabled:opacity-50"
+                  >
+                    <span className="font-medium">{m.name}</span>
                     <span className="text-[10px] text-muted-foreground whitespace-nowrap">
-                      confiance {m.confidence}
+                      {matriceLoading === m.id ? "génération…" : (m.confidence ? `confiance ${m.confidence}` : "")}
                     </span>
-                  )}
+                  </button>
                 </li>
               ))}
             </ul>
             <p className="text-[11px] text-muted-foreground mt-2">
-              Ces matrices académiques correspondent à votre texte. Le rendu sera disponible prochainement.
+              Cliquez sur une matrice pour générer le visuel rempli.
             </p>
+            {matriceSvg && (
+              <div className="mt-3 border-2 border-border rounded-lg overflow-hidden bg-white">
+                <div dangerouslySetInnerHTML={{ __html: matriceSvg }} />
+              </div>
+            )}
           </div>
         )}
       </Card>

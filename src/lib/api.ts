@@ -4,7 +4,7 @@
 
 import { supabase } from "@/integrations/supabase/client";
 
-type KrobarEndpoint = "analyze" | "render" | "templates" | "health";
+type KrobarEndpoint = "analyze" | "render" | "render-matrice" | "templates" | "health";
 
 type ProxyErrorBody = {
   detail?: string;
@@ -49,6 +49,15 @@ export type RenderResponse = {
   // Phase 6 — icônes dynamiques (slot-icon) résolues côté backend.
   icons?: Record<string, import("@/types/analyze").SlotIcon>;
 };
+
+export type RenderMatriceResponse = {
+  svg: string;
+  matrice_id: string;
+  name: string;
+  archetype: string;
+  title: string;
+};
+
 
 export type TemplateMetadata = {
   id: string;
@@ -133,6 +142,15 @@ export async function renderTemplate(
   if (icons && Object.keys(icons).length > 0) payload.icons = icons;
   return invokeKrobar<RenderResponse>("render", payload);
 }
+
+export async function renderMatrice(
+  matrice_id: string,
+  text: string,
+  palette: Record<string, string>,
+): Promise<RenderMatriceResponse> {
+  return invokeKrobar<RenderMatriceResponse>("render-matrice", { matrice_id, text, palette });
+}
+
 
 export async function getTemplates(): Promise<TemplatesResponse> {
   return invokeKrobar<TemplatesResponse>("templates");
