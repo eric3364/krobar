@@ -1537,6 +1537,20 @@ const Index = () => {
 
 
 
+  const handleRenderMatrice = async (matriceId: string) => {
+    setMatriceLoading(matriceId);
+    setMatriceSvg(null);
+    try {
+      const res = await renderMatrice(matriceId, text, effectivePalette);
+      setMatriceSvg(res.svg);
+      toast.success(`Matrice « ${res.name} » générée`);
+    } catch (e) {
+      toast.error(`Rendu matrice : ${(e as Error).message}`);
+    } finally {
+      setMatriceLoading(null);
+    }
+  };
+
   const analyze = async () => {
     if (!text.trim()) {
       toast.error("Collez d'abord un texte à analyser.");
