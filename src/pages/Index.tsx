@@ -321,6 +321,8 @@ const Index = () => {
   const [loading, setLoading] = useState(false);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [matriceSuggestions, setMatriceSuggestions] = useState<import("@/lib/api").MatriceSuggestion[]>([]);
+  const [matriceSvg, setMatriceSvg] = useState<string | null>(null);
+  const [matriceLoading, setMatriceLoading] = useState<string | null>(null);
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
   
   const [detailLevel, setDetailLevel] = useState<DetailLevel>(() => loadStoredDetailLevel());
