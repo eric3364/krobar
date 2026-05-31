@@ -697,6 +697,32 @@ export default function ArchetypeThumbnail({ archetype, status, title, className
   if (archetype === "design_system_matrix") return wrap(tabularGrid(5, 5, true), label, className);
   if (archetype === "balanced_scorecard_canvas") return wrap(bscCross(), label, className);
 
+  // === 8 procedural patterns (cardinalité variable) ===
+  const hubRadialMatch = /^hubspoke_radial(?:_\d+)?$/.exec(archetype);
+  if (hubRadialMatch) return wrap(hubspokeRadial(), label, className);
+
+  const pyrTrMatch = /^pyramide_n_tranches(?:_(\d+))?$/.exec(archetype);
+  if (pyrTrMatch) return wrap(pyramideTranches(pyrTrMatch[1] ? parseInt(pyrTrMatch[1], 10) : 4), label, className);
+
+  const escMatch = /^escalier_ascendant(?:_(\d+))?$/.exec(archetype);
+  if (escMatch) return wrap(escalierAscendant(escMatch[1] ? parseInt(escMatch[1], 10) : 4), label, className);
+
+  const evMatch = /^evenement_impact(?:_\d+)?$/.exec(archetype);
+  if (evMatch) return wrap(evenementImpact(), label, className);
+
+  const routeMatch = /^route_sinueuse(?:_\d+)?$/.exec(archetype);
+  if (routeMatch) return wrap(routeSinueuse(), label, className);
+
+  if (archetype === "carrefour_binaire") return wrap(carrefourBinaire(), label, className);
+
+  const constMatch = /^constellation_n_membres(?:_\d+)?$/.exec(archetype);
+  if (constMatch) return wrap(constellationMembres(), label, className);
+
+  const cmMatch = /^concept_manifestations_n(?:_(\d+))?$/.exec(archetype);
+  if (cmMatch) return wrap(conceptManifestations(cmMatch[1] ? parseInt(cmMatch[1], 10) : 4), label, className);
+
+
+
 
 
   // Fallback : rectangle vide.
