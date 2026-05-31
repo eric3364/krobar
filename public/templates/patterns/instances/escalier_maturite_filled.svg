@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" data-svg-kr-version="2.1" data-archetype="escalier_ascendant" data-cardinality="4">
+  <metadata>
+    <krobar-meta>
+      <family>PROCEDURALE_SEQUENTIELLE</family>
+      <cardinality>MULTIPLE</cardinality>
+      <regime>SEMI_METAPHORIQUE</regime>
+      <cells>PROCEDURALE_SEQUENTIELLE_MULTIPLE_SEMI_METAPHORIQUE</cells>
+    </krobar-meta>
+  </metadata>
+  <style>
+    .kr-line { fill:none; stroke:#1a1a1a; stroke-width:1.6; }
+    .kr-box  { fill:#ffffff; stroke:#1a1a1a; stroke-width:1.6; }
+    .kr-hub  { fill:#ffffff; stroke:#1a1a1a; stroke-width:2.4; }
+    .kr-fillblock { fill:#1a1a1a; }
+    .kr-title { font-family:Poppins,sans-serif; font-weight:700; font-size:26px; fill:#1a1a1a; letter-spacing:1px; }
+    .krobar-slot-content { font-family:Poppins,sans-serif; font-size:15px; color:#1a1a1a; line-height:1.2; display:flex; align-items:center; justify-content:center; text-align:center; width:100%; height:100%; box-sizing:border-box; padding:4px; overflow-wrap:anywhere; word-break:break-word; hyphens:auto; }
+    .kr-on-dark { color:#ffffff; }
+    .kr-hub-content { font-weight:600; font-size:18px; }
+  </style>
+
+  <text x="512" y="44" text-anchor="middle" class="kr-title">MONTÉE EN MATURITÉ</text>
+  <rect class="kr-box" x="90.0" y="550.0" width="211.0" height="140.0"/>
+  <g class="krobar-slot" data-slot="step_1_content" data-shape="bbox_step_1_content">
+    <rect class="kr-box" x="105.0" y="464.0" width="181.0" height="80.0" rx="4"/>
+    <foreignObject x="105.0" y="464.0" width="181.0" height="80.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Sensibilisation</div>
+    </foreignObject>
+  </g>
+  <rect class="kr-box" x="301.0" y="410.0" width="211.0" height="280.0"/>
+  <g class="krobar-slot" data-slot="step_2_content" data-shape="bbox_step_2_content">
+    <rect class="kr-box" x="316.0" y="324.0" width="181.0" height="80.0" rx="4"/>
+    <foreignObject x="316.0" y="324.0" width="181.0" height="80.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Adoption</div>
+    </foreignObject>
+  </g>
+  <rect class="kr-box" x="512.0" y="270.0" width="211.0" height="420.0"/>
+  <g class="krobar-slot" data-slot="step_3_content" data-shape="bbox_step_3_content">
+    <rect class="kr-box" x="527.0" y="184.0" width="181.0" height="80.0" rx="4"/>
+    <foreignObject x="527.0" y="184.0" width="181.0" height="80.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Optimisation</div>
+    </foreignObject>
+  </g>
+  <rect class="kr-box" x="723.0" y="130.0" width="211.0" height="560.0"/>
+  <g class="krobar-slot" data-slot="step_4_content" data-shape="bbox_step_4_content">
+    <rect class="kr-box" x="738.0" y="44.0" width="181.0" height="80.0" rx="4"/>
+    <foreignObject x="738.0" y="44.0" width="181.0" height="80.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Excellence</div>
+    </foreignObject>
+  </g>
+</svg>

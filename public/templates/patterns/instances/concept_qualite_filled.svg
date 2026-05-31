@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" data-svg-kr-version="2.1" data-archetype="concept_manifestations_n" data-cardinality="5">
+  <metadata>
+    <krobar-meta>
+      <family>CONCEPTUELLE_SYSTEMIQUE</family>
+      <cardinality>MULTIPLE</cardinality>
+      <regime>ABSTRAIT_SYSTEMIQUE</regime>
+      <cells>CONCEPTUELLE_SYSTEMIQUE_MULTIPLE_ABSTRAIT_SYSTEMIQUE</cells>
+    </krobar-meta>
+  </metadata>
+  <style>
+    .kr-line { fill:none; stroke:#1a1a1a; stroke-width:1.6; }
+    .kr-box  { fill:#ffffff; stroke:#1a1a1a; stroke-width:1.6; }
+    .kr-hub  { fill:#ffffff; stroke:#1a1a1a; stroke-width:2.4; }
+    .kr-fillblock { fill:#1a1a1a; }
+    .kr-title { font-family:Poppins,sans-serif; font-weight:700; font-size:26px; fill:#1a1a1a; letter-spacing:1px; }
+    .krobar-slot-content { font-family:Poppins,sans-serif; font-size:15px; color:#1a1a1a; line-height:1.2; display:flex; align-items:center; justify-content:center; text-align:center; width:100%; height:100%; box-sizing:border-box; padding:4px; overflow-wrap:anywhere; word-break:break-word; hyphens:auto; }
+    .kr-on-dark { color:#ffffff; }
+    .kr-hub-content { font-weight:600; font-size:18px; }
+  </style>
+
+  <text x="512" y="44" text-anchor="middle" class="kr-title">LA QUALITÉ AU QUOTIDIEN</text>
+  <g class="krobar-slot" data-slot="concept_content" data-shape="bbox_concept">
+    <ellipse class="kr-hub" cx="250" cy="410" rx="130" ry="90"/>
+    <foreignObject x="135" y="340" width="230" height="140">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content kr-hub-content">Qualité</div>
+    </foreignObject>
+  </g>
+  <path class="kr-line" d="M 380 410 Q 405 238 560 238"/>
+  <g class="krobar-slot" data-slot="manifestation_1_content" data-shape="bbox_manifestation_1_content">
+    <rect class="kr-box" x="560.0" y="205.0" width="380.0" height="66.0" rx="4"/>
+    <foreignObject x="560.0" y="205.0" width="380.0" height="66.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Zéro défaut produit</div>
+    </foreignObject>
+  </g>
+  <path class="kr-line" d="M 380 410 Q 405 324 560 324"/>
+  <g class="krobar-slot" data-slot="manifestation_2_content" data-shape="bbox_manifestation_2_content">
+    <rect class="kr-box" x="560.0" y="291.0" width="380.0" height="66.0" rx="4"/>
+    <foreignObject x="560.0" y="291.0" width="380.0" height="66.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Délais respectés</div>
+    </foreignObject>
+  </g>
+  <path class="kr-line" d="M 380 410 Q 405 410 560 410"/>
+  <g class="krobar-slot" data-slot="manifestation_3_content" data-shape="bbox_manifestation_3_content">
+    <rect class="kr-box" x="560.0" y="377.0" width="380.0" height="66.0" rx="4"/>
+    <foreignObject x="560.0" y="377.0" width="380.0" height="66.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Écoute client active</div>
+    </foreignObject>
+  </g>
+  <path class="kr-line" d="M 380 410 Q 405 496 560 496"/>
+  <g class="krobar-slot" data-slot="manifestation_4_content" data-shape="bbox_manifestation_4_content">
+    <rect class="kr-box" x="560.0" y="463.0" width="380.0" height="66.0" rx="4"/>
+    <foreignObject x="560.0" y="463.0" width="380.0" height="66.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Amélioration continue</div>
+    </foreignObject>
+  </g>
+  <path class="kr-line" d="M 380 410 Q 405 582 560 582"/>
+  <g class="krobar-slot" data-slot="manifestation_5_content" data-shape="bbox_manifestation_5_content">
+    <rect class="kr-box" x="560.0" y="549.0" width="380.0" height="66.0" rx="4"/>
+    <foreignObject x="560.0" y="549.0" width="380.0" height="66.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">Fierté des équipes</div>
+    </foreignObject>
+  </g>
+</svg>

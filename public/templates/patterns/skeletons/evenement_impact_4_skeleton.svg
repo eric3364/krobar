@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" data-svg-kr-version="2.1" data-archetype="evenement_impact" data-cardinality="4">
+  <metadata>
+    <krobar-meta>
+      <family>EXPLICATIVE_SCHEMATIQUE</family>
+      <cardinality>MULTIPLE</cardinality>
+      <regime>SEMI_METAPHORIQUE</regime>
+      <cells>EXPLICATIVE_SCHEMATIQUE_MULTIPLE_SEMI_METAPHORIQUE</cells>
+    </krobar-meta>
+  </metadata>
+  <style>
+    .kr-line { fill:none; stroke:#1a1a1a; stroke-width:1.6; }
+    .kr-box  { fill:#ffffff; stroke:#1a1a1a; stroke-width:1.6; }
+    .kr-hub  { fill:#ffffff; stroke:#1a1a1a; stroke-width:2.4; }
+    .kr-fillblock { fill:#1a1a1a; }
+    .kr-title { font-family:Poppins,sans-serif; font-weight:700; font-size:26px; fill:#1a1a1a; letter-spacing:1px; }
+    .krobar-slot-content { font-family:Poppins,sans-serif; font-size:15px; color:#1a1a1a; line-height:1.2; display:flex; align-items:center; justify-content:center; text-align:center; width:100%; height:100%; box-sizing:border-box; padding:4px; overflow-wrap:anywhere; word-break:break-word; hyphens:auto; }
+    .kr-on-dark { color:#ffffff; }
+    .kr-hub-content { font-weight:600; font-size:18px; }
+  </style>
+
+  <text x="512" y="44" text-anchor="middle" class="kr-title">ÉVÉNEMENT &amp; IMPACTS</text>
+  <circle cx="512" cy="410" r="70" fill="none" stroke="#1a1a1a" stroke-width="1.4"/>
+  <circle cx="512" cy="410" r="130" fill="none" stroke="#1a1a1a" stroke-width="1.4"/>
+  <circle cx="512" cy="410" r="195" fill="none" stroke="#1a1a1a" stroke-width="1.4"/>
+  <g class="krobar-slot" data-slot="event_content" data-shape="bbox_event">
+    <circle class="kr-hub" cx="512" cy="410" r="74"/>
+    <foreignObject x="458" y="364" width="108" height="92">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content kr-hub-content">{{event_content}}</div>
+    </foreignObject>
+  </g>
+  <line class="kr-line" x1="651.3" y1="270.7" x2="649.9" y2="221.2"/>
+  <g class="krobar-slot" data-slot="impact_1_content" data-shape="bbox_impact_1_content">
+    <rect class="kr-box" x="619.1" y="164.9" width="210.0" height="66.0" rx="4"/>
+    <foreignObject x="619.1" y="164.9" width="210.0" height="66.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{impact_1_content}}</div>
+    </foreignObject>
+  </g>
+  <line class="kr-line" x1="651.3" y1="549.3" x2="649.9" y2="598.8"/>
+  <g class="krobar-slot" data-slot="impact_2_content" data-shape="bbox_impact_2_content">
+    <rect class="kr-box" x="619.1" y="589.1" width="210.0" height="66.0" rx="4"/>
+    <foreignObject x="619.1" y="589.1" width="210.0" height="66.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{impact_2_content}}</div>
+    </foreignObject>
+  </g>
+  <line class="kr-line" x1="372.7" y1="549.3" x2="374.1" y2="598.8"/>
+  <g class="krobar-slot" data-slot="impact_3_content" data-shape="bbox_impact_3_content">
+    <rect class="kr-box" x="194.9" y="589.1" width="210.0" height="66.0" rx="4"/>
+    <foreignObject x="194.9" y="589.1" width="210.0" height="66.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{impact_3_content}}</div>
+    </foreignObject>
+  </g>
+  <line class="kr-line" x1="372.7" y1="270.7" x2="374.1" y2="221.2"/>
+  <g class="krobar-slot" data-slot="impact_4_content" data-shape="bbox_impact_4_content">
+    <rect class="kr-box" x="194.9" y="164.9" width="210.0" height="66.0" rx="4"/>
+    <foreignObject x="194.9" y="164.9" width="210.0" height="66.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content">{{impact_4_content}}</div>
+    </foreignObject>
+  </g>
+</svg>
