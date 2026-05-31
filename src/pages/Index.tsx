@@ -320,6 +320,7 @@ const Index = () => {
   const [whiteBackground, setWhiteBackground] = useState(false);
   const [loading, setLoading] = useState(false);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [matriceSuggestions, setMatriceSuggestions] = useState<import("@/lib/api").MatriceSuggestion[]>([]);
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
   
   const [detailLevel, setDetailLevel] = useState<DetailLevel>(() => loadStoredDetailLevel());
@@ -1555,6 +1556,7 @@ const Index = () => {
 
     setLoading(true);
     setSuggestions([]);
+    setMatriceSuggestions([]);
     setSelectedIdx(null);
 
     try {
@@ -1571,6 +1573,7 @@ const Index = () => {
       }
       const sug = filtered.map((s) => ({ ...s, score: normalizeScore(s.score) }));
       setSuggestions(sug);
+      setMatriceSuggestions(data.matrice_suggestions ?? []);
       setSelectedIdx(0);
       try {
         await quota.recordGeneration({
@@ -1754,6 +1757,7 @@ const Index = () => {
             // Reset preview state when a new text is pasted, so the previous
             // production is not retained.
             setSuggestions([]);
+            setMatriceSuggestions([]);
             setSelectedIdx(null);
             setSlotOverrides({});
             setSlotTransforms({});
@@ -1888,6 +1892,33 @@ const Index = () => {
             );
           })}
         </div>
+        {matriceSuggestions.length > 0 && (
+          <div className="mt-4 rounded-lg border-2 border-dashed border-foreground/30 bg-muted/30 p-3">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-xs font-bold uppercase tracking-wide">
+                Matrice{matriceSuggestions.length > 1 ? "s" : ""} suggérée{matriceSuggestions.length > 1 ? "s" : ""}
+              </span>
+              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-foreground/10">
+                {matriceSuggestions[0].level === "A" ? "nommée" : "détectée"}
+              </span>
+            </div>
+            <ul className="space-y-1.5">
+              {matriceSuggestions.map((m) => (
+                <li key={m.id} className="flex items-start justify-between gap-2 text-sm">
+                  <span className="font-medium">{m.name}</span>
+                  {m.confidence && (
+                    <span className="text-[10px] text-muted-foreground whitespace-nowrap">
+                      confiance {m.confidence}
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+            <p className="text-[11px] text-muted-foreground mt-2">
+              Ces matrices académiques correspondent à votre texte. Le rendu sera disponible prochainement.
+            </p>
+          </div>
+        )}
       </Card>
     </section>
   );
