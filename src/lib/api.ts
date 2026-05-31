@@ -26,10 +26,21 @@ export type ApiSuggestion = {
   icons_ranker_mode?: "algo_only" | "algo_plus_llm";
 };
 
+export type MatriceSuggestion = {
+  id: string;
+  name: string;
+  score: number;
+  level: "A" | "B";
+  confidence?: string;
+  reason?: string;
+};
+
 export type AnalyzeResponse = {
   suggestions: ApiSuggestion[];
   source?: string;
   latency_ms?: number;
+  matrice_suggestions?: MatriceSuggestion[];
+  matrice_level?: "A" | "B";
 };
 
 export type RenderResponse = {
