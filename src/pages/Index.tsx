@@ -1541,7 +1541,7 @@ const Index = () => {
     setMatriceLoading(matriceId);
     setMatriceSvg(null);
     try {
-      const res = await renderMatrice(matriceId, text, effectivePalette);
+      const res = await renderMatrice(matriceId, text, effectivePalette as unknown as Record<string, string>);
       setMatriceSvg(res.svg);
       toast.success(`Matrice « ${res.name} » générée`);
     } catch (e) {
