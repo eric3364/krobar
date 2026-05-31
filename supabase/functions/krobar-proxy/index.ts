@@ -6,7 +6,7 @@ const corsHeaders = {
 
 const KROBAR_API_BASE = "https://krobar.online/api";
 
-const PUBLIC_ENDPOINTS = ["analyze", "render", "templates", "health", "test-texts"];
+const PUBLIC_ENDPOINTS = ["analyze", "render", "render-matrice", "templates", "health", "test-texts"];
 
 /**
  * Fix duplicate style="" attributes on the opening <svg> tag.
@@ -213,11 +213,11 @@ Deno.serve(async (req) => {
     let upstream: Response;
     try {
       upstream = await fetch(url, {
-        method: endpoint === "analyze" || endpoint === "render" ? "POST" : "GET",
+        method: endpoint === "analyze" || endpoint === "render" || endpoint === "render-matrice" ? "POST" : "GET",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         signal: controller.signal,
         body:
-          endpoint === "analyze" || endpoint === "render"
+          endpoint === "analyze" || endpoint === "render" || endpoint === "render-matrice"
             ? JSON.stringify(payload ?? {})
             : undefined,
       });
