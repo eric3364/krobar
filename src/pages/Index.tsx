@@ -438,6 +438,63 @@ const Index = () => {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  // ─── Persistance de la dernière illustration générée ───────────────
+  // Restaure suggestions, sélection, matrices, palette, overrides…
+  // pour que l'utilisateur retrouve son aperçu en revenant sur la page.
+  const WORKSPACE_KEY = "krobar:workspace-state.v1";
+  const workspaceHydratedRef = useRef(false);
+  useEffect(() => {
+    if (workspaceHydratedRef.current) return;
+    workspaceHydratedRef.current = true;
+    try {
+      const raw = localStorage.getItem(WORKSPACE_KEY);
+      if (!raw) return;
+      const s = JSON.parse(raw);
+      if (Array.isArray(s.suggestions) && s.suggestions.length > 0) {
+        setSuggestions(s.suggestions);
+        if (typeof s.selectedIdx === "number") setSelectedIdx(s.selectedIdx);
+      }
+      if (Array.isArray(s.matriceSuggestions)) setMatriceSuggestions(s.matriceSuggestions);
+      if (typeof s.matriceSvg === "string") setMatriceSvg(s.matriceSvg);
+      if (typeof s.paletteKey === "string" && s.paletteKey in palettes) {
+        setPaletteKey(s.paletteKey as keyof typeof palettes);
+      }
+      if (typeof s.whiteBackground === "boolean") setWhiteBackground(s.whiteBackground);
+      if (s.slotOverrides && typeof s.slotOverrides === "object") setSlotOverrides(s.slotOverrides);
+      if (s.slotTransforms && typeof s.slotTransforms === "object") setSlotTransforms(s.slotTransforms);
+      if (s.slotTextStyles && typeof s.slotTextStyles === "object") setSlotTextStyles(s.slotTextStyles);
+      if (s.selectedIcons && typeof s.selectedIcons === "object") setSelectedIcons(s.selectedIcons);
+    } catch { /* ignore */ }
+  }, []);
+
+  useEffect(() => {
+    if (!workspaceHydratedRef.current) return;
+    const t = setTimeout(() => {
+      try {
+        if (suggestions.length === 0 && !matriceSvg) {
+          localStorage.removeItem(WORKSPACE_KEY);
+          return;
+        }
+        const payload = {
+          suggestions,
+          selectedIdx,
+          matriceSuggestions,
+          matriceSvg,
+          paletteKey,
+          whiteBackground,
+          slotOverrides,
+          slotTransforms,
+          slotTextStyles,
+          selectedIcons,
+        };
+        localStorage.setItem(WORKSPACE_KEY, JSON.stringify(payload));
+      } catch { /* ignore quota */ }
+    }, 400);
+    return () => clearTimeout(t);
+  }, [suggestions, selectedIdx, matriceSuggestions, matriceSvg, paletteKey, whiteBackground, slotOverrides, slotTransforms, slotTextStyles, selectedIcons]);
+
+
+
   useEffect(() => {
     getTemplates()
       .then((data) => {
