@@ -507,6 +507,128 @@ function fishbone(n: number) {
   return <>{elems}</>;
 }
 
+// ============ Procedural patterns (8 archetypes) ============
+
+function hubspokeRadial() {
+  const cx = 40, cy = 30, r = 6;
+  const sat: [number, number][] = [
+    [40, 9], [62, 19], [62, 41], [40, 51], [18, 41], [18, 19],
+  ];
+  return (
+    <>
+      {sat.map(([x, y], i) => (
+        <line key={`l${i}`} x1={cx} y1={cy} x2={x} y2={y} stroke={STROKE} strokeWidth={SW} />
+      ))}
+      {sat.map(([x, y], i) => (
+        <circle key={`s${i}`} cx={x} cy={y} r={3.5} fill="none" stroke={STROKE} strokeWidth={SW} />
+      ))}
+      <circle cx={cx} cy={cy} r={r} fill="white" stroke={STROKE} strokeWidth={SW} />
+    </>
+  );
+}
+
+function pyramideTranches(n = 4) {
+  const apexX = 40, apexY = 6, baseY = 54, halfBase = 30;
+  const elems: React.ReactNode[] = [];
+  elems.push(
+    <polygon key="p" points={`${apexX},${apexY} ${apexX + halfBase},${baseY} ${apexX - halfBase},${baseY}`} fill="none" stroke={STROKE} strokeWidth={SW} />
+  );
+  for (let i = 1; i < n; i++) {
+    const y = apexY + ((baseY - apexY) * i) / n;
+    const half = (halfBase * (y - apexY)) / (baseY - apexY);
+    elems.push(<line key={`h${i}`} x1={apexX - half} y1={y} x2={apexX + half} y2={y} stroke={STROKE} strokeWidth={SW} />);
+  }
+  return <>{elems}</>;
+}
+
+function escalierAscendant(n = 4) {
+  const steps: React.ReactNode[] = [];
+  const x0 = 10, y0 = 52, stepW = 15, stepH = 10;
+  for (let i = 0; i < n; i++) {
+    const x = x0 + i * stepW;
+    const h = (i + 1) * stepH;
+    steps.push(<rect key={i} x={x} y={y0 - h} width={stepW} height={h} fill="none" stroke={STROKE} strokeWidth={SW} />);
+  }
+  return <>{steps}</>;
+}
+
+function evenementImpact() {
+  const cx = 40, cy = 30;
+  return (
+    <>
+      <circle cx={cx} cy={cy} r={22} fill="none" stroke={STROKE} strokeWidth={SW} />
+      <circle cx={cx} cy={cy} r={14} fill="none" stroke={STROKE} strokeWidth={SW} />
+      <circle cx={cx} cy={cy} r={6} fill="white" stroke={STROKE} strokeWidth={SW} />
+    </>
+  );
+}
+
+function routeSinueuse() {
+  return (
+    <>
+      <path d="M 10 45 Q 30 45 40 30 Q 50 15 70 15" fill="none" stroke={STROKE} strokeWidth={SW} strokeDasharray="2 3" />
+      <circle cx={10} cy={45} r={3} fill="white" stroke={STROKE} strokeWidth={SW} />
+      <circle cx={40} cy={30} r={3} fill="white" stroke={STROKE} strokeWidth={SW} />
+      <circle cx={70} cy={15} r={3} fill="white" stroke={STROKE} strokeWidth={SW} />
+    </>
+  );
+}
+
+function carrefourBinaire() {
+  return (
+    <>
+      <line x1={40} y1={54} x2={40} y2={32} stroke={STROKE} strokeWidth={SW} />
+      <line x1={40} y1={32} x2={20} y2={14} stroke={STROKE} strokeWidth={SW} />
+      <line x1={40} y1={32} x2={60} y2={14} stroke={STROKE} strokeWidth={SW} />
+      <rect x={32} y={54} width={16} height={4} fill="none" stroke={STROKE} strokeWidth={SW} />
+      <rect x={10} y={8} width={20} height={8} fill="none" stroke={STROKE} strokeWidth={SW} />
+      <rect x={50} y={8} width={20} height={8} fill="none" stroke={STROKE} strokeWidth={SW} />
+    </>
+  );
+}
+
+function constellationMembres() {
+  const cx = 40, cy = 30, R = 20;
+  const nodes: [number, number][] = [];
+  for (let i = 0; i < 6; i++) {
+    const a = (-90 + i * 60) * (Math.PI / 180);
+    nodes.push([cx + R * Math.cos(a), cy + R * Math.sin(a)]);
+  }
+  const edges: React.ReactNode[] = [];
+  for (let i = 0; i < 6; i++) {
+    const [x1, y1] = nodes[i];
+    const [x2, y2] = nodes[(i + 1) % 6];
+    edges.push(<line key={`e${i}`} x1={x1} y1={y1} x2={x2} y2={y2} stroke={STROKE} strokeWidth={SW} />);
+  }
+  edges.push(<line key="d1" x1={nodes[0][0]} y1={nodes[0][1]} x2={nodes[3][0]} y2={nodes[3][1]} stroke={STROKE} strokeWidth={SW} strokeDasharray="2 2" />);
+  edges.push(<line key="d2" x1={nodes[1][0]} y1={nodes[1][1]} x2={nodes[4][0]} y2={nodes[4][1]} stroke={STROKE} strokeWidth={SW} strokeDasharray="2 2" />);
+  return (
+    <>
+      {edges}
+      {nodes.map(([x, y], i) => (
+        <circle key={`n${i}`} cx={x} cy={y} r={3.5} fill="white" stroke={STROKE} strokeWidth={SW} />
+      ))}
+    </>
+  );
+}
+
+function conceptManifestations(n = 4) {
+  const ccx = 18, ccy = 30;
+  const items: React.ReactNode[] = [];
+  items.push(<ellipse key="c" cx={ccx} cy={ccy} rx={12} ry={9} fill="white" stroke={STROKE} strokeWidth={SW} />);
+  const rightX = 44, bw = 28, bh = 7, gap = 4;
+  const total = n * bh + (n - 1) * gap;
+  const y0 = ccy - total / 2;
+  for (let i = 0; i < n; i++) {
+    const by = y0 + i * (bh + gap);
+    items.push(<path key={`p${i}`} d={`M ${ccx + 12} ${ccy} Q ${(ccx + rightX) / 2} ${by + bh / 2} ${rightX} ${by + bh / 2}`} fill="none" stroke={STROKE} strokeWidth={SW} />);
+    items.push(<rect key={`r${i}`} x={rightX} y={by} width={bw} height={bh} fill="none" stroke={STROKE} strokeWidth={SW} />);
+  }
+  return <>{items}</>;
+}
+
+
+
 
 
 export default function ArchetypeThumbnail({ archetype, status, title, className }: Props) {
@@ -574,6 +696,32 @@ export default function ArchetypeThumbnail({ archetype, status, title, className
   if (archetype === "amdec_table") return wrap(tabularGrid(9, 4, true), label, className);
   if (archetype === "design_system_matrix") return wrap(tabularGrid(5, 5, true), label, className);
   if (archetype === "balanced_scorecard_canvas") return wrap(bscCross(), label, className);
+
+  // === 8 procedural patterns (cardinalité variable) ===
+  const hubRadialMatch = /^hubspoke_radial(?:_\d+)?$/.exec(archetype);
+  if (hubRadialMatch) return wrap(hubspokeRadial(), label, className);
+
+  const pyrTrMatch = /^pyramide_n_tranches(?:_(\d+))?$/.exec(archetype);
+  if (pyrTrMatch) return wrap(pyramideTranches(pyrTrMatch[1] ? parseInt(pyrTrMatch[1], 10) : 4), label, className);
+
+  const escMatch = /^escalier_ascendant(?:_(\d+))?$/.exec(archetype);
+  if (escMatch) return wrap(escalierAscendant(escMatch[1] ? parseInt(escMatch[1], 10) : 4), label, className);
+
+  const evMatch = /^evenement_impact(?:_\d+)?$/.exec(archetype);
+  if (evMatch) return wrap(evenementImpact(), label, className);
+
+  const routeMatch = /^route_sinueuse(?:_\d+)?$/.exec(archetype);
+  if (routeMatch) return wrap(routeSinueuse(), label, className);
+
+  if (archetype === "carrefour_binaire") return wrap(carrefourBinaire(), label, className);
+
+  const constMatch = /^constellation_n_membres(?:_\d+)?$/.exec(archetype);
+  if (constMatch) return wrap(constellationMembres(), label, className);
+
+  const cmMatch = /^concept_manifestations_n(?:_(\d+))?$/.exec(archetype);
+  if (cmMatch) return wrap(conceptManifestations(cmMatch[1] ? parseInt(cmMatch[1], 10) : 4), label, className);
+
+
 
 
 
