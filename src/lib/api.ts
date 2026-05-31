@@ -143,6 +143,15 @@ export async function renderTemplate(
   return invokeKrobar<RenderResponse>("render", payload);
 }
 
+export async function renderMatrice(
+  matrice_id: string,
+  text: string,
+  palette: Record<string, string>,
+): Promise<RenderMatriceResponse> {
+  return invokeKrobar<RenderMatriceResponse>("render-matrice", { matrice_id, text, palette });
+}
+
+
 export async function getTemplates(): Promise<TemplatesResponse> {
   return invokeKrobar<TemplatesResponse>("templates");
 }
