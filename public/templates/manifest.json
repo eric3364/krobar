@@ -47,41 +47,6 @@
       "tier": "standard"
     },
     {
-      "id": "bcg_matrix",
-      "name": "Matrice BCG",
-      "category": "Business Frameworks",
-      "description": "Matrice 2x2 part de marché relative et taux de croissance avec quatre quadrants Vedettes, Vaches à lait, Dilemmes et Poids morts",
-      "file": "bcg_matrix.svg",
-      "slots": [
-        "cashcows_title",
-        "dogs_title",
-        "questions_title",
-        "stars_title",
-        "title"
-      ],
-      "best_for": "Analyser un portefeuille de produits selon leur part de marché et leur croissance",
-      "slot_constraints": {
-        "short": {
-          "max_chars": 30,
-          "slots": [
-            "title"
-          ]
-        },
-        "medium": {
-          "max_chars": 80,
-          "slots": [
-            "cashcows_title",
-            "dogs_title",
-            "questions_title",
-            "stars_title"
-          ]
-        }
-      },
-      "canonical": true,
-      "cardinality": 4,
-      "tier": "standard"
-    },
-    {
       "id": "bridge_problem_solution",
       "name": "Pont problème vers solution",
       "category": "Visual Metaphors",
@@ -167,51 +132,6 @@
         "min": 3,
         "max": 5
       },
-      "tier": "standard"
-    },
-    {
-      "id": "business_model_canvas",
-      "name": "Business Model Canvas",
-      "category": "Business Frameworks",
-      "description": "Canvas Osterwalder simplifié avec 9 blocs : partenaires, activités, ressources, proposition de valeur, relation, canaux, segments, coûts et revenus",
-      "file": "business_model_canvas.svg",
-      "slots": [
-        "activities",
-        "channels",
-        "cost_structure",
-        "partners",
-        "relationships",
-        "resources",
-        "revenue_streams",
-        "segments",
-        "title",
-        "value_proposition"
-      ],
-      "best_for": "Modéliser le fonctionnement global d'un business sur une seule page",
-      "slot_constraints": {
-        "short": {
-          "max_chars": 30,
-          "slots": [
-            "title"
-          ]
-        },
-        "medium": {
-          "max_chars": 80,
-          "slots": [
-            "activities",
-            "channels",
-            "cost_structure",
-            "partners",
-            "relationships",
-            "resources",
-            "revenue_streams",
-            "segments",
-            "value_proposition"
-          ]
-        }
-      },
-      "canonical": true,
-      "cardinality": 9,
       "tier": "standard"
     },
     {
@@ -1323,49 +1243,6 @@
       "tier": "standard"
     },
     {
-      "id": "swot_matrix",
-      "name": "Matrice SWOT",
-      "category": "Business Frameworks",
-      "description": "Matrice 2x2 forces, faiblesses, opportunités et menaces, chaque case avec 3 puces",
-      "file": "swot_matrix.svg",
-      "slots": [
-        "opportunities_content",
-        "opportunities_title",
-        "strengths_content",
-        "strengths_title",
-        "threats_content",
-        "threats_title",
-        "title",
-        "weaknesses_content",
-        "weaknesses_title"
-      ],
-      "best_for": "Réaliser un diagnostic stratégique interne et externe d'une organisation ou d'un projet",
-      "slot_constraints": {
-        "short": {
-          "max_chars": 30,
-          "slots": [
-            "title"
-          ]
-        },
-        "medium": {
-          "max_chars": 80,
-          "slots": [
-            "opportunities_content",
-            "opportunities_title",
-            "strengths_content",
-            "strengths_title",
-            "threats_content",
-            "threats_title",
-            "weaknesses_content",
-            "weaknesses_title"
-          ]
-        }
-      },
-      "canonical": true,
-      "cardinality": 4,
-      "tier": "standard"
-    },
-    {
       "id": "timeline_horizontal",
       "name": "Frise chronologique",
       "category": "Timelines",
@@ -2435,161 +2312,6 @@
       "domain": "body"
     },
     {
-      "id": "swot",
-      "name": "SWOT",
-      "category": "Business Frameworks",
-      "description": "Distinguer 4 quadrants",
-      "file": "swot.svg",
-      "tier": "premium",
-      "slots": [
-        "item"
-      ],
-      "slot_definitions": [
-        {
-          "id": "item",
-          "type": "repeated",
-          "label": "Item",
-          "bboxes": [
-            [
-              40,
-              110,
-              180,
-              170
-            ],
-            [
-              380,
-              110,
-              180,
-              170
-            ],
-            [
-              90,
-              390,
-              180,
-              170
-            ],
-            [
-              320,
-              390,
-              180,
-              170
-            ]
-          ],
-          "cardinality_mode": "variants",
-          "cardinality_min": 4,
-          "cardinality_max": 4
-        }
-      ],
-      "best_for": "Distinguer 4 quadrants",
-      "cardinality_mode": "variants",
-      "cardinality": {
-        "min": 4,
-        "max": 4,
-        "ideal": 4
-      },
-      "textual_markers": [
-        "quadrant",
-        "matrice",
-        "2x2",
-        "swot"
-      ],
-      "matching_types": [
-        "Distinguer 4 quadrants"
-      ],
-      "source_format": "svg",
-      "image_width": 599,
-      "image_height": 599,
-      "approved_by_admin": true,
-      "approved_at": "2026-05-11T11:03:04.912215+00:00",
-      "approved_by": "admin",
-      "created_via": "studio_v1",
-      "domain": "business"
-    },
-    {
-      "id": "pestel",
-      "name": "PESTEL",
-      "category": "Business Frameworks",
-      "description": "Distinguer 6 quadrants",
-      "file": "pestel.svg",
-      "tier": "premium",
-      "slots": [
-        "item"
-      ],
-      "slot_definitions": [
-        {
-          "id": "item",
-          "type": "repeated",
-          "label": "Item",
-          "bboxes": [
-            [
-              30,
-              90,
-              290,
-              130
-            ],
-            [
-              360,
-              90,
-              290,
-              130
-            ],
-            [
-              30,
-              300,
-              240,
-              130
-            ],
-            [
-              410,
-              300,
-              240,
-              130
-            ],
-            [
-              30,
-              510,
-              290,
-              130
-            ],
-            [
-              350,
-              510,
-              290,
-              130
-            ]
-          ],
-          "cardinality_mode": "variants",
-          "cardinality_min": 6,
-          "cardinality_max": 6
-        }
-      ],
-      "best_for": "Distinguer 6 quadrants",
-      "cardinality_mode": "variants",
-      "cardinality": {
-        "min": 6,
-        "max": 6,
-        "ideal": 6
-      },
-      "textual_markers": [
-        "six quadrants",
-        "six catégories",
-        "grille 2x3",
-        "grille 3x2",
-        "pestel"
-      ],
-      "matching_types": [
-        "Distinguer 6 quadrants"
-      ],
-      "source_format": "svg",
-      "image_width": 674,
-      "image_height": 674,
-      "approved_by_admin": true,
-      "approved_at": "2026-05-11T13:02:08.842445+00:00",
-      "approved_by": "admin",
-      "created_via": "studio_v1",
-      "domain": "business"
-    },
-    {
       "id": "vestiaire",
       "name": "Vestiaires",
       "category": "Hierarchy",
@@ -2881,220 +2603,6 @@
       "approved_by": "admin",
       "created_via": "studio_v1",
       "domain": "nature"
-    },
-    {
-      "id": "pestel_pc",
-      "name": "PESTEL",
-      "category": "Network",
-      "description": "Distinguer 6 quadrants",
-      "file": "pestel_pc.svg",
-      "tier": "premium",
-      "slots": [
-        "political",
-        "economic",
-        "sociocultural",
-        "technological",
-        "ecological",
-        "legal"
-      ],
-      "slot_definitions": [
-        {
-          "id": "political",
-          "type": "unique",
-          "label": "Political",
-          "bbox": [
-            70,
-            160,
-            260,
-            160
-          ]
-        },
-        {
-          "id": "economic",
-          "type": "unique",
-          "label": "Economic",
-          "bbox": [
-            390,
-            160,
-            260,
-            160
-          ]
-        },
-        {
-          "id": "sociocultural",
-          "type": "unique",
-          "label": "Sociocultural",
-          "bbox": [
-            710,
-            160,
-            260,
-            160
-          ]
-        },
-        {
-          "id": "technological",
-          "type": "unique",
-          "label": "Technological",
-          "bbox": [
-            70,
-            380,
-            260,
-            160
-          ]
-        },
-        {
-          "id": "ecological",
-          "type": "unique",
-          "label": "Ecological",
-          "bbox": [
-            390,
-            380,
-            260,
-            160
-          ]
-        },
-        {
-          "id": "legal",
-          "type": "unique",
-          "label": "Legal",
-          "bbox": [
-            710,
-            380,
-            260,
-            160
-          ]
-        }
-      ],
-      "best_for": "Distinguer 6 quadrants",
-      "cardinality_mode": "variants",
-      "cardinality": {
-        "min": 1,
-        "max": 1,
-        "ideal": 1
-      },
-      "textual_markers": [
-        "six quadrants",
-        "six catégories",
-        "grille 2x3",
-        "grille 3x2",
-        "pestel",
-        "analyse de marché",
-        "marché",
-        "analyse"
-      ],
-      "matching_types": [
-        "Distinguer 6 quadrants"
-      ],
-      "source_format": "svg",
-      "image_width": 1040,
-      "image_height": 600,
-      "canonical": false,
-      "canonical_preset_id": null,
-      "approved_by_admin": true,
-      "approved_at": "2026-05-13T06:11:51.988102+00:00",
-      "approved_by": "admin",
-      "created_via": "studio_v1",
-      "updated_at": "2026-05-13T06:40:45.209645+00:00",
-      "domain": "business"
-    },
-    {
-      "id": "porter_pc",
-      "name": "Les 5 forces de Porter",
-      "category": "Network",
-      "description": "Distinguer 5 quadrants de la matrice des 5 forces de Porter",
-      "file": "porter_pc.svg",
-      "tier": "premium",
-      "slots": [
-        "supplier_1",
-        "substitute_1",
-        "buyer_1",
-        "new_entrant_1",
-        "competitor_1"
-      ],
-      "slot_definitions": [
-        {
-          "id": "supplier_1",
-          "type": "unique",
-          "label": "Supplier 1",
-          "bbox": [
-            50,
-            250,
-            220,
-            120
-          ]
-        },
-        {
-          "id": "substitute_1",
-          "type": "unique",
-          "label": "Substitute 1",
-          "bbox": [
-            390,
-            110,
-            260,
-            100
-          ]
-        },
-        {
-          "id": "buyer_1",
-          "type": "unique",
-          "label": "Buyer 1",
-          "bbox": [
-            770,
-            250,
-            220,
-            120
-          ]
-        },
-        {
-          "id": "new_entrant_1",
-          "type": "unique",
-          "label": "New Entrant 1",
-          "bbox": [
-            390,
-            390,
-            260,
-            100
-          ]
-        },
-        {
-          "id": "competitor_1",
-          "type": "unique",
-          "label": "Competitor 1",
-          "bbox": [
-            400,
-            240,
-            250,
-            120
-          ]
-        }
-      ],
-      "best_for": "Distinguer 5 quadrants",
-      "cardinality_mode": "variants",
-      "cardinality": {
-        "min": 1,
-        "max": 1,
-        "ideal": 1
-      },
-      "textual_markers": [
-        "cinq quadrants",
-        "cinq forces",
-        "matrice de Porter",
-        "five forces"
-      ],
-      "matching_types": [
-        "Distinguer 5 quadrants"
-      ],
-      "source_format": "svg",
-      "image_width": 1040,
-      "image_height": 600,
-      "canonical": false,
-      "canonical_preset_id": null,
-      "approved_by_admin": true,
-      "approved_at": "2026-05-13T13:34:19.747578+00:00",
-      "approved_by": "admin",
-      "created_via": "studio_v1",
-      "updated_at": "2026-05-13T15:54:48.361795+00:00",
-      "domain": "business"
     },
     {
       "id": "cinq_etapes",
@@ -3880,6 +3388,314 @@
       "approved_by": "batch_builder",
       "created_via": "studio_v1",
       "domain": "mechanics"
+    },
+    {
+      "id": "hubspoke_radial",
+      "name": "Hub & Spoke radial",
+      "category": "Mindmap",
+      "description": "Concept central rayonnant vers N satellites disposés en couronne",
+      "file": "hubspoke_radial_6_skeleton.svg",
+      "slots": [
+        "title",
+        "block_central_content",
+        "block_1_content",
+        "block_2_content",
+        "block_3_content",
+        "block_4_content",
+        "block_5_content",
+        "block_6_content"
+      ],
+      "best_for": "Représenter un concept central qui rayonne vers plusieurs dimensions (piliers, valeurs, axes)",
+      "cardinality": {
+        "ideal": 6,
+        "min": 4,
+        "max": 6
+      },
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title",
+            "block_central_content",
+            "block_1_content",
+            "block_2_content",
+            "block_3_content",
+            "block_4_content",
+            "block_5_content",
+            "block_6_content"
+          ]
+        }
+      },
+      "tier": "standard",
+      "conventional_graphic": true,
+      "family_graphic": "centre_n_satellites"
+    },
+    {
+      "id": "pyramide_n_tranches",
+      "name": "Pyramide à N niveaux",
+      "category": "Hierarchy",
+      "description": "Pyramide hiérarchique à N niveaux empilés, pointe au sommet",
+      "file": "pyramide_n_tranches_5_skeleton.svg",
+      "slots": [
+        "title",
+        "level_1_content",
+        "level_2_content",
+        "level_3_content",
+        "level_4_content",
+        "level_5_content"
+      ],
+      "best_for": "Représenter une hiérarchie de niveaux empilés (besoins, maturité, priorités)",
+      "cardinality": {
+        "ideal": 5,
+        "min": 3,
+        "max": 6
+      },
+      "slot_constraints": {
+        "medium": {
+          "max_chars": 60,
+          "slots": [
+            "title",
+            "level_1_content",
+            "level_2_content",
+            "level_3_content",
+            "level_4_content",
+            "level_5_content"
+          ]
+        }
+      },
+      "tier": "standard",
+      "conventional_graphic": true,
+      "family_graphic": "pyramide"
+    },
+    {
+      "id": "escalier_ascendant",
+      "name": "Escalier ascendant",
+      "category": "Process",
+      "description": "Marches montantes figurant une progression par paliers",
+      "file": "escalier_ascendant_4_skeleton.svg",
+      "slots": [
+        "title",
+        "step_1_content",
+        "step_2_content",
+        "step_3_content",
+        "step_4_content"
+      ],
+      "best_for": "Représenter une progression ou montée en maturité par paliers successifs",
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 5
+      },
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title",
+            "step_1_content",
+            "step_2_content",
+            "step_3_content",
+            "step_4_content"
+          ]
+        }
+      },
+      "tier": "standard",
+      "conventional_graphic": true,
+      "family_graphic": "progression"
+    },
+    {
+      "id": "evenement_impact",
+      "name": "Événement & impacts",
+      "category": "Cause-Effect",
+      "description": "Onde concentrique partant d'un événement central vers N impacts",
+      "file": "evenement_impact_4_skeleton.svg",
+      "slots": [
+        "title",
+        "event_content",
+        "impact_1_content",
+        "impact_2_content",
+        "impact_3_content",
+        "impact_4_content"
+      ],
+      "best_for": "Représenter un événement déclencheur et ses conséquences en chaîne",
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 4
+      },
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title",
+            "impact_1_content",
+            "impact_2_content",
+            "impact_3_content",
+            "impact_4_content"
+          ]
+        },
+        "medium": {
+          "max_chars": 60,
+          "slots": [
+            "event_content"
+          ]
+        }
+      },
+      "tier": "standard",
+      "conventional_graphic": true,
+      "family_graphic": "onde_impact"
+    },
+    {
+      "id": "route_sinueuse",
+      "name": "Route sinueuse",
+      "category": "Process",
+      "description": "Chemin courbe avec jalons numérotés figurant un parcours",
+      "file": "route_sinueuse_4_skeleton.svg",
+      "slots": [
+        "title",
+        "milestone_1_content",
+        "milestone_2_content",
+        "milestone_3_content",
+        "milestone_4_content"
+      ],
+      "best_for": "Représenter un parcours ou une feuille de route avec étapes jalonnées",
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 5
+      },
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title",
+            "milestone_1_content",
+            "milestone_2_content",
+            "milestone_3_content",
+            "milestone_4_content"
+          ]
+        }
+      },
+      "tier": "standard",
+      "conventional_graphic": true,
+      "family_graphic": "parcours"
+    },
+    {
+      "id": "carrefour_binaire",
+      "name": "Carrefour binaire",
+      "category": "Comparison",
+      "description": "Embranchement en Y à deux voies avec conséquences",
+      "file": "carrefour_binaire_skeleton.svg",
+      "slots": [
+        "title",
+        "situation_content",
+        "option_a_content",
+        "option_b_content",
+        "outcome_a_content",
+        "outcome_b_content"
+      ],
+      "best_for": "Représenter une décision binaire avec ses deux options et leurs conséquences",
+      "cardinality": {
+        "ideal": 2,
+        "min": 2,
+        "max": 2
+      },
+      "slot_constraints": {
+        "short": {
+          "max_chars": 40,
+          "slots": [
+            "situation_content",
+            "option_a_content",
+            "option_b_content",
+            "outcome_a_content",
+            "outcome_b_content"
+          ]
+        }
+      },
+      "tier": "standard",
+      "conventional_graphic": true,
+      "family_graphic": "embranchement"
+    },
+    {
+      "id": "constellation_n_membres",
+      "name": "Constellation",
+      "category": "Network",
+      "description": "N membres en orbites entrecroisées, réseau sans hub dominant",
+      "file": "constellation_n_membres_6_skeleton.svg",
+      "slots": [
+        "title",
+        "member_1_content",
+        "member_2_content",
+        "member_3_content",
+        "member_4_content",
+        "member_5_content",
+        "member_6_content"
+      ],
+      "best_for": "Représenter un écosystème ou réseau d'acteurs interconnectés sans hiérarchie centrale",
+      "cardinality": {
+        "ideal": 6,
+        "min": 4,
+        "max": 6
+      },
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "title",
+            "member_1_content",
+            "member_2_content",
+            "member_3_content",
+            "member_4_content",
+            "member_5_content",
+            "member_6_content"
+          ]
+        }
+      },
+      "tier": "standard",
+      "conventional_graphic": true,
+      "family_graphic": "reseau_sans_centre"
+    },
+    {
+      "id": "concept_manifestations_n",
+      "name": "Concept & manifestations",
+      "category": "Mindmap",
+      "description": "Concept central à gauche, N manifestations latérales empilées",
+      "file": "concept_manifestations_n_5_skeleton.svg",
+      "slots": [
+        "title",
+        "concept_content",
+        "manifestation_1_content",
+        "manifestation_2_content",
+        "manifestation_3_content",
+        "manifestation_4_content",
+        "manifestation_5_content"
+      ],
+      "best_for": "Représenter un concept et ses manifestations concrètes asymétriques",
+      "cardinality": {
+        "ideal": 5,
+        "min": 3,
+        "max": 6
+      },
+      "slot_constraints": {
+        "short": {
+          "max_chars": 30,
+          "slots": [
+            "concept_content"
+          ]
+        },
+        "medium": {
+          "max_chars": 80,
+          "slots": [
+            "manifestation_1_content",
+            "manifestation_2_content",
+            "manifestation_3_content",
+            "manifestation_4_content",
+            "manifestation_5_content"
+          ]
+        }
+      },
+      "tier": "standard",
+      "conventional_graphic": true,
+      "family_graphic": "concept_manifestations"
     }
   ]
 }
