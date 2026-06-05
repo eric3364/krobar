@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" data-svg-kr-version="2.1" data-template-id="liste_items_2" data-tier="standard" data-cardinality-min="2" data-cardinality-max="7">
+  <metadata>
+    <krobar-meta>
+      <family>CONCEPTUELLE_SYSTEMIQUE</family>
+      <cardinality>MULTIPLE</cardinality>
+      <regime>ABSTRAIT_SYSTEMIQUE</regime>
+      <cells>CONCEPTUELLE_SYSTEMIQUE_MULTIPLE_ABSTRAIT_SYSTEMIQUE</cells>
+      <habillage>liste_items</habillage>
+    </krobar-meta>
+  </metadata>
+  <g class="krobar-decoration" style="opacity: var(--decoration-opacity, 0);"></g>
+  <g class="krobar-slot" data-slot="title" data-shape="bbox_title" data-font-size="40">
+    <foreignObject x="80.0" y="44.0" width="1040.0" height="64.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:700;font-size:40px;color:var(--text);line-height:1.25;">{{title}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot="subtitle" data-shape="bbox_subtitle" data-font-size="24">
+    <foreignObject x="160.0" y="118.0" width="880.0" height="38.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:400;font-size:24px;color:var(--text);line-height:1.25;">{{subtitle}}</div>
+    </foreignObject>
+  </g>
+  <g class="slot-icon" data-icon-slot="item_1_icon" transform="translate(120.0,309.0)" data-icon-size="52"></g>
+    <g class="krobar-slot" data-slot="item_1" data-shape="bbox_item_1" data-font-size="22">
+    <foreignObject x="218.0" y="208.0" width="862.0" height="91.8">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:flex-end;justify-content:flex-start;width:100%;height:100%;text-align:left;font-family:Poppins,Arial,sans-serif;font-weight:700;font-size:22px;color:var(--text);line-height:1.25;">{{item_1}}</div>
+    </foreignObject>
+  </g>
+    <g class="krobar-slot" data-slot="item_1_desc" data-shape="bbox_item_1_desc" data-font-size="16">
+    <foreignObject x="218.0" y="313.8" width="862.0" height="148.2">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:flex-start;justify-content:flex-start;width:100%;height:100%;text-align:left;font-family:Poppins,Arial,sans-serif;font-weight:400;font-size:16px;color:var(--text);line-height:1.25;">{{item_1_desc}}</div>
+    </foreignObject>
+  </g>
+  <line x1="120.0" y1="470.0" x2="1080.0" y2="470.0" stroke="var(--text)" stroke-width="1" opacity="0.18"/>
+  <g class="slot-icon" data-icon-slot="item_2_icon" transform="translate(120.0,579.0)" data-icon-size="52"></g>
+    <g class="krobar-slot" data-slot="item_2" data-shape="bbox_item_2" data-font-size="22">
+    <foreignObject x="218.0" y="478.0" width="862.0" height="91.8">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:flex-end;justify-content:flex-start;width:100%;height:100%;text-align:left;font-family:Poppins,Arial,sans-serif;font-weight:700;font-size:22px;color:var(--text);line-height:1.25;">{{item_2}}</div>
+    </foreignObject>
+  </g>
+    <g class="krobar-slot" data-slot="item_2_desc" data-shape="bbox_item_2_desc" data-font-size="16">
+    <foreignObject x="218.0" y="583.8" width="862.0" height="148.2">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:flex-start;justify-content:flex-start;width:100%;height:100%;text-align:left;font-family:Poppins,Arial,sans-serif;font-weight:400;font-size:16px;color:var(--text);line-height:1.25;">{{item_2_desc}}</div>
+    </foreignObject>
+  </g>
+</svg>

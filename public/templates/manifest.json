@@ -3696,6 +3696,306 @@
       "tier": "standard",
       "conventional_graphic": true,
       "family_graphic": "concept_manifestations"
+    },
+    {
+      "id": "liste_items_2",
+      "name": "Liste à items 2",
+      "category": "Concept",
+      "description": "Énumération verticale de 2 items, chacun avec picto, titre et description. Mise en page régulière à filets séparateurs.",
+      "file": "liste_items_2.svg",
+      "slots": [
+        "title",
+        "subtitle",
+        "item_1",
+        "item_2",
+        "item_1_desc",
+        "item_2_desc"
+      ],
+      "best_for": "Présenter une liste de points clés, principes ou piliers, chacun avec un intitulé court et une explication.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 40,
+          "slots": [
+            "title",
+            "subtitle",
+            "item_1",
+            "item_2"
+          ]
+        },
+        "medium": {
+          "max_chars": 120,
+          "slots": [
+            "item_1_desc",
+            "item_2_desc"
+          ]
+        }
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 2,
+        "max": 7
+      },
+      "tier": "standard"
+    },
+    {
+      "id": "liste_items_3",
+      "name": "Liste à items 3",
+      "category": "Concept",
+      "description": "Énumération verticale de 3 items, chacun avec picto, titre et description. Mise en page régulière à filets séparateurs.",
+      "file": "liste_items_3.svg",
+      "slots": [
+        "title",
+        "subtitle",
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_1_desc",
+        "item_2_desc",
+        "item_3_desc"
+      ],
+      "best_for": "Présenter une liste de points clés, principes ou piliers, chacun avec un intitulé court et une explication.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 40,
+          "slots": [
+            "title",
+            "subtitle",
+            "item_1",
+            "item_2",
+            "item_3"
+          ]
+        },
+        "medium": {
+          "max_chars": 120,
+          "slots": [
+            "item_1_desc",
+            "item_2_desc",
+            "item_3_desc"
+          ]
+        }
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 2,
+        "max": 7
+      },
+      "tier": "standard"
+    },
+    {
+      "id": "liste_items_4",
+      "name": "Liste à items 4",
+      "category": "Concept",
+      "description": "Énumération verticale de 4 items, chacun avec picto, titre et description. Mise en page régulière à filets séparateurs.",
+      "file": "liste_items_4.svg",
+      "slots": [
+        "title",
+        "subtitle",
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4",
+        "item_1_desc",
+        "item_2_desc",
+        "item_3_desc",
+        "item_4_desc"
+      ],
+      "best_for": "Présenter une liste de points clés, principes ou piliers, chacun avec un intitulé court et une explication.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 40,
+          "slots": [
+            "title",
+            "subtitle",
+            "item_1",
+            "item_2",
+            "item_3",
+            "item_4"
+          ]
+        },
+        "medium": {
+          "max_chars": 120,
+          "slots": [
+            "item_1_desc",
+            "item_2_desc",
+            "item_3_desc",
+            "item_4_desc"
+          ]
+        }
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 2,
+        "max": 7
+      },
+      "tier": "standard"
+    },
+    {
+      "id": "liste_items_5",
+      "name": "Liste à items 5",
+      "category": "Concept",
+      "description": "Énumération verticale de 5 items, chacun avec picto, titre et description. Mise en page régulière à filets séparateurs.",
+      "file": "liste_items_5.svg",
+      "slots": [
+        "title",
+        "subtitle",
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4",
+        "item_5",
+        "item_1_desc",
+        "item_2_desc",
+        "item_3_desc",
+        "item_4_desc",
+        "item_5_desc"
+      ],
+      "best_for": "Présenter une liste de points clés, principes ou piliers, chacun avec un intitulé court et une explication.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 40,
+          "slots": [
+            "title",
+            "subtitle",
+            "item_1",
+            "item_2",
+            "item_3",
+            "item_4",
+            "item_5"
+          ]
+        },
+        "medium": {
+          "max_chars": 120,
+          "slots": [
+            "item_1_desc",
+            "item_2_desc",
+            "item_3_desc",
+            "item_4_desc",
+            "item_5_desc"
+          ]
+        }
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 2,
+        "max": 7
+      },
+      "tier": "standard"
+    },
+    {
+      "id": "liste_items_6",
+      "name": "Liste à items 6",
+      "category": "Concept",
+      "description": "Énumération verticale de 6 items, chacun avec picto, titre et description. Mise en page régulière à filets séparateurs.",
+      "file": "liste_items_6.svg",
+      "slots": [
+        "title",
+        "subtitle",
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4",
+        "item_5",
+        "item_6",
+        "item_1_desc",
+        "item_2_desc",
+        "item_3_desc",
+        "item_4_desc",
+        "item_5_desc",
+        "item_6_desc"
+      ],
+      "best_for": "Présenter une liste de points clés, principes ou piliers, chacun avec un intitulé court et une explication.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 40,
+          "slots": [
+            "title",
+            "subtitle",
+            "item_1",
+            "item_2",
+            "item_3",
+            "item_4",
+            "item_5",
+            "item_6"
+          ]
+        },
+        "medium": {
+          "max_chars": 120,
+          "slots": [
+            "item_1_desc",
+            "item_2_desc",
+            "item_3_desc",
+            "item_4_desc",
+            "item_5_desc",
+            "item_6_desc"
+          ]
+        }
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 2,
+        "max": 7
+      },
+      "tier": "standard"
+    },
+    {
+      "id": "liste_items_7",
+      "name": "Liste à items 7",
+      "category": "Concept",
+      "description": "Énumération verticale de 7 items, chacun avec picto, titre et description. Mise en page régulière à filets séparateurs.",
+      "file": "liste_items_7.svg",
+      "slots": [
+        "title",
+        "subtitle",
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4",
+        "item_5",
+        "item_6",
+        "item_7",
+        "item_1_desc",
+        "item_2_desc",
+        "item_3_desc",
+        "item_4_desc",
+        "item_5_desc",
+        "item_6_desc",
+        "item_7_desc"
+      ],
+      "best_for": "Présenter une liste de points clés, principes ou piliers, chacun avec un intitulé court et une explication.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 40,
+          "slots": [
+            "title",
+            "subtitle",
+            "item_1",
+            "item_2",
+            "item_3",
+            "item_4",
+            "item_5",
+            "item_6",
+            "item_7"
+          ]
+        },
+        "medium": {
+          "max_chars": 120,
+          "slots": [
+            "item_1_desc",
+            "item_2_desc",
+            "item_3_desc",
+            "item_4_desc",
+            "item_5_desc",
+            "item_6_desc",
+            "item_7_desc"
+          ]
+        }
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 2,
+        "max": 7
+      },
+      "tier": "standard"
     }
   ]
 }
