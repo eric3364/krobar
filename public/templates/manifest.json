@@ -4460,6 +4460,150 @@
         "max": 2
       },
       "tier": "standard"
+    },
+    {
+      "id": "hub_spoke_3",
+      "name": "Hub-spoke radial 3",
+      "category": "Concept",
+      "description": "Polygone à 3 secteurs rayonnant depuis un centre, chaque secteur portant une facette d un même socle.",
+      "file": "hub_spoke_3.svg",
+      "slots": [
+        "title",
+        "subtitle",
+        "sector_1",
+        "sector_2",
+        "sector_3"
+      ],
+      "best_for": "Présenter N facettes équivalentes d un concept central, sans hiérarchie entre elles.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 40,
+          "slots": [
+            "title",
+            "subtitle",
+            "sector_1",
+            "sector_2",
+            "sector_3"
+          ]
+        }
+      },
+      "cardinality": {
+        "ideal": 5,
+        "min": 3,
+        "max": 6
+      },
+      "tier": "standard"
+    },
+    {
+      "id": "hub_spoke_4",
+      "name": "Hub-spoke radial 4",
+      "category": "Concept",
+      "description": "Polygone à 4 secteurs rayonnant depuis un centre, chaque secteur portant une facette d un même socle.",
+      "file": "hub_spoke_4.svg",
+      "slots": [
+        "title",
+        "subtitle",
+        "sector_1",
+        "sector_2",
+        "sector_3",
+        "sector_4"
+      ],
+      "best_for": "Présenter N facettes équivalentes d un concept central, sans hiérarchie entre elles.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 40,
+          "slots": [
+            "title",
+            "subtitle",
+            "sector_1",
+            "sector_2",
+            "sector_3",
+            "sector_4"
+          ]
+        }
+      },
+      "cardinality": {
+        "ideal": 5,
+        "min": 3,
+        "max": 6
+      },
+      "tier": "standard"
+    },
+    {
+      "id": "hub_spoke_5",
+      "name": "Hub-spoke radial 5",
+      "category": "Concept",
+      "description": "Polygone à 5 secteurs rayonnant depuis un centre, chaque secteur portant une facette d un même socle.",
+      "file": "hub_spoke_5.svg",
+      "slots": [
+        "title",
+        "subtitle",
+        "sector_1",
+        "sector_2",
+        "sector_3",
+        "sector_4",
+        "sector_5"
+      ],
+      "best_for": "Présenter N facettes équivalentes d un concept central, sans hiérarchie entre elles.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 40,
+          "slots": [
+            "title",
+            "subtitle",
+            "sector_1",
+            "sector_2",
+            "sector_3",
+            "sector_4",
+            "sector_5"
+          ]
+        }
+      },
+      "cardinality": {
+        "ideal": 5,
+        "min": 3,
+        "max": 6
+      },
+      "tier": "standard"
+    },
+    {
+      "id": "hub_spoke_6",
+      "name": "Hub-spoke radial 6",
+      "category": "Concept",
+      "description": "Polygone à 6 secteurs rayonnant depuis un centre, chaque secteur portant une facette d un même socle.",
+      "file": "hub_spoke_6.svg",
+      "slots": [
+        "title",
+        "subtitle",
+        "sector_1",
+        "sector_2",
+        "sector_3",
+        "sector_4",
+        "sector_5",
+        "sector_6"
+      ],
+      "best_for": "Présenter N facettes équivalentes d un concept central, sans hiérarchie entre elles.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 40,
+          "slots": [
+            "title",
+            "subtitle",
+            "sector_1",
+            "sector_2",
+            "sector_3",
+            "sector_4",
+            "sector_5",
+            "sector_6"
+          ]
+        }
+      },
+      "cardinality": {
+        "ideal": 5,
+        "min": 3,
+        "max": 6
+      },
+      "tier": "standard"
     }
   ]
 }

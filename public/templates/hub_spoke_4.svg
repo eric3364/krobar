@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" data-svg-kr-version="2.1" data-template-id="hub_spoke_4" data-tier="standard" data-cardinality-min="3" data-cardinality-max="6">
+  <metadata><krobar-meta>
+    <family>CONCEPTUELLE_SYSTEMIQUE</family>
+    <cardinality>MULTIPLE</cardinality>
+    <regime>ABSTRAIT_SYSTEMIQUE</regime>
+    <cells>CONCEPTUELLE_SYSTEMIQUE_MULTIPLE_ABSTRAIT_SYSTEMIQUE</cells>
+    <habillage>hub_spoke</habillage>
+  </krobar-meta></metadata>
+  <style>
+    .hs-sector { fill: white; stroke: var(--text, #0f172a); stroke-width: 2; }
+    .hs-hub { fill: white; stroke: var(--text, #0f172a); stroke-width: 2; }
+  </style>
+  <g class="krobar-decoration" style="opacity: var(--decoration-opacity, 0);"></g>
+  <g class="krobar-slot" data-slot="title" data-shape="bbox_title" data-font-size="40">
+    <foreignObject x="80.0" y="30.0" width="1040.0" height="56.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:700;font-size:40px;color:var(--text);line-height:1.2;">{{title}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot="subtitle" data-shape="bbox_subtitle" data-font-size="24">
+    <foreignObject x="160.0" y="92.0" width="880.0" height="36.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:400;font-size:24px;color:var(--text);line-height:1.2;">{{subtitle}}</div>
+    </foreignObject>
+  </g>
+  <path d="M 600.0 405.0 L 600.0 130.0 L 940.0 470.0 L 665.0 470.0 A 65 65 0 0 0 600.0 405.0 Z" class="hs-sector"/>
+  <path d="M 665.0 470.0 L 940.0 470.0 L 600.0 810.0 L 600.0 535.0 A 65 65 0 0 0 665.0 470.0 Z" class="hs-sector"/>
+  <path d="M 600.0 535.0 L 600.0 810.0 L 260.0 470.0 L 535.0 470.0 A 65 65 0 0 0 600.0 535.0 Z" class="hs-sector"/>
+  <path d="M 535.0 470.0 L 260.0 470.0 L 600.0 130.0 L 600.0 405.0 A 65 65 0 0 0 535.0 470.0 Z" class="hs-sector"/>
+  <circle cx="600" cy="470" r="65" class="hs-hub"/>
+    <g class="krobar-slot" data-slot="sector_1" data-shape="bbox_sector_1" data-font-size="22">
+    <foreignObject x="774.2" y="197.8" width="148.0" height="48.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:700;font-size:22px;color:var(--text);line-height:1.2;">{{sector_1}}</div>
+    </foreignObject>
+  </g>
+    <g class="krobar-slot" data-slot="sector_2" data-shape="bbox_sector_2" data-font-size="22">
+    <foreignObject x="774.2" y="694.2" width="148.0" height="48.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:700;font-size:22px;color:var(--text);line-height:1.2;">{{sector_2}}</div>
+    </foreignObject>
+  </g>
+    <g class="krobar-slot" data-slot="sector_3" data-shape="bbox_sector_3" data-font-size="22">
+    <foreignObject x="277.8" y="694.2" width="148.0" height="48.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:700;font-size:22px;color:var(--text);line-height:1.2;">{{sector_3}}</div>
+    </foreignObject>
+  </g>
+    <g class="krobar-slot" data-slot="sector_4" data-shape="bbox_sector_4" data-font-size="22">
+    <foreignObject x="277.8" y="197.8" width="148.0" height="48.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:700;font-size:22px;color:var(--text);line-height:1.2;">{{sector_4}}</div>
+    </foreignObject>
+  </g>
+</svg>
