@@ -4804,6 +4804,90 @@
         "max": 6
       },
       "tier": "standard"
+    },
+    {
+      "id": "venn_2",
+      "name": "Diagramme de Venn 2",
+      "category": "Concept",
+      "description": "2 ensembles qui se chevauchent, avec un élément central commun à l intersection.",
+      "file": "venn_2.svg",
+      "slots": [
+        "title",
+        "center",
+        "set_1",
+        "set_2",
+        "set_1_desc",
+        "set_2_desc"
+      ],
+      "best_for": "Montrer le recoupement de plusieurs ensembles et ce qu ils ont en commun.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 40,
+          "slots": [
+            "title",
+            "center",
+            "set_1",
+            "set_2"
+          ]
+        },
+        "medium": {
+          "max_chars": 130,
+          "slots": [
+            "set_1_desc",
+            "set_2_desc"
+          ]
+        }
+      },
+      "cardinality": {
+        "ideal": 3,
+        "min": 2,
+        "max": 3
+      },
+      "tier": "standard"
+    },
+    {
+      "id": "venn_3",
+      "name": "Diagramme de Venn 3",
+      "category": "Concept",
+      "description": "3 ensembles qui se chevauchent, avec un élément central commun à l intersection.",
+      "file": "venn_3.svg",
+      "slots": [
+        "title",
+        "center",
+        "set_1",
+        "set_2",
+        "set_3",
+        "set_1_desc",
+        "set_2_desc",
+        "set_3_desc"
+      ],
+      "best_for": "Montrer le recoupement de plusieurs ensembles et ce qu ils ont en commun.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 40,
+          "slots": [
+            "title",
+            "center",
+            "set_1",
+            "set_2",
+            "set_3"
+          ]
+        },
+        "medium": {
+          "max_chars": 130,
+          "slots": [
+            "set_1_desc",
+            "set_2_desc",
+            "set_3_desc"
+          ]
+        }
+      },
+      "cardinality": {
+        "ideal": 3,
+        "min": 2,
+        "max": 3
+      },
+      "tier": "standard"
     }
   ]
 }

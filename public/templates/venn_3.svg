@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 1320" data-svg-kr-version="2.1" data-template-id="venn_3" data-tier="standard" data-cardinality-min="2" data-cardinality-max="3">
+  <metadata><krobar-meta>
+    <family>CONCEPTUELLE_SYSTEMIQUE</family>
+    <cardinality>BINAIRE</cardinality>
+    <regime>ABSTRAIT_SYSTEMIQUE</regime>
+    <cells>CONCEPTUELLE_SYSTEMIQUE_BINAIRE_ABSTRAIT_SYSTEMIQUE</cells>
+    <habillage>venn</habillage>
+  </krobar-meta></metadata>
+  <style>
+    .vn-circle { fill: none; stroke: var(--text, #0f172a); stroke-width: 2; }
+    .kr-backplate { fill: var(--backplate-fill, #ffffff); opacity: var(--backplate-opacity, 0.92); }
+  </style>
+  <g class="krobar-decoration" style="opacity: var(--decoration-opacity, 0);"></g>
+  <g class="krobar-slot" data-slot="title" data-shape="bbox_title" data-font-size="40">
+    <foreignObject x="80.0" y="30.0" width="1340.0" height="60.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:700;font-size:40px;color:var(--text);line-height:1.25;">{{title}}</div>
+    </foreignObject>
+  </g>
+  <circle cx="570.2" cy="441.1" r="290" class="vn-circle"/>
+  <g class="slot-icon" data-icon-slot="set_1_icon" transform="translate(417.1,345.2)" data-icon-size="52"></g>
+  <circle cx="929.8" cy="441.1" r="290" class="vn-circle"/>
+  <g class="slot-icon" data-icon-slot="set_2_icon" transform="translate(1030.9,345.2)" data-icon-size="52"></g>
+  <circle cx="750.0" cy="710.8" r="290" class="vn-circle"/>
+  <g class="slot-icon" data-icon-slot="set_3_icon" transform="translate(724.0,829.8)" data-icon-size="52"></g>
+  <rect x="570.0" y="508.0" width="360" height="64" rx="8" class="kr-backplate"/>
+    <g class="krobar-slot" data-slot="center" data-shape="bbox_center" data-font-size="26">
+    <foreignObject x="570.0" y="510.0" width="360.0" height="60.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:700;font-size:26px;color:var(--text);line-height:1.25;">{{center}}</div>
+    </foreignObject>
+  </g>
+    <g class="krobar-slot" data-slot="set_1" data-shape="bbox_set_1" data-font-size="24">
+    <foreignObject x="24.0" y="279.0" width="230.0" height="50.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:700;font-size:24px;color:var(--text);line-height:1.25;">{{set_1}}</div>
+    </foreignObject>
+  </g>
+    <g class="krobar-slot" data-slot="set_1_desc" data-shape="bbox_set_1_desc" data-font-size="18">
+    <foreignObject x="24.0" y="337.0" width="230.0" height="170.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:flex-start;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:400;font-size:18px;color:var(--text);line-height:1.25;">{{set_1_desc}}</div>
+    </foreignObject>
+  </g>
+    <g class="krobar-slot" data-slot="set_2" data-shape="bbox_set_2" data-font-size="24">
+    <foreignObject x="1246.0" y="279.0" width="230.0" height="50.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:700;font-size:24px;color:var(--text);line-height:1.25;">{{set_2}}</div>
+    </foreignObject>
+  </g>
+    <g class="krobar-slot" data-slot="set_2_desc" data-shape="bbox_set_2_desc" data-font-size="18">
+    <foreignObject x="1246.0" y="337.0" width="230.0" height="170.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:flex-start;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:400;font-size:18px;color:var(--text);line-height:1.25;">{{set_2_desc}}</div>
+    </foreignObject>
+  </g>
+    <g class="krobar-slot" data-slot="set_3" data-shape="bbox_set_3" data-font-size="24">
+    <foreignObject x="600.0" y="1015.0" width="300.0" height="50.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:700;font-size:24px;color:var(--text);line-height:1.25;">{{set_3}}</div>
+    </foreignObject>
+  </g>
+    <g class="krobar-slot" data-slot="set_3_desc" data-shape="bbox_set_3_desc" data-font-size="18">
+    <foreignObject x="600.0" y="1073.0" width="300.0" height="170.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:flex-start;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:400;font-size:18px;color:var(--text);line-height:1.25;">{{set_3_desc}}</div>
+    </foreignObject>
+  </g>
+</svg>
