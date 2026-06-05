@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1000" data-svg-kr-version="2.1" data-template-id="timeline_dots_6" data-tier="standard" data-cardinality-min="3" data-cardinality-max="6">
+  <metadata><krobar-meta>
+    <family>PROCEDURALE_SEQUENTIELLE</family>
+    <cardinality>MULTIPLE</cardinality>
+    <regime>ABSTRAIT_SYSTEMIQUE</regime>
+    <cells>PROCEDURALE_SEQUENTIELLE_MULTIPLE_ABSTRAIT_SYSTEMIQUE</cells>
+    <habillage>timeline_dots</habillage>
+  </krobar-meta></metadata>
+  <style>
+    .td-axis { stroke: var(--text, #0f172a); stroke-width: 2.5; }
+    .td-arrow { fill: var(--text, #0f172a); }
+    .td-pin { fill: var(--text, #0f172a); }
+    .td-dot { fill: white; stroke: var(--text, #0f172a); stroke-width: 2; }
+    .td-link { stroke: var(--text, #0f172a); stroke-width: 1.5; }
+  </style>
+  <g class="krobar-decoration" style="opacity: var(--decoration-opacity, 0);"></g>
+  <g class="krobar-slot" data-slot="title" data-shape="bbox_title" data-font-size="40">
+    <foreignObject x="80.0" y="40.0" width="1240.0" height="60.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:700;font-size:40px;color:var(--text);line-height:1.25;">{{title}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot="subtitle" data-shape="bbox_subtitle" data-font-size="24">
+    <foreignObject x="350.0" y="110.0" width="700.0" height="38.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:400;font-size:24px;color:var(--text);line-height:1.25;">{{subtitle}}</div>
+    </foreignObject>
+  </g>
+  <line x1="120" y1="500" x2="1270" y2="500" class="td-axis"/>
+  <path d="M 1258 488 L 1286 500 L 1258 512 Z" class="td-arrow"/>
+  <circle cx="216.7" cy="500" r="9" class="td-pin"/>
+  <line x1="216.7" y1="491" x2="216.7" y2="430.0" class="td-link"/>
+  <circle cx="216.7" cy="360.0" r="70" class="td-dot"/>
+  <g class="slot-icon" data-icon-slot="step_1_icon" transform="translate(190.7,334.0)" data-icon-size="52"></g>
+    <g class="krobar-slot" data-slot="step_1" data-shape="bbox_step_1" data-font-size="22">
+    <foreignObject x="96.7" y="136.0" width="240.0" height="50.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:flex-end;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:700;font-size:22px;color:var(--text);line-height:1.25;">{{step_1}}</div>
+    </foreignObject>
+  </g>
+    <g class="krobar-slot" data-slot="step_1_desc" data-shape="bbox_step_1_desc" data-font-size="16">
+    <foreignObject x="96.7" y="200.0" width="240.0" height="80.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:flex-start;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:400;font-size:16px;color:var(--text);line-height:1.25;">{{step_1_desc}}</div>
+    </foreignObject>
+  </g>
+  <circle cx="410.0" cy="500" r="9" class="td-pin"/>
+  <line x1="410.0" y1="509" x2="410.0" y2="570.0" class="td-link"/>
+  <circle cx="410.0" cy="640.0" r="70" class="td-dot"/>
+  <g class="slot-icon" data-icon-slot="step_2_icon" transform="translate(384.0,614.0)" data-icon-size="52"></g>
+    <g class="krobar-slot" data-slot="step_2" data-shape="bbox_step_2" data-font-size="22">
+    <foreignObject x="290.0" y="720.0" width="240.0" height="50.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:flex-end;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:700;font-size:22px;color:var(--text);line-height:1.25;">{{step_2}}</div>
+    </foreignObject>
+  </g>
+    <g class="krobar-slot" data-slot="step_2_desc" data-shape="bbox_step_2_desc" data-font-size="16">
+    <foreignObject x="290.0" y="784.0" width="240.0" height="80.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:flex-start;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:400;font-size:16px;color:var(--text);line-height:1.25;">{{step_2_desc}}</div>
+    </foreignObject>
+  </g>
+  <circle cx="603.3" cy="500" r="9" class="td-pin"/>
+  <line x1="603.3" y1="491" x2="603.3" y2="430.0" class="td-link"/>
+  <circle cx="603.3" cy="360.0" r="70" class="td-dot"/>
+  <g class="slot-icon" data-icon-slot="step_3_icon" transform="translate(577.3,334.0)" data-icon-size="52"></g>
+    <g class="krobar-slot" data-slot="step_3" data-shape="bbox_step_3" data-font-size="22">
+    <foreignObject x="483.3" y="136.0" width="240.0" height="50.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:flex-end;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:700;font-size:22px;color:var(--text);line-height:1.25;">{{step_3}}</div>
+    </foreignObject>
+  </g>
+    <g class="krobar-slot" data-slot="step_3_desc" data-shape="bbox_step_3_desc" data-font-size="16">
+    <foreignObject x="483.3" y="200.0" width="240.0" height="80.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:flex-start;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:400;font-size:16px;color:var(--text);line-height:1.25;">{{step_3_desc}}</div>
+    </foreignObject>
+  </g>
+  <circle cx="796.7" cy="500" r="9" class="td-pin"/>
+  <line x1="796.7" y1="509" x2="796.7" y2="570.0" class="td-link"/>
+  <circle cx="796.7" cy="640.0" r="70" class="td-dot"/>
+  <g class="slot-icon" data-icon-slot="step_4_icon" transform="translate(770.7,614.0)" data-icon-size="52"></g>
+    <g class="krobar-slot" data-slot="step_4" data-shape="bbox_step_4" data-font-size="22">
+    <foreignObject x="676.7" y="720.0" width="240.0" height="50.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:flex-end;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:700;font-size:22px;color:var(--text);line-height:1.25;">{{step_4}}</div>
+    </foreignObject>
+  </g>
+    <g class="krobar-slot" data-slot="step_4_desc" data-shape="bbox_step_4_desc" data-font-size="16">
+    <foreignObject x="676.7" y="784.0" width="240.0" height="80.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:flex-start;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:400;font-size:16px;color:var(--text);line-height:1.25;">{{step_4_desc}}</div>
+    </foreignObject>
+  </g>
+  <circle cx="990.0" cy="500" r="9" class="td-pin"/>
+  <line x1="990.0" y1="491" x2="990.0" y2="430.0" class="td-link"/>
+  <circle cx="990.0" cy="360.0" r="70" class="td-dot"/>
+  <g class="slot-icon" data-icon-slot="step_5_icon" transform="translate(964.0,334.0)" data-icon-size="52"></g>
+    <g class="krobar-slot" data-slot="step_5" data-shape="bbox_step_5" data-font-size="22">
+    <foreignObject x="870.0" y="136.0" width="240.0" height="50.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:flex-end;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:700;font-size:22px;color:var(--text);line-height:1.25;">{{step_5}}</div>
+    </foreignObject>
+  </g>
+    <g class="krobar-slot" data-slot="step_5_desc" data-shape="bbox_step_5_desc" data-font-size="16">
+    <foreignObject x="870.0" y="200.0" width="240.0" height="80.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:flex-start;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:400;font-size:16px;color:var(--text);line-height:1.25;">{{step_5_desc}}</div>
+    </foreignObject>
+  </g>
+  <circle cx="1183.3" cy="500" r="9" class="td-pin"/>
+  <line x1="1183.3" y1="509" x2="1183.3" y2="570.0" class="td-link"/>
+  <circle cx="1183.3" cy="640.0" r="70" class="td-dot"/>
+  <g class="slot-icon" data-icon-slot="step_6_icon" transform="translate(1157.3,614.0)" data-icon-size="52"></g>
+    <g class="krobar-slot" data-slot="step_6" data-shape="bbox_step_6" data-font-size="22">
+    <foreignObject x="1063.3" y="720.0" width="240.0" height="50.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:flex-end;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:700;font-size:22px;color:var(--text);line-height:1.25;">{{step_6}}</div>
+    </foreignObject>
+  </g>
+    <g class="krobar-slot" data-slot="step_6_desc" data-shape="bbox_step_6_desc" data-font-size="16">
+    <foreignObject x="1063.3" y="784.0" width="240.0" height="80.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:flex-start;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:400;font-size:16px;color:var(--text);line-height:1.25;">{{step_6_desc}}</div>
+    </foreignObject>
+  </g>
+</svg>

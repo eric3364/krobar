@@ -4604,6 +4604,206 @@
         "max": 6
       },
       "tier": "standard"
+    },
+    {
+      "id": "timeline_dots_3",
+      "name": "Timeline à pastilles 3",
+      "category": "Timelines",
+      "description": "Axe horizontal flèché avec 3 étapes en pastilles alternées, chacune avec picto, titre et description.",
+      "file": "timeline_dots_3.svg",
+      "slots": [
+        "title",
+        "subtitle",
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_1_desc",
+        "step_2_desc",
+        "step_3_desc"
+      ],
+      "best_for": "Présenter une chronologie ou une séquence en N étapes sur un axe temporel.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 40,
+          "slots": [
+            "title",
+            "subtitle",
+            "step_1",
+            "step_2",
+            "step_3"
+          ]
+        },
+        "medium": {
+          "max_chars": 110,
+          "slots": [
+            "step_1_desc",
+            "step_2_desc",
+            "step_3_desc"
+          ]
+        }
+      },
+      "cardinality": {
+        "ideal": 5,
+        "min": 3,
+        "max": 6
+      },
+      "tier": "standard"
+    },
+    {
+      "id": "timeline_dots_4",
+      "name": "Timeline à pastilles 4",
+      "category": "Timelines",
+      "description": "Axe horizontal flèché avec 4 étapes en pastilles alternées, chacune avec picto, titre et description.",
+      "file": "timeline_dots_4.svg",
+      "slots": [
+        "title",
+        "subtitle",
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4",
+        "step_1_desc",
+        "step_2_desc",
+        "step_3_desc",
+        "step_4_desc"
+      ],
+      "best_for": "Présenter une chronologie ou une séquence en N étapes sur un axe temporel.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 40,
+          "slots": [
+            "title",
+            "subtitle",
+            "step_1",
+            "step_2",
+            "step_3",
+            "step_4"
+          ]
+        },
+        "medium": {
+          "max_chars": 110,
+          "slots": [
+            "step_1_desc",
+            "step_2_desc",
+            "step_3_desc",
+            "step_4_desc"
+          ]
+        }
+      },
+      "cardinality": {
+        "ideal": 5,
+        "min": 3,
+        "max": 6
+      },
+      "tier": "standard"
+    },
+    {
+      "id": "timeline_dots_5",
+      "name": "Timeline à pastilles 5",
+      "category": "Timelines",
+      "description": "Axe horizontal flèché avec 5 étapes en pastilles alternées, chacune avec picto, titre et description.",
+      "file": "timeline_dots_5.svg",
+      "slots": [
+        "title",
+        "subtitle",
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4",
+        "step_5",
+        "step_1_desc",
+        "step_2_desc",
+        "step_3_desc",
+        "step_4_desc",
+        "step_5_desc"
+      ],
+      "best_for": "Présenter une chronologie ou une séquence en N étapes sur un axe temporel.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 40,
+          "slots": [
+            "title",
+            "subtitle",
+            "step_1",
+            "step_2",
+            "step_3",
+            "step_4",
+            "step_5"
+          ]
+        },
+        "medium": {
+          "max_chars": 110,
+          "slots": [
+            "step_1_desc",
+            "step_2_desc",
+            "step_3_desc",
+            "step_4_desc",
+            "step_5_desc"
+          ]
+        }
+      },
+      "cardinality": {
+        "ideal": 5,
+        "min": 3,
+        "max": 6
+      },
+      "tier": "standard"
+    },
+    {
+      "id": "timeline_dots_6",
+      "name": "Timeline à pastilles 6",
+      "category": "Timelines",
+      "description": "Axe horizontal flèché avec 6 étapes en pastilles alternées, chacune avec picto, titre et description.",
+      "file": "timeline_dots_6.svg",
+      "slots": [
+        "title",
+        "subtitle",
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4",
+        "step_5",
+        "step_6",
+        "step_1_desc",
+        "step_2_desc",
+        "step_3_desc",
+        "step_4_desc",
+        "step_5_desc",
+        "step_6_desc"
+      ],
+      "best_for": "Présenter une chronologie ou une séquence en N étapes sur un axe temporel.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 40,
+          "slots": [
+            "title",
+            "subtitle",
+            "step_1",
+            "step_2",
+            "step_3",
+            "step_4",
+            "step_5",
+            "step_6"
+          ]
+        },
+        "medium": {
+          "max_chars": 110,
+          "slots": [
+            "step_1_desc",
+            "step_2_desc",
+            "step_3_desc",
+            "step_4_desc",
+            "step_5_desc",
+            "step_6_desc"
+          ]
+        }
+      },
+      "cardinality": {
+        "ideal": 5,
+        "min": 3,
+        "max": 6
+      },
+      "tier": "standard"
     }
   ]
 }
