@@ -4160,6 +4160,306 @@
         "max": 6
       },
       "tier": "standard"
+    },
+    {
+      "id": "serpentine_3",
+      "name": "Frise serpentine 3",
+      "category": "Timelines",
+      "description": "Frise ondulée de 3 étapes le long d un chemin sinueux, labels et descriptions alternés au-dessus et en-dessous.",
+      "file": "serpentine_3.svg",
+      "slots": [
+        "title",
+        "subtitle",
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_1_desc",
+        "step_2_desc",
+        "step_3_desc"
+      ],
+      "best_for": "Présenter une séquence ou une chronologie en N étapes avec un ton dynamique.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 40,
+          "slots": [
+            "title",
+            "subtitle",
+            "step_1",
+            "step_2",
+            "step_3"
+          ]
+        },
+        "medium": {
+          "max_chars": 120,
+          "slots": [
+            "step_1_desc",
+            "step_2_desc",
+            "step_3_desc"
+          ]
+        }
+      },
+      "cardinality": {
+        "ideal": 5,
+        "min": 3,
+        "max": 7
+      },
+      "tier": "standard"
+    },
+    {
+      "id": "serpentine_4",
+      "name": "Frise serpentine 4",
+      "category": "Timelines",
+      "description": "Frise ondulée de 4 étapes le long d un chemin sinueux, labels et descriptions alternés au-dessus et en-dessous.",
+      "file": "serpentine_4.svg",
+      "slots": [
+        "title",
+        "subtitle",
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4",
+        "step_1_desc",
+        "step_2_desc",
+        "step_3_desc",
+        "step_4_desc"
+      ],
+      "best_for": "Présenter une séquence ou une chronologie en N étapes avec un ton dynamique.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 40,
+          "slots": [
+            "title",
+            "subtitle",
+            "step_1",
+            "step_2",
+            "step_3",
+            "step_4"
+          ]
+        },
+        "medium": {
+          "max_chars": 120,
+          "slots": [
+            "step_1_desc",
+            "step_2_desc",
+            "step_3_desc",
+            "step_4_desc"
+          ]
+        }
+      },
+      "cardinality": {
+        "ideal": 5,
+        "min": 3,
+        "max": 7
+      },
+      "tier": "standard"
+    },
+    {
+      "id": "serpentine_5",
+      "name": "Frise serpentine 5",
+      "category": "Timelines",
+      "description": "Frise ondulée de 5 étapes le long d un chemin sinueux, labels et descriptions alternés au-dessus et en-dessous.",
+      "file": "serpentine_5.svg",
+      "slots": [
+        "title",
+        "subtitle",
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4",
+        "step_5",
+        "step_1_desc",
+        "step_2_desc",
+        "step_3_desc",
+        "step_4_desc",
+        "step_5_desc"
+      ],
+      "best_for": "Présenter une séquence ou une chronologie en N étapes avec un ton dynamique.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 40,
+          "slots": [
+            "title",
+            "subtitle",
+            "step_1",
+            "step_2",
+            "step_3",
+            "step_4",
+            "step_5"
+          ]
+        },
+        "medium": {
+          "max_chars": 120,
+          "slots": [
+            "step_1_desc",
+            "step_2_desc",
+            "step_3_desc",
+            "step_4_desc",
+            "step_5_desc"
+          ]
+        }
+      },
+      "cardinality": {
+        "ideal": 5,
+        "min": 3,
+        "max": 7
+      },
+      "tier": "standard"
+    },
+    {
+      "id": "serpentine_6",
+      "name": "Frise serpentine 6",
+      "category": "Timelines",
+      "description": "Frise ondulée de 6 étapes le long d un chemin sinueux, labels et descriptions alternés au-dessus et en-dessous.",
+      "file": "serpentine_6.svg",
+      "slots": [
+        "title",
+        "subtitle",
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4",
+        "step_5",
+        "step_6",
+        "step_1_desc",
+        "step_2_desc",
+        "step_3_desc",
+        "step_4_desc",
+        "step_5_desc",
+        "step_6_desc"
+      ],
+      "best_for": "Présenter une séquence ou une chronologie en N étapes avec un ton dynamique.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 40,
+          "slots": [
+            "title",
+            "subtitle",
+            "step_1",
+            "step_2",
+            "step_3",
+            "step_4",
+            "step_5",
+            "step_6"
+          ]
+        },
+        "medium": {
+          "max_chars": 120,
+          "slots": [
+            "step_1_desc",
+            "step_2_desc",
+            "step_3_desc",
+            "step_4_desc",
+            "step_5_desc",
+            "step_6_desc"
+          ]
+        }
+      },
+      "cardinality": {
+        "ideal": 5,
+        "min": 3,
+        "max": 7
+      },
+      "tier": "standard"
+    },
+    {
+      "id": "serpentine_7",
+      "name": "Frise serpentine 7",
+      "category": "Timelines",
+      "description": "Frise ondulée de 7 étapes le long d un chemin sinueux, labels et descriptions alternés au-dessus et en-dessous.",
+      "file": "serpentine_7.svg",
+      "slots": [
+        "title",
+        "subtitle",
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4",
+        "step_5",
+        "step_6",
+        "step_7",
+        "step_1_desc",
+        "step_2_desc",
+        "step_3_desc",
+        "step_4_desc",
+        "step_5_desc",
+        "step_6_desc",
+        "step_7_desc"
+      ],
+      "best_for": "Présenter une séquence ou une chronologie en N étapes avec un ton dynamique.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 40,
+          "slots": [
+            "title",
+            "subtitle",
+            "step_1",
+            "step_2",
+            "step_3",
+            "step_4",
+            "step_5",
+            "step_6",
+            "step_7"
+          ]
+        },
+        "medium": {
+          "max_chars": 120,
+          "slots": [
+            "step_1_desc",
+            "step_2_desc",
+            "step_3_desc",
+            "step_4_desc",
+            "step_5_desc",
+            "step_6_desc",
+            "step_7_desc"
+          ]
+        }
+      },
+      "cardinality": {
+        "ideal": 5,
+        "min": 3,
+        "max": 7
+      },
+      "tier": "standard"
+    },
+    {
+      "id": "opposition_binaire",
+      "name": "Opposition binaire",
+      "category": "Comparison",
+      "description": "Deux flèches opposées en sens inverse, chacune avec label et description, pour comparer deux approches antagonistes.",
+      "file": "opposition_binaire.svg",
+      "slots": [
+        "title",
+        "subtitle",
+        "left_label",
+        "left_desc",
+        "right_label",
+        "right_desc"
+      ],
+      "best_for": "Comparer deux visions, méthodes ou positions opposées en vis-à-vis.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 40,
+          "slots": [
+            "title",
+            "subtitle",
+            "left_label",
+            "right_label"
+          ]
+        },
+        "medium": {
+          "max_chars": 160,
+          "slots": [
+            "left_desc",
+            "right_desc"
+          ]
+        }
+      },
+      "cardinality": {
+        "ideal": 2,
+        "min": 2,
+        "max": 2
+      },
+      "tier": "standard"
     }
   ]
 }

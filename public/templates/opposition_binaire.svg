@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" data-svg-kr-version="2.1" data-template-id="opposition_binaire" data-tier="standard" data-cardinality-min="2" data-cardinality-max="2">
+  <metadata>
+    <krobar-meta>
+      <family>OPPOSITION_TRANSFORMATION</family>
+      <cardinality>BINAIRE</cardinality>
+      <regime>ABSTRAIT_SYSTEMIQUE</regime>
+      <cells>OPPOSITION_TRANSFORMATION_BINAIRE_ABSTRAIT_SYSTEMIQUE</cells>
+      <habillage>fleches_opposees</habillage>
+    </krobar-meta>
+  </metadata>
+  <g class="krobar-decoration" style="opacity: var(--decoration-opacity, 0);"></g>
+  <g class="krobar-slot" data-slot="title" data-shape="bbox_title" data-font-size="40">
+    <foreignObject x="80.0" y="60.0" width="1040.0" height="64.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:700;font-size:40px;color:var(--text);line-height:1.2;">{{title}}</div>
+    </foreignObject>
+  </g>
+  <g class="krobar-slot" data-slot="subtitle" data-shape="bbox_subtitle" data-font-size="24">
+    <foreignObject x="160.0" y="132.0" width="880.0" height="38.0">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:400;font-size:24px;color:var(--text);line-height:1.2;">{{subtitle}}</div>
+    </foreignObject>
+  </g>
+  <path d="M 580.0,325.0 L 210.0,325.0 L 210.0,230.5 L 110.0,430.0 L 210.0,629.5 L 210.0,535.0 L 580.0,535.0 Z" fill="none" stroke="var(--text)" stroke-width="2.2" stroke-linejoin="round"/>
+  <path d="M 620.0,325.0 L 990.0,325.0 L 990.0,230.5 L 1090.0,430.0 L 990.0,629.5 L 990.0,535.0 L 620.0,535.0 Z" fill="var(--text)" fill-opacity="0.08" stroke="var(--text)" stroke-width="2.2" stroke-linejoin="round"/>
+  <g class="slot-icon" data-icon-slot="left_icon" transform="translate(145,402)" data-icon-size="56"></g>
+  <g class="slot-icon" data-icon-slot="right_icon" transform="translate(999,402)" data-icon-size="56"></g>
+    <g class="krobar-slot" data-slot="left_label" data-shape="bbox_left_label" data-font-size="22">
+    <foreignObject x="224.0" y="337.0" width="342.0" height="74.4">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:700;font-size:22px;color:var(--text);line-height:1.2;">{{left_label}}</div>
+    </foreignObject>
+  </g>
+    <g class="krobar-slot" data-slot="right_label" data-shape="bbox_right_label" data-font-size="22">
+    <foreignObject x="634.0" y="337.0" width="342.0" height="74.4">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:700;font-size:22px;color:var(--text);line-height:1.2;">{{right_label}}</div>
+    </foreignObject>
+  </g>
+    <g class="krobar-slot" data-slot="left_desc" data-shape="bbox_left_desc" data-font-size="18">
+    <foreignObject x="224.0" y="415.4" width="342.0" height="103.6">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:400;font-size:18px;color:var(--text);line-height:1.2;">{{left_desc}}</div>
+    </foreignObject>
+  </g>
+    <g class="krobar-slot" data-slot="right_desc" data-shape="bbox_right_desc" data-font-size="18">
+    <foreignObject x="634.0" y="415.4" width="342.0" height="103.6">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="krobar-slot-content" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-align:center;font-family:Poppins,Arial,sans-serif;font-weight:400;font-size:18px;color:var(--text);line-height:1.2;">{{right_desc}}</div>
+    </foreignObject>
+  </g>
+</svg>
