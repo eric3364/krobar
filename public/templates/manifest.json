@@ -3996,6 +3996,170 @@
         "max": 7
       },
       "tier": "standard"
+    },
+    {
+      "id": "spiral_3",
+      "name": "Spirale de développement 3",
+      "category": "Process",
+      "description": "Spirale figurant 3 étapes réparties le long de la courbe, du centre vers la périphérie, chacune reliée à un cartouche descriptif.",
+      "file": "spiral_3.svg",
+      "slots": [
+        "title",
+        "subtitle",
+        "step_1",
+        "step_2",
+        "step_3"
+      ],
+      "best_for": "Représenter un développement progressif ou une montée en maturité en N étapes successives.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 40,
+          "slots": [
+            "title",
+            "subtitle"
+          ]
+        },
+        "medium": {
+          "max_chars": 120,
+          "slots": [
+            "step_1",
+            "step_2",
+            "step_3"
+          ]
+        }
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 6
+      },
+      "tier": "standard"
+    },
+    {
+      "id": "spiral_4",
+      "name": "Spirale de développement 4",
+      "category": "Process",
+      "description": "Spirale figurant 4 étapes réparties le long de la courbe, du centre vers la périphérie, chacune reliée à un cartouche descriptif.",
+      "file": "spiral_4.svg",
+      "slots": [
+        "title",
+        "subtitle",
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4"
+      ],
+      "best_for": "Représenter un développement progressif ou une montée en maturité en N étapes successives.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 40,
+          "slots": [
+            "title",
+            "subtitle"
+          ]
+        },
+        "medium": {
+          "max_chars": 120,
+          "slots": [
+            "step_1",
+            "step_2",
+            "step_3",
+            "step_4"
+          ]
+        }
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 6
+      },
+      "tier": "standard"
+    },
+    {
+      "id": "spiral_5",
+      "name": "Spirale de développement 5",
+      "category": "Process",
+      "description": "Spirale figurant 5 étapes réparties le long de la courbe, du centre vers la périphérie, chacune reliée à un cartouche descriptif.",
+      "file": "spiral_5.svg",
+      "slots": [
+        "title",
+        "subtitle",
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4",
+        "step_5"
+      ],
+      "best_for": "Représenter un développement progressif ou une montée en maturité en N étapes successives.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 40,
+          "slots": [
+            "title",
+            "subtitle"
+          ]
+        },
+        "medium": {
+          "max_chars": 120,
+          "slots": [
+            "step_1",
+            "step_2",
+            "step_3",
+            "step_4",
+            "step_5"
+          ]
+        }
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 6
+      },
+      "tier": "standard"
+    },
+    {
+      "id": "spiral_6",
+      "name": "Spirale de développement 6",
+      "category": "Process",
+      "description": "Spirale figurant 6 étapes réparties le long de la courbe, du centre vers la périphérie, chacune reliée à un cartouche descriptif.",
+      "file": "spiral_6.svg",
+      "slots": [
+        "title",
+        "subtitle",
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4",
+        "step_5",
+        "step_6"
+      ],
+      "best_for": "Représenter un développement progressif ou une montée en maturité en N étapes successives.",
+      "slot_constraints": {
+        "short": {
+          "max_chars": 40,
+          "slots": [
+            "title",
+            "subtitle"
+          ]
+        },
+        "medium": {
+          "max_chars": 120,
+          "slots": [
+            "step_1",
+            "step_2",
+            "step_3",
+            "step_4",
+            "step_5",
+            "step_6"
+          ]
+        }
+      },
+      "cardinality": {
+        "ideal": 4,
+        "min": 3,
+        "max": 6
+      },
+      "tier": "standard"
     }
   ]
 }
