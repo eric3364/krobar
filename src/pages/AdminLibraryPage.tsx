@@ -96,11 +96,11 @@ export default function AdminLibraryPage() {
         <Button asChild variant="ghost" size="sm">
           <Link to="/admin"><ArrowLeft className="w-4 h-4 mr-1" /> Retour back-office</Link>
         </Button>
-        <h1 className="text-3xl font-bold mt-2">Bibliothèque Premium</h1>
+        <h1 className="text-3xl font-bold mt-2">Bibliothèque</h1>
         <p className="text-sm text-muted-foreground mt-1">
           {loading
             ? "Chargement…"
-            : `${templates?.length ?? 0} templates Premium · ${validatedTotal} ont des aperçus validés`}
+            : `${templates?.length ?? 0} templates · ${validatedTotal} ont des aperçus validés`}
         </p>
       </div>
 
@@ -112,7 +112,7 @@ export default function AdminLibraryPage() {
         </div>
       ) : sorted.length === 0 ? (
         <Card className="p-10 text-center text-muted-foreground">
-          Aucun template Premium n'a encore été créé. Allez dans Studio pour en créer un.
+          Aucun template n'a encore été créé. Allez dans Studio pour en créer un.
         </Card>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
