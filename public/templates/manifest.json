@@ -90,7 +90,8 @@
         "min": 1,
         "max": 3
       },
-      "tier": "standard"
+      "tier": "standard",
+      "disabled": true
     },
     {
       "id": "bullseye_target",
@@ -132,7 +133,8 @@
         "min": 3,
         "max": 5
       },
-      "tier": "standard"
+      "tier": "standard",
+      "disabled": true
     },
     {
       "id": "butterfly_metamorphosis",
@@ -327,7 +329,8 @@
         "min": 5,
         "max": 7
       },
-      "tier": "standard"
+      "tier": "standard",
+      "disabled": true
     },
     {
       "id": "fishbone",
@@ -383,7 +386,8 @@
         "min": 3,
         "max": 5
       },
-      "tier": "standard"
+      "tier": "standard",
+      "disabled": true
     },
     {
       "id": "flowing_arrows",
@@ -461,7 +465,8 @@
         "min": 2,
         "max": 3
       },
-      "tier": "standard"
+      "tier": "standard",
+      "disabled": true
     },
     {
       "id": "idea_cluster",
@@ -543,7 +548,8 @@
         "min": 4,
         "max": 6
       },
-      "tier": "standard"
+      "tier": "standard",
+      "disabled": true
     },
     {
       "id": "mindmap_central",
@@ -627,7 +633,8 @@
         "min": 4,
         "max": 6
       },
-      "tier": "standard"
+      "tier": "standard",
+      "disabled": true
     },
     {
       "id": "multilevel_mindmap",
@@ -715,7 +722,8 @@
         "min": 2,
         "max": 4
       },
-      "tier": "standard"
+      "tier": "standard",
+      "disabled": true
     },
     {
       "id": "nodal_network",
@@ -887,7 +895,8 @@
         "min": 3,
         "max": 5
       },
-      "tier": "standard"
+      "tier": "standard",
+      "disabled": true
     },
     {
       "id": "process_3_steps",
@@ -953,7 +962,8 @@
         "min": 4,
         "max": 6
       },
-      "tier": "standard"
+      "tier": "standard",
+      "disabled": true
     },
     {
       "id": "realistic_effect",
@@ -1072,7 +1082,8 @@
         "min": 3,
         "max": 5
       },
-      "tier": "standard"
+      "tier": "standard",
+      "disabled": true
     },
     {
       "id": "sideways_tree",
@@ -1200,7 +1211,8 @@
         "min": 5,
         "max": 7
       },
-      "tier": "standard"
+      "tier": "standard",
+      "disabled": true
     },
     {
       "id": "story_arc",
@@ -1240,7 +1252,8 @@
         "min": 4,
         "max": 6
       },
-      "tier": "standard"
+      "tier": "standard",
+      "disabled": true
     },
     {
       "id": "timeline_horizontal",
@@ -4892,7 +4905,7 @@
     {
       "id": "cloud_architecture_radial_3",
       "name": "Architecture Radiale 3 Services",
-      "category": "Concepts",
+      "category": "Concept",
       "description": "Diagramme radial : un cœur central (cube isométrique et anneaux concentriques) entouré de 3 services numérotés disposés en couronne, chacun avec son étiquette.",
       "file": "cloud_architecture_radial_3.svg",
       "slots": [
@@ -4930,7 +4943,7 @@
     {
       "id": "cloud_architecture_radial_4",
       "name": "Architecture Radiale 4 Services",
-      "category": "Concepts",
+      "category": "Concept",
       "description": "Diagramme radial : un cœur central (cube isométrique et anneaux concentriques) entouré de 4 services numérotés disposés en couronne, chacun avec son étiquette.",
       "file": "cloud_architecture_radial_4.svg",
       "slots": [
@@ -4970,7 +4983,7 @@
     {
       "id": "cloud_architecture_radial_5",
       "name": "Architecture Radiale 5 Services",
-      "category": "Concepts",
+      "category": "Concept",
       "description": "Diagramme radial : un cœur central (cube isométrique et anneaux concentriques) entouré de 5 services numérotés disposés en couronne, chacun avec son étiquette.",
       "file": "cloud_architecture_radial_5.svg",
       "slots": [
@@ -5012,7 +5025,7 @@
     {
       "id": "cloud_architecture_radial_6",
       "name": "Architecture Radiale 6 Services",
-      "category": "Concepts",
+      "category": "Concept",
       "description": "Diagramme radial : un cœur central (cube isométrique et anneaux concentriques) entouré de 6 services numérotés disposés en couronne, chacun avec son étiquette.",
       "file": "cloud_architecture_radial_6.svg",
       "slots": [
@@ -5056,7 +5069,7 @@
     {
       "id": "cloud_architecture_radial_7",
       "name": "Architecture Radiale 7 Services",
-      "category": "Concepts",
+      "category": "Concept",
       "description": "Diagramme radial : un cœur central (cube isométrique et anneaux concentriques) entouré de 7 services numérotés disposés en couronne, chacun avec son étiquette.",
       "file": "cloud_architecture_radial_7.svg",
       "slots": [
@@ -5102,7 +5115,7 @@
     {
       "id": "cloud_architecture_radial_8",
       "name": "Architecture Radiale 8 Services",
-      "category": "Concepts",
+      "category": "Concept",
       "description": "Diagramme radial : un cœur central (cube isométrique et anneaux concentriques) entouré de 8 services numérotés disposés en couronne, chacun avec son étiquette.",
       "file": "cloud_architecture_radial_8.svg",
       "slots": [
