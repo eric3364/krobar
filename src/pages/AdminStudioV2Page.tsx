@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/select";
 
 import StructuralSketch from "@/components/admin/studio/StructuralSketch";
+import ZoomableSvg from "@/components/admin/studio/ZoomableSvg";
 import {
   studioV2Api,
   type CoverageCell,
