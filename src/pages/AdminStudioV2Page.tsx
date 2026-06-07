@@ -622,6 +622,27 @@ function ProductionScreen({
               </Tabs>
             </div>
 
+            {moteur === "gpt-image-2" && gpt2Styles && (
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-muted-foreground">Style</span>
+                <Select
+                  value={gpt2Style ?? gpt2Default ?? ""}
+                  onValueChange={(v) => setGpt2Style(v)}
+                >
+                  <SelectTrigger className="w-[160px] h-8 text-xs">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(gpt2Styles).map(([key, s]) => (
+                      <SelectItem key={key} value={key}>
+                        {(s as { label: string }).label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+
             <Button onClick={generatePrompt} disabled={promptLoading} className="w-full sm:w-auto">
               {promptLoading
                 ? (<><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Génération…</>)
