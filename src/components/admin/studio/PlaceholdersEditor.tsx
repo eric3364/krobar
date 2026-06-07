@@ -87,6 +87,21 @@ export default function PlaceholdersEditor({
   const [traitSide, setTraitSide] = useState<Record<string, TraitSide>>({});
   const [habillageValidated, setHabillageValidated] = useState(false);
 
+  // Zone de travail élargie verticalement (marges proportionnelles au-dessus/dessous
+  // de l'illustration, utile pour les images panoramiques). L'illustration reste
+  // centrée verticalement à sa taille réelle dans cette zone élargie ; le repère
+  // des placeholders est exprimé dans cette zone de travail.
+  const MARGIN_Y_RATIO = 0.6;
+  const marginY = viewbox[3] * MARGIN_Y_RATIO;
+  const workViewbox: Viewbox = [
+    viewbox[0],
+    viewbox[1] - marginY,
+    viewbox[2],
+    viewbox[3] * (1 + 2 * MARGIN_Y_RATIO),
+  ];
+  const imageHeightPct = (viewbox[3] / workViewbox[3]) * 100;
+  const imageTopPct = (marginY / workViewbox[3]) * 100;
+
   const overlayRef = useRef<SVGSVGElement>(null);
   const loremRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
