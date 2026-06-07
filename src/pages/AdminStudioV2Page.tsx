@@ -355,6 +355,10 @@ function ProductionScreen({
     promptRes: GeneratePromptResponse | null;
     vectRes: VectorizeResponse | null;
     validated: boolean;
+    placement?: PlaceZonesResponse | null;
+    editedZones?: Record<string, ZonePair[]>;
+    placeholdersValidated?: boolean;
+    placementsMode?: boolean;
   };
   const loadPersisted = (): Persisted | null => {
     if (typeof window === "undefined") return null;
@@ -377,10 +381,10 @@ function ProductionScreen({
   const [vectError, setVectError] = useState<string | null>(null);
   const [validated, setValidated] = useState<boolean>(initial?.validated ?? false);
   const [sizeInfo, setSizeInfo] = useState<{ before: number; after: number } | null>(null);
-  const [placement, setPlacement] = useState<PlaceZonesResponse | null>(null);
-  const [editedZones, setEditedZones] = useState<Record<string, ZonePair[]>>({});
-  const [placeholdersValidated, setPlaceholdersValidated] = useState<boolean>(false);
-  const [placementsMode, setPlacementsMode] = useState<boolean>(false);
+  const [placement, setPlacement] = useState<PlaceZonesResponse | null>(initial?.placement ?? null);
+  const [editedZones, setEditedZones] = useState<Record<string, ZonePair[]>>(initial?.editedZones ?? {});
+  const [placeholdersValidated, setPlaceholdersValidated] = useState<boolean>(initial?.placeholdersValidated ?? false);
+  const [placementsMode, setPlacementsMode] = useState<boolean>(initial?.placementsMode ?? false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Load charte once
@@ -402,10 +406,10 @@ function ProductionScreen({
     setValidated(p?.validated ?? false);
     setMoteur(p?.moteur ?? "midjourney");
     setGpt2Style(p?.gpt2Style ?? null);
-    setPlacement(null);
-    setEditedZones({});
-    setPlaceholdersValidated(false);
-    setPlacementsMode(false);
+    setPlacement(p?.placement ?? null);
+    setEditedZones(p?.editedZones ?? {});
+    setPlaceholdersValidated(p?.placeholdersValidated ?? false);
+    setPlacementsMode(p?.placementsMode ?? false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cell.index, registre, selecteur]);
 
@@ -416,10 +420,11 @@ function ProductionScreen({
         persistKey,
         JSON.stringify({
           moteur, gpt2Style, promptRes, vectRes, validated,
+          placement, editedZones, placeholdersValidated, placementsMode,
         } satisfies Persisted),
       );
     } catch { /* ignore quota */ }
-  }, [persistKey, moteur, gpt2Style, promptRes, vectRes, validated]);
+  }, [persistKey, moteur, gpt2Style, promptRes, vectRes, validated, placement, editedZones, placeholdersValidated, placementsMode]);
 
 
 
