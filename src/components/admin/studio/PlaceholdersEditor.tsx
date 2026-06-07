@@ -27,6 +27,14 @@ type LoremLen = "short" | "medium" | "long";
 type ResizeCorner = "nw" | "ne" | "sw" | "se";
 type HabillageMode = "integre" | "cartouche";
 type TraitSide = "left" | "right";
+type CropRatio = "3:2" | "2:3" | "1:1" | "16:9";
+
+const RATIOS: Record<CropRatio, number> = {
+  "3:2": 3 / 2,
+  "2:3": 2 / 3,
+  "1:1": 1,
+  "16:9": 16 / 9,
+};
 
 const LOREM: Record<LoremLen, string> = {
   short: "Lorem ipsum dolor sit.",
@@ -86,6 +94,10 @@ export default function PlaceholdersEditor({
   const [habMode, setHabMode] = useState<Record<string, HabillageMode>>({});
   const [traitSide, setTraitSide] = useState<Record<string, TraitSide>>({});
   const [habillageValidated, setHabillageValidated] = useState(false);
+  // B2 — recadrage final
+  const [cropRatio, setCropRatio] = useState<CropRatio>("3:2");
+  const [cropRect, setCropRect] = useState<ZoneRect | null>(null);
+  const [cropValidated, setCropValidated] = useState(false);
 
   // Zone de travail élargie verticalement (marges proportionnelles au-dessus/dessous
   // de l'illustration, utile pour les images panoramiques). L'illustration reste
@@ -106,6 +118,27 @@ export default function PlaceholdersEditor({
   const loremRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const habillageMode = validated; // entered habillage sub-mode after placeholders validated
+  const cropMode = habillageValidated && !cropValidated;
+
+  // Initialise / réinitialise le cadre de recadrage en fonction du ratio choisi.
+  // Le cadre est centré dans la zone de travail et dimensionné pour englober
+  // l'illustration, contraint au ratio choisi.
+  useEffect(() => {
+    if (!cropMode) return;
+    const ratio = RATIOS[cropRatio];
+    const wvW = workViewbox[2];
+    const wvH = workViewbox[3];
+    // tailles initiales : on essaie d'englober l'illustration entière
+    let w = viewbox[2];
+    let h = w / ratio;
+    if (h > wvH * 0.95) { h = wvH * 0.95; w = h * ratio; }
+    if (w > wvW * 0.95) { w = wvW * 0.95; h = w / ratio; }
+    const x = workViewbox[0] + (wvW - w) / 2;
+    const y = workViewbox[1] + (wvH - h) / 2;
+    setCropRect({ x, y, w, h });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cropRatio, cropMode]);
+
   const zKey = (n: number) => `${card}:${n}`;
   const toggleBackplate = (n: number) =>
     setBackplates((b) => ({ ...b, [zKey(n)]: !b[zKey(n)] }));
@@ -191,6 +224,8 @@ export default function PlaceholdersEditor({
     setSelectedN(n);
   };
   const onPointerMove = (e: React.PointerEvent) => {
+    if (cropResizeRef.current) return onCropResizeMove(e);
+    if (cropDragRef.current) return onCropDragMove(e);
     if (resizeRef.current) return onResizeMove(e);
     const d = dragRef.current;
     if (!d || !overlayRef.current) return;
@@ -212,7 +247,56 @@ export default function PlaceholdersEditor({
     });
     commitZones(next);
   };
-  const onPointerUp = () => { dragRef.current = null; resizeRef.current = null; };
+  const onPointerUp = () => {
+    dragRef.current = null; resizeRef.current = null;
+    cropDragRef.current = null; cropResizeRef.current = null;
+  };
+
+  // Crop drag/resize (ratio-constrained)
+  const cropDragRef = useRef<{ startX: number; startY: number; orig: ZoneRect } | null>(null);
+  const cropResizeRef = useRef<{
+    corner: ResizeCorner; startX: number; startY: number; orig: ZoneRect;
+  } | null>(null);
+  const onCropDragDown = (e: React.PointerEvent) => {
+    if (!cropRect) return;
+    e.preventDefault(); e.stopPropagation();
+    (e.target as Element).setPointerCapture?.(e.pointerId);
+    cropDragRef.current = { startX: e.clientX, startY: e.clientY, orig: { ...cropRect } };
+  };
+  const onCropDragMove = (e: React.PointerEvent) => {
+    const d = cropDragRef.current;
+    if (!d || !overlayRef.current) return;
+    const box = overlayRef.current.getBoundingClientRect();
+    const sx = workViewbox[2] / box.width;
+    const sy = workViewbox[3] / box.height;
+    const dx = (e.clientX - d.startX) * sx;
+    const dy = (e.clientY - d.startY) * sy;
+    setCropRect({ ...d.orig, x: d.orig.x + dx, y: d.orig.y + dy });
+  };
+  const onCropResizeDown = (corner: ResizeCorner, e: React.PointerEvent) => {
+    if (!cropRect) return;
+    e.preventDefault(); e.stopPropagation();
+    (e.target as Element).setPointerCapture?.(e.pointerId);
+    cropResizeRef.current = { corner, startX: e.clientX, startY: e.clientY, orig: { ...cropRect } };
+  };
+  const onCropResizeMove = (e: React.PointerEvent) => {
+    const r = cropResizeRef.current;
+    if (!r || !overlayRef.current) return;
+    const box = overlayRef.current.getBoundingClientRect();
+    const sx = workViewbox[2] / box.width;
+    const dx = (e.clientX - r.startX) * sx;
+    const ratio = RATIOS[cropRatio];
+    const signX = r.corner === "ne" || r.corner === "se" ? 1 : -1;
+    let w = Math.max(workViewbox[2] * 0.1, r.orig.w + signX * dx);
+    let h = w / ratio;
+    if (h > workViewbox[3]) { h = workViewbox[3]; w = h * ratio; }
+    // ancrer le coin opposé
+    const anchorX = r.corner === "nw" || r.corner === "sw" ? r.orig.x + r.orig.w : r.orig.x;
+    const anchorY = r.corner === "nw" || r.corner === "ne" ? r.orig.y + r.orig.h : r.orig.y;
+    const nx = (r.corner === "nw" || r.corner === "sw") ? anchorX - w : anchorX;
+    const ny = (r.corner === "nw" || r.corner === "ne") ? anchorY - h : anchorY;
+    setCropRect({ x: nx, y: ny, w, h });
+  };
 
   // Resize (common size)
   const resizeRef = useRef<{
@@ -332,15 +416,38 @@ export default function PlaceholdersEditor({
           <Button size="sm" onClick={onValidate} disabled={!zones.length || validated}>
             <Check className="w-4 h-4 mr-1" /> Valider les placeholders
           </Button>
-        ) : (
+        ) : !habillageValidated ? (
           <Button
             size="sm"
             onClick={() => setHabillageValidated(true)}
-            disabled={!zones.length || habillageValidated}
+            disabled={!zones.length}
           >
             <Check className="w-4 h-4 mr-1" /> Valider l'habillage
           </Button>
-        )}
+        ) : !cropValidated ? (
+          <>
+            <div className="flex items-center gap-1 ml-1">
+              <span className="text-xs text-muted-foreground mr-1">Ratio</span>
+              {(Object.keys(RATIOS) as CropRatio[]).map((rt) => (
+                <button
+                  key={rt}
+                  onClick={() => setCropRatio(rt)}
+                  className={[
+                    "h-7 px-2 text-xs rounded border font-mono",
+                    rt === cropRatio
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "bg-background hover:bg-muted",
+                  ].join(" ")}
+                >
+                  {rt}
+                </button>
+              ))}
+            </div>
+            <Button size="sm" onClick={() => setCropValidated(true)} disabled={!cropRect}>
+              <Check className="w-4 h-4 mr-1" /> Valider le recadrage
+            </Button>
+          </>
+        ) : null}
       </div>
 
       {/* Per-zone controls bar */}
@@ -602,6 +709,63 @@ export default function PlaceholdersEditor({
               </g>
             );
           })}
+
+          {/* Crop overlay — recadrage final à ratio fixe */}
+          {(cropMode || cropValidated) && cropRect && (() => {
+            const cr = cropRect;
+            const wv = workViewbox;
+            const handleSize = Math.max(8, Math.min(cr.w, cr.h) * 0.04);
+            return (
+              <g>
+                {/* zones hors-cadre assombries (4 rectangles) */}
+                <rect
+                  x={wv[0]} y={wv[1]} width={wv[2]} height={cr.y - wv[1]}
+                  fill="rgba(0,0,0,0.45)" pointerEvents="none"
+                />
+                <rect
+                  x={wv[0]} y={cr.y + cr.h}
+                  width={wv[2]} height={wv[1] + wv[3] - (cr.y + cr.h)}
+                  fill="rgba(0,0,0,0.45)" pointerEvents="none"
+                />
+                <rect
+                  x={wv[0]} y={cr.y} width={cr.x - wv[0]} height={cr.h}
+                  fill="rgba(0,0,0,0.45)" pointerEvents="none"
+                />
+                <rect
+                  x={cr.x + cr.w} y={cr.y}
+                  width={wv[0] + wv[2] - (cr.x + cr.w)} height={cr.h}
+                  fill="rgba(0,0,0,0.45)" pointerEvents="none"
+                />
+                {/* cadre */}
+                <rect
+                  x={cr.x} y={cr.y} width={cr.w} height={cr.h}
+                  fill="transparent"
+                  stroke={cropValidated ? "hsl(var(--primary))" : "#ffffff"}
+                  strokeWidth={2}
+                  strokeDasharray={cropValidated ? "0" : "6 4"}
+                  vectorEffect="non-scaling-stroke"
+                  onPointerDown={cropMode ? onCropDragDown : undefined}
+                  style={{ cursor: cropMode ? "move" : "default", touchAction: "none" }}
+                />
+                {/* poignées de coin */}
+                {cropMode && (["nw","ne","sw","se"] as ResizeCorner[]).map((c) => {
+                  const hx = c === "nw" || c === "sw" ? cr.x - handleSize/2 : cr.x + cr.w - handleSize/2;
+                  const hy = c === "nw" || c === "ne" ? cr.y - handleSize/2 : cr.y + cr.h - handleSize/2;
+                  const cursor = c === "nw" || c === "se" ? "nwse-resize" : "nesw-resize";
+                  return (
+                    <rect
+                      key={c}
+                      x={hx} y={hy} width={handleSize} height={handleSize}
+                      fill="#ffffff" stroke="hsl(var(--foreground))" strokeWidth={1.5}
+                      vectorEffect="non-scaling-stroke"
+                      style={{ cursor, touchAction: "none" }}
+                      onPointerDown={(e) => onCropResizeDown(c, e)}
+                    />
+                  );
+                })}
+              </g>
+            );
+          })()}
         </svg>
 
         {loading && (
@@ -616,10 +780,20 @@ export default function PlaceholdersEditor({
         redimensionner. La taille de boîte est <strong>commune</strong> à toutes les cardinalités.
       </p>
 
-      {habillageValidated && (
+      {habillageValidated && !cropValidated && (
+        <div className="rounded-md border bg-muted/40 p-3 text-xs">
+          <p className="font-medium">Recadrer le template</p>
+          <p className="text-muted-foreground mt-1">
+            Choisis un ratio, ajuste le cadre autour de ta composition. La zone
+            hors-cadre (assombrie) sera rognée. Ratio actuel : <span className="font-mono">{cropRatio}</span>.
+          </p>
+        </div>
+      )}
+
+      {cropValidated && cropRect && (
         <div className="rounded-md border bg-emerald-500/10 border-emerald-500/30 p-3 text-xs">
           <p className="font-medium text-emerald-700 dark:text-emerald-300">
-            Habillage validé
+            Recadrage validé · {cropRatio} · {Math.round(cropRect.w)}×{Math.round(cropRect.h)}
           </p>
           <p className="text-muted-foreground mt-1">
             Étape suivante (métadonnées et bibliothèque) à venir.
