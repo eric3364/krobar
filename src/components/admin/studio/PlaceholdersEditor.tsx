@@ -195,8 +195,8 @@ export default function PlaceholdersEditor({
     const d = dragRef.current;
     if (!d || !overlayRef.current) return;
     const box = overlayRef.current.getBoundingClientRect();
-    const sx = viewbox[2] / box.width;
-    const sy = viewbox[3] / box.height;
+    const sx = workViewbox[2] / box.width;
+    const sy = workViewbox[3] / box.height;
     const dx = (e.clientX - d.startX) * sx;
     const dy = (e.clientY - d.startY) * sy;
     const next = rawZones.map((z) => {
