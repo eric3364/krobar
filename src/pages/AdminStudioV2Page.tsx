@@ -405,9 +405,17 @@ function ProductionScreen({
   };
 
   const handleFile = async (file: File) => {
-    setVectLoading(true); setVectError(null); setValidated(false); setVectRes(null);
+    setVectLoading(true); setVectError(null); setValidated(false); setVectRes(null); setSizeInfo(null);
     try {
-      const r = await studioV2Api.vectorize(file);
+      const compressed = await compressImage(file);
+      setSizeInfo({ before: file.size, after: compressed.size });
+      // Garde-fou : base64 ~= taille * 1.37 ; si > ~2.5 Mo on refuse
+      if (compressed.size > 2.5 * 1024 * 1024) {
+        throw new Error(
+          `Image trop volumineuse après compression (${(compressed.size / 1024 / 1024).toFixed(2)} Mo). Limite : 2.5 Mo.`
+        );
+      }
+      const r = await studioV2Api.vectorize(compressed);
       setVectRes(r);
     } catch (e) {
       setVectError(e instanceof Error ? e.message : String(e));
