@@ -448,6 +448,7 @@ function ProductionScreen({
 
   const handleFile = async (file: File) => {
     setVectLoading(true); setVectError(null); setValidated(false); setVectRes(null); setSizeInfo(null);
+    setPlacement(null); setEditedZones({}); setPlaceholdersValidated(false);
     try {
       const compressed = await compressImage(file);
       setSizeInfo({ before: file.size, after: compressed.size });
