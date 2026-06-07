@@ -414,7 +414,6 @@ function ProductionScreen({
         persistKey,
         JSON.stringify({
           moteur, gpt2Style, promptRes, vectRes, validated,
-          placement, editedZones, placeholdersValidated,
         } satisfies Persisted),
       );
     } catch { /* ignore quota */ }
