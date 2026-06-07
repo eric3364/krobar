@@ -780,10 +780,20 @@ export default function PlaceholdersEditor({
         redimensionner. La taille de boîte est <strong>commune</strong> à toutes les cardinalités.
       </p>
 
-      {habillageValidated && (
+      {habillageValidated && !cropValidated && (
+        <div className="rounded-md border bg-muted/40 p-3 text-xs">
+          <p className="font-medium">Recadrer le template</p>
+          <p className="text-muted-foreground mt-1">
+            Choisis un ratio, ajuste le cadre autour de ta composition. La zone
+            hors-cadre (assombrie) sera rognée. Ratio actuel : <span className="font-mono">{cropRatio}</span>.
+          </p>
+        </div>
+      )}
+
+      {cropValidated && cropRect && (
         <div className="rounded-md border bg-emerald-500/10 border-emerald-500/30 p-3 text-xs">
           <p className="font-medium text-emerald-700 dark:text-emerald-300">
-            Habillage validé
+            Recadrage validé · {cropRatio} · {Math.round(cropRect.w)}×{Math.round(cropRect.h)}
           </p>
           <p className="text-muted-foreground mt-1">
             Étape suivante (métadonnées et bibliothèque) à venir.
