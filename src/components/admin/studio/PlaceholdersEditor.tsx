@@ -230,9 +230,8 @@ export default function PlaceholdersEditor({
     setCommonSize({ w, h });
   };
 
-  // Lorem overflow + height detection
+  // Lorem overflow + height detection (lorem permanent)
   useLayoutEffect(() => {
-    if (!showLorem) { setOverflow({}); setLoremHeights({}); return; }
     const ovf: Record<string, boolean> = {};
     const hts: Record<string, number> = {};
     for (const z of zones) {
@@ -246,7 +245,7 @@ export default function PlaceholdersEditor({
     setOverflow(ovf);
     setLoremHeights(hts);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showLorem, zones, loremLen, commonSize, backplates, card, habMode]);
+  }, [zones, loremLen, fontSizePx, commonSize, backplates, card, habMode]);
 
   const recalc = async () => {
     onEditedChange({});
