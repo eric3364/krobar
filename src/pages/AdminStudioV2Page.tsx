@@ -377,9 +377,9 @@ function ProductionScreen({
   const [vectError, setVectError] = useState<string | null>(null);
   const [validated, setValidated] = useState<boolean>(initial?.validated ?? false);
   const [sizeInfo, setSizeInfo] = useState<{ before: number; after: number } | null>(null);
-  const [placement, setPlacement] = useState<PlaceZonesResponse | null>(initial?.placement ?? null);
-  const [editedZones, setEditedZones] = useState<Record<string, ZonePair[]>>(initial?.editedZones ?? {});
-  const [placeholdersValidated, setPlaceholdersValidated] = useState<boolean>(initial?.placeholdersValidated ?? false);
+  const [placement, setPlacement] = useState<PlaceZonesResponse | null>(null);
+  const [editedZones, setEditedZones] = useState<Record<string, ZonePair[]>>({});
+  const [placeholdersValidated, setPlaceholdersValidated] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Load charte once
