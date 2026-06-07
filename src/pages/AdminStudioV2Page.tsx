@@ -404,6 +404,9 @@ function ProductionScreen({
     setValidated(p?.validated ?? false);
     setMoteur(p?.moteur ?? "midjourney");
     setGpt2Style(p?.gpt2Style ?? null);
+    setPlacement(p?.placement ?? null);
+    setEditedZones(p?.editedZones ?? {});
+    setPlaceholdersValidated(p?.placeholdersValidated ?? false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cell.index, registre, selecteur]);
 
@@ -412,10 +415,14 @@ function ProductionScreen({
     try {
       localStorage.setItem(
         persistKey,
-        JSON.stringify({ moteur, gpt2Style, promptRes, vectRes, validated } satisfies Persisted),
+        JSON.stringify({
+          moteur, gpt2Style, promptRes, vectRes, validated,
+          placement, editedZones, placeholdersValidated,
+        } satisfies Persisted),
       );
     } catch { /* ignore quota */ }
-  }, [persistKey, moteur, gpt2Style, promptRes, vectRes, validated]);
+  }, [persistKey, moteur, gpt2Style, promptRes, vectRes, validated, placement, editedZones, placeholdersValidated]);
+
 
 
   const gpt2Styles = charte?.moteurs?.["gpt-image-2"]?.styles;
