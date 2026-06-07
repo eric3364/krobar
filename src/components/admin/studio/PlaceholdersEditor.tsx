@@ -709,6 +709,63 @@ export default function PlaceholdersEditor({
               </g>
             );
           })}
+
+          {/* Crop overlay — recadrage final à ratio fixe */}
+          {(cropMode || cropValidated) && cropRect && (() => {
+            const cr = cropRect;
+            const wv = workViewbox;
+            const handleSize = Math.max(8, Math.min(cr.w, cr.h) * 0.04);
+            return (
+              <g>
+                {/* zones hors-cadre assombries (4 rectangles) */}
+                <rect
+                  x={wv[0]} y={wv[1]} width={wv[2]} height={cr.y - wv[1]}
+                  fill="rgba(0,0,0,0.45)" pointerEvents="none"
+                />
+                <rect
+                  x={wv[0]} y={cr.y + cr.h}
+                  width={wv[2]} height={wv[1] + wv[3] - (cr.y + cr.h)}
+                  fill="rgba(0,0,0,0.45)" pointerEvents="none"
+                />
+                <rect
+                  x={wv[0]} y={cr.y} width={cr.x - wv[0]} height={cr.h}
+                  fill="rgba(0,0,0,0.45)" pointerEvents="none"
+                />
+                <rect
+                  x={cr.x + cr.w} y={cr.y}
+                  width={wv[0] + wv[2] - (cr.x + cr.w)} height={cr.h}
+                  fill="rgba(0,0,0,0.45)" pointerEvents="none"
+                />
+                {/* cadre */}
+                <rect
+                  x={cr.x} y={cr.y} width={cr.w} height={cr.h}
+                  fill="transparent"
+                  stroke={cropValidated ? "hsl(var(--primary))" : "#ffffff"}
+                  strokeWidth={2}
+                  strokeDasharray={cropValidated ? "0" : "6 4"}
+                  vectorEffect="non-scaling-stroke"
+                  onPointerDown={cropMode ? onCropDragDown : undefined}
+                  style={{ cursor: cropMode ? "move" : "default", touchAction: "none" }}
+                />
+                {/* poignées de coin */}
+                {cropMode && (["nw","ne","sw","se"] as ResizeCorner[]).map((c) => {
+                  const hx = c === "nw" || c === "sw" ? cr.x - handleSize/2 : cr.x + cr.w - handleSize/2;
+                  const hy = c === "nw" || c === "ne" ? cr.y - handleSize/2 : cr.y + cr.h - handleSize/2;
+                  const cursor = c === "nw" || c === "se" ? "nwse-resize" : "nesw-resize";
+                  return (
+                    <rect
+                      key={c}
+                      x={hx} y={hy} width={handleSize} height={handleSize}
+                      fill="#ffffff" stroke="hsl(var(--foreground))" strokeWidth={1.5}
+                      vectorEffect="non-scaling-stroke"
+                      style={{ cursor, touchAction: "none" }}
+                      onPointerDown={(e) => onCropResizeDown(c, e)}
+                    />
+                  );
+                })}
+              </g>
+            );
+          })()}
         </svg>
 
         {loading && (
