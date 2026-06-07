@@ -336,23 +336,55 @@ function ProductionScreen({
   const { cell, registre, selecteur } = state;
   const s = byRegistreSummary(cell);
 
-  const [moteur, setMoteur] = useState<Moteur>("midjourney");
-  const [promptRes, setPromptRes] = useState<GeneratePromptResponse | null>(null);
+  const persistKey = `krobar-studio-v2-prod:${cell.index}|${registre}|${selecteur ?? ""}`;
+  type Persisted = {
+    moteur: Moteur;
+    promptRes: GeneratePromptResponse | null;
+    vectRes: VectorizeResponse | null;
+    validated: boolean;
+  };
+  const loadPersisted = (): Persisted | null => {
+    if (typeof window === "undefined") return null;
+    try {
+      const raw = localStorage.getItem(persistKey);
+      return raw ? (JSON.parse(raw) as Persisted) : null;
+    } catch { return null; }
+  };
+  const initial = loadPersisted();
+
+  const [moteur, setMoteur] = useState<Moteur>(initial?.moteur ?? "midjourney");
+  const [promptRes, setPromptRes] = useState<GeneratePromptResponse | null>(initial?.promptRes ?? null);
   const [promptLoading, setPromptLoading] = useState(false);
   const [promptError, setPromptError] = useState<string | null>(null);
 
-  const [vectRes, setVectRes] = useState<VectorizeResponse | null>(null);
+  const [vectRes, setVectRes] = useState<VectorizeResponse | null>(initial?.vectRes ?? null);
   const [vectLoading, setVectLoading] = useState(false);
   const [vectError, setVectError] = useState<string | null>(null);
-  const [validated, setValidated] = useState(false);
+  const [validated, setValidated] = useState<boolean>(initial?.validated ?? false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Reset everything when cell/registre/selecteur changes
+  // Hydrate from storage when cell/registre/selecteur changes (e.g. user switches incarnation)
   useEffect(() => {
-    setPromptRes(null); setPromptError(null);
-    setVectRes(null); setVectError(null);
-    setValidated(false);
+    const p = loadPersisted();
+    setPromptRes(p?.promptRes ?? null);
+    setPromptError(null);
+    setVectRes(p?.vectRes ?? null);
+    setVectError(null);
+    setValidated(p?.validated ?? false);
+    setMoteur(p?.moteur ?? "midjourney");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cell.index, registre, selecteur]);
+
+  // Persist whenever a meaningful piece changes
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        persistKey,
+        JSON.stringify({ moteur, promptRes, vectRes, validated } satisfies Persisted),
+      );
+    } catch { /* ignore quota */ }
+  }, [persistKey, moteur, promptRes, vectRes, validated]);
+
 
   const generatePrompt = async () => {
     setPromptLoading(true); setPromptError(null);
