@@ -271,16 +271,41 @@ export default function PlaceholdersEditor({
             {n}
           </button>
         ))}
-        {habillageMode && (
-          <label className="flex items-center gap-1.5 text-xs ml-3 cursor-pointer select-none">
-            <input
-              type="checkbox"
-              checked={showLorem}
-              onChange={(e) => setShowLorem(e.target.checked)}
-            />
-            Afficher le texte de test
-          </label>
-        )}
+        <div className="flex items-center gap-1 ml-3">
+          <span className="text-xs text-muted-foreground mr-1">Police</span>
+          {FONT_STEPS.map((s) => (
+            <button
+              key={s}
+              onClick={() => setFontSizePx(s)}
+              className={[
+                "h-7 px-2 text-xs rounded border font-mono",
+                s === fontSizePx
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "bg-background hover:bg-muted",
+              ].join(" ")}
+              title={`${s}px (palier autofit)`}
+            >
+              {s}
+            </button>
+          ))}
+        </div>
+        <div className="flex items-center gap-1 ml-3">
+          <span className="text-xs text-muted-foreground mr-1">Lorem</span>
+          {(["short","medium","long"] as LoremLen[]).map((l) => (
+            <button
+              key={l}
+              onClick={() => setLoremLen(l)}
+              className={[
+                "h-7 px-2 text-xs rounded border",
+                l === loremLen
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "bg-background hover:bg-muted",
+              ].join(" ")}
+            >
+              {l === "short" ? "court" : l === "medium" ? "moyen" : "long"}
+            </button>
+          ))}
+        </div>
         <div className="flex-1" />
         <Button size="sm" variant="outline" onClick={recalc} disabled={loading}>
           {loading
