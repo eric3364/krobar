@@ -355,6 +355,9 @@ function ProductionScreen({
     promptRes: GeneratePromptResponse | null;
     vectRes: VectorizeResponse | null;
     validated: boolean;
+    placement: PlaceZonesResponse | null;
+    editedZones: Record<string, ZonePair[]>;
+    placeholdersValidated: boolean;
   };
   const loadPersisted = (): Persisted | null => {
     if (typeof window === "undefined") return null;
@@ -377,6 +380,9 @@ function ProductionScreen({
   const [vectError, setVectError] = useState<string | null>(null);
   const [validated, setValidated] = useState<boolean>(initial?.validated ?? false);
   const [sizeInfo, setSizeInfo] = useState<{ before: number; after: number } | null>(null);
+  const [placement, setPlacement] = useState<PlaceZonesResponse | null>(initial?.placement ?? null);
+  const [editedZones, setEditedZones] = useState<Record<string, ZonePair[]>>(initial?.editedZones ?? {});
+  const [placeholdersValidated, setPlaceholdersValidated] = useState<boolean>(initial?.placeholdersValidated ?? false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Load charte once
