@@ -393,6 +393,7 @@ function ProductionScreen({
     setVectError(null);
     setValidated(p?.validated ?? false);
     setMoteur(p?.moteur ?? "midjourney");
+    setGpt2Style(p?.gpt2Style ?? null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cell.index, registre, selecteur]);
 
