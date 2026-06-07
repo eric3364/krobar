@@ -340,6 +340,7 @@ function ProductionScreen({
   const persistKey = `krobar-studio-v2-prod:${cell.index}|${registre}|${selecteur ?? ""}`;
   type Persisted = {
     moteur: Moteur;
+    gpt2Style: string | null;
     promptRes: GeneratePromptResponse | null;
     vectRes: VectorizeResponse | null;
     validated: boolean;
