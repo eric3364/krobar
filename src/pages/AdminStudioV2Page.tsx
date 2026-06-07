@@ -484,29 +484,29 @@ function ProductionScreen({
     return m ? parseInt(m[1], 10) : 1;
   }, [cell.index]);
 
+  const [promptOpen, setPromptOpen] = useState(false);
+
   return (
-    <div className="space-y-4">
-      <div className="flex items-baseline gap-3">
+    <div className="space-y-3">
+      {/* Cell header */}
+      <div className="flex items-baseline gap-3 flex-wrap">
         <span className="font-mono text-xl font-semibold">{cell.index}</span>
         <span className="text-sm text-muted-foreground">{cell.sicai_code}</span>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-12">
-        {/* LEFT — incarnation */}
-        <Card className="p-4 lg:col-span-3 space-y-4 min-w-0 overflow-hidden">
-
-          <h3 className="text-sm font-semibold uppercase tracking-wider">Incarnation</h3>
-
+      {/* BAR 1 — Incarnation (compact horizontal) */}
+      <Card className="px-3 py-2">
+        <div className="flex items-center gap-3 flex-wrap">
           {s.domains.length > 0 && (
-            <div>
-              <p className="text-xs text-muted-foreground mb-1">Domaines</p>
-              <div className="flex flex-wrap gap-1">
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] uppercase tracking-wider text-muted-foreground">Dom.</span>
+              <div className="flex gap-1">
                 {s.domains.map((d) => (
                   <button
                     key={d}
                     onClick={() => setRegistre("domain", d)}
                     className={[
-                      "px-2 py-1 text-xs rounded border",
+                      "px-2 py-0.5 text-xs rounded border",
                       registre === "domain" && selecteur === d
                         ? "bg-primary text-primary-foreground border-primary"
                         : "bg-background hover:bg-muted",
@@ -521,15 +521,15 @@ function ProductionScreen({
           )}
 
           {s.sport.length > 0 && (
-            <div>
-              <p className="text-xs text-muted-foreground mb-1">Sport</p>
-              <div className="flex flex-wrap gap-1">
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] uppercase tracking-wider text-muted-foreground">Sport</span>
+              <div className="flex gap-1 flex-wrap">
                 {s.sport.map((sp) => (
                   <button
                     key={sp}
                     onClick={() => setRegistre("sport", sp)}
                     className={[
-                      "px-2 py-1 text-xs rounded border",
+                      "px-2 py-0.5 text-xs rounded border",
                       registre === "sport" && selecteur === sp
                         ? "bg-primary text-primary-foreground border-primary"
                         : "bg-background hover:bg-muted",
@@ -543,12 +543,12 @@ function ProductionScreen({
           )}
 
           {(s.hasEtat || s.hasConflit) && (
-            <div className="flex gap-2">
+            <div className="flex gap-1">
               {s.hasEtat && (
                 <button
                   onClick={() => setRegistre("etat", null)}
                   className={[
-                    "px-2 py-1 text-xs rounded border",
+                    "px-2 py-0.5 text-xs rounded border",
                     registre === "etat"
                       ? "bg-primary text-primary-foreground border-primary"
                       : "bg-background hover:bg-muted",
@@ -559,7 +559,7 @@ function ProductionScreen({
                 <button
                   onClick={() => setRegistre("conflit", null)}
                   className={[
-                    "px-2 py-1 text-xs rounded border",
+                    "px-2 py-0.5 text-xs rounded border",
                     registre === "conflit"
                       ? "bg-primary text-primary-foreground border-primary"
                       : "bg-background hover:bg-muted",
@@ -569,192 +569,45 @@ function ProductionScreen({
             </div>
           )}
 
-          <div className="pt-2 border-t">
-            <p className="text-xs text-muted-foreground mb-2">Aperçu structurel</p>
-            <div className="flex justify-center">
+          <div className="ml-auto flex items-center gap-2 min-w-0">
+            {promptRes?.incarnation_source && (
+              <span
+                className="text-xs text-muted-foreground truncate max-w-[40ch]"
+                title={promptRes.incarnation_source}
+              >
+                {promptRes.incarnation_source}
+              </span>
+            )}
+            <div
+              className="shrink-0"
+              title={`${FAMILY_LABEL[cell.family as string] ?? cell.family} · ${cell.cardinality} · ${cell.regime}`}
+            >
               <StructuralSketch
                 family={cell.family as string}
                 cardinality={cell.cardinality as string}
                 regime={cell.regime as string}
-                size={120}
+                size={40}
+                showBadge={false}
               />
             </div>
-            <p className="text-[11px] text-muted-foreground mt-2 text-center">
-              {FAMILY_LABEL[cell.family as string] ?? cell.family} ·{" "}
-              {cell.cardinality} · {cell.regime}
-            </p>
           </div>
-
-          {promptRes?.incarnation_source && (
-            <div className="pt-2 border-t min-w-0">
-              <p className="text-xs text-muted-foreground mb-1">Texte d'incarnation</p>
-              <p className="text-sm leading-snug break-words [overflow-wrap:anywhere] whitespace-pre-wrap">
-                {promptRes.incarnation_source}
-              </p>
-            </div>
-          )}
-
-        </Card>
-
-        {/* CENTER — visual + prompt */}
-        <div className="lg:col-span-6 space-y-4">
-          {/* Visual area: 3:2 ratio when empty/zoom, or placement editor when validated */}
-          <Card className="p-4 space-y-3">
-            {placementsMode && validated && vectRes && vectRes.viewbox ? (
-              <PlaceholdersEditor
-                svg={vectRes.svg}
-                viewbox={vectRes.viewbox}
-                occupancy={vectRes.occupancy}
-                cardinalityMax={cardinalityMax}
-                placement={placement}
-                editedZones={editedZones}
-                onPlacementLoaded={(p) => { setPlacement(p); setEditedZones({}); }}
-                onEditedChange={setEditedZones}
-                onValidate={() => { setPlaceholdersValidated(true); toast.success("Placeholders validés"); }}
-                validated={placeholdersValidated}
-              />
-            ) : (
-              <>
-                <div
-                  className="relative w-full bg-muted/30 border rounded-md overflow-hidden flex items-center justify-center"
-                  style={{ aspectRatio: "3 / 2" }}
-                >
-                  {vectLoading && (
-                    <div className="text-muted-foreground flex items-center">
-                      <Loader2 className="w-5 h-5 mr-2 animate-spin" /> Vectorisation…
-                    </div>
-                  )}
-                  {!vectLoading && vectRes && (
-                    <ZoomableSvg svg={vectRes.svg} />
-                  )}
-                  {!vectLoading && !vectRes && (
-                    <div className="text-center text-muted-foreground px-6">
-                      <StructuralSketch
-                        family={cell.family as string}
-                        cardinality={cell.cardinality as string}
-                        regime={cell.regime as string}
-                        size={140}
-                        showBadge={false}
-                      />
-                      <p className="text-sm mt-3">
-                        Aucune illustration pour l'instant.
-                      </p>
-                      <p className="text-xs mt-1">
-                        Générez le prompt, créez l'image, puis importez-la pour vectoriser.
-                      </p>
-                    </div>
-                  )}
-                </div>
-                {validated && vectRes && vectRes.viewbox && (
-                  <div className="flex justify-center">
-                    <Button onClick={() => setPlacementsMode(true)}>
-                      Poser les placeholders
-                    </Button>
-                  </div>
-                )}
-                {validated && vectRes && !vectRes.viewbox && (
-                  <p className="text-xs text-destructive text-center">
-                    Viewbox manquante dans la réponse vectorize — impossible d'entrer en mode placement.
-                  </p>
-                )}
-              </>
-            )}
-          </Card>
-
-
-          {/* Prompt */}
-          <Card className="p-4 space-y-3">
-            <div className="flex items-center justify-between gap-3">
-              <h3 className="text-sm font-semibold uppercase tracking-wider">Prompt</h3>
-              <Tabs value={moteur} onValueChange={(v) => setMoteur(v as Moteur)}>
-                <TabsList>
-                  <TabsTrigger value="midjourney">Midjourney</TabsTrigger>
-                  <TabsTrigger value="gpt-image-2">GPT-image-2</TabsTrigger>
-                </TabsList>
-              </Tabs>
-            </div>
-
-            {moteur === "gpt-image-2" && gpt2Styles && (
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">Style</span>
-                <Select
-                  value={gpt2Style ?? gpt2Default ?? ""}
-                  onValueChange={(v) => setGpt2Style(v)}
-                >
-                  <SelectTrigger className="w-[160px] h-8 text-xs">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.entries(gpt2Styles).map(([key, s]) => (
-                      <SelectItem key={key} value={key}>
-                        {(s as { label: string }).label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
-
-            <Button onClick={generatePrompt} disabled={promptLoading} className="w-full sm:w-auto">
-              {promptLoading
-                ? (<><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Génération…</>)
-                : "Générer le prompt"}
-            </Button>
-
-            {promptError && (
-              <p className="text-sm text-destructive">{promptError}</p>
-            )}
-
-            {promptRes && (
-              <div className="space-y-2">
-                <textarea
-                  readOnly
-                  value={promptRes.prompt}
-                  className="w-full min-h-[140px] font-mono text-xs p-3 rounded-md border bg-muted/30 resize-y"
-                />
-                <div className="flex items-center gap-2">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={async () => {
-                      await navigator.clipboard.writeText(promptRes.prompt);
-                      toast.success("Prompt copié");
-                    }}
-                  >
-                    <Copy className="w-4 h-4 mr-1" /> Copier
-                  </Button>
-                  <p className="text-xs text-muted-foreground">
-                    Charte v{promptRes.charte_version} · {promptRes.meta.cote}
-                    {promptRes.style && (
-                      <span className="ml-2">
-                        Style : {gpt2Styles?.[promptRes.style]?.label ?? promptRes.style}
-                      </span>
-                    )}
-                  </p>
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  Copiez ce prompt, générez l'image dans{" "}
-                  {moteur === "midjourney" ? "Midjourney" : "ChatGPT"}, puis revenez l'importer ci-dessous.
-                </p>
-              </div>
-            )}
-          </Card>
         </div>
+      </Card>
 
-        {/* RIGHT — upload + metrics */}
-        <Card className="p-4 lg:col-span-3 space-y-3">
-          <h3 className="text-sm font-semibold uppercase tracking-wider">Import & vectorisation</h3>
-
-          <div
+      {/* BAR 2 — Import / vectorisation / actions (compact horizontal) */}
+      <Card className="px-3 py-2">
+        <div className="flex items-center gap-3 flex-wrap">
+          <button
+            type="button"
             onDragOver={(e) => e.preventDefault()}
             onDrop={onDrop}
             onClick={() => fileInputRef.current?.click()}
-            className="border-2 border-dashed rounded-md p-6 text-center cursor-pointer hover:bg-muted/40 transition-colors"
+            className="inline-flex items-center gap-2 px-3 py-1.5 text-xs rounded border border-dashed hover:bg-muted/40 transition-colors"
+            title="PNG / JPEG, max 5 Mo"
           >
-            <UploadIcon className="w-6 h-6 mx-auto text-muted-foreground" />
-            <p className="text-sm mt-2">Déposer ou cliquer</p>
-            <p className="text-xs text-muted-foreground mt-1">PNG / JPEG, max 5 Mo</p>
-          </div>
+            <UploadIcon className="w-4 h-4" />
+            <span>{vectRes ? "Remplacer l'image" : "Déposer ou cliquer"}</span>
+          </button>
           <input
             ref={fileInputRef}
             type="file"
@@ -767,60 +620,185 @@ function ProductionScreen({
             }}
           />
 
-          {sizeInfo && (
-            <p className="text-xs text-muted-foreground">
-              Compression : {formatBytes(sizeInfo.before)} → {formatBytes(sizeInfo.after)}
-            </p>
+          {vectLoading && (
+            <span className="text-xs text-muted-foreground inline-flex items-center">
+              <Loader2 className="w-4 h-4 mr-1 animate-spin" /> Vectorisation…
+            </span>
           )}
 
-          {vectError && (
-            <p className="text-sm text-destructive">{vectError}</p>
+          {sizeInfo && !vectLoading && (
+            <span className="text-[11px] text-muted-foreground">
+              {formatBytes(sizeInfo.before)} → {formatBytes(sizeInfo.after)}
+            </span>
           )}
 
           {vectRes && (
-            <div className="space-y-2 pt-2 border-t">
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">Verdict</span>
-                <VerdictBadge verdict={vectRes.metrics.verdict} />
+            <div className="flex items-center gap-2 text-xs">
+              <VerdictBadge verdict={vectRes.metrics.verdict} />
+              <span className="text-muted-foreground">
+                {vectRes.metrics.ink_density_pct.toFixed(1)}% · ombres {vectRes.metrics.shadow_blobs_removed} · {vectRes.metrics.cropped_size[0]}×{vectRes.metrics.cropped_size[1]}
+              </span>
+            </div>
+          )}
+
+          {vectError && (
+            <span className="text-xs text-destructive">{vectError}</span>
+          )}
+
+          <div className="ml-auto flex items-center gap-2">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => setPromptOpen((v) => !v)}
+            >
+              {promptOpen ? "Masquer le prompt" : "Prompt"}
+            </Button>
+            {vectRes && !validated && (
+              <>
+                <Button
+                  size="sm"
+                  onClick={() => { setValidated(true); toast.success("Vectorisation validée"); }}
+                >
+                  <Check className="w-4 h-4 mr-1" /> Valider
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => { setVectRes(null); setValidated(false); }}
+                >
+                  <X className="w-4 h-4 mr-1" /> Rejeter
+                </Button>
+              </>
+            )}
+            {validated && vectRes && vectRes.viewbox && !placementsMode && (
+              <Button size="sm" onClick={() => setPlacementsMode(true)}>
+                Poser les placeholders
+              </Button>
+            )}
+            {validated && vectRes && !vectRes.viewbox && (
+              <span className="text-xs text-destructive">Viewbox manquante</span>
+            )}
+          </div>
+        </div>
+      </Card>
+
+      {/* Optional prompt panel (collapsible) */}
+      {promptOpen && (
+        <Card className="p-3 space-y-3">
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <h3 className="text-sm font-semibold uppercase tracking-wider">Prompt</h3>
+            <div className="flex items-center gap-2">
+              <Tabs value={moteur} onValueChange={(v) => setMoteur(v as Moteur)}>
+                <TabsList>
+                  <TabsTrigger value="midjourney">Midjourney</TabsTrigger>
+                  <TabsTrigger value="gpt-image-2">GPT-image-2</TabsTrigger>
+                </TabsList>
+              </Tabs>
+              {moteur === "gpt-image-2" && gpt2Styles && (
+                <Select
+                  value={gpt2Style ?? gpt2Default ?? ""}
+                  onValueChange={(v) => setGpt2Style(v)}
+                >
+                  <SelectTrigger className="w-[160px] h-8 text-xs">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(gpt2Styles).map(([key, st]) => (
+                      <SelectItem key={key} value={key}>
+                        {(st as { label: string }).label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+              <Button onClick={generatePrompt} disabled={promptLoading} size="sm">
+                {promptLoading
+                  ? (<><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Génération…</>)
+                  : "Générer le prompt"}
+              </Button>
+            </div>
+          </div>
+
+          {promptError && <p className="text-sm text-destructive">{promptError}</p>}
+
+          {promptRes && (
+            <div className="space-y-2">
+              <textarea
+                readOnly
+                value={promptRes.prompt}
+                className="w-full min-h-[120px] font-mono text-xs p-3 rounded-md border bg-muted/30 resize-y"
+              />
+              <div className="flex items-center gap-2 flex-wrap">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={async () => {
+                    await navigator.clipboard.writeText(promptRes.prompt);
+                    toast.success("Prompt copié");
+                  }}
+                >
+                  <Copy className="w-4 h-4 mr-1" /> Copier
+                </Button>
+                <p className="text-xs text-muted-foreground">
+                  Charte v{promptRes.charte_version} · {promptRes.meta.cote}
+                  {promptRes.style && (
+                    <span className="ml-2">
+                      Style : {gpt2Styles?.[promptRes.style]?.label ?? promptRes.style}
+                    </span>
+                  )}
+                </p>
               </div>
-              <ul className="text-xs space-y-0.5 text-muted-foreground">
-                <li>Densité d'encre : {vectRes.metrics.ink_density_pct.toFixed(2)} %</li>
-                <li>Ombres retirées : {vectRes.metrics.shadow_blobs_removed}</li>
-                <li>Format : {vectRes.metrics.cropped_size[0]} × {vectRes.metrics.cropped_size[1]}</li>
-              </ul>
-
-              {!validated && (
-                <div className="flex gap-2 pt-1">
-                  <Button
-                    size="sm"
-                    onClick={() => { setValidated(true); toast.success("Vectorisation validée"); }}
-                  >
-                    <Check className="w-4 h-4 mr-1" /> Valider
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => { setVectRes(null); setValidated(false); }}
-                  >
-                    <X className="w-4 h-4 mr-1" /> Rejeter
-                  </Button>
-                </div>
-              )}
-
-              {validated && (
-                <div className="rounded-md border bg-emerald-500/10 border-emerald-500/30 p-3 text-xs">
-                  <p className="font-medium text-emerald-700 dark:text-emerald-300">
-                    Vectorisation validée
-                  </p>
-                  <p className="text-muted-foreground mt-1">
-                    Pose des placeholders disponible dans la zone centrale.
-                  </p>
-                </div>
-              )}
             </div>
           )}
         </Card>
-      </div>
+      )}
+
+      {/* CENTRAL ZONE — full width */}
+      <Card className="p-3">
+        {placementsMode && validated && vectRes && vectRes.viewbox ? (
+          <PlaceholdersEditor
+            svg={vectRes.svg}
+            viewbox={vectRes.viewbox}
+            occupancy={vectRes.occupancy}
+            cardinalityMax={cardinalityMax}
+            placement={placement}
+            editedZones={editedZones}
+            onPlacementLoaded={(p) => { setPlacement(p); setEditedZones({}); }}
+            onEditedChange={setEditedZones}
+            onValidate={() => { setPlaceholdersValidated(true); toast.success("Placeholders validés"); }}
+            validated={placeholdersValidated}
+          />
+        ) : (
+          <div
+            className="relative w-full bg-muted/30 border rounded-md overflow-hidden flex items-center justify-center"
+            style={{ minHeight: "calc(100vh - 280px)" }}
+          >
+            {vectLoading && (
+              <div className="text-muted-foreground flex items-center">
+                <Loader2 className="w-5 h-5 mr-2 animate-spin" /> Vectorisation…
+              </div>
+            )}
+            {!vectLoading && vectRes && (
+              <ZoomableSvg svg={vectRes.svg} />
+            )}
+            {!vectLoading && !vectRes && (
+              <div className="text-center text-muted-foreground px-6">
+                <StructuralSketch
+                  family={cell.family as string}
+                  cardinality={cell.cardinality as string}
+                  regime={cell.regime as string}
+                  size={140}
+                  showBadge={false}
+                />
+                <p className="text-sm mt-3">Aucune illustration pour l'instant.</p>
+                <p className="text-xs mt-1">
+                  Générez le prompt, créez l'image, puis importez-la pour vectoriser.
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+      </Card>
     </div>
   );
 }
