@@ -796,7 +796,7 @@ function ProductionScreen({
                     Vectorisation validée
                   </p>
                   <p className="text-muted-foreground mt-1">
-                    Étapes suivantes (icônes, zones de texte, métadonnées) à venir.
+                    Pose des placeholders disponible dans la zone centrale.
                   </p>
                 </div>
               )}
