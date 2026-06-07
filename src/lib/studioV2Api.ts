@@ -83,10 +83,43 @@ export type VectorizeMetrics = {
   cropped_size: [number, number];
 };
 
+export type Occupancy = {
+  cols: number;
+  rows: number;
+  grid: number[][];
+};
+
+export type Viewbox = [number, number, number, number];
+
 export type VectorizeResponse = {
   ok: boolean;
   svg: string;
   metrics: VectorizeMetrics;
+  occupancy?: Occupancy;
+  viewbox?: Viewbox;
+};
+
+export type ZoneRect = { x: number; y: number; w: number; h: number };
+export type ZoneIcon = ZoneRect & { transparent?: boolean };
+export type ZonePair = {
+  n: number;
+  side?: string;
+  rect: ZoneRect | null;
+  cells?: { r0: number; c0: number; bw: number; bh: number };
+  icon: ZoneIcon | null;
+  unplaced?: boolean;
+};
+
+export type PlaceZonesPayload = {
+  occupancy: Occupancy;
+  viewbox: Viewbox;
+  cardinality_max: number;
+};
+
+export type PlaceZonesResponse = {
+  cardinality_max: number;
+  viewbox: Viewbox;
+  by_cardinality: Record<string, ZonePair[]>;
 };
 
 export const MAX_VECTORIZE_BYTES = 5 * 1024 * 1024;
