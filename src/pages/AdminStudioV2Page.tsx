@@ -21,6 +21,7 @@ import {
 
 import StructuralSketch from "@/components/admin/studio/StructuralSketch";
 import ZoomableSvg from "@/components/admin/studio/ZoomableSvg";
+import PlaceholdersEditor from "@/components/admin/studio/PlaceholdersEditor";
 import {
   studioV2Api,
   type CoverageCell,
@@ -29,6 +30,8 @@ import {
   type CharteResponse,
   type Moteur,
   type VectorizeResponse,
+  type PlaceZonesResponse,
+  type ZonePair,
   FAMILY_ORDER,
   FAMILY_LABEL,
   CARDINALITY_ORDER,
@@ -352,6 +355,9 @@ function ProductionScreen({
     promptRes: GeneratePromptResponse | null;
     vectRes: VectorizeResponse | null;
     validated: boolean;
+    placement: PlaceZonesResponse | null;
+    editedZones: Record<string, ZonePair[]>;
+    placeholdersValidated: boolean;
   };
   const loadPersisted = (): Persisted | null => {
     if (typeof window === "undefined") return null;
@@ -374,6 +380,9 @@ function ProductionScreen({
   const [vectError, setVectError] = useState<string | null>(null);
   const [validated, setValidated] = useState<boolean>(initial?.validated ?? false);
   const [sizeInfo, setSizeInfo] = useState<{ before: number; after: number } | null>(null);
+  const [placement, setPlacement] = useState<PlaceZonesResponse | null>(initial?.placement ?? null);
+  const [editedZones, setEditedZones] = useState<Record<string, ZonePair[]>>(initial?.editedZones ?? {});
+  const [placeholdersValidated, setPlaceholdersValidated] = useState<boolean>(initial?.placeholdersValidated ?? false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Load charte once
@@ -395,6 +404,9 @@ function ProductionScreen({
     setValidated(p?.validated ?? false);
     setMoteur(p?.moteur ?? "midjourney");
     setGpt2Style(p?.gpt2Style ?? null);
+    setPlacement(p?.placement ?? null);
+    setEditedZones(p?.editedZones ?? {});
+    setPlaceholdersValidated(p?.placeholdersValidated ?? false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cell.index, registre, selecteur]);
 
@@ -403,10 +415,14 @@ function ProductionScreen({
     try {
       localStorage.setItem(
         persistKey,
-        JSON.stringify({ moteur, gpt2Style, promptRes, vectRes, validated } satisfies Persisted),
+        JSON.stringify({
+          moteur, gpt2Style, promptRes, vectRes, validated,
+          placement, editedZones, placeholdersValidated,
+        } satisfies Persisted),
       );
     } catch { /* ignore quota */ }
-  }, [persistKey, moteur, gpt2Style, promptRes, vectRes, validated]);
+  }, [persistKey, moteur, gpt2Style, promptRes, vectRes, validated, placement, editedZones, placeholdersValidated]);
+
 
 
   const gpt2Styles = charte?.moteurs?.["gpt-image-2"]?.styles;
@@ -432,6 +448,7 @@ function ProductionScreen({
 
   const handleFile = async (file: File) => {
     setVectLoading(true); setVectError(null); setValidated(false); setVectRes(null); setSizeInfo(null);
+    setPlacement(null); setEditedZones({}); setPlaceholdersValidated(false);
     try {
       const compressed = await compressImage(file);
       setSizeInfo({ before: file.size, after: compressed.size });
@@ -458,6 +475,11 @@ function ProductionScreen({
 
   const setRegistre = (r: Registre, sel: string | null) =>
     onChange({ ...state, registre: r, selecteur: sel });
+
+  const cardinalityMax = useMemo(() => {
+    const m = cell.index.match(/-(\d)-/);
+    return m ? parseInt(m[1], 10) : 1;
+  }, [cell.index]);
 
   return (
     <div className="space-y-4">
@@ -573,39 +595,55 @@ function ProductionScreen({
 
         {/* CENTER — visual + prompt */}
         <div className="lg:col-span-6 space-y-4">
-          {/* Visual area: 3:2 ratio, big */}
+          {/* Visual area: 3:2 ratio when empty/zoom, or placement editor when validated */}
           <Card className="p-4">
-            <div
-              className="relative w-full bg-muted/30 border rounded-md overflow-hidden flex items-center justify-center"
-              style={{ aspectRatio: "3 / 2" }}
-            >
-              {vectLoading && (
-                <div className="text-muted-foreground flex items-center">
-                  <Loader2 className="w-5 h-5 mr-2 animate-spin" /> Vectorisation…
-                </div>
-              )}
-              {!vectLoading && vectRes && (
-                <ZoomableSvg svg={vectRes.svg} />
-              )}
-              {!vectLoading && !vectRes && (
-                <div className="text-center text-muted-foreground px-6">
-                  <StructuralSketch
-                    family={cell.family as string}
-                    cardinality={cell.cardinality as string}
-                    regime={cell.regime as string}
-                    size={140}
-                    showBadge={false}
-                  />
-                  <p className="text-sm mt-3">
-                    Aucune illustration pour l'instant.
-                  </p>
-                  <p className="text-xs mt-1">
-                    Générez le prompt, créez l'image, puis importez-la pour vectoriser.
-                  </p>
-                </div>
-              )}
-            </div>
+            {validated && vectRes && vectRes.viewbox ? (
+              <PlaceholdersEditor
+                svg={vectRes.svg}
+                viewbox={vectRes.viewbox}
+                occupancy={vectRes.occupancy}
+                cardinalityMax={cardinalityMax}
+                placement={placement}
+                editedZones={editedZones}
+                onPlacementLoaded={(p) => { setPlacement(p); setEditedZones({}); }}
+                onEditedChange={setEditedZones}
+                onValidate={() => { setPlaceholdersValidated(true); toast.success("Placeholders validés"); }}
+                validated={placeholdersValidated}
+              />
+            ) : (
+              <div
+                className="relative w-full bg-muted/30 border rounded-md overflow-hidden flex items-center justify-center"
+                style={{ aspectRatio: "3 / 2" }}
+              >
+                {vectLoading && (
+                  <div className="text-muted-foreground flex items-center">
+                    <Loader2 className="w-5 h-5 mr-2 animate-spin" /> Vectorisation…
+                  </div>
+                )}
+                {!vectLoading && vectRes && (
+                  <ZoomableSvg svg={vectRes.svg} />
+                )}
+                {!vectLoading && !vectRes && (
+                  <div className="text-center text-muted-foreground px-6">
+                    <StructuralSketch
+                      family={cell.family as string}
+                      cardinality={cell.cardinality as string}
+                      regime={cell.regime as string}
+                      size={140}
+                      showBadge={false}
+                    />
+                    <p className="text-sm mt-3">
+                      Aucune illustration pour l'instant.
+                    </p>
+                    <p className="text-xs mt-1">
+                      Générez le prompt, créez l'image, puis importez-la pour vectoriser.
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
           </Card>
+
 
           {/* Prompt */}
           <Card className="p-4 space-y-3">
@@ -758,7 +796,7 @@ function ProductionScreen({
                     Vectorisation validée
                   </p>
                   <p className="text-muted-foreground mt-1">
-                    Étapes suivantes (icônes, zones de texte, métadonnées) à venir.
+                    Pose des placeholders disponible dans la zone centrale.
                   </p>
                 </div>
               )}
