@@ -355,6 +355,8 @@ function ProductionScreen({
   const initial = loadPersisted();
 
   const [moteur, setMoteur] = useState<Moteur>(initial?.moteur ?? "midjourney");
+  const [gpt2Style, setGpt2Style] = useState<string | null>(initial?.gpt2Style ?? null);
+  const [charte, setCharte] = useState<CharteResponse | null>(null);
   const [promptRes, setPromptRes] = useState<GeneratePromptResponse | null>(initial?.promptRes ?? null);
   const [promptLoading, setPromptLoading] = useState(false);
   const [promptError, setPromptError] = useState<string | null>(null);
@@ -365,6 +367,15 @@ function ProductionScreen({
   const [validated, setValidated] = useState<boolean>(initial?.validated ?? false);
   const [sizeInfo, setSizeInfo] = useState<{ before: number; after: number } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Load charte once
+  useEffect(() => {
+    let cancel = false;
+    studioV2Api.charte()
+      .then((c) => { if (!cancel) setCharte(c); })
+      .catch(() => { /* silent — selector just won't show styles */ });
+    return () => { cancel = true; };
+  }, []);
 
   // Hydrate from storage when cell/registre/selecteur changes (e.g. user switches incarnation)
   useEffect(() => {
