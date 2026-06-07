@@ -68,7 +68,7 @@ export default function ZoomableSvg({ svg }: Props) {
   }, [svg, fitScale]);
 
   const effectiveScale = scale ?? fitScale;
-  const minScale = fitScale || 0.05;
+  const minScale = Math.min(fitScale * 0.25, 0.05);
   const maxScale = Math.max(MAX_SCALE, fitScale * 1.5);
 
   const clamp = (s: number) => Math.min(maxScale, Math.max(minScale, +s.toFixed(4)));
