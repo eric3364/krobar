@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/select";
 
 import StructuralSketch from "@/components/admin/studio/StructuralSketch";
+import ZoomableSvg from "@/components/admin/studio/ZoomableSvg";
 import {
   studioV2Api,
   type CoverageCell,
@@ -584,11 +585,7 @@ function ProductionScreen({
                 </div>
               )}
               {!vectLoading && vectRes && (
-                <div
-                  className="w-full h-full flex items-center justify-center [&>svg]:max-w-full [&>svg]:max-h-full"
-                  // SVG vient du backend, contexte admin
-                  dangerouslySetInnerHTML={{ __html: vectRes.svg }}
-                />
+                <ZoomableSvg svg={vectRes.svg} />
               )}
               {!vectLoading && !vectRes && (
                 <div className="text-center text-muted-foreground px-6">
