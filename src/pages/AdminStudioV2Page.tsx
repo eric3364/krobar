@@ -417,7 +417,7 @@ function ProductionScreen({
         } satisfies Persisted),
       );
     } catch { /* ignore quota */ }
-  }, [persistKey, moteur, gpt2Style, promptRes, vectRes, validated, placement, editedZones, placeholdersValidated]);
+  }, [persistKey, moteur, gpt2Style, promptRes, vectRes, validated]);
 
 
 
