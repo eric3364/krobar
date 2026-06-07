@@ -46,11 +46,32 @@ type ProductionState = {
   selecteur: string | null;     // domain code, sport key, or null for etat/conflit
 };
 
+const STUDIO_V2_ACTIVE_KEY = "krobar-studio-v2-active";
+
+function loadActive(): ProductionState | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(STUDIO_V2_ACTIVE_KEY);
+    if (!raw) return null;
+    const p = JSON.parse(raw);
+    if (p && p.cell && typeof p.cell.index === "string") return p as ProductionState;
+  } catch { /* ignore */ }
+  return null;
+}
+
 export default function AdminStudioV2Page() {
   const [coverage, setCoverage] = useState<CoverageResponse | null>(null);
   const [loadingCoverage, setLoadingCoverage] = useState(true);
   const [coverageError, setCoverageError] = useState<string | null>(null);
-  const [active, setActive] = useState<ProductionState | null>(null);
+  const [active, setActiveState] = useState<ProductionState | null>(() => loadActive());
+
+  const setActive = (s: ProductionState | null) => {
+    setActiveState(s);
+    try {
+      if (s) localStorage.setItem(STUDIO_V2_ACTIVE_KEY, JSON.stringify(s));
+      else localStorage.removeItem(STUDIO_V2_ACTIVE_KEY);
+    } catch { /* ignore */ }
+  };
 
   useEffect(() => {
     let cancel = false;
@@ -62,6 +83,7 @@ export default function AdminStudioV2Page() {
       .finally(() => { if (!cancel) setLoadingCoverage(false); });
     return () => { cancel = true; };
   }, []);
+
 
   // Sort cells by family > cardinality > regime
   const groupedCells = useMemo(() => {
