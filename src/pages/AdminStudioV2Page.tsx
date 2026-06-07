@@ -21,6 +21,7 @@ import {
 
 import StructuralSketch from "@/components/admin/studio/StructuralSketch";
 import ZoomableSvg from "@/components/admin/studio/ZoomableSvg";
+import PlaceholdersEditor from "@/components/admin/studio/PlaceholdersEditor";
 import {
   studioV2Api,
   type CoverageCell,
@@ -29,6 +30,8 @@ import {
   type CharteResponse,
   type Moteur,
   type VectorizeResponse,
+  type PlaceZonesResponse,
+  type ZonePair,
   FAMILY_ORDER,
   FAMILY_LABEL,
   CARDINALITY_ORDER,
