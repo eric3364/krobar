@@ -406,10 +406,10 @@ function ProductionScreen({
     setValidated(p?.validated ?? false);
     setMoteur(p?.moteur ?? "midjourney");
     setGpt2Style(p?.gpt2Style ?? null);
-    setPlacement(null);
-    setEditedZones({});
-    setPlaceholdersValidated(false);
-    setPlacementsMode(false);
+    setPlacement(p?.placement ?? null);
+    setEditedZones(p?.editedZones ?? {});
+    setPlaceholdersValidated(p?.placeholdersValidated ?? false);
+    setPlacementsMode(p?.placementsMode ?? false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cell.index, registre, selecteur]);
 
