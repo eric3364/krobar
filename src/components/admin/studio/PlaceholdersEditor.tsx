@@ -94,6 +94,10 @@ export default function PlaceholdersEditor({
   const [habMode, setHabMode] = useState<Record<string, HabillageMode>>({});
   const [traitSide, setTraitSide] = useState<Record<string, TraitSide>>({});
   const [habillageValidated, setHabillageValidated] = useState(false);
+  // B2 — recadrage final
+  const [cropRatio, setCropRatio] = useState<CropRatio>("3:2");
+  const [cropRect, setCropRect] = useState<ZoneRect | null>(null);
+  const [cropValidated, setCropValidated] = useState(false);
 
   // Zone de travail élargie verticalement (marges proportionnelles au-dessus/dessous
   // de l'illustration, utile pour les images panoramiques). L'illustration reste
