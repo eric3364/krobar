@@ -369,25 +369,6 @@ export default function PlaceholdersEditor({
             );
           })()}
 
-          {showLorem && (
-            <>
-              <span className="text-muted-foreground ml-2">test :</span>
-              {(["short", "medium", "long"] as LoremLen[]).map((l) => (
-                <button
-                  key={l}
-                  onClick={() => setLoremLenFor(selectedN, l)}
-                  className={[
-                    "px-2 h-6 rounded border",
-                    getLoremLen(selectedN) === l
-                      ? "bg-primary text-primary-foreground border-primary"
-                      : "bg-background hover:bg-muted",
-                  ].join(" ")}
-                >
-                  {l === "short" ? "court" : l === "medium" ? "moyen" : "long"}
-                </button>
-              ))}
-            </>
-          )}
         </div>
       )}
 
