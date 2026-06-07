@@ -664,6 +664,12 @@ function ProductionScreen({
             }}
           />
 
+          {sizeInfo && (
+            <p className="text-xs text-muted-foreground">
+              Compression : {formatBytes(sizeInfo.before)} → {formatBytes(sizeInfo.after)}
+            </p>
+          )}
+
           {vectError && (
             <p className="text-sm text-destructive">{vectError}</p>
           )}
