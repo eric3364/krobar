@@ -74,8 +74,10 @@ export default function PlaceholdersEditor({
   const [error, setError] = useState<string | null>(null);
   const [card, setCard] = useState<number>(cardinalityMax);
   const [backplates, setBackplates] = useState<Record<string, boolean>>({});
-  const [showLorem, setShowLorem] = useState<boolean>(false);
-  const [loremLen, setLoremLen] = useState<Record<string, LoremLen>>({});
+  // Lorem permanent (toujours affiché). Longueur + taille de police sont GLOBALES.
+  const [loremLen, setLoremLen] = useState<LoremLen>("medium");
+  const FONT_STEPS = [24, 20, 16, 13, 11] as const;
+  const [fontSizePx, setFontSizePx] = useState<number>(16);
   const [selectedN, setSelectedN] = useState<number | null>(null);
   const [commonSize, setCommonSize] = useState<{ w: number; h: number } | null>(null);
   const [overflow, setOverflow] = useState<Record<string, boolean>>({});
@@ -92,9 +94,6 @@ export default function PlaceholdersEditor({
   const zKey = (n: number) => `${card}:${n}`;
   const toggleBackplate = (n: number) =>
     setBackplates((b) => ({ ...b, [zKey(n)]: !b[zKey(n)] }));
-  const getLoremLen = (n: number): LoremLen => loremLen[zKey(n)] ?? "medium";
-  const setLoremLenFor = (n: number, v: LoremLen) =>
-    setLoremLen((m) => ({ ...m, [zKey(n)]: v }));
   const getHabMode = (n: number): HabillageMode => habMode[zKey(n)] ?? "integre";
   const setHabModeFor = (n: number, v: HabillageMode) =>
     setHabMode((m) => ({ ...m, [zKey(n)]: v }));
@@ -231,9 +230,8 @@ export default function PlaceholdersEditor({
     setCommonSize({ w, h });
   };
 
-  // Lorem overflow + height detection
+  // Lorem overflow + height detection (lorem permanent)
   useLayoutEffect(() => {
-    if (!showLorem) { setOverflow({}); setLoremHeights({}); return; }
     const ovf: Record<string, boolean> = {};
     const hts: Record<string, number> = {};
     for (const z of zones) {
@@ -247,7 +245,7 @@ export default function PlaceholdersEditor({
     setOverflow(ovf);
     setLoremHeights(hts);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showLorem, zones, loremLen, commonSize, backplates, card, habMode]);
+  }, [zones, loremLen, fontSizePx, commonSize, backplates, card, habMode]);
 
   const recalc = async () => {
     onEditedChange({});
@@ -273,16 +271,41 @@ export default function PlaceholdersEditor({
             {n}
           </button>
         ))}
-        {habillageMode && (
-          <label className="flex items-center gap-1.5 text-xs ml-3 cursor-pointer select-none">
-            <input
-              type="checkbox"
-              checked={showLorem}
-              onChange={(e) => setShowLorem(e.target.checked)}
-            />
-            Afficher le texte de test
-          </label>
-        )}
+        <div className="flex items-center gap-1 ml-3">
+          <span className="text-xs text-muted-foreground mr-1">Police</span>
+          {FONT_STEPS.map((s) => (
+            <button
+              key={s}
+              onClick={() => setFontSizePx(s)}
+              className={[
+                "h-7 px-2 text-xs rounded border font-mono",
+                s === fontSizePx
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "bg-background hover:bg-muted",
+              ].join(" ")}
+              title={`${s}px (palier autofit)`}
+            >
+              {s}
+            </button>
+          ))}
+        </div>
+        <div className="flex items-center gap-1 ml-3">
+          <span className="text-xs text-muted-foreground mr-1">Lorem</span>
+          {(["short","medium","long"] as LoremLen[]).map((l) => (
+            <button
+              key={l}
+              onClick={() => setLoremLen(l)}
+              className={[
+                "h-7 px-2 text-xs rounded border",
+                l === loremLen
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "bg-background hover:bg-muted",
+              ].join(" ")}
+            >
+              {l === "short" ? "court" : l === "medium" ? "moyen" : "long"}
+            </button>
+          ))}
+        </div>
         <div className="flex-1" />
         <Button size="sm" variant="outline" onClick={recalc} disabled={loading}>
           {loading
@@ -346,25 +369,6 @@ export default function PlaceholdersEditor({
             );
           })()}
 
-          {showLorem && (
-            <>
-              <span className="text-muted-foreground ml-2">test :</span>
-              {(["short", "medium", "long"] as LoremLen[]).map((l) => (
-                <button
-                  key={l}
-                  onClick={() => setLoremLenFor(selectedN, l)}
-                  className={[
-                    "px-2 h-6 rounded border",
-                    getLoremLen(selectedN) === l
-                      ? "bg-primary text-primary-foreground border-primary"
-                      : "bg-background hover:bg-muted",
-                  ].join(" ")}
-                >
-                  {l === "short" ? "court" : l === "medium" ? "moyen" : "long"}
-                </button>
-              ))}
-            </>
-          )}
         </div>
       )}
 
@@ -401,7 +405,7 @@ export default function PlaceholdersEditor({
             const mode = getHabMode(z.n);
             const isCartouche = habillageMode && mode === "cartouche";
             const side: TraitSide = getTraitSide(z.n, r);
-            const overflows = showLorem && !isCartouche && !!overflow[key];
+            const overflows = !isCartouche && !!overflow[key];
             const strokeBase = overflows
               ? "#f59e0b"
               : z.unplaced
@@ -412,17 +416,16 @@ export default function PlaceholdersEditor({
             const fillBase = collides
               ? "hsl(var(--destructive) / 0.12)"
               : "hsl(var(--primary) / 0.12)";
-            const fontSize = Math.max(8, Math.min(r.w, r.h) * 0.22);
+            const fontSize = fontSizePx;
             const hasBackplate = !!backplates[key];
             const btnSize = Math.max(6, Math.min(r.w, r.h) * 0.18);
             const btnX = r.x + r.w - btnSize - 2;
             const btnY = r.y + 2;
             const handleSize = Math.max(6, Math.min(r.w, r.h) * 0.14);
 
-            // Trait (cartouche) geometry
-            // Indicative height ≈ 3 lines; if lorem shown, follow actual rendered height.
-            const indicativeH = fontSize * 0.55 * 1.2 * 3 + 6;
-            const traitH = showLorem && loremHeights[key]
+            // Trait (cartouche) geometry — suit la hauteur réelle du lorem.
+            const indicativeH = fontSize * 1.2 * 3 + 6;
+            const traitH = loremHeights[key]
               ? Math.max(loremHeights[key], 6)
               : indicativeH;
             const traitX = side === "left" ? r.x - 4 : r.x + r.w + 4;
@@ -449,47 +452,32 @@ export default function PlaceholdersEditor({
                   style={{ touchAction: "none", cursor: "grab" }}
                 />
 
-                {/* Lorem text (via foreignObject) */}
-                {showLorem && (
-                  <foreignObject x={r.x} y={r.y} width={r.w} height={r.h} pointerEvents="none">
-                    <div
-                      ref={(el) => { loremRefs.current[key] = el; }}
-                      style={{
-                        width: "100%", height: "100%",
-                        padding: `${Math.min(r.h * 0.08, 4)}px ${Math.min(r.w * 0.04, 4)}px`,
-                        fontSize: `${fontSize * 0.55}px`,
-                        lineHeight: 1.2,
-                        overflow: isCartouche ? "visible" : "hidden",
-                        wordBreak: "break-word",
-                        color: "hsl(var(--foreground))",
-                        fontFamily: "system-ui, sans-serif",
-                        boxSizing: "border-box",
-                      }}
-                    >
-                      {LOREM[getLoremLen(z.n)]}
-                    </div>
-                  </foreignObject>
-                )}
-
-                {/* Zone number (hidden when lorem is on) */}
-                {!showLorem && (
-                  <text
-                    x={r.x + fontSize * 0.4}
-                    y={r.y + fontSize * 1.1}
-                    fontSize={fontSize}
-                    fontWeight={700}
-                    fill={strokeBase}
-                    style={{ pointerEvents: "none", userSelect: "none" }}
+                {/* Lorem text (permanent) */}
+                <foreignObject x={r.x} y={r.y} width={r.w} height={r.h} pointerEvents="none">
+                  <div
+                    ref={(el) => { loremRefs.current[key] = el; }}
+                    style={{
+                      width: "100%", height: "100%",
+                      padding: `${Math.min(r.h * 0.08, 4)}px ${Math.min(r.w * 0.04, 4)}px`,
+                      fontSize: `${fontSizePx}px`,
+                      lineHeight: 1.2,
+                      overflow: isCartouche ? "visible" : "hidden",
+                      wordBreak: "break-word",
+                      color: "hsl(var(--foreground))",
+                      fontFamily: "system-ui, sans-serif",
+                      boxSizing: "border-box",
+                    }}
                   >
-                    {z.n}
-                  </text>
-                )}
+                    <span style={{ opacity: 0.45, fontWeight: 700, marginRight: 4 }}>{z.n}.</span>
+                    {LOREM[loremLen]}
+                  </div>
+                </foreignObject>
 
                 {/* Habillage badge (integré) */}
-                {habillageMode && !isCartouche && !showLorem && (
+                {habillageMode && !isCartouche && (
                   <text
                     x={r.x + r.w / 2} y={r.y + r.h - 3}
-                    fontSize={Math.max(6, fontSize * 0.35)}
+                    fontSize={Math.max(6, fontSize * 0.6)}
                     textAnchor="middle"
                     fill="hsl(var(--muted-foreground))"
                     style={{ pointerEvents: "none", userSelect: "none" }}
@@ -497,6 +485,7 @@ export default function PlaceholdersEditor({
                     texte intégré
                   </text>
                 )}
+
 
                 {/* Cartouche trait */}
                 {isCartouche && (
