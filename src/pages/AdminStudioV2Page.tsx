@@ -595,39 +595,55 @@ function ProductionScreen({
 
         {/* CENTER — visual + prompt */}
         <div className="lg:col-span-6 space-y-4">
-          {/* Visual area: 3:2 ratio, big */}
+          {/* Visual area: 3:2 ratio when empty/zoom, or placement editor when validated */}
           <Card className="p-4">
-            <div
-              className="relative w-full bg-muted/30 border rounded-md overflow-hidden flex items-center justify-center"
-              style={{ aspectRatio: "3 / 2" }}
-            >
-              {vectLoading && (
-                <div className="text-muted-foreground flex items-center">
-                  <Loader2 className="w-5 h-5 mr-2 animate-spin" /> Vectorisation…
-                </div>
-              )}
-              {!vectLoading && vectRes && (
-                <ZoomableSvg svg={vectRes.svg} />
-              )}
-              {!vectLoading && !vectRes && (
-                <div className="text-center text-muted-foreground px-6">
-                  <StructuralSketch
-                    family={cell.family as string}
-                    cardinality={cell.cardinality as string}
-                    regime={cell.regime as string}
-                    size={140}
-                    showBadge={false}
-                  />
-                  <p className="text-sm mt-3">
-                    Aucune illustration pour l'instant.
-                  </p>
-                  <p className="text-xs mt-1">
-                    Générez le prompt, créez l'image, puis importez-la pour vectoriser.
-                  </p>
-                </div>
-              )}
-            </div>
+            {validated && vectRes && vectRes.viewbox ? (
+              <PlaceholdersEditor
+                svg={vectRes.svg}
+                viewbox={vectRes.viewbox}
+                occupancy={vectRes.occupancy}
+                cardinalityMax={cardinalityMax}
+                placement={placement}
+                editedZones={editedZones}
+                onPlacementLoaded={(p) => { setPlacement(p); setEditedZones({}); }}
+                onEditedChange={setEditedZones}
+                onValidate={() => { setPlaceholdersValidated(true); toast.success("Placeholders validés"); }}
+                validated={placeholdersValidated}
+              />
+            ) : (
+              <div
+                className="relative w-full bg-muted/30 border rounded-md overflow-hidden flex items-center justify-center"
+                style={{ aspectRatio: "3 / 2" }}
+              >
+                {vectLoading && (
+                  <div className="text-muted-foreground flex items-center">
+                    <Loader2 className="w-5 h-5 mr-2 animate-spin" /> Vectorisation…
+                  </div>
+                )}
+                {!vectLoading && vectRes && (
+                  <ZoomableSvg svg={vectRes.svg} />
+                )}
+                {!vectLoading && !vectRes && (
+                  <div className="text-center text-muted-foreground px-6">
+                    <StructuralSketch
+                      family={cell.family as string}
+                      cardinality={cell.cardinality as string}
+                      regime={cell.regime as string}
+                      size={140}
+                      showBadge={false}
+                    />
+                    <p className="text-sm mt-3">
+                      Aucune illustration pour l'instant.
+                    </p>
+                    <p className="text-xs mt-1">
+                      Générez le prompt, créez l'image, puis importez-la pour vectoriser.
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
           </Card>
+
 
           {/* Prompt */}
           <Card className="p-4 space-y-3">
