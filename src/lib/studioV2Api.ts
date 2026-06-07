@@ -105,7 +105,7 @@ export const studioV2Api = {
     adminFetch<CoverageResponse>("/admin/studio/sicai-coverage", { method: "GET" }),
 
   charte: () =>
-    adminFetch<Record<string, unknown>>("/admin/studio/charte", { method: "GET" }),
+    adminFetch<CharteResponse>("/admin/studio/charte", { method: "GET" }),
 
   generatePrompt: (payload: GeneratePromptPayload) =>
     adminFetch<GeneratePromptResponse>("/admin/studio/generate-prompt", { body: payload }),
