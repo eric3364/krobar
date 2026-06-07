@@ -64,7 +64,13 @@ export default function PlaceholdersEditor({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [card, setCard] = useState<number>(cardinalityMax);
+  const [backplates, setBackplates] = useState<Record<string, boolean>>({});
   const overlayRef = useRef<SVGSVGElement>(null);
+
+  const bpKey = (n: number) => `${card}:${n}`;
+  const toggleBackplate = (n: number) => {
+    setBackplates((b) => ({ ...b, [bpKey(n)]: !b[bpKey(n)] }));
+  };
 
   const fetchPlacement = useCallback(async () => {
     if (!occupancy) {
@@ -221,13 +227,27 @@ export default function PlaceholdersEditor({
               ? "hsl(var(--destructive) / 0.12)"
               : "hsl(var(--primary) / 0.12)";
             const fontSize = Math.max(8, Math.min(r.w, r.h) * 0.22);
+            const hasBackplate = !!backplates[bpKey(z.n)];
+            const btnSize = Math.max(6, Math.min(r.w, r.h) * 0.18);
+            const btnX = r.x + r.w - btnSize - 2;
+            const btnY = r.y + 2;
             return (
               <g key={z.n} style={{ cursor: "grab" }}>
+                {/* backplate (white opaque fill behind text) */}
+                {hasBackplate && (
+                  <rect
+                    x={r.x} y={r.y} width={r.w} height={r.h}
+                    rx={Math.min(4, r.h * 0.08)}
+                    fill="#ffffff"
+                    fillOpacity={0.85}
+                    pointerEvents="none"
+                  />
+                )}
                 {/* text rect */}
                 <rect
                   x={r.x} y={r.y} width={r.w} height={r.h}
                   rx={Math.min(4, r.h * 0.08)}
-                  fill={fillBase}
+                  fill={hasBackplate ? "transparent" : fillBase}
                   stroke={strokeBase}
                   strokeWidth={1.2}
                   vectorEffect="non-scaling-stroke"
@@ -245,6 +265,33 @@ export default function PlaceholdersEditor({
                 >
                   {z.n}
                 </text>
+                {/* backplate toggle button (top-right of text rect) */}
+                <g
+                  onPointerDown={(e) => { e.stopPropagation(); }}
+                  onClick={(e) => { e.stopPropagation(); toggleBackplate(z.n); }}
+                  style={{ cursor: "pointer" }}
+                >
+                  <title>{hasBackplate ? "Désactiver le fond blanc" : "Activer le fond blanc"}</title>
+                  <rect
+                    x={btnX} y={btnY} width={btnSize} height={btnSize}
+                    rx={btnSize * 0.2}
+                    fill={hasBackplate ? "#ffffff" : "hsl(var(--background))"}
+                    stroke={strokeBase}
+                    strokeWidth={1}
+                    vectorEffect="non-scaling-stroke"
+                  />
+                  {hasBackplate && (
+                    <path
+                      d={`M ${btnX + btnSize * 0.22} ${btnY + btnSize * 0.55} L ${btnX + btnSize * 0.42} ${btnY + btnSize * 0.75} L ${btnX + btnSize * 0.78} ${btnY + btnSize * 0.28}`}
+                      fill="none"
+                      stroke={strokeBase}
+                      strokeWidth={1.4}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      vectorEffect="non-scaling-stroke"
+                    />
+                  )}
+                </g>
                 {/* icon placeholder */}
                 {z.icon && (
                   <g
