@@ -401,7 +401,7 @@ function ProductionScreen({
     try {
       localStorage.setItem(
         persistKey,
-        JSON.stringify({ moteur, promptRes, vectRes, validated } satisfies Persisted),
+        JSON.stringify({ moteur, gpt2Style, promptRes, vectRes, validated } satisfies Persisted),
       );
     } catch { /* ignore quota */ }
   }, [persistKey, moteur, promptRes, vectRes, validated]);
