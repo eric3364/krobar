@@ -39,17 +39,33 @@ export type CoverageResponse = {
 
 export type Moteur = "midjourney" | "gpt-image-2";
 
+export type CharteStyle = {
+  label: string;
+  description?: string;
+};
+
+export type CharteEngine = {
+  style_default: string;
+  styles: Record<string, CharteStyle>;
+};
+
+export type CharteResponse = {
+  moteurs: Record<string, CharteEngine>;
+};
+
 export type GeneratePromptPayload = {
   index: string;
   registre: "domain" | "etat" | "conflit" | "sport";
   selecteur: string | null;
   moteur: Moteur;
+  style?: string;
 };
 
 export type GeneratePromptResponse = {
   ok: boolean;
   prompt: string;
   moteur: Moteur;
+  style?: string;
   charte_version: string;
   incarnation_source: string;
   meta: {
@@ -89,7 +105,7 @@ export const studioV2Api = {
     adminFetch<CoverageResponse>("/admin/studio/sicai-coverage", { method: "GET" }),
 
   charte: () =>
-    adminFetch<Record<string, unknown>>("/admin/studio/charte", { method: "GET" }),
+    adminFetch<CharteResponse>("/admin/studio/charte", { method: "GET" }),
 
   generatePrompt: (payload: GeneratePromptPayload) =>
     adminFetch<GeneratePromptResponse>("/admin/studio/generate-prompt", { body: payload }),

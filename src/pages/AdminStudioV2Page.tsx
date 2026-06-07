@@ -11,6 +11,13 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import StructuralSketch from "@/components/admin/studio/StructuralSketch";
 import {
@@ -18,6 +25,7 @@ import {
   type CoverageCell,
   type CoverageResponse,
   type GeneratePromptResponse,
+  type CharteResponse,
   type Moteur,
   type VectorizeResponse,
   FAMILY_ORDER,
@@ -339,6 +347,7 @@ function ProductionScreen({
   const persistKey = `krobar-studio-v2-prod:${cell.index}|${registre}|${selecteur ?? ""}`;
   type Persisted = {
     moteur: Moteur;
+    gpt2Style: string | null;
     promptRes: GeneratePromptResponse | null;
     vectRes: VectorizeResponse | null;
     validated: boolean;
@@ -353,6 +362,8 @@ function ProductionScreen({
   const initial = loadPersisted();
 
   const [moteur, setMoteur] = useState<Moteur>(initial?.moteur ?? "midjourney");
+  const [gpt2Style, setGpt2Style] = useState<string | null>(initial?.gpt2Style ?? null);
+  const [charte, setCharte] = useState<CharteResponse | null>(null);
   const [promptRes, setPromptRes] = useState<GeneratePromptResponse | null>(initial?.promptRes ?? null);
   const [promptLoading, setPromptLoading] = useState(false);
   const [promptError, setPromptError] = useState<string | null>(null);
@@ -364,6 +375,15 @@ function ProductionScreen({
   const [sizeInfo, setSizeInfo] = useState<{ before: number; after: number } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Load charte once
+  useEffect(() => {
+    let cancel = false;
+    studioV2Api.charte()
+      .then((c) => { if (!cancel) setCharte(c); })
+      .catch(() => { /* silent — selector just won't show styles */ });
+    return () => { cancel = true; };
+  }, []);
+
   // Hydrate from storage when cell/registre/selecteur changes (e.g. user switches incarnation)
   useEffect(() => {
     const p = loadPersisted();
@@ -373,6 +393,7 @@ function ProductionScreen({
     setVectError(null);
     setValidated(p?.validated ?? false);
     setMoteur(p?.moteur ?? "midjourney");
+    setGpt2Style(p?.gpt2Style ?? null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cell.index, registre, selecteur]);
 
@@ -381,11 +402,14 @@ function ProductionScreen({
     try {
       localStorage.setItem(
         persistKey,
-        JSON.stringify({ moteur, promptRes, vectRes, validated } satisfies Persisted),
+        JSON.stringify({ moteur, gpt2Style, promptRes, vectRes, validated } satisfies Persisted),
       );
     } catch { /* ignore quota */ }
-  }, [persistKey, moteur, promptRes, vectRes, validated]);
+  }, [persistKey, moteur, gpt2Style, promptRes, vectRes, validated]);
 
+
+  const gpt2Styles = charte?.moteurs?.["gpt-image-2"]?.styles;
+  const gpt2Default = charte?.moteurs?.["gpt-image-2"]?.style_default;
 
   const generatePrompt = async () => {
     setPromptLoading(true); setPromptError(null);
@@ -395,6 +419,7 @@ function ProductionScreen({
         registre,
         selecteur,
         moteur,
+        ...(moteur === "gpt-image-2" ? { style: gpt2Style ?? gpt2Default ?? undefined } : {}),
       });
       setPromptRes(r);
     } catch (e) {
@@ -597,6 +622,27 @@ function ProductionScreen({
               </Tabs>
             </div>
 
+            {moteur === "gpt-image-2" && gpt2Styles && (
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-muted-foreground">Style</span>
+                <Select
+                  value={gpt2Style ?? gpt2Default ?? ""}
+                  onValueChange={(v) => setGpt2Style(v)}
+                >
+                  <SelectTrigger className="w-[160px] h-8 text-xs">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(gpt2Styles).map(([key, s]) => (
+                      <SelectItem key={key} value={key}>
+                        {(s as { label: string }).label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+
             <Button onClick={generatePrompt} disabled={promptLoading} className="w-full sm:w-auto">
               {promptLoading
                 ? (<><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Génération…</>)
@@ -627,6 +673,11 @@ function ProductionScreen({
                   </Button>
                   <p className="text-xs text-muted-foreground">
                     Charte v{promptRes.charte_version} · {promptRes.meta.cote}
+                    {promptRes.style && (
+                      <span className="ml-2">
+                        Style : {gpt2Styles?.[promptRes.style]?.label ?? promptRes.style}
+                      </span>
+                    )}
                   </p>
                 </div>
                 <p className="text-xs text-muted-foreground">
