@@ -380,6 +380,7 @@ function ProductionScreen({
   const [placement, setPlacement] = useState<PlaceZonesResponse | null>(null);
   const [editedZones, setEditedZones] = useState<Record<string, ZonePair[]>>({});
   const [placeholdersValidated, setPlaceholdersValidated] = useState<boolean>(false);
+  const [placementsMode, setPlacementsMode] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Load charte once
