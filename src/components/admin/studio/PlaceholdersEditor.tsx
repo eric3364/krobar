@@ -74,8 +74,10 @@ export default function PlaceholdersEditor({
   const [error, setError] = useState<string | null>(null);
   const [card, setCard] = useState<number>(cardinalityMax);
   const [backplates, setBackplates] = useState<Record<string, boolean>>({});
-  const [showLorem, setShowLorem] = useState<boolean>(false);
-  const [loremLen, setLoremLen] = useState<Record<string, LoremLen>>({});
+  // Lorem permanent (toujours affiché). Longueur + taille de police sont GLOBALES.
+  const [loremLen, setLoremLen] = useState<LoremLen>("medium");
+  const FONT_STEPS = [24, 20, 16, 13, 11] as const;
+  const [fontSizePx, setFontSizePx] = useState<number>(16);
   const [selectedN, setSelectedN] = useState<number | null>(null);
   const [commonSize, setCommonSize] = useState<{ w: number; h: number } | null>(null);
   const [overflow, setOverflow] = useState<Record<string, boolean>>({});
@@ -92,9 +94,6 @@ export default function PlaceholdersEditor({
   const zKey = (n: number) => `${card}:${n}`;
   const toggleBackplate = (n: number) =>
     setBackplates((b) => ({ ...b, [zKey(n)]: !b[zKey(n)] }));
-  const getLoremLen = (n: number): LoremLen => loremLen[zKey(n)] ?? "medium";
-  const setLoremLenFor = (n: number, v: LoremLen) =>
-    setLoremLen((m) => ({ ...m, [zKey(n)]: v }));
   const getHabMode = (n: number): HabillageMode => habMode[zKey(n)] ?? "integre";
   const setHabModeFor = (n: number, v: HabillageMode) =>
     setHabMode((m) => ({ ...m, [zKey(n)]: v }));
