@@ -673,6 +673,11 @@ function ProductionScreen({
                   </Button>
                   <p className="text-xs text-muted-foreground">
                     Charte v{promptRes.charte_version} · {promptRes.meta.cote}
+                    {promptRes.style && (
+                      <span className="ml-2">
+                        Style : {gpt2Styles?.[promptRes.style]?.label ?? promptRes.style}
+                      </span>
+                    )}
                   </p>
                 </div>
                 <p className="text-xs text-muted-foreground">
