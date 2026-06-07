@@ -420,10 +420,11 @@ function ProductionScreen({
         persistKey,
         JSON.stringify({
           moteur, gpt2Style, promptRes, vectRes, validated,
+          placement, editedZones, placeholdersValidated, placementsMode,
         } satisfies Persisted),
       );
     } catch { /* ignore quota */ }
-  }, [persistKey, moteur, gpt2Style, promptRes, vectRes, validated]);
+  }, [persistKey, moteur, gpt2Style, promptRes, vectRes, validated, placement, editedZones, placeholdersValidated, placementsMode]);
 
 
 
