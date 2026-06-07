@@ -224,6 +224,8 @@ export default function PlaceholdersEditor({
     setSelectedN(n);
   };
   const onPointerMove = (e: React.PointerEvent) => {
+    if (cropResizeRef.current) return onCropResizeMove(e);
+    if (cropDragRef.current) return onCropDragMove(e);
     if (resizeRef.current) return onResizeMove(e);
     const d = dragRef.current;
     if (!d || !overlayRef.current) return;
@@ -245,7 +247,56 @@ export default function PlaceholdersEditor({
     });
     commitZones(next);
   };
-  const onPointerUp = () => { dragRef.current = null; resizeRef.current = null; };
+  const onPointerUp = () => {
+    dragRef.current = null; resizeRef.current = null;
+    cropDragRef.current = null; cropResizeRef.current = null;
+  };
+
+  // Crop drag/resize (ratio-constrained)
+  const cropDragRef = useRef<{ startX: number; startY: number; orig: ZoneRect } | null>(null);
+  const cropResizeRef = useRef<{
+    corner: ResizeCorner; startX: number; startY: number; orig: ZoneRect;
+  } | null>(null);
+  const onCropDragDown = (e: React.PointerEvent) => {
+    if (!cropRect) return;
+    e.preventDefault(); e.stopPropagation();
+    (e.target as Element).setPointerCapture?.(e.pointerId);
+    cropDragRef.current = { startX: e.clientX, startY: e.clientY, orig: { ...cropRect } };
+  };
+  const onCropDragMove = (e: React.PointerEvent) => {
+    const d = cropDragRef.current;
+    if (!d || !overlayRef.current) return;
+    const box = overlayRef.current.getBoundingClientRect();
+    const sx = workViewbox[2] / box.width;
+    const sy = workViewbox[3] / box.height;
+    const dx = (e.clientX - d.startX) * sx;
+    const dy = (e.clientY - d.startY) * sy;
+    setCropRect({ ...d.orig, x: d.orig.x + dx, y: d.orig.y + dy });
+  };
+  const onCropResizeDown = (corner: ResizeCorner, e: React.PointerEvent) => {
+    if (!cropRect) return;
+    e.preventDefault(); e.stopPropagation();
+    (e.target as Element).setPointerCapture?.(e.pointerId);
+    cropResizeRef.current = { corner, startX: e.clientX, startY: e.clientY, orig: { ...cropRect } };
+  };
+  const onCropResizeMove = (e: React.PointerEvent) => {
+    const r = cropResizeRef.current;
+    if (!r || !overlayRef.current) return;
+    const box = overlayRef.current.getBoundingClientRect();
+    const sx = workViewbox[2] / box.width;
+    const dx = (e.clientX - r.startX) * sx;
+    const ratio = RATIOS[cropRatio];
+    const signX = r.corner === "ne" || r.corner === "se" ? 1 : -1;
+    let w = Math.max(workViewbox[2] * 0.1, r.orig.w + signX * dx);
+    let h = w / ratio;
+    if (h > workViewbox[3]) { h = workViewbox[3]; w = h * ratio; }
+    // ancrer le coin opposé
+    const anchorX = r.corner === "nw" || r.corner === "sw" ? r.orig.x + r.orig.w : r.orig.x;
+    const anchorY = r.corner === "nw" || r.corner === "ne" ? r.orig.y + r.orig.h : r.orig.y;
+    const nx = (r.corner === "nw" || r.corner === "sw") ? anchorX - w : anchorX;
+    const ny = (r.corner === "nw" || r.corner === "ne") ? anchorY - h : anchorY;
+    setCropRect({ x: nx, y: ny, w, h });
+  };
 
   // Resize (common size)
   const resizeRef = useRef<{
