@@ -46,11 +46,32 @@ type ProductionState = {
   selecteur: string | null;     // domain code, sport key, or null for etat/conflit
 };
 
+const STUDIO_V2_ACTIVE_KEY = "krobar-studio-v2-active";
+
+function loadActive(): ProductionState | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(STUDIO_V2_ACTIVE_KEY);
+    if (!raw) return null;
+    const p = JSON.parse(raw);
+    if (p && p.cell && typeof p.cell.index === "string") return p as ProductionState;
+  } catch { /* ignore */ }
+  return null;
+}
+
 export default function AdminStudioV2Page() {
   const [coverage, setCoverage] = useState<CoverageResponse | null>(null);
   const [loadingCoverage, setLoadingCoverage] = useState(true);
   const [coverageError, setCoverageError] = useState<string | null>(null);
-  const [active, setActive] = useState<ProductionState | null>(null);
+  const [active, setActiveState] = useState<ProductionState | null>(() => loadActive());
+
+  const setActive = (s: ProductionState | null) => {
+    setActiveState(s);
+    try {
+      if (s) localStorage.setItem(STUDIO_V2_ACTIVE_KEY, JSON.stringify(s));
+      else localStorage.removeItem(STUDIO_V2_ACTIVE_KEY);
+    } catch { /* ignore */ }
+  };
 
   useEffect(() => {
     let cancel = false;
@@ -62,6 +83,7 @@ export default function AdminStudioV2Page() {
       .finally(() => { if (!cancel) setLoadingCoverage(false); });
     return () => { cancel = true; };
   }, []);
+
 
   // Sort cells by family > cardinality > regime
   const groupedCells = useMemo(() => {
@@ -314,23 +336,55 @@ function ProductionScreen({
   const { cell, registre, selecteur } = state;
   const s = byRegistreSummary(cell);
 
-  const [moteur, setMoteur] = useState<Moteur>("midjourney");
-  const [promptRes, setPromptRes] = useState<GeneratePromptResponse | null>(null);
+  const persistKey = `krobar-studio-v2-prod:${cell.index}|${registre}|${selecteur ?? ""}`;
+  type Persisted = {
+    moteur: Moteur;
+    promptRes: GeneratePromptResponse | null;
+    vectRes: VectorizeResponse | null;
+    validated: boolean;
+  };
+  const loadPersisted = (): Persisted | null => {
+    if (typeof window === "undefined") return null;
+    try {
+      const raw = localStorage.getItem(persistKey);
+      return raw ? (JSON.parse(raw) as Persisted) : null;
+    } catch { return null; }
+  };
+  const initial = loadPersisted();
+
+  const [moteur, setMoteur] = useState<Moteur>(initial?.moteur ?? "midjourney");
+  const [promptRes, setPromptRes] = useState<GeneratePromptResponse | null>(initial?.promptRes ?? null);
   const [promptLoading, setPromptLoading] = useState(false);
   const [promptError, setPromptError] = useState<string | null>(null);
 
-  const [vectRes, setVectRes] = useState<VectorizeResponse | null>(null);
+  const [vectRes, setVectRes] = useState<VectorizeResponse | null>(initial?.vectRes ?? null);
   const [vectLoading, setVectLoading] = useState(false);
   const [vectError, setVectError] = useState<string | null>(null);
-  const [validated, setValidated] = useState(false);
+  const [validated, setValidated] = useState<boolean>(initial?.validated ?? false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Reset everything when cell/registre/selecteur changes
+  // Hydrate from storage when cell/registre/selecteur changes (e.g. user switches incarnation)
   useEffect(() => {
-    setPromptRes(null); setPromptError(null);
-    setVectRes(null); setVectError(null);
-    setValidated(false);
+    const p = loadPersisted();
+    setPromptRes(p?.promptRes ?? null);
+    setPromptError(null);
+    setVectRes(p?.vectRes ?? null);
+    setVectError(null);
+    setValidated(p?.validated ?? false);
+    setMoteur(p?.moteur ?? "midjourney");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cell.index, registre, selecteur]);
+
+  // Persist whenever a meaningful piece changes
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        persistKey,
+        JSON.stringify({ moteur, promptRes, vectRes, validated } satisfies Persisted),
+      );
+    } catch { /* ignore quota */ }
+  }, [persistKey, moteur, promptRes, vectRes, validated]);
+
 
   const generatePrompt = async () => {
     setPromptLoading(true); setPromptError(null);
@@ -379,7 +433,8 @@ function ProductionScreen({
 
       <div className="grid gap-4 lg:grid-cols-12">
         {/* LEFT — incarnation */}
-        <Card className="p-4 lg:col-span-3 space-y-4">
+        <Card className="p-4 lg:col-span-3 space-y-4 min-w-0 overflow-hidden">
+
           <h3 className="text-sm font-semibold uppercase tracking-wider">Incarnation</h3>
 
           {s.domains.length > 0 && (
@@ -471,11 +526,14 @@ function ProductionScreen({
           </div>
 
           {promptRes?.incarnation_source && (
-            <div className="pt-2 border-t">
+            <div className="pt-2 border-t min-w-0">
               <p className="text-xs text-muted-foreground mb-1">Texte d'incarnation</p>
-              <p className="text-sm leading-snug">{promptRes.incarnation_source}</p>
+              <p className="text-sm leading-snug break-words [overflow-wrap:anywhere] whitespace-pre-wrap">
+                {promptRes.incarnation_source}
+              </p>
             </div>
           )}
+
         </Card>
 
         {/* CENTER — visual + prompt */}
