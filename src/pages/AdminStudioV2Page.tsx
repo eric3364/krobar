@@ -405,7 +405,7 @@ function ProductionScreen({
         JSON.stringify({ moteur, gpt2Style, promptRes, vectRes, validated } satisfies Persisted),
       );
     } catch { /* ignore quota */ }
-  }, [persistKey, moteur, promptRes, vectRes, validated]);
+  }, [persistKey, moteur, gpt2Style, promptRes, vectRes, validated]);
 
 
   const generatePrompt = async () => {
