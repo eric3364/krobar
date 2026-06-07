@@ -405,6 +405,7 @@ function ProductionScreen({
     setPlacement(null);
     setEditedZones({});
     setPlaceholdersValidated(false);
+    setPlacementsMode(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cell.index, registre, selecteur]);
 
