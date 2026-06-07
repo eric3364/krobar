@@ -118,6 +118,27 @@ export default function PlaceholdersEditor({
   const loremRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const habillageMode = validated; // entered habillage sub-mode after placeholders validated
+  const cropMode = habillageValidated && !cropValidated;
+
+  // Initialise / réinitialise le cadre de recadrage en fonction du ratio choisi.
+  // Le cadre est centré dans la zone de travail et dimensionné pour englober
+  // l'illustration, contraint au ratio choisi.
+  useEffect(() => {
+    if (!cropMode) return;
+    const ratio = RATIOS[cropRatio];
+    const wvW = workViewbox[2];
+    const wvH = workViewbox[3];
+    // tailles initiales : on essaie d'englober l'illustration entière
+    let w = viewbox[2];
+    let h = w / ratio;
+    if (h > wvH * 0.95) { h = wvH * 0.95; w = h * ratio; }
+    if (w > wvW * 0.95) { w = wvW * 0.95; h = w / ratio; }
+    const x = workViewbox[0] + (wvW - w) / 2;
+    const y = workViewbox[1] + (wvH - h) / 2;
+    setCropRect({ x, y, w, h });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cropRatio, cropMode]);
+
   const zKey = (n: number) => `${card}:${n}`;
   const toggleBackplate = (n: number) =>
     setBackplates((b) => ({ ...b, [zKey(n)]: !b[zKey(n)] }));
