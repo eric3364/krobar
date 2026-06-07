@@ -405,7 +405,7 @@ export default function PlaceholdersEditor({
             const mode = getHabMode(z.n);
             const isCartouche = habillageMode && mode === "cartouche";
             const side: TraitSide = getTraitSide(z.n, r);
-            const overflows = showLorem && !isCartouche && !!overflow[key];
+            const overflows = !isCartouche && !!overflow[key];
             const strokeBase = overflows
               ? "#f59e0b"
               : z.unplaced
@@ -416,17 +416,16 @@ export default function PlaceholdersEditor({
             const fillBase = collides
               ? "hsl(var(--destructive) / 0.12)"
               : "hsl(var(--primary) / 0.12)";
-            const fontSize = Math.max(8, Math.min(r.w, r.h) * 0.22);
+            const fontSize = fontSizePx;
             const hasBackplate = !!backplates[key];
             const btnSize = Math.max(6, Math.min(r.w, r.h) * 0.18);
             const btnX = r.x + r.w - btnSize - 2;
             const btnY = r.y + 2;
             const handleSize = Math.max(6, Math.min(r.w, r.h) * 0.14);
 
-            // Trait (cartouche) geometry
-            // Indicative height ≈ 3 lines; if lorem shown, follow actual rendered height.
-            const indicativeH = fontSize * 0.55 * 1.2 * 3 + 6;
-            const traitH = showLorem && loremHeights[key]
+            // Trait (cartouche) geometry — suit la hauteur réelle du lorem.
+            const indicativeH = fontSize * 1.2 * 3 + 6;
+            const traitH = loremHeights[key]
               ? Math.max(loremHeights[key], 6)
               : indicativeH;
             const traitX = side === "left" ? r.x - 4 : r.x + r.w + 4;
@@ -453,47 +452,32 @@ export default function PlaceholdersEditor({
                   style={{ touchAction: "none", cursor: "grab" }}
                 />
 
-                {/* Lorem text (via foreignObject) */}
-                {showLorem && (
-                  <foreignObject x={r.x} y={r.y} width={r.w} height={r.h} pointerEvents="none">
-                    <div
-                      ref={(el) => { loremRefs.current[key] = el; }}
-                      style={{
-                        width: "100%", height: "100%",
-                        padding: `${Math.min(r.h * 0.08, 4)}px ${Math.min(r.w * 0.04, 4)}px`,
-                        fontSize: `${fontSize * 0.55}px`,
-                        lineHeight: 1.2,
-                        overflow: isCartouche ? "visible" : "hidden",
-                        wordBreak: "break-word",
-                        color: "hsl(var(--foreground))",
-                        fontFamily: "system-ui, sans-serif",
-                        boxSizing: "border-box",
-                      }}
-                    >
-                      {LOREM[getLoremLen(z.n)]}
-                    </div>
-                  </foreignObject>
-                )}
-
-                {/* Zone number (hidden when lorem is on) */}
-                {!showLorem && (
-                  <text
-                    x={r.x + fontSize * 0.4}
-                    y={r.y + fontSize * 1.1}
-                    fontSize={fontSize}
-                    fontWeight={700}
-                    fill={strokeBase}
-                    style={{ pointerEvents: "none", userSelect: "none" }}
+                {/* Lorem text (permanent) */}
+                <foreignObject x={r.x} y={r.y} width={r.w} height={r.h} pointerEvents="none">
+                  <div
+                    ref={(el) => { loremRefs.current[key] = el; }}
+                    style={{
+                      width: "100%", height: "100%",
+                      padding: `${Math.min(r.h * 0.08, 4)}px ${Math.min(r.w * 0.04, 4)}px`,
+                      fontSize: `${fontSizePx}px`,
+                      lineHeight: 1.2,
+                      overflow: isCartouche ? "visible" : "hidden",
+                      wordBreak: "break-word",
+                      color: "hsl(var(--foreground))",
+                      fontFamily: "system-ui, sans-serif",
+                      boxSizing: "border-box",
+                    }}
                   >
-                    {z.n}
-                  </text>
-                )}
+                    <span style={{ opacity: 0.45, fontWeight: 700, marginRight: 4 }}>{z.n}.</span>
+                    {LOREM[loremLen]}
+                  </div>
+                </foreignObject>
 
                 {/* Habillage badge (integré) */}
-                {habillageMode && !isCartouche && !showLorem && (
+                {habillageMode && !isCartouche && (
                   <text
                     x={r.x + r.w / 2} y={r.y + r.h - 3}
-                    fontSize={Math.max(6, fontSize * 0.35)}
+                    fontSize={Math.max(6, fontSize * 0.6)}
                     textAnchor="middle"
                     fill="hsl(var(--muted-foreground))"
                     style={{ pointerEvents: "none", userSelect: "none" }}
@@ -501,6 +485,7 @@ export default function PlaceholdersEditor({
                     texte intégré
                   </text>
                 )}
+
 
                 {/* Cartouche trait */}
                 {isCartouche && (
