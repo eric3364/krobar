@@ -361,6 +361,7 @@ function ProductionScreen({
   const [vectLoading, setVectLoading] = useState(false);
   const [vectError, setVectError] = useState<string | null>(null);
   const [validated, setValidated] = useState<boolean>(initial?.validated ?? false);
+  const [sizeInfo, setSizeInfo] = useState<{ before: number; after: number } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Hydrate from storage when cell/registre/selecteur changes (e.g. user switches incarnation)
@@ -404,9 +405,17 @@ function ProductionScreen({
   };
 
   const handleFile = async (file: File) => {
-    setVectLoading(true); setVectError(null); setValidated(false); setVectRes(null);
+    setVectLoading(true); setVectError(null); setValidated(false); setVectRes(null); setSizeInfo(null);
     try {
-      const r = await studioV2Api.vectorize(file);
+      const compressed = await compressImage(file);
+      setSizeInfo({ before: file.size, after: compressed.size });
+      // Garde-fou : base64 ~= taille * 1.37 ; si > ~2.5 Mo on refuse
+      if (compressed.size > 2.5 * 1024 * 1024) {
+        throw new Error(
+          `Image trop volumineuse après compression (${(compressed.size / 1024 / 1024).toFixed(2)} Mo). Limite : 2.5 Mo.`
+        );
+      }
+      const r = await studioV2Api.vectorize(compressed);
       setVectRes(r);
     } catch (e) {
       setVectError(e instanceof Error ? e.message : String(e));
@@ -655,6 +664,12 @@ function ProductionScreen({
             }}
           />
 
+          {sizeInfo && (
+            <p className="text-xs text-muted-foreground">
+              Compression : {formatBytes(sizeInfo.before)} → {formatBytes(sizeInfo.after)}
+            </p>
+          )}
+
           {vectError && (
             <p className="text-sm text-destructive">{vectError}</p>
           )}
@@ -713,4 +728,44 @@ function VerdictBadge({ verdict }: { verdict: VectorizeResponse["metrics"]["verd
   if (verdict === "acceptable")
     return <Badge className="bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/30">acceptable</Badge>;
   return <Badge className="bg-destructive/15 text-destructive border border-destructive/30">charcoal_suspect</Badge>;
+}
+
+async function compressImage(file: File, maxWidth = 1600, quality = 0.85): Promise<File> {
+  const dataUrl: string = await new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result as string);
+    r.onerror = () => reject(r.error);
+    r.readAsDataURL(file);
+  });
+  const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+    const i = new Image();
+    i.onload = () => resolve(i);
+    i.onerror = () => reject(new Error("Image illisible"));
+    i.src = dataUrl;
+  });
+  const scale = img.width > maxWidth ? maxWidth / img.width : 1;
+  const w = Math.round(img.width * scale);
+  const h = Math.round(img.height * scale);
+  const canvas = document.createElement("canvas");
+  canvas.width = w; canvas.height = h;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Canvas 2D indisponible");
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, w, h);
+  ctx.drawImage(img, 0, 0, w, h);
+  const blob: Blob = await new Promise((resolve, reject) => {
+    canvas.toBlob(
+      (b) => (b ? resolve(b) : reject(new Error("Compression échouée"))),
+      "image/jpeg",
+      quality
+    );
+  });
+  const name = file.name.replace(/\.(png|jpe?g|webp)$/i, "") + ".jpg";
+  return new File([blob], name, { type: "image/jpeg" });
+}
+
+function formatBytes(n: number): string {
+  if (n < 1024) return `${n} o`;
+  if (n < 1024 * 1024) return `${(n / 1024).toFixed(0)} Ko`;
+  return `${(n / 1024 / 1024).toFixed(2)} Mo`;
 }
