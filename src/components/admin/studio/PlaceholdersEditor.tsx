@@ -416,15 +416,38 @@ export default function PlaceholdersEditor({
           <Button size="sm" onClick={onValidate} disabled={!zones.length || validated}>
             <Check className="w-4 h-4 mr-1" /> Valider les placeholders
           </Button>
-        ) : (
+        ) : !habillageValidated ? (
           <Button
             size="sm"
             onClick={() => setHabillageValidated(true)}
-            disabled={!zones.length || habillageValidated}
+            disabled={!zones.length}
           >
             <Check className="w-4 h-4 mr-1" /> Valider l'habillage
           </Button>
-        )}
+        ) : !cropValidated ? (
+          <>
+            <div className="flex items-center gap-1 ml-1">
+              <span className="text-xs text-muted-foreground mr-1">Ratio</span>
+              {(Object.keys(RATIOS) as CropRatio[]).map((rt) => (
+                <button
+                  key={rt}
+                  onClick={() => setCropRatio(rt)}
+                  className={[
+                    "h-7 px-2 text-xs rounded border font-mono",
+                    rt === cropRatio
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "bg-background hover:bg-muted",
+                  ].join(" ")}
+                >
+                  {rt}
+                </button>
+              ))}
+            </div>
+            <Button size="sm" onClick={() => setCropValidated(true)} disabled={!cropRect}>
+              <Check className="w-4 h-4 mr-1" /> Valider le recadrage
+            </Button>
+          </>
+        ) : null}
       </div>
 
       {/* Per-zone controls bar */}
