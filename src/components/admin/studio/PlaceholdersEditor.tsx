@@ -27,6 +27,14 @@ type LoremLen = "short" | "medium" | "long";
 type ResizeCorner = "nw" | "ne" | "sw" | "se";
 type HabillageMode = "integre" | "cartouche";
 type TraitSide = "left" | "right";
+type CropRatio = "3:2" | "2:3" | "1:1" | "16:9";
+
+const RATIOS: Record<CropRatio, number> = {
+  "3:2": 3 / 2,
+  "2:3": 2 / 3,
+  "1:1": 1,
+  "16:9": 16 / 9,
+};
 
 const LOREM: Record<LoremLen, string> = {
   short: "Lorem ipsum dolor sit.",
