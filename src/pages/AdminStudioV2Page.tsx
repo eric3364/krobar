@@ -361,6 +361,7 @@ function ProductionScreen({
   const [vectLoading, setVectLoading] = useState(false);
   const [vectError, setVectError] = useState<string | null>(null);
   const [validated, setValidated] = useState<boolean>(initial?.validated ?? false);
+  const [sizeInfo, setSizeInfo] = useState<{ before: number; after: number } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Hydrate from storage when cell/registre/selecteur changes (e.g. user switches incarnation)
