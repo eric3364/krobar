@@ -433,7 +433,8 @@ function ProductionScreen({
 
       <div className="grid gap-4 lg:grid-cols-12">
         {/* LEFT — incarnation */}
-        <Card className="p-4 lg:col-span-3 space-y-4">
+        <Card className="p-4 lg:col-span-3 space-y-4 min-w-0 overflow-hidden">
+
           <h3 className="text-sm font-semibold uppercase tracking-wider">Incarnation</h3>
 
           {s.domains.length > 0 && (
