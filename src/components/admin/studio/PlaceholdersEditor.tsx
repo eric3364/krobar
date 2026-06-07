@@ -64,7 +64,13 @@ export default function PlaceholdersEditor({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [card, setCard] = useState<number>(cardinalityMax);
+  const [backplates, setBackplates] = useState<Record<string, boolean>>({});
   const overlayRef = useRef<SVGSVGElement>(null);
+
+  const bpKey = (n: number) => `${card}:${n}`;
+  const toggleBackplate = (n: number) => {
+    setBackplates((b) => ({ ...b, [bpKey(n)]: !b[bpKey(n)] }));
+  };
 
   const fetchPlacement = useCallback(async () => {
     if (!occupancy) {
