@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Loader2, RefreshCw, Check, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +23,15 @@ type Props = {
   validated: boolean;
 };
 
+type LoremLen = "short" | "medium" | "long";
+type ResizeCorner = "nw" | "ne" | "sw" | "se";
+
+const LOREM: Record<LoremLen, string> = {
+  short: "Lorem ipsum dolor sit.",
+  medium: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
+  long: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+};
+
 function collidesWithGrid(rect: ZoneRect, occ: Occupancy | undefined, vb: Viewbox): boolean {
   if (!occ || !occ.grid?.length) return false;
   const colW = vb[2] / occ.cols;
@@ -41,17 +50,15 @@ function collidesWithGrid(rect: ZoneRect, occ: Occupancy | undefined, vb: Viewbo
 
 function ensureRect(pair: ZonePair, vb: Viewbox): ZonePair {
   if (pair.rect) return pair;
-  // Default: centered, modest size
   const w = vb[2] * 0.25;
   const h = vb[3] * 0.12;
   const x = vb[0] + (vb[2] - w) / 2;
   const y = vb[1] + (vb[3] - h) / 2;
   const iw = vb[2] * 0.08;
-  const ih = iw;
   return {
     ...pair,
     rect: { x, y, w, h },
-    icon: pair.icon ?? { x: x + w + 4, y, w: iw, h: ih, transparent: true },
+    icon: pair.icon ?? { x: x + w + 4, y, w: iw, h: iw, transparent: true },
     unplaced: true,
   };
 }
@@ -65,12 +72,22 @@ export default function PlaceholdersEditor({
   const [error, setError] = useState<string | null>(null);
   const [card, setCard] = useState<number>(cardinalityMax);
   const [backplates, setBackplates] = useState<Record<string, boolean>>({});
-  const overlayRef = useRef<SVGSVGElement>(null);
+  const [showLorem, setShowLorem] = useState<boolean>(false);
+  const [loremLen, setLoremLen] = useState<Record<string, LoremLen>>({});
+  const [selectedN, setSelectedN] = useState<number | null>(null);
+  // Common box size shared across all cardinalities (viewBox units)
+  const [commonSize, setCommonSize] = useState<{ w: number; h: number } | null>(null);
+  const [overflow, setOverflow] = useState<Record<string, boolean>>({});
 
-  const bpKey = (n: number) => `${card}:${n}`;
-  const toggleBackplate = (n: number) => {
-    setBackplates((b) => ({ ...b, [bpKey(n)]: !b[bpKey(n)] }));
-  };
+  const overlayRef = useRef<SVGSVGElement>(null);
+  const loremRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  const zKey = (n: number) => `${card}:${n}`;
+  const toggleBackplate = (n: number) =>
+    setBackplates((b) => ({ ...b, [zKey(n)]: !b[zKey(n)] }));
+  const getLoremLen = (n: number): LoremLen => loremLen[zKey(n)] ?? "medium";
+  const setLoremLenFor = (n: number, v: LoremLen) =>
+    setLoremLen((m) => ({ ...m, [zKey(n)]: v }));
 
   const fetchPlacement = useCallback(async () => {
     if (!occupancy) {
@@ -93,15 +110,13 @@ export default function PlaceholdersEditor({
     }
   }, [occupancy, viewbox, cardinalityMax, onPlacementLoaded]);
 
-  // Auto-fetch first time
   useEffect(() => {
-    if (!placement && !loading) {
-      fetchPlacement();
-    }
+    if (!placement && !loading) fetchPlacement();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const zones: ZonePair[] = useMemo(() => {
+  // Raw zones for current card
+  const rawZones: ZonePair[] = useMemo(() => {
     const key = String(card);
     const edited = editedZones[key];
     if (edited) return edited.map((p) => ensureRect(p, viewbox));
@@ -109,27 +124,47 @@ export default function PlaceholdersEditor({
     return base.map((p) => ensureRect(p, viewbox));
   }, [card, editedZones, placement, viewbox]);
 
-  const dragRef = useRef<{
-    n: number;
-    startX: number;
-    startY: number;
-    orig: ZonePair;
-  } | null>(null);
+  // Initialize commonSize from first zone's rect when available
+  useEffect(() => {
+    if (commonSize) return;
+    const r = rawZones[0]?.rect;
+    if (r) setCommonSize({ w: r.w, h: r.h });
+  }, [rawZones, commonSize]);
+
+  // Effective zones apply commonSize uniformly and keep icon anchored to its side
+  const zones = useMemo(() => {
+    if (!commonSize) return rawZones;
+    return rawZones.map((z) => {
+      if (!z.rect) return z;
+      const r = z.rect;
+      const effRect = { x: r.x, y: r.y, w: commonSize.w, h: commonSize.h };
+      let icon = z.icon;
+      if (icon) {
+        const iconOnRight = icon.x >= r.x + r.w / 2;
+        const gap = 4;
+        const ix = iconOnRight ? effRect.x + effRect.w + gap : effRect.x - icon.w - gap;
+        icon = { ...icon, x: ix, y: effRect.y };
+      }
+      return { ...z, rect: effRect, icon };
+    });
+  }, [rawZones, commonSize]);
 
   const commitZones = (next: ZonePair[]) => {
     onEditedChange({ ...editedZones, [String(card)]: next });
   };
 
-  const onPointerDown = (n: number, e: React.PointerEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  // Drag (move) ------------------------------------------------
+  const dragRef = useRef<{ n: number; startX: number; startY: number; orig: ZonePair } | null>(null);
+  const onMoveDown = (n: number, e: React.PointerEvent) => {
+    e.preventDefault(); e.stopPropagation();
     const pair = zones.find((z) => z.n === n);
     if (!pair) return;
     (e.target as Element).setPointerCapture?.(e.pointerId);
     dragRef.current = { n, startX: e.clientX, startY: e.clientY, orig: pair };
+    setSelectedN(n);
   };
-
   const onPointerMove = (e: React.PointerEvent) => {
+    if (resizeRef.current) return onResizeMove(e);
     const d = dragRef.current;
     if (!d || !overlayRef.current) return;
     const box = overlayRef.current.getBoundingClientRect();
@@ -137,10 +172,9 @@ export default function PlaceholdersEditor({
     const sy = viewbox[3] / box.height;
     const dx = (e.clientX - d.startX) * sx;
     const dy = (e.clientY - d.startY) * sy;
-    const next = zones.map((z) => {
+    const next = rawZones.map((z) => {
       if (z.n !== d.n) return z;
-      const r = d.orig.rect;
-      const i = d.orig.icon;
+      const r = d.orig.rect; const i = d.orig.icon;
       if (!r) return z;
       return {
         ...z,
@@ -151,11 +185,59 @@ export default function PlaceholdersEditor({
     });
     commitZones(next);
   };
+  const onPointerUp = () => {
+    dragRef.current = null;
+    resizeRef.current = null;
+  };
 
-  const onPointerUp = () => { dragRef.current = null; };
+  // Resize (common size) ---------------------------------------
+  const resizeRef = useRef<{
+    corner: ResizeCorner;
+    startX: number; startY: number;
+    origW: number; origH: number;
+  } | null>(null);
+  const onResizeDown = (n: number, corner: ResizeCorner, e: React.PointerEvent) => {
+    e.preventDefault(); e.stopPropagation();
+    if (!commonSize) return;
+    (e.target as Element).setPointerCapture?.(e.pointerId);
+    resizeRef.current = {
+      corner,
+      startX: e.clientX, startY: e.clientY,
+      origW: commonSize.w, origH: commonSize.h,
+    };
+    setSelectedN(n);
+  };
+  const onResizeMove = (e: React.PointerEvent) => {
+    const r = resizeRef.current;
+    if (!r || !overlayRef.current || !commonSize) return;
+    const box = overlayRef.current.getBoundingClientRect();
+    const sx = viewbox[2] / box.width;
+    const sy = viewbox[3] / box.height;
+    const dx = (e.clientX - r.startX) * sx;
+    const dy = (e.clientY - r.startY) * sy;
+    const signX = r.corner === "ne" || r.corner === "se" ? 1 : -1;
+    const signY = r.corner === "sw" || r.corner === "se" ? 1 : -1;
+    const w = Math.max(viewbox[2] * 0.04, r.origW + signX * dx);
+    const h = Math.max(viewbox[3] * 0.03, r.origH + signY * dy);
+    setCommonSize({ w, h });
+  };
+
+  // Lorem overflow detection -----------------------------------
+  useLayoutEffect(() => {
+    if (!showLorem) { setOverflow({}); return; }
+    const next: Record<string, boolean> = {};
+    for (const z of zones) {
+      const key = zKey(z.n);
+      const el = loremRefs.current[key];
+      if (el) next[key] = el.scrollHeight > el.clientHeight + 1;
+    }
+    setOverflow(next);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showLorem, zones, loremLen, commonSize, backplates, card]);
 
   const recalc = async () => {
     onEditedChange({});
+    setCommonSize(null);
     await fetchPlacement();
   };
 
@@ -177,6 +259,14 @@ export default function PlaceholdersEditor({
             {n}
           </button>
         ))}
+        <label className="flex items-center gap-1.5 text-xs ml-3 cursor-pointer select-none">
+          <input
+            type="checkbox"
+            checked={showLorem}
+            onChange={(e) => setShowLorem(e.target.checked)}
+          />
+          Afficher le texte de test
+        </label>
         <div className="flex-1" />
         <Button size="sm" variant="outline" onClick={recalc} disabled={loading}>
           {loading
@@ -189,6 +279,26 @@ export default function PlaceholdersEditor({
         </Button>
       </div>
 
+      {selectedN !== null && showLorem && (
+        <div className="flex items-center gap-2 text-xs">
+          <span className="text-muted-foreground">Zone {selectedN} — longueur de test :</span>
+          {(["short", "medium", "long"] as LoremLen[]).map((l) => (
+            <button
+              key={l}
+              onClick={() => setLoremLenFor(selectedN, l)}
+              className={[
+                "px-2 h-6 rounded border",
+                getLoremLen(selectedN) === l
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "bg-background hover:bg-muted",
+              ].join(" ")}
+            >
+              {l === "short" ? "court" : l === "medium" ? "moyen" : "long"}
+            </button>
+          ))}
+        </div>
+      )}
+
       {error && (
         <div className="text-xs text-destructive flex items-center gap-1">
           <AlertTriangle className="w-3 h-3" /> {error}
@@ -199,12 +309,10 @@ export default function PlaceholdersEditor({
         className="relative w-full bg-background border rounded-md overflow-hidden"
         style={{ aspectRatio: `${viewbox[2]} / ${viewbox[3]}` }}
       >
-        {/* Background SVG */}
         <div
           className="absolute inset-0 [&>svg]:w-full [&>svg]:h-full"
           dangerouslySetInnerHTML={{ __html: svg }}
         />
-        {/* Overlay */}
         <svg
           ref={overlayRef}
           className="absolute inset-0 w-full h-full"
@@ -213,61 +321,104 @@ export default function PlaceholdersEditor({
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
           onPointerLeave={onPointerUp}
+          onClick={(e) => { if (e.target === e.currentTarget) setSelectedN(null); }}
         >
           {zones.map((z) => {
             if (!z.rect) return null;
             const r = z.rect;
+            const key = zKey(z.n);
+            const isSelected = selectedN === z.n;
             const collides = collidesWithGrid(r, occupancy, viewbox);
-            const strokeBase = z.unplaced
-              ? "hsl(var(--destructive))"
-              : collides
+            const overflows = showLorem && !!overflow[key];
+            const strokeBase = overflows
+              ? "#f59e0b"
+              : z.unplaced
                 ? "hsl(var(--destructive))"
-                : "hsl(var(--primary))";
+                : collides
+                  ? "hsl(var(--destructive))"
+                  : "hsl(var(--primary))";
             const fillBase = collides
               ? "hsl(var(--destructive) / 0.12)"
               : "hsl(var(--primary) / 0.12)";
             const fontSize = Math.max(8, Math.min(r.w, r.h) * 0.22);
-            const hasBackplate = !!backplates[bpKey(z.n)];
+            const hasBackplate = !!backplates[key];
             const btnSize = Math.max(6, Math.min(r.w, r.h) * 0.18);
             const btnX = r.x + r.w - btnSize - 2;
             const btnY = r.y + 2;
+            const handleSize = Math.max(6, Math.min(r.w, r.h) * 0.14);
+
             return (
-              <g key={z.n} style={{ cursor: "grab" }}>
-                {/* backplate (white opaque fill behind text) */}
+              <g key={z.n}>
                 {hasBackplate && (
                   <rect
                     x={r.x} y={r.y} width={r.w} height={r.h}
                     rx={Math.min(4, r.h * 0.08)}
-                    fill="#ffffff"
-                    fillOpacity={0.85}
+                    fill="#ffffff" fillOpacity={0.85}
                     pointerEvents="none"
                   />
                 )}
-                {/* text rect */}
                 <rect
                   x={r.x} y={r.y} width={r.w} height={r.h}
                   rx={Math.min(4, r.h * 0.08)}
                   fill={hasBackplate ? "transparent" : fillBase}
                   stroke={strokeBase}
-                  strokeWidth={1.2}
+                  strokeWidth={isSelected ? 2 : 1.2}
                   vectorEffect="non-scaling-stroke"
-                  onPointerDown={(e) => onPointerDown(z.n, e)}
-                  style={{ touchAction: "none" }}
+                  onPointerDown={(e) => onMoveDown(z.n, e)}
+                  style={{ touchAction: "none", cursor: "grab" }}
                 />
-                {/* number */}
-                <text
-                  x={r.x + fontSize * 0.4}
-                  y={r.y + fontSize * 1.1}
-                  fontSize={fontSize}
-                  fontWeight={700}
-                  fill={strokeBase}
-                  style={{ pointerEvents: "none", userSelect: "none" }}
-                >
-                  {z.n}
-                </text>
-                {/* backplate toggle button (top-right of text rect) */}
+
+                {/* Lorem (via foreignObject) */}
+                {showLorem && (
+                  <foreignObject x={r.x} y={r.y} width={r.w} height={r.h} pointerEvents="none">
+                    <div
+                      ref={(el) => { loremRefs.current[key] = el; }}
+                      style={{
+                        width: "100%", height: "100%",
+                        padding: `${Math.min(r.h * 0.08, 4)}px ${Math.min(r.w * 0.04, 4)}px`,
+                        fontSize: `${fontSize * 0.55}px`,
+                        lineHeight: 1.2,
+                        overflow: "hidden",
+                        wordBreak: "break-word",
+                        color: "hsl(var(--foreground))",
+                        fontFamily: "system-ui, sans-serif",
+                        boxSizing: "border-box",
+                      }}
+                    >
+                      {LOREM[getLoremLen(z.n)]}
+                    </div>
+                  </foreignObject>
+                )}
+
+                {/* zone number (hide when lorem on to avoid clutter) */}
+                {!showLorem && (
+                  <text
+                    x={r.x + fontSize * 0.4}
+                    y={r.y + fontSize * 1.1}
+                    fontSize={fontSize}
+                    fontWeight={700}
+                    fill={strokeBase}
+                    style={{ pointerEvents: "none", userSelect: "none" }}
+                  >
+                    {z.n}
+                  </text>
+                )}
+
+                {/* overflow badge */}
+                {overflows && (
+                  <g pointerEvents="none">
+                    <circle cx={r.x + r.w - 6} cy={r.y + r.h - 6} r={5} fill="#f59e0b" />
+                    <text
+                      x={r.x + r.w - 6} y={r.y + r.h - 4}
+                      fontSize={7} fontWeight={700}
+                      textAnchor="middle" fill="#ffffff"
+                    >!</text>
+                  </g>
+                )}
+
+                {/* backplate toggle */}
                 <g
-                  onPointerDown={(e) => { e.stopPropagation(); }}
+                  onPointerDown={(e) => e.stopPropagation()}
                   onClick={(e) => { e.stopPropagation(); toggleBackplate(z.n); }}
                   style={{ cursor: "pointer" }}
                 >
@@ -276,48 +427,61 @@ export default function PlaceholdersEditor({
                     x={btnX} y={btnY} width={btnSize} height={btnSize}
                     rx={btnSize * 0.2}
                     fill={hasBackplate ? "#ffffff" : "hsl(var(--background))"}
-                    stroke={strokeBase}
-                    strokeWidth={1}
+                    stroke={strokeBase} strokeWidth={1}
                     vectorEffect="non-scaling-stroke"
                   />
                   {hasBackplate && (
                     <path
                       d={`M ${btnX + btnSize * 0.22} ${btnY + btnSize * 0.55} L ${btnX + btnSize * 0.42} ${btnY + btnSize * 0.75} L ${btnX + btnSize * 0.78} ${btnY + btnSize * 0.28}`}
-                      fill="none"
-                      stroke={strokeBase}
-                      strokeWidth={1.4}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                      fill="none" stroke={strokeBase} strokeWidth={1.4}
+                      strokeLinecap="round" strokeLinejoin="round"
                       vectorEffect="non-scaling-stroke"
                     />
                   )}
                 </g>
+
+                {/* Resize handles (visible only when selected) */}
+                {isSelected && (["nw","ne","sw","se"] as ResizeCorner[]).map((c) => {
+                  const hx = c === "nw" || c === "sw" ? r.x - handleSize/2 : r.x + r.w - handleSize/2;
+                  const hy = c === "nw" || c === "ne" ? r.y - handleSize/2 : r.y + r.h - handleSize/2;
+                  const cursor =
+                    c === "nw" || c === "se" ? "nwse-resize" : "nesw-resize";
+                  return (
+                    <rect
+                      key={c}
+                      x={hx} y={hy} width={handleSize} height={handleSize}
+                      fill="hsl(var(--background))"
+                      stroke="hsl(var(--foreground))"
+                      strokeWidth={1.5}
+                      vectorEffect="non-scaling-stroke"
+                      style={{ cursor, touchAction: "none" }}
+                      onPointerDown={(e) => onResizeDown(z.n, c, e)}
+                    />
+                  );
+                })}
+
                 {/* icon placeholder */}
                 {z.icon && (
                   <g
-                    onPointerDown={(e) => onPointerDown(z.n, e)}
-                    style={{ touchAction: "none" }}
+                    onPointerDown={(e) => onMoveDown(z.n, e)}
+                    style={{ touchAction: "none", cursor: "grab" }}
                   >
                     <rect
                       x={z.icon.x} y={z.icon.y}
                       width={z.icon.w} height={z.icon.h}
                       rx={Math.min(3, z.icon.h * 0.08)}
                       fill="hsl(var(--primary) / 0.04)"
-                      stroke={strokeBase}
-                      strokeWidth={1}
+                      stroke={strokeBase} strokeWidth={1}
                       strokeDasharray="3 2"
                       vectorEffect="non-scaling-stroke"
                     />
-                    {/* generic icon glyph: small square at center */}
                     <rect
                       x={z.icon.x + z.icon.w * 0.35}
                       y={z.icon.y + z.icon.h * 0.35}
                       width={z.icon.w * 0.3}
                       height={z.icon.h * 0.3}
                       fill="none"
-                      stroke={strokeBase}
-                      strokeWidth={0.8}
-                      strokeOpacity={0.6}
+                      stroke={strokeBase} strokeWidth={0.8} strokeOpacity={0.6}
                       vectorEffect="non-scaling-stroke"
                     />
                   </g>
@@ -333,6 +497,12 @@ export default function PlaceholdersEditor({
           </div>
         )}
       </div>
+
+      <p className="text-[11px] text-muted-foreground">
+        Astuce : clique une zone pour la sélectionner, glisse pour la déplacer, utilise les
+        coins pour redimensionner. La taille de boîte est <strong>commune</strong> à toutes
+        les cardinalités.
+      </p>
 
       {validated && (
         <div className="rounded-md border bg-emerald-500/10 border-emerald-500/30 p-3 text-xs">
