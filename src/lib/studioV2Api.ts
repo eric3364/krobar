@@ -154,6 +154,9 @@ export const studioV2Api = {
       body: { filename: file.name, content_base64 },
     });
   },
+
+  placeZones: (payload: PlaceZonesPayload) =>
+    adminFetch<PlaceZonesResponse>("/admin/studio/place-zones", { body: payload }),
 };
 
 export const CARDINALITY_TO_N: Record<string, number> = {
