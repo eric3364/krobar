@@ -408,6 +408,9 @@ function ProductionScreen({
   }, [persistKey, moteur, gpt2Style, promptRes, vectRes, validated]);
 
 
+  const gpt2Styles = charte?.moteurs?.["gpt-image-2"]?.styles;
+  const gpt2Default = charte?.moteurs?.["gpt-image-2"]?.style_default;
+
   const generatePrompt = async () => {
     setPromptLoading(true); setPromptError(null);
     try {
@@ -416,6 +419,7 @@ function ProductionScreen({
         registre,
         selecteur,
         moteur,
+        ...(moteur === "gpt-image-2" ? { style: gpt2Style ?? gpt2Default ?? undefined } : {}),
       });
       setPromptRes(r);
     } catch (e) {
