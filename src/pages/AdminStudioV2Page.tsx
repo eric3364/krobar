@@ -18,6 +18,7 @@ import {
   type CoverageCell,
   type CoverageResponse,
   type GeneratePromptResponse,
+  type CharteResponse,
   type Moteur,
   type VectorizeResponse,
   FAMILY_ORDER,
