@@ -525,11 +525,14 @@ function ProductionScreen({
           </div>
 
           {promptRes?.incarnation_source && (
-            <div className="pt-2 border-t">
+            <div className="pt-2 border-t min-w-0">
               <p className="text-xs text-muted-foreground mb-1">Texte d'incarnation</p>
-              <p className="text-sm leading-snug">{promptRes.incarnation_source}</p>
+              <p className="text-sm leading-snug break-words [overflow-wrap:anywhere] whitespace-pre-wrap">
+                {promptRes.incarnation_source}
+              </p>
             </div>
           )}
+
         </Card>
 
         {/* CENTER — visual + prompt */}
