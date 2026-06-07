@@ -395,16 +395,19 @@ export default function PlaceholdersEditor({
 
       <div
         className="relative w-full bg-background border rounded-md overflow-hidden"
-        style={{ aspectRatio: `${viewbox[2]} / ${viewbox[3]}` }}
+        style={{ aspectRatio: `${workViewbox[2]} / ${workViewbox[3]}` }}
       >
+        {/* Illustration centrée verticalement dans la zone de travail élargie,
+            à sa taille réelle (pas de déformation). */}
         <div
-          className="absolute inset-0 [&>svg]:w-full [&>svg]:h-full"
+          className="absolute left-0 w-full [&>svg]:w-full [&>svg]:h-full"
+          style={{ top: `${imageTopPct}%`, height: `${imageHeightPct}%` }}
           dangerouslySetInnerHTML={{ __html: svg }}
         />
         <svg
           ref={overlayRef}
           className="absolute inset-0 w-full h-full"
-          viewBox={`${viewbox[0]} ${viewbox[1]} ${viewbox[2]} ${viewbox[3]}`}
+          viewBox={`${workViewbox[0]} ${workViewbox[1]} ${workViewbox[2]} ${workViewbox[3]}`}
           preserveAspectRatio="xMidYMid meet"
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
