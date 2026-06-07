@@ -25,6 +25,8 @@ type Props = {
 
 type LoremLen = "short" | "medium" | "long";
 type ResizeCorner = "nw" | "ne" | "sw" | "se";
+type HabillageMode = "integre" | "cartouche";
+type TraitSide = "left" | "right";
 
 const LOREM: Record<LoremLen, string> = {
   short: "Lorem ipsum dolor sit.",
@@ -75,19 +77,35 @@ export default function PlaceholdersEditor({
   const [showLorem, setShowLorem] = useState<boolean>(false);
   const [loremLen, setLoremLen] = useState<Record<string, LoremLen>>({});
   const [selectedN, setSelectedN] = useState<number | null>(null);
-  // Common box size shared across all cardinalities (viewBox units)
   const [commonSize, setCommonSize] = useState<{ w: number; h: number } | null>(null);
   const [overflow, setOverflow] = useState<Record<string, boolean>>({});
+  const [loremHeights, setLoremHeights] = useState<Record<string, number>>({});
+  // B2 — habillage
+  const [habMode, setHabMode] = useState<Record<string, HabillageMode>>({});
+  const [traitSide, setTraitSide] = useState<Record<string, TraitSide>>({});
+  const [habillageValidated, setHabillageValidated] = useState(false);
 
   const overlayRef = useRef<SVGSVGElement>(null);
   const loremRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
+  const habillageMode = validated; // entered habillage sub-mode after placeholders validated
   const zKey = (n: number) => `${card}:${n}`;
   const toggleBackplate = (n: number) =>
     setBackplates((b) => ({ ...b, [zKey(n)]: !b[zKey(n)] }));
   const getLoremLen = (n: number): LoremLen => loremLen[zKey(n)] ?? "medium";
   const setLoremLenFor = (n: number, v: LoremLen) =>
     setLoremLen((m) => ({ ...m, [zKey(n)]: v }));
+  const getHabMode = (n: number): HabillageMode => habMode[zKey(n)] ?? "integre";
+  const setHabModeFor = (n: number, v: HabillageMode) =>
+    setHabMode((m) => ({ ...m, [zKey(n)]: v }));
+  const getAutoSide = (r: ZoneRect): TraitSide =>
+    (r.x + r.w / 2) < (viewbox[0] + viewbox[2] / 2) ? "right" : "left";
+  const getTraitSide = (n: number, r: ZoneRect): TraitSide =>
+    traitSide[zKey(n)] ?? getAutoSide(r);
+  const flipTraitSide = (n: number, r: ZoneRect) => {
+    const cur = getTraitSide(n, r);
+    setTraitSide((m) => ({ ...m, [zKey(n)]: cur === "left" ? "right" : "left" }));
+  };
 
   const fetchPlacement = useCallback(async () => {
     if (!occupancy) {
@@ -98,9 +116,7 @@ export default function PlaceholdersEditor({
     setError(null);
     try {
       const r = await studioV2Api.placeZones({
-        occupancy,
-        viewbox,
-        cardinality_max: cardinalityMax,
+        occupancy, viewbox, cardinality_max: cardinalityMax,
       });
       onPlacementLoaded(r);
     } catch (e) {
@@ -115,7 +131,6 @@ export default function PlaceholdersEditor({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Raw zones for current card
   const rawZones: ZonePair[] = useMemo(() => {
     const key = String(card);
     const edited = editedZones[key];
@@ -124,14 +139,12 @@ export default function PlaceholdersEditor({
     return base.map((p) => ensureRect(p, viewbox));
   }, [card, editedZones, placement, viewbox]);
 
-  // Initialize commonSize from first zone's rect when available
   useEffect(() => {
     if (commonSize) return;
     const r = rawZones[0]?.rect;
     if (r) setCommonSize({ w: r.w, h: r.h });
   }, [rawZones, commonSize]);
 
-  // Effective zones apply commonSize uniformly and keep icon anchored to its side
   const zones = useMemo(() => {
     if (!commonSize) return rawZones;
     return rawZones.map((z) => {
@@ -153,7 +166,7 @@ export default function PlaceholdersEditor({
     onEditedChange({ ...editedZones, [String(card)]: next });
   };
 
-  // Drag (move) ------------------------------------------------
+  // Drag (move)
   const dragRef = useRef<{ n: number; startX: number; startY: number; orig: ZonePair } | null>(null);
   const onMoveDown = (n: number, e: React.PointerEvent) => {
     e.preventDefault(); e.stopPropagation();
@@ -185,12 +198,9 @@ export default function PlaceholdersEditor({
     });
     commitZones(next);
   };
-  const onPointerUp = () => {
-    dragRef.current = null;
-    resizeRef.current = null;
-  };
+  const onPointerUp = () => { dragRef.current = null; resizeRef.current = null; };
 
-  // Resize (common size) ---------------------------------------
+  // Resize (common size)
   const resizeRef = useRef<{
     corner: ResizeCorner;
     startX: number; startY: number;
@@ -201,8 +211,7 @@ export default function PlaceholdersEditor({
     if (!commonSize) return;
     (e.target as Element).setPointerCapture?.(e.pointerId);
     resizeRef.current = {
-      corner,
-      startX: e.clientX, startY: e.clientY,
+      corner, startX: e.clientX, startY: e.clientY,
       origW: commonSize.w, origH: commonSize.h,
     };
     setSelectedN(n);
@@ -222,18 +231,23 @@ export default function PlaceholdersEditor({
     setCommonSize({ w, h });
   };
 
-  // Lorem overflow detection -----------------------------------
+  // Lorem overflow + height detection
   useLayoutEffect(() => {
-    if (!showLorem) { setOverflow({}); return; }
-    const next: Record<string, boolean> = {};
+    if (!showLorem) { setOverflow({}); setLoremHeights({}); return; }
+    const ovf: Record<string, boolean> = {};
+    const hts: Record<string, number> = {};
     for (const z of zones) {
       const key = zKey(z.n);
       const el = loremRefs.current[key];
-      if (el) next[key] = el.scrollHeight > el.clientHeight + 1;
+      if (el) {
+        ovf[key] = el.scrollHeight > el.clientHeight + 1;
+        hts[key] = el.scrollHeight;
+      }
     }
-    setOverflow(next);
+    setOverflow(ovf);
+    setLoremHeights(hts);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showLorem, zones, loremLen, commonSize, backplates, card]);
+  }, [showLorem, zones, loremLen, commonSize, backplates, card, habMode]);
 
   const recalc = async () => {
     onEditedChange({});
@@ -259,14 +273,16 @@ export default function PlaceholdersEditor({
             {n}
           </button>
         ))}
-        <label className="flex items-center gap-1.5 text-xs ml-3 cursor-pointer select-none">
-          <input
-            type="checkbox"
-            checked={showLorem}
-            onChange={(e) => setShowLorem(e.target.checked)}
-          />
-          Afficher le texte de test
-        </label>
+        {habillageMode && (
+          <label className="flex items-center gap-1.5 text-xs ml-3 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={showLorem}
+              onChange={(e) => setShowLorem(e.target.checked)}
+            />
+            Afficher le texte de test
+          </label>
+        )}
         <div className="flex-1" />
         <Button size="sm" variant="outline" onClick={recalc} disabled={loading}>
           {loading
@@ -274,28 +290,81 @@ export default function PlaceholdersEditor({
             : <RefreshCw className="w-4 h-4 mr-1" />}
           Recalculer
         </Button>
-        <Button size="sm" onClick={onValidate} disabled={!zones.length || validated}>
-          <Check className="w-4 h-4 mr-1" /> Valider les placeholders
-        </Button>
+        {!habillageMode ? (
+          <Button size="sm" onClick={onValidate} disabled={!zones.length || validated}>
+            <Check className="w-4 h-4 mr-1" /> Valider les placeholders
+          </Button>
+        ) : (
+          <Button
+            size="sm"
+            onClick={() => setHabillageValidated(true)}
+            disabled={!zones.length || habillageValidated}
+          >
+            <Check className="w-4 h-4 mr-1" /> Valider l'habillage
+          </Button>
+        )}
       </div>
 
-      {selectedN !== null && showLorem && (
-        <div className="flex items-center gap-2 text-xs">
-          <span className="text-muted-foreground">Zone {selectedN} — longueur de test :</span>
-          {(["short", "medium", "long"] as LoremLen[]).map((l) => (
-            <button
-              key={l}
-              onClick={() => setLoremLenFor(selectedN, l)}
-              className={[
-                "px-2 h-6 rounded border",
-                getLoremLen(selectedN) === l
-                  ? "bg-primary text-primary-foreground border-primary"
-                  : "bg-background hover:bg-muted",
-              ].join(" ")}
-            >
-              {l === "short" ? "court" : l === "medium" ? "moyen" : "long"}
-            </button>
-          ))}
+      {/* Per-zone controls bar */}
+      {selectedN !== null && (
+        <div className="flex flex-wrap items-center gap-2 text-xs">
+          <span className="text-muted-foreground">Zone {selectedN} —</span>
+
+          {habillageMode && (() => {
+            const z = zones.find((x) => x.n === selectedN);
+            const r = z?.rect;
+            if (!r) return null;
+            const mode = getHabMode(selectedN);
+            const side = getTraitSide(selectedN, r);
+            return (
+              <>
+                <span className="text-muted-foreground">habillage :</span>
+                {(["integre", "cartouche"] as HabillageMode[]).map((m) => (
+                  <button
+                    key={m}
+                    onClick={() => setHabModeFor(selectedN, m)}
+                    className={[
+                      "px-2 h-6 rounded border",
+                      mode === m
+                        ? "bg-primary text-primary-foreground border-primary"
+                        : "bg-background hover:bg-muted",
+                    ].join(" ")}
+                  >
+                    {m === "integre" ? "Intégré" : "Cartouche"}
+                  </button>
+                ))}
+                {mode === "cartouche" && (
+                  <button
+                    onClick={() => flipTraitSide(selectedN, r)}
+                    className="px-2 h-6 rounded border bg-background hover:bg-muted"
+                    title="Inverser le côté du trait"
+                  >
+                    Trait : {side === "left" ? "gauche" : "droite"} ⇆
+                  </button>
+                )}
+              </>
+            );
+          })()}
+
+          {showLorem && (
+            <>
+              <span className="text-muted-foreground ml-2">test :</span>
+              {(["short", "medium", "long"] as LoremLen[]).map((l) => (
+                <button
+                  key={l}
+                  onClick={() => setLoremLenFor(selectedN, l)}
+                  className={[
+                    "px-2 h-6 rounded border",
+                    getLoremLen(selectedN) === l
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "bg-background hover:bg-muted",
+                  ].join(" ")}
+                >
+                  {l === "short" ? "court" : l === "medium" ? "moyen" : "long"}
+                </button>
+              ))}
+            </>
+          )}
         </div>
       )}
 
@@ -329,7 +398,10 @@ export default function PlaceholdersEditor({
             const key = zKey(z.n);
             const isSelected = selectedN === z.n;
             const collides = collidesWithGrid(r, occupancy, viewbox);
-            const overflows = showLorem && !!overflow[key];
+            const mode = getHabMode(z.n);
+            const isCartouche = habillageMode && mode === "cartouche";
+            const side: TraitSide = getTraitSide(z.n, r);
+            const overflows = showLorem && !isCartouche && !!overflow[key];
             const strokeBase = overflows
               ? "#f59e0b"
               : z.unplaced
@@ -346,6 +418,15 @@ export default function PlaceholdersEditor({
             const btnX = r.x + r.w - btnSize - 2;
             const btnY = r.y + 2;
             const handleSize = Math.max(6, Math.min(r.w, r.h) * 0.14);
+
+            // Trait (cartouche) geometry
+            // Indicative height ≈ 3 lines; if lorem shown, follow actual rendered height.
+            const indicativeH = fontSize * 0.55 * 1.2 * 3 + 6;
+            const traitH = showLorem && loremHeights[key]
+              ? Math.max(loremHeights[key], 6)
+              : indicativeH;
+            const traitX = side === "left" ? r.x - 4 : r.x + r.w + 4;
+            const traitY = r.y;
 
             return (
               <g key={z.n}>
@@ -368,7 +449,7 @@ export default function PlaceholdersEditor({
                   style={{ touchAction: "none", cursor: "grab" }}
                 />
 
-                {/* Lorem (via foreignObject) */}
+                {/* Lorem text (via foreignObject) */}
                 {showLorem && (
                   <foreignObject x={r.x} y={r.y} width={r.w} height={r.h} pointerEvents="none">
                     <div
@@ -378,7 +459,7 @@ export default function PlaceholdersEditor({
                         padding: `${Math.min(r.h * 0.08, 4)}px ${Math.min(r.w * 0.04, 4)}px`,
                         fontSize: `${fontSize * 0.55}px`,
                         lineHeight: 1.2,
-                        overflow: "hidden",
+                        overflow: isCartouche ? "visible" : "hidden",
                         wordBreak: "break-word",
                         color: "hsl(var(--foreground))",
                         fontFamily: "system-ui, sans-serif",
@@ -390,7 +471,7 @@ export default function PlaceholdersEditor({
                   </foreignObject>
                 )}
 
-                {/* zone number (hide when lorem on to avoid clutter) */}
+                {/* Zone number (hidden when lorem is on) */}
                 {!showLorem && (
                   <text
                     x={r.x + fontSize * 0.4}
@@ -404,7 +485,33 @@ export default function PlaceholdersEditor({
                   </text>
                 )}
 
-                {/* overflow badge */}
+                {/* Habillage badge (integré) */}
+                {habillageMode && !isCartouche && !showLorem && (
+                  <text
+                    x={r.x + r.w / 2} y={r.y + r.h - 3}
+                    fontSize={Math.max(6, fontSize * 0.35)}
+                    textAnchor="middle"
+                    fill="hsl(var(--muted-foreground))"
+                    style={{ pointerEvents: "none", userSelect: "none" }}
+                  >
+                    texte intégré
+                  </text>
+                )}
+
+                {/* Cartouche trait */}
+                {isCartouche && (
+                  <line
+                    x1={traitX} y1={traitY}
+                    x2={traitX} y2={traitY + traitH}
+                    stroke="hsl(var(--primary))"
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                    vectorEffect="non-scaling-stroke"
+                    pointerEvents="none"
+                  />
+                )}
+
+                {/* Overflow badge */}
                 {overflows && (
                   <g pointerEvents="none">
                     <circle cx={r.x + r.w - 6} cy={r.y + r.h - 6} r={5} fill="#f59e0b" />
@@ -416,7 +523,7 @@ export default function PlaceholdersEditor({
                   </g>
                 )}
 
-                {/* backplate toggle */}
+                {/* Backplate toggle */}
                 <g
                   onPointerDown={(e) => e.stopPropagation()}
                   onClick={(e) => { e.stopPropagation(); toggleBackplate(z.n); }}
@@ -440,12 +547,11 @@ export default function PlaceholdersEditor({
                   )}
                 </g>
 
-                {/* Resize handles (visible only when selected) */}
+                {/* Resize handles (selected only) */}
                 {isSelected && (["nw","ne","sw","se"] as ResizeCorner[]).map((c) => {
                   const hx = c === "nw" || c === "sw" ? r.x - handleSize/2 : r.x + r.w - handleSize/2;
                   const hy = c === "nw" || c === "ne" ? r.y - handleSize/2 : r.y + r.h - handleSize/2;
-                  const cursor =
-                    c === "nw" || c === "se" ? "nwse-resize" : "nesw-resize";
+                  const cursor = c === "nw" || c === "se" ? "nwse-resize" : "nesw-resize";
                   return (
                     <rect
                       key={c}
@@ -460,7 +566,7 @@ export default function PlaceholdersEditor({
                   );
                 })}
 
-                {/* icon placeholder */}
+                {/* Icon placeholder */}
                 {z.icon && (
                   <g
                     onPointerDown={(e) => onMoveDown(z.n, e)}
@@ -499,18 +605,17 @@ export default function PlaceholdersEditor({
       </div>
 
       <p className="text-[11px] text-muted-foreground">
-        Astuce : clique une zone pour la sélectionner, glisse pour la déplacer, utilise les
-        coins pour redimensionner. La taille de boîte est <strong>commune</strong> à toutes
-        les cardinalités.
+        Clique une zone pour la sélectionner, glisse pour la déplacer, coins pour
+        redimensionner. La taille de boîte est <strong>commune</strong> à toutes les cardinalités.
       </p>
 
-      {validated && (
+      {habillageValidated && (
         <div className="rounded-md border bg-emerald-500/10 border-emerald-500/30 p-3 text-xs">
           <p className="font-medium text-emerald-700 dark:text-emerald-300">
-            Placeholders validés
+            Habillage validé
           </p>
           <p className="text-muted-foreground mt-1">
-            Étape suivante (habillage du texte) à venir.
+            Étape suivante (métadonnées et bibliothèque) à venir.
           </p>
         </div>
       )}
