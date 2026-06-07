@@ -355,9 +355,6 @@ function ProductionScreen({
     promptRes: GeneratePromptResponse | null;
     vectRes: VectorizeResponse | null;
     validated: boolean;
-    placement: PlaceZonesResponse | null;
-    editedZones: Record<string, ZonePair[]>;
-    placeholdersValidated: boolean;
   };
   const loadPersisted = (): Persisted | null => {
     if (typeof window === "undefined") return null;
