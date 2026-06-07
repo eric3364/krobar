@@ -476,6 +476,11 @@ function ProductionScreen({
   const setRegistre = (r: Registre, sel: string | null) =>
     onChange({ ...state, registre: r, selecteur: sel });
 
+  const cardinalityMax = useMemo(() => {
+    const m = cell.index.match(/-(\d)-/);
+    return m ? parseInt(m[1], 10) : 1;
+  }, [cell.index]);
+
   return (
     <div className="space-y-4">
       <div className="flex items-baseline gap-3">
