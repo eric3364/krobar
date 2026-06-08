@@ -465,8 +465,12 @@ export default function PlaceholdersEditor({
           Recalculer
         </Button>
         {!habillageMode ? (
-          <Button size="sm" onClick={onValidate} disabled={!zones.length || validated}>
-            <Check className="w-4 h-4 mr-1" /> Valider les placeholders
+          <Button
+            size="sm"
+            onClick={() => onValidateCard(card)}
+            disabled={!zones.length || currentValidated || !produceByN[card]}
+          >
+            <Check className="w-4 h-4 mr-1" /> Valider la cardinalité {card}
           </Button>
         ) : !habillageValidated ? (
           <Button
