@@ -867,8 +867,10 @@ function MetadataExportPanel(props: {
   domain: string;
   vectorizedSvg: string;
   composition: import("@/components/admin/studio/PlaceholdersEditor").CompositionReadyData;
+  produceByN: Record<number, boolean>;
+  validatedByN: Record<number, boolean>;
 }) {
-  const { cell, incarnation, domain, vectorizedSvg, composition } = props;
+  const { cell, incarnation, domain, vectorizedSvg, composition, produceByN, validatedByN } = props;
   const [meta, setMeta] = useState<{ best_for: string; textual_markers: string[]; matching_types: string[] }>({
     best_for: "", textual_markers: [], matching_types: [],
   });
