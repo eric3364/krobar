@@ -615,23 +615,7 @@ export default function PlaceholdersEditor({
             : <RefreshCw className="w-4 h-4 mr-1" />}
           Recalculer
         </Button>
-        {!habillageMode ? (
-          <Button
-            size="sm"
-            onClick={() => onValidateCard(card)}
-            disabled={!zones.length || currentValidated || !produceByN[card]}
-          >
-            <Check className="w-4 h-4 mr-1" /> Valider la cardinalité {card}
-          </Button>
-        ) : !habillageValidated ? (
-          <Button
-            size="sm"
-            onClick={() => setHabillageValidated(true)}
-            disabled={!zones.length}
-          >
-            <Check className="w-4 h-4 mr-1" /> Valider l'habillage
-          </Button>
-        ) : !cropValidated ? (
+        {cropMode ? (
           <>
             <div className="flex items-center gap-1 ml-1">
               <span className="text-xs text-muted-foreground mr-1">Ratio</span>
@@ -654,7 +638,24 @@ export default function PlaceholdersEditor({
               <Check className="w-4 h-4 mr-1" /> Valider le recadrage
             </Button>
           </>
+        ) : placementMode ? (
+          <Button
+            size="sm"
+            onClick={() => onValidateCard(card)}
+            disabled={!zones.length || currentValidated || !produceByN[card]}
+          >
+            <Check className="w-4 h-4 mr-1" /> Valider la cardinalité {card}
+          </Button>
+        ) : !habillageValidated ? (
+          <Button
+            size="sm"
+            onClick={() => setHabillageValidated(true)}
+            disabled={!zones.length}
+          >
+            <Check className="w-4 h-4 mr-1" /> Valider l'habillage
+          </Button>
         ) : null}
+
       </div>
 
       {/* Per-zone controls bar */}
