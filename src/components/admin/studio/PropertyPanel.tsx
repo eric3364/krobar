@@ -15,9 +15,6 @@ const COLOR_OPTIONS = [
   { label: "Text", value: "var(--text)" },
   { label: "Muted", value: "var(--muted)" },
   { label: "Border", value: "var(--border)" },
-  { label: "Warm", value: "var(--warm)" },
-  { label: "Cool", value: "var(--cool)" },
-  { label: "Tertiary", value: "var(--tertiary)" },
 ];
 
 const STROKE_WIDTHS = [1, 1.5, 2, 2.5, 3];
