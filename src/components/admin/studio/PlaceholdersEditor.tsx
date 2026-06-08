@@ -107,58 +107,48 @@ export default function PlaceholdersEditor({
   const [habMode, setHabMode] = useState<Record<string, HabillageMode>>({});
   const [traitSide, setTraitSide] = useState<Record<string, TraitSide>>({});
   const [habillageValidated, setHabillageValidated] = useState(false);
-  // B2 — recadrage final
+  // Recadrage : maintenant en TÊTE de pipeline (avant placement).
   const [cropRatio, setCropRatio] = useState<CropRatio>("3:2");
   const [cropRect, setCropRect] = useState<ZoneRect | null>(null);
   const [cropValidated, setCropValidated] = useState(false);
 
-  // Zone de travail élargie verticalement (marges proportionnelles au-dessus/dessous
-  // de l'illustration, utile pour les images panoramiques). L'illustration reste
-  // centrée verticalement à sa taille réelle dans cette zone élargie ; le repère
-  // des placeholders est exprimé dans cette zone de travail.
+  // Zone de travail :
+  //  - pendant le recadrage : viewbox d'origine élargi verticalement pour aider le cadrage.
+  //  - après validation     : viewbox = cropRect (placement & édition se font dedans).
   const MARGIN_Y_RATIO = 0.6;
   const marginY = viewbox[3] * MARGIN_Y_RATIO;
-  const workViewbox: Viewbox = [
+  const fullWorkViewbox: Viewbox = [
     viewbox[0],
     viewbox[1] - marginY,
     viewbox[2],
     viewbox[3] * (1 + 2 * MARGIN_Y_RATIO),
   ];
+  const workViewbox: Viewbox = cropValidated && cropRect
+    ? [cropRect.x, cropRect.y, cropRect.w, cropRect.h]
+    : fullWorkViewbox;
+  // Illustration positionnée en pourcentages du workViewbox (l'image reste à sa
+  // taille et position d'origine, exprimées dans le système viewbox source).
+  const imageLeftPct = ((viewbox[0] - workViewbox[0]) / workViewbox[2]) * 100;
+  const imageTopPct = ((viewbox[1] - workViewbox[1]) / workViewbox[3]) * 100;
+  const imageWidthPct = (viewbox[2] / workViewbox[2]) * 100;
   const imageHeightPct = (viewbox[3] / workViewbox[3]) * 100;
-  const imageTopPct = (marginY / workViewbox[3]) * 100;
 
-  const overlayRef = useRef<SVGSVGElement>(null);
-  const loremRefs = useRef<Record<string, HTMLDivElement | null>>({});
-
-  // Validation states derived from per-cardinality props
-  const currentValidated = !!validatedByN[card];
-  const producedNs = useMemo(
-    () => Object.keys(produceByN).map(Number).filter((n) => produceByN[n]).sort((a, b) => a - b),
-    [produceByN],
-  );
-  const pendingNs = producedNs.filter((n) => !validatedByN[n]);
-  const allValidated = producedNs.length > 0 && pendingNs.length === 0;
-  const habillageMode = allValidated; // habillage UI unlocks once every produced cardinality is validated
-  const cropMode = habillageValidated && !cropValidated;
-
-  // Initialise / réinitialise le cadre de recadrage en fonction du ratio choisi.
-  // Le cadre est centré dans la zone de travail et dimensionné pour englober
-  // l'illustration, contraint au ratio choisi.
+  // Initialise / réinitialise le cadre de recadrage pendant l'étape de crop.
   useEffect(() => {
-    if (!cropMode) return;
+    if (cropValidated) return;
     const ratio = RATIOS[cropRatio];
-    const wvW = workViewbox[2];
-    const wvH = workViewbox[3];
-    // tailles initiales : on essaie d'englober l'illustration entière
+    const wvW = fullWorkViewbox[2];
+    const wvH = fullWorkViewbox[3];
     let w = viewbox[2];
     let h = w / ratio;
     if (h > wvH * 0.95) { h = wvH * 0.95; w = h * ratio; }
     if (w > wvW * 0.95) { w = wvW * 0.95; h = w / ratio; }
-    const x = workViewbox[0] + (wvW - w) / 2;
-    const y = workViewbox[1] + (wvH - h) / 2;
+    const x = fullWorkViewbox[0] + (wvW - w) / 2;
+    const y = fullWorkViewbox[1] + (wvH - h) / 2;
     setCropRect({ x, y, w, h });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cropRatio, cropMode]);
+  }, [cropRatio, cropValidated]);
+
 
   const zKey = (n: number) => `${card}:${n}`;
   const toggleBackplate = (n: number) =>
