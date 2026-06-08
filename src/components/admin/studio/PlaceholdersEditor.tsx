@@ -682,31 +682,42 @@ export default function PlaceholdersEditor({
                 })}
 
                 {/* Icon placeholder */}
-                {z.icon && (
-                  <g
-                    onPointerDown={(e) => onMoveDown(z.n, e)}
-                    style={{ touchAction: "none", cursor: "grab" }}
-                  >
-                    <rect
-                      x={z.icon.x} y={z.icon.y}
-                      width={z.icon.w} height={z.icon.h}
-                      rx={Math.min(3, z.icon.h * 0.08)}
-                      fill="hsl(var(--primary) / 0.04)"
-                      stroke={strokeBase} strokeWidth={1}
-                      strokeDasharray="3 2"
-                      vectorEffect="non-scaling-stroke"
-                    />
-                    <rect
-                      x={z.icon.x + z.icon.w * 0.35}
-                      y={z.icon.y + z.icon.h * 0.35}
-                      width={z.icon.w * 0.3}
-                      height={z.icon.h * 0.3}
-                      fill="none"
-                      stroke={strokeBase} strokeWidth={0.8} strokeOpacity={0.6}
-                      vectorEffect="non-scaling-stroke"
-                    />
-                  </g>
-                )}
+                {z.icon && (() => {
+                  const iconSize = isCartouche
+                    ? Math.min(z.icon.w, z.icon.h)
+                    : null;
+                  const ix = isCartouche
+                    ? (side === "left" ? traitX - 4 - (iconSize as number) : traitX + 4)
+                    : z.icon.x;
+                  const iy = z.icon.y;
+                  const iw = isCartouche ? (iconSize as number) : z.icon.w;
+                  const ih = isCartouche ? (iconSize as number) : z.icon.h;
+                  return (
+                    <g
+                      onPointerDown={(e) => onMoveDown(z.n, e)}
+                      style={{ touchAction: "none", cursor: "grab" }}
+                    >
+                      <rect
+                        x={ix} y={iy}
+                        width={iw} height={ih}
+                        rx={Math.min(3, ih * 0.08)}
+                        fill="hsl(var(--primary) / 0.04)"
+                        stroke={strokeBase} strokeWidth={1}
+                        strokeDasharray="3 2"
+                        vectorEffect="non-scaling-stroke"
+                      />
+                      <rect
+                        x={ix + iw * 0.35}
+                        y={iy + ih * 0.35}
+                        width={iw * 0.3}
+                        height={ih * 0.3}
+                        fill="none"
+                        stroke={strokeBase} strokeWidth={0.8} strokeOpacity={0.6}
+                        vectorEffect="non-scaling-stroke"
+                      />
+                    </g>
+                  );
+                })()}
               </g>
             );
           })}
