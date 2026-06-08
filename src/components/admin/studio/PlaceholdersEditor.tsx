@@ -107,30 +107,53 @@ export default function PlaceholdersEditor({
   const [habMode, setHabMode] = useState<Record<string, HabillageMode>>({});
   const [traitSide, setTraitSide] = useState<Record<string, TraitSide>>({});
   const [habillageValidated, setHabillageValidated] = useState(false);
-  // B2 — recadrage final
+  // Recadrage : maintenant en TÊTE de pipeline (avant placement).
   const [cropRatio, setCropRatio] = useState<CropRatio>("3:2");
   const [cropRect, setCropRect] = useState<ZoneRect | null>(null);
   const [cropValidated, setCropValidated] = useState(false);
 
-  // Zone de travail élargie verticalement (marges proportionnelles au-dessus/dessous
-  // de l'illustration, utile pour les images panoramiques). L'illustration reste
-  // centrée verticalement à sa taille réelle dans cette zone élargie ; le repère
-  // des placeholders est exprimé dans cette zone de travail.
+  // Zone de travail :
+  //  - pendant le recadrage : viewbox d'origine élargi verticalement pour aider le cadrage.
+  //  - après validation     : viewbox = cropRect (placement & édition se font dedans).
   const MARGIN_Y_RATIO = 0.6;
   const marginY = viewbox[3] * MARGIN_Y_RATIO;
-  const workViewbox: Viewbox = [
+  const fullWorkViewbox: Viewbox = [
     viewbox[0],
     viewbox[1] - marginY,
     viewbox[2],
     viewbox[3] * (1 + 2 * MARGIN_Y_RATIO),
   ];
+  const workViewbox: Viewbox = cropValidated && cropRect
+    ? [cropRect.x, cropRect.y, cropRect.w, cropRect.h]
+    : fullWorkViewbox;
+  // Illustration positionnée en pourcentages du workViewbox (l'image reste à sa
+  // taille et position d'origine, exprimées dans le système viewbox source).
+  const imageLeftPct = ((viewbox[0] - workViewbox[0]) / workViewbox[2]) * 100;
+  const imageTopPct = ((viewbox[1] - workViewbox[1]) / workViewbox[3]) * 100;
+  const imageWidthPct = (viewbox[2] / workViewbox[2]) * 100;
   const imageHeightPct = (viewbox[3] / workViewbox[3]) * 100;
-  const imageTopPct = (marginY / workViewbox[3]) * 100;
+
+  // Initialise / réinitialise le cadre de recadrage pendant l'étape de crop.
+  useEffect(() => {
+    if (cropValidated) return;
+    const ratio = RATIOS[cropRatio];
+    const wvW = fullWorkViewbox[2];
+    const wvH = fullWorkViewbox[3];
+    let w = viewbox[2];
+    let h = w / ratio;
+    if (h > wvH * 0.95) { h = wvH * 0.95; w = h * ratio; }
+    if (w > wvW * 0.95) { w = wvW * 0.95; h = w / ratio; }
+    const x = fullWorkViewbox[0] + (wvW - w) / 2;
+    const y = fullWorkViewbox[1] + (wvH - h) / 2;
+    setCropRect({ x, y, w, h });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cropRatio, cropValidated]);
 
   const overlayRef = useRef<SVGSVGElement>(null);
   const loremRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
-  // Validation states derived from per-cardinality props
+  // Validation states derived from per-cardinality props.
+  // Nouvel ordre du pipeline : recadrage → placement par cardinalité → habillage.
   const currentValidated = !!validatedByN[card];
   const producedNs = useMemo(
     () => Object.keys(produceByN).map(Number).filter((n) => produceByN[n]).sort((a, b) => a - b),
@@ -138,27 +161,12 @@ export default function PlaceholdersEditor({
   );
   const pendingNs = producedNs.filter((n) => !validatedByN[n]);
   const allValidated = producedNs.length > 0 && pendingNs.length === 0;
-  const habillageMode = allValidated; // habillage UI unlocks once every produced cardinality is validated
-  const cropMode = habillageValidated && !cropValidated;
+  const cropMode = !cropValidated;
+  const placementMode = cropValidated && !allValidated;
+  const habillageMode = cropValidated && allValidated; // habillage UI après validation de toutes les cardinalités
 
-  // Initialise / réinitialise le cadre de recadrage en fonction du ratio choisi.
-  // Le cadre est centré dans la zone de travail et dimensionné pour englober
-  // l'illustration, contraint au ratio choisi.
-  useEffect(() => {
-    if (!cropMode) return;
-    const ratio = RATIOS[cropRatio];
-    const wvW = workViewbox[2];
-    const wvH = workViewbox[3];
-    // tailles initiales : on essaie d'englober l'illustration entière
-    let w = viewbox[2];
-    let h = w / ratio;
-    if (h > wvH * 0.95) { h = wvH * 0.95; w = h * ratio; }
-    if (w > wvW * 0.95) { w = wvW * 0.95; h = w / ratio; }
-    const x = workViewbox[0] + (wvW - w) / 2;
-    const y = workViewbox[1] + (wvH - h) / 2;
-    setCropRect({ x, y, w, h });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cropRatio, cropMode]);
+
+
 
   const zKey = (n: number) => `${card}:${n}`;
   const toggleBackplate = (n: number) =>
@@ -175,16 +183,39 @@ export default function PlaceholdersEditor({
     setTraitSide((m) => ({ ...m, [zKey(n)]: cur === "left" ? "right" : "left" }));
   };
 
+  // Sous-occupancy correspondant au cropRect (le placement doit travailler dans le viewbox recadré)
+  const cropOccupancy = useCallback((): { occ: Occupancy; vb: Viewbox } | null => {
+    if (!occupancy || !cropRect) return null;
+    const colW = viewbox[2] / occupancy.cols;
+    const rowH = viewbox[3] / occupancy.rows;
+    const c0 = Math.max(0, Math.floor((cropRect.x - viewbox[0]) / colW));
+    const c1 = Math.min(occupancy.cols, Math.ceil((cropRect.x - viewbox[0] + cropRect.w) / colW));
+    const r0 = Math.max(0, Math.floor((cropRect.y - viewbox[1]) / rowH));
+    const r1 = Math.min(occupancy.rows, Math.ceil((cropRect.y - viewbox[1] + cropRect.h) / rowH));
+    const cols = Math.max(1, c1 - c0);
+    const rows = Math.max(1, r1 - r0);
+    const grid: number[][] = [];
+    for (let r = r0; r < r0 + rows; r++) {
+      const src = occupancy.grid[r] ?? [];
+      grid.push(src.slice(c0, c0 + cols));
+    }
+    return { occ: { cols, rows, grid }, vb: [cropRect.x, cropRect.y, cropRect.w, cropRect.h] };
+  }, [occupancy, viewbox, cropRect]);
+
   const fetchPlacement = useCallback(async () => {
     if (!occupancy) {
       setError("Carte d'occupation manquante (relancer la vectorisation).");
       return;
     }
+    if (!cropValidated) return; // attendre la validation du recadrage
+    const cropped = cropOccupancy();
+    const occ = cropped?.occ ?? occupancy;
+    const vb = cropped?.vb ?? viewbox;
     setLoading(true);
     setError(null);
     try {
       const r = await studioV2Api.placeZones({
-        occupancy, viewbox, cardinality_max: userMax,
+        occupancy: occ, viewbox: vb, cardinality_max: userMax,
       });
       onPlacementLoaded(r);
     } catch (e) {
@@ -192,23 +223,29 @@ export default function PlaceholdersEditor({
     } finally {
       setLoading(false);
     }
-  }, [occupancy, viewbox, userMax, onPlacementLoaded]);
+  }, [occupancy, viewbox, userMax, onPlacementLoaded, cropValidated, cropOccupancy]);
 
+  // Lancer le placement dès que le recadrage est validé (et pas avant).
+  const placementTriggeredRef = useRef(false);
   useEffect(() => {
-    if (!placement && !loading) fetchPlacement();
+    if (cropValidated && !placement && !loading && !placementTriggeredRef.current) {
+      placementTriggeredRef.current = true;
+      fetchPlacement();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [cropValidated]);
 
-  // Re-fetch placement when user changes max cardinality
+  // Re-fetch placement when user changes max cardinality (uniquement après crop validé)
   const prevUserMaxRef = useRef(userMax);
   useEffect(() => {
     if (prevUserMaxRef.current !== userMax) {
       prevUserMaxRef.current = userMax;
       if (card > userMax) setCard(userMax);
-      fetchPlacement();
+      if (cropValidated) fetchPlacement();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userMax]);
+
 
   // Inheritance: when switching to a cardinality without edits, derive
   // from the next-higher cardinality (drop highest .n, keep settings).
@@ -465,15 +502,16 @@ export default function PlaceholdersEditor({
     };
   }, [cropRect, commonSize, viewbox, producedNs, validatedByN, editedZones, placement, habMode, traitSide, backplates, fontSizePx]);
 
-  // Emit composition when crop validated (and refresh if anything underlying changes)
+  // Emit composition once habillage is validated (le crop a déjà eu lieu en amont).
   useEffect(() => {
-    if (cropValidated) {
+    if (habillageValidated) {
       onCompositionReady(buildComposition());
     } else {
       onCompositionReady(null);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cropValidated, buildComposition]);
+  }, [habillageValidated, buildComposition]);
+
 
 
   return (
@@ -578,23 +616,7 @@ export default function PlaceholdersEditor({
             : <RefreshCw className="w-4 h-4 mr-1" />}
           Recalculer
         </Button>
-        {!habillageMode ? (
-          <Button
-            size="sm"
-            onClick={() => onValidateCard(card)}
-            disabled={!zones.length || currentValidated || !produceByN[card]}
-          >
-            <Check className="w-4 h-4 mr-1" /> Valider la cardinalité {card}
-          </Button>
-        ) : !habillageValidated ? (
-          <Button
-            size="sm"
-            onClick={() => setHabillageValidated(true)}
-            disabled={!zones.length}
-          >
-            <Check className="w-4 h-4 mr-1" /> Valider l'habillage
-          </Button>
-        ) : !cropValidated ? (
+        {cropMode ? (
           <>
             <div className="flex items-center gap-1 ml-1">
               <span className="text-xs text-muted-foreground mr-1">Ratio</span>
@@ -617,7 +639,24 @@ export default function PlaceholdersEditor({
               <Check className="w-4 h-4 mr-1" /> Valider le recadrage
             </Button>
           </>
+        ) : placementMode ? (
+          <Button
+            size="sm"
+            onClick={() => onValidateCard(card)}
+            disabled={!zones.length || currentValidated || !produceByN[card]}
+          >
+            <Check className="w-4 h-4 mr-1" /> Valider la cardinalité {card}
+          </Button>
+        ) : !habillageValidated ? (
+          <Button
+            size="sm"
+            onClick={() => setHabillageValidated(true)}
+            disabled={!zones.length}
+          >
+            <Check className="w-4 h-4 mr-1" /> Valider l'habillage
+          </Button>
         ) : null}
+
       </div>
 
       {/* Per-zone controls bar */}
@@ -664,16 +703,17 @@ export default function PlaceholdersEditor({
         </div>
       )}
 
-      {pendingNs.length > 0 && !habillageMode && (
+      {placementMode && pendingNs.length > 0 && (
         <div className="text-xs px-2 py-1 rounded border bg-amber-500/10 border-amber-500/30 text-amber-700 dark:text-amber-300">
           Validées {producedNs.filter((n) => validatedByN[n]).length}/{producedNs.length} — reste à valider : {pendingNs.join(", ")}
         </div>
       )}
-      {producedNs.length > 0 && pendingNs.length === 0 && !habillageMode && (
+      {cropValidated && producedNs.length > 0 && pendingNs.length === 0 && !habillageValidated && (
         <div className="text-xs px-2 py-1 rounded border bg-emerald-500/10 border-emerald-500/30 text-emerald-700 dark:text-emerald-300">
-          Toutes les cardinalités sont validées
+          Toutes les cardinalités sont validées — passe à l'habillage
         </div>
       )}
+
 
       {error && (
         <div className="text-xs text-destructive flex items-center gap-1">
@@ -685,13 +725,21 @@ export default function PlaceholdersEditor({
         className="relative w-full bg-background border rounded-md overflow-hidden"
         style={{ aspectRatio: `${workViewbox[2]} / ${workViewbox[3]}` }}
       >
-        {/* Illustration centrée verticalement dans la zone de travail élargie,
-            à sa taille réelle (pas de déformation). */}
+        {/* Illustration positionnée à sa place réelle dans le workViewbox.
+            Pendant le crop : workViewbox élargi → illustration centrée.
+            Après crop      : workViewbox = cropRect → l'illustration peut déborder
+            mais l'overflow:hidden du conteneur cache le hors-cadre. */}
         <div
-          className="absolute left-0 w-full [&>svg]:w-full [&>svg]:h-full"
-          style={{ top: `${imageTopPct}%`, height: `${imageHeightPct}%` }}
+          className="absolute [&>svg]:w-full [&>svg]:h-full"
+          style={{
+            left: `${imageLeftPct}%`,
+            top: `${imageTopPct}%`,
+            width: `${imageWidthPct}%`,
+            height: `${imageHeightPct}%`,
+          }}
           dangerouslySetInnerHTML={{ __html: svg }}
         />
+
         <svg
           ref={overlayRef}
           className="absolute inset-0 w-full h-full"
@@ -973,26 +1021,31 @@ export default function PlaceholdersEditor({
         redimensionner. La taille de boîte est <strong>commune</strong> à toutes les cardinalités.
       </p>
 
-      {habillageValidated && !cropValidated && (
+      {cropMode && (
         <div className="rounded-md border bg-muted/40 p-3 text-xs">
-          <p className="font-medium">Recadrer le template</p>
+          <p className="font-medium">Étape 1 — Recadrer le template</p>
           <p className="text-muted-foreground mt-1">
-            Choisis un ratio, ajuste le cadre autour de ta composition. La zone
-            hors-cadre (assombrie) sera rognée. Ratio actuel : <span className="font-mono">{cropRatio}</span>.
+            Choisis un ratio puis ajuste le cadre autour de ton illustration. La zone
+            hors-cadre (assombrie) sera rognée. <strong>Le placement des zones se fera
+            ensuite à l'intérieur du cadre</strong>, ce qui garantit qu'aucune zone ne
+            pourra sortir du visuel final. Ratio actuel : <span className="font-mono">{cropRatio}</span>.
           </p>
         </div>
       )}
 
-      {cropValidated && cropRect && (
+      {cropValidated && cropRect && !habillageValidated && (
         <div className="rounded-md border bg-emerald-500/10 border-emerald-500/30 p-3 text-xs">
           <p className="font-medium text-emerald-700 dark:text-emerald-300">
             Recadrage validé · {cropRatio} · {Math.round(cropRect.w)}×{Math.round(cropRect.h)}
           </p>
           <p className="text-muted-foreground mt-1">
-            Étape suivante (métadonnées et bibliothèque) à venir.
+            {placementMode
+              ? "Étape 2 — Place et valide chaque cardinalité produite dans le cadre."
+              : "Étape 3 — Choisis l'habillage (intégré ou cartouche) puis valide."}
           </p>
         </div>
       )}
+
     </div>
   );
 }
