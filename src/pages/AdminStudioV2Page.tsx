@@ -853,6 +853,8 @@ function ProductionScreen({
           domain={registre === "domain" ? (selecteur ?? "") : ""}
           vectorizedSvg={vectRes?.svg ?? ""}
           composition={composition}
+          produceByN={produceByN}
+          validatedByN={validatedByN}
         />
       )}
     </div>
@@ -865,8 +867,10 @@ function MetadataExportPanel(props: {
   domain: string;
   vectorizedSvg: string;
   composition: import("@/components/admin/studio/PlaceholdersEditor").CompositionReadyData;
+  produceByN: Record<number, boolean>;
+  validatedByN: Record<number, boolean>;
 }) {
-  const { cell, incarnation, domain, vectorizedSvg, composition } = props;
+  const { cell, incarnation, domain, vectorizedSvg, composition, produceByN, validatedByN } = props;
   const [meta, setMeta] = useState<{ best_for: string; textual_markers: string[]; matching_types: string[] }>({
     best_for: "", textual_markers: [], matching_types: [],
   });
@@ -875,6 +879,15 @@ function MetadataExportPanel(props: {
   const [exporting, setExporting] = useState(false);
   const [exportResult, setExportResult] = useState<import("@/lib/studioV2Api").ExportResponse | null>(null);
   const [markerInput, setMarkerInput] = useState("");
+
+  const pendingExportNs = useMemo(
+    () =>
+      Object.keys(produceByN)
+        .map(Number)
+        .filter((n) => produceByN[n] && !validatedByN[n])
+        .sort((a, b) => a - b),
+    [produceByN, validatedByN],
+  );
 
   useEffect(() => {
     studioV2Api.matchingTypes().then((r) => setGroups(r.groups)).catch(() => {});
@@ -1011,11 +1024,26 @@ function MetadataExportPanel(props: {
         </div>
       </div>
 
-      <div className="flex gap-2">
-        <Button onClick={handleExport} disabled={exporting || !meta.best_for}>
-          {exporting ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : null}
-          Exporter dans la bibliothèque
-        </Button>
+      <div className="flex flex-col gap-1">
+        <div className="flex gap-2">
+          <Button
+            onClick={handleExport}
+            disabled={exporting || !meta.best_for || pendingExportNs.length > 0}
+            title={
+              pendingExportNs.length > 0
+                ? `Validez d'abord les cardinalités : ${pendingExportNs.join(", ")}`
+                : undefined
+            }
+          >
+            {exporting ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : null}
+            Exporter dans la bibliothèque
+          </Button>
+        </div>
+        {pendingExportNs.length > 0 && (
+          <p className="text-xs text-amber-700 dark:text-amber-300">
+            Validez d'abord les cardinalités : {pendingExportNs.join(", ")}
+          </p>
+        )}
       </div>
 
       {exportResult && (

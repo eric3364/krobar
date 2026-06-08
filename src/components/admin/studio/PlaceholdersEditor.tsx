@@ -522,6 +522,17 @@ export default function PlaceholdersEditor({
                   </span>
                 )}
               </button>
+              {isProduced && (
+                <span className="inline-flex items-center justify-center w-3.5 h-3.5">
+                  {isValidated ? (
+                    <span className="w-3 h-3 rounded-full bg-emerald-500 text-white flex items-center justify-center">
+                      <Check className="w-2 h-2" />
+                    </span>
+                  ) : (
+                    <span className="w-3 h-3 rounded-full border-2 border-amber-500" />
+                  )}
+                </span>
+              )}
             </div>
           );
         })}
@@ -655,7 +666,12 @@ export default function PlaceholdersEditor({
 
       {pendingNs.length > 0 && !habillageMode && (
         <div className="text-xs px-2 py-1 rounded border bg-amber-500/10 border-amber-500/30 text-amber-700 dark:text-amber-300">
-          Cardinalité{pendingNs.length > 1 ? "s" : ""} à valider : {pendingNs.join(", ")}
+          Validées {producedNs.filter((n) => validatedByN[n]).length}/{producedNs.length} — reste à valider : {pendingNs.join(", ")}
+        </div>
+      )}
+      {producedNs.length > 0 && pendingNs.length === 0 && !habillageMode && (
+        <div className="text-xs px-2 py-1 rounded border bg-emerald-500/10 border-emerald-500/30 text-emerald-700 dark:text-emerald-300">
+          Toutes les cardinalités sont validées
         </div>
       )}
 
