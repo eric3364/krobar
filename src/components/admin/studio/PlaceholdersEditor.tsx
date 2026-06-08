@@ -199,6 +199,46 @@ export default function PlaceholdersEditor({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Re-fetch placement when user changes max cardinality
+  const prevUserMaxRef = useRef(userMax);
+  useEffect(() => {
+    if (prevUserMaxRef.current !== userMax) {
+      prevUserMaxRef.current = userMax;
+      if (card > userMax) setCard(userMax);
+      fetchPlacement();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userMax]);
+
+  // Inheritance: when switching to a cardinality without edits, derive
+  // from the next-higher cardinality (drop highest .n, keep settings).
+  useEffect(() => {
+    if (editedZones[String(card)]) return;
+    if (!placement) return;
+    for (let n = card + 1; n <= userMax; n++) {
+      const higher = editedZones[String(n)];
+      if (!higher || higher.length === 0) continue;
+      const maxN = Math.max(...higher.map((z) => z.n));
+      const inherited = higher.filter((z) => z.n !== maxN);
+      if (inherited.length === 0) continue;
+      onEditedChange({ ...editedZones, [String(card)]: inherited });
+      const copyKeyed = <T,>(map: Record<string, T>): Record<string, T> => {
+        const copy = { ...map };
+        for (const z of inherited) {
+          const src = `${n}:${z.n}`;
+          if (map[src] !== undefined) copy[`${card}:${z.n}`] = map[src];
+        }
+        return copy;
+      };
+      setHabMode((m) => copyKeyed(m));
+      setTraitSide((m) => copyKeyed(m));
+      setBackplates((b) => copyKeyed(b));
+      return;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [card]);
+
+
   const rawZones: ZonePair[] = useMemo(() => {
     const key = String(card);
     const edited = editedZones[key];
