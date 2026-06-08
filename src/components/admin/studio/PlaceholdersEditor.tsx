@@ -588,9 +588,10 @@ export default function PlaceholdersEditor({
                       lineHeight: 1.2,
                       overflow: isCartouche ? "visible" : "hidden",
                       wordBreak: "break-word",
-                      color: "hsl(var(--foreground))",
+                       color: "hsl(var(--foreground))",
                       fontFamily: "system-ui, sans-serif",
                       boxSizing: "border-box",
+                      textAlign: isCartouche ? (side === "left" ? "left" : "right") : "left",
                     }}
                   >
                     <span style={{ opacity: 0.45, fontWeight: 700, marginRight: 4 }}>{z.n}.</span>
