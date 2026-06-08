@@ -183,16 +183,39 @@ export default function PlaceholdersEditor({
     setTraitSide((m) => ({ ...m, [zKey(n)]: cur === "left" ? "right" : "left" }));
   };
 
+  // Sous-occupancy correspondant au cropRect (le placement doit travailler dans le viewbox recadré)
+  const cropOccupancy = useCallback((): { occ: Occupancy; vb: Viewbox } | null => {
+    if (!occupancy || !cropRect) return null;
+    const colW = viewbox[2] / occupancy.cols;
+    const rowH = viewbox[3] / occupancy.rows;
+    const c0 = Math.max(0, Math.floor((cropRect.x - viewbox[0]) / colW));
+    const c1 = Math.min(occupancy.cols, Math.ceil((cropRect.x - viewbox[0] + cropRect.w) / colW));
+    const r0 = Math.max(0, Math.floor((cropRect.y - viewbox[1]) / rowH));
+    const r1 = Math.min(occupancy.rows, Math.ceil((cropRect.y - viewbox[1] + cropRect.h) / rowH));
+    const cols = Math.max(1, c1 - c0);
+    const rows = Math.max(1, r1 - r0);
+    const grid: number[][] = [];
+    for (let r = r0; r < r0 + rows; r++) {
+      const src = occupancy.grid[r] ?? [];
+      grid.push(src.slice(c0, c0 + cols));
+    }
+    return { occ: { cols, rows, grid }, vb: [cropRect.x, cropRect.y, cropRect.w, cropRect.h] };
+  }, [occupancy, viewbox, cropRect]);
+
   const fetchPlacement = useCallback(async () => {
     if (!occupancy) {
       setError("Carte d'occupation manquante (relancer la vectorisation).");
       return;
     }
+    if (!cropValidated) return; // attendre la validation du recadrage
+    const cropped = cropOccupancy();
+    const occ = cropped?.occ ?? occupancy;
+    const vb = cropped?.vb ?? viewbox;
     setLoading(true);
     setError(null);
     try {
       const r = await studioV2Api.placeZones({
-        occupancy, viewbox, cardinality_max: userMax,
+        occupancy: occ, viewbox: vb, cardinality_max: userMax,
       });
       onPlacementLoaded(r);
     } catch (e) {
@@ -200,23 +223,29 @@ export default function PlaceholdersEditor({
     } finally {
       setLoading(false);
     }
-  }, [occupancy, viewbox, userMax, onPlacementLoaded]);
+  }, [occupancy, viewbox, userMax, onPlacementLoaded, cropValidated, cropOccupancy]);
 
+  // Lancer le placement dès que le recadrage est validé (et pas avant).
+  const placementTriggeredRef = useRef(false);
   useEffect(() => {
-    if (!placement && !loading) fetchPlacement();
+    if (cropValidated && !placement && !loading && !placementTriggeredRef.current) {
+      placementTriggeredRef.current = true;
+      fetchPlacement();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [cropValidated]);
 
-  // Re-fetch placement when user changes max cardinality
+  // Re-fetch placement when user changes max cardinality (uniquement après crop validé)
   const prevUserMaxRef = useRef(userMax);
   useEffect(() => {
     if (prevUserMaxRef.current !== userMax) {
       prevUserMaxRef.current = userMax;
       if (card > userMax) setCard(userMax);
-      fetchPlacement();
+      if (cropValidated) fetchPlacement();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userMax]);
+
 
   // Inheritance: when switching to a cardinality without edits, derive
   // from the next-higher cardinality (drop highest .n, keep settings).
