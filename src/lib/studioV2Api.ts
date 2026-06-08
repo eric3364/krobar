@@ -157,6 +157,66 @@ export const studioV2Api = {
 
   placeZones: (payload: PlaceZonesPayload) =>
     adminFetch<PlaceZonesResponse>("/admin/studio/place-zones", { body: payload }),
+
+  matchingTypes: () =>
+    adminFetch<MatchingTypesResponse>("/admin/studio/matching-types", { method: "GET" }),
+
+  suggestMetadata: (payload: SuggestMetadataPayload) =>
+    adminFetch<SuggestMetadataResponse>("/admin/studio/suggest-metadata", { body: payload }),
+
+  exportTemplates: (payload: ExportPayload) =>
+    adminFetch<ExportResponse>("/admin/studio/export-templates", { body: payload }),
+};
+
+export type MatchingType = { id: string; label: string };
+export type MatchingGroup = { id: string; label: string; matching_types: MatchingType[] };
+export type MatchingTypesResponse = { groups: MatchingGroup[] };
+
+export type SuggestMetadataPayload = {
+  cell: { family: string; cardinality: string; regime: string };
+  incarnation: string;
+};
+export type SuggestMetadataResponse = {
+  best_for: string;
+  textual_markers: string[];
+  matching_types: string[];
+};
+
+export type ExportZone = {
+  n: number;
+  rect: ZoneRect;
+  icon: ZoneRect;
+  mode: "cartouche" | "integre";
+  trait_side: "left" | "right";
+  backplate: boolean;
+};
+
+export type CompositionPayload = {
+  cell: { index: string; family: string; cardinality: string; regime: string; incarnation: string };
+  viewbox: [number, number, number, number];
+  decor: { vectorized_svg: string; transform: string };
+  gabarit: { font_size: number; box_w: number; box_h: number };
+  metadata: {
+    category: string;
+    domain: string;
+    best_for: string;
+    textual_markers: string[];
+    matching_types: string[];
+  };
+  zones_by_cardinality: Record<string, ExportZone[]>;
+};
+
+export type ExportPayload = { composition: CompositionPayload };
+
+export type ExportResponse = {
+  ok: boolean;
+  base_id: string;
+  deployed: string[];
+  skipped: string[];
+  manifest_total: number;
+  backup: string;
+  cache_cleared: boolean;
+  restart_required: boolean;
 };
 
 export const CARDINALITY_TO_N: Record<string, number> = {

@@ -349,6 +349,10 @@ function ProductionScreen({
   const s = byRegistreSummary(cell);
 
   const persistKey = `krobar-studio-v2-prod:${cell.index}|${registre}|${selecteur ?? ""}`;
+  const baseUserMax = useMemo(() => {
+    const m = cell.index.match(/-(\d)-/);
+    return m ? parseInt(m[1], 10) : 1;
+  }, [cell.index]);
   type Persisted = {
     moteur: Moteur;
     gpt2Style: string | null;
@@ -357,8 +361,10 @@ function ProductionScreen({
     validated: boolean;
     placement?: PlaceZonesResponse | null;
     editedZones?: Record<string, ZonePair[]>;
-    placeholdersValidated?: boolean;
     placementsMode?: boolean;
+    userMax?: number;
+    produceByN?: Record<number, boolean>;
+    validatedByN?: Record<number, boolean>;
   };
   const loadPersisted = (): Persisted | null => {
     if (typeof window === "undefined") return null;
@@ -368,6 +374,12 @@ function ProductionScreen({
     } catch { return null; }
   };
   const initial = loadPersisted();
+
+  const initialProduce = (max: number): Record<number, boolean> => {
+    const r: Record<number, boolean> = {};
+    for (let i = 1; i <= max; i++) r[i] = true;
+    return r;
+  };
 
   const [moteur, setMoteur] = useState<Moteur>(initial?.moteur ?? "midjourney");
   const [gpt2Style, setGpt2Style] = useState<string | null>(initial?.gpt2Style ?? null);
@@ -383,8 +395,13 @@ function ProductionScreen({
   const [sizeInfo, setSizeInfo] = useState<{ before: number; after: number } | null>(null);
   const [placement, setPlacement] = useState<PlaceZonesResponse | null>(initial?.placement ?? null);
   const [editedZones, setEditedZones] = useState<Record<string, ZonePair[]>>(initial?.editedZones ?? {});
-  const [placeholdersValidated, setPlaceholdersValidated] = useState<boolean>(initial?.placeholdersValidated ?? false);
   const [placementsMode, setPlacementsMode] = useState<boolean>(initial?.placementsMode ?? false);
+  const [userMax, setUserMax] = useState<number>(initial?.userMax ?? baseUserMax);
+  const [produceByN, setProduceByN] = useState<Record<number, boolean>>(
+    initial?.produceByN ?? initialProduce(initial?.userMax ?? baseUserMax),
+  );
+  const [validatedByN, setValidatedByN] = useState<Record<number, boolean>>(initial?.validatedByN ?? {});
+  const [composition, setComposition] = useState<import("@/components/admin/studio/PlaceholdersEditor").CompositionReadyData | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Load charte once
@@ -396,7 +413,7 @@ function ProductionScreen({
     return () => { cancel = true; };
   }, []);
 
-  // Hydrate from storage when cell/registre/selecteur changes (e.g. user switches incarnation)
+  // Hydrate from storage when cell/registre/selecteur changes
   useEffect(() => {
     const p = loadPersisted();
     setPromptRes(p?.promptRes ?? null);
@@ -408,8 +425,11 @@ function ProductionScreen({
     setGpt2Style(p?.gpt2Style ?? null);
     setPlacement(p?.placement ?? null);
     setEditedZones(p?.editedZones ?? {});
-    setPlaceholdersValidated(p?.placeholdersValidated ?? false);
     setPlacementsMode(p?.placementsMode ?? false);
+    setUserMax(p?.userMax ?? baseUserMax);
+    setProduceByN(p?.produceByN ?? initialProduce(p?.userMax ?? baseUserMax));
+    setValidatedByN(p?.validatedByN ?? {});
+    setComposition(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cell.index, registre, selecteur]);
 
@@ -420,11 +440,13 @@ function ProductionScreen({
         persistKey,
         JSON.stringify({
           moteur, gpt2Style, promptRes, vectRes, validated,
-          placement, editedZones, placeholdersValidated, placementsMode,
+          placement, editedZones, placementsMode,
+          userMax, produceByN, validatedByN,
         } satisfies Persisted),
       );
     } catch { /* ignore quota */ }
-  }, [persistKey, moteur, gpt2Style, promptRes, vectRes, validated, placement, editedZones, placeholdersValidated, placementsMode]);
+  }, [persistKey, moteur, gpt2Style, promptRes, vectRes, validated, placement, editedZones, placementsMode, userMax, produceByN, validatedByN]);
+
 
 
 
@@ -451,7 +473,7 @@ function ProductionScreen({
 
   const handleFile = async (file: File) => {
     setVectLoading(true); setVectError(null); setValidated(false); setVectRes(null); setSizeInfo(null);
-    setPlacement(null); setEditedZones({}); setPlaceholdersValidated(false); setPlacementsMode(false);
+    setPlacement(null); setEditedZones({}); setValidatedByN({}); setComposition(null); setPlacementsMode(false);
     try {
       const compressed = await compressImage(file);
       setSizeInfo({ before: file.size, after: compressed.size });
@@ -479,10 +501,27 @@ function ProductionScreen({
   const setRegistre = (r: Registre, sel: string | null) =>
     onChange({ ...state, registre: r, selecteur: sel });
 
-  const cardinalityMax = useMemo(() => {
-    const m = cell.index.match(/-(\d)-/);
-    return m ? parseInt(m[1], 10) : 1;
-  }, [cell.index]);
+  const handleUserMaxChange = (n: number) => {
+    setUserMax(n);
+    setProduceByN((prev) => {
+      const next: Record<number, boolean> = {};
+      for (let i = 1; i <= n; i++) next[i] = prev[i] ?? true;
+      return next;
+    });
+    setValidatedByN((prev) => {
+      const next: Record<number, boolean> = {};
+      for (let i = 1; i <= n; i++) if (prev[i]) next[i] = true;
+      return next;
+    });
+    setEditedZones({});
+    setComposition(null);
+  };
+
+  const handleValidateCard = (n: number) => {
+    setValidatedByN((prev) => ({ ...prev, [n]: true }));
+    toast.success(`Cardinalité ${n} validée`);
+  };
+
 
   const [promptOpen, setPromptOpen] = useState(false);
 
@@ -760,14 +799,19 @@ function ProductionScreen({
             svg={vectRes.svg}
             viewbox={vectRes.viewbox}
             occupancy={vectRes.occupancy}
-            cardinalityMax={cardinalityMax}
+            userMax={userMax}
+            onUserMaxChange={handleUserMaxChange}
+            produceByN={produceByN}
+            onProduceChange={setProduceByN}
+            validatedByN={validatedByN}
+            onValidateCard={handleValidateCard}
             placement={placement}
             editedZones={editedZones}
             onPlacementLoaded={(p) => { setPlacement(p); setEditedZones({}); }}
             onEditedChange={setEditedZones}
-            onValidate={() => { setPlaceholdersValidated(true); toast.success("Placeholders validés"); }}
-            validated={placeholdersValidated}
+            onCompositionReady={setComposition}
           />
+
         ) : (
           <div
             className="relative w-full bg-muted/30 border rounded-md overflow-hidden"
@@ -801,9 +845,199 @@ function ProductionScreen({
           </div>
         )}
       </Card>
+
+      {composition && (
+        <MetadataExportPanel
+          cell={cell}
+          incarnation={promptRes?.incarnation_source ?? ""}
+          domain={registre === "domain" ? (selecteur ?? "") : ""}
+          vectorizedSvg={vectRes?.svg ?? ""}
+          composition={composition}
+        />
+      )}
     </div>
   );
 }
+
+function MetadataExportPanel(props: {
+  cell: CoverageCell;
+  incarnation: string;
+  domain: string;
+  vectorizedSvg: string;
+  composition: import("@/components/admin/studio/PlaceholdersEditor").CompositionReadyData;
+}) {
+  const { cell, incarnation, domain, vectorizedSvg, composition } = props;
+  const [meta, setMeta] = useState<{ best_for: string; textual_markers: string[]; matching_types: string[] }>({
+    best_for: "", textual_markers: [], matching_types: [],
+  });
+  const [groups, setGroups] = useState<import("@/lib/studioV2Api").MatchingGroup[]>([]);
+  const [loadingSuggest, setLoadingSuggest] = useState(false);
+  const [exporting, setExporting] = useState(false);
+  const [exportResult, setExportResult] = useState<import("@/lib/studioV2Api").ExportResponse | null>(null);
+  const [markerInput, setMarkerInput] = useState("");
+
+  useEffect(() => {
+    studioV2Api.matchingTypes().then((r) => setGroups(r.groups)).catch(() => {});
+  }, []);
+
+  const suggest = async () => {
+    setLoadingSuggest(true);
+    try {
+      const r = await studioV2Api.suggestMetadata({
+        cell: { family: cell.family as string, cardinality: cell.cardinality as string, regime: cell.regime as string },
+        incarnation,
+      });
+      setMeta({ best_for: r.best_for, textual_markers: r.textual_markers, matching_types: r.matching_types });
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Suggestion impossible");
+    } finally {
+      setLoadingSuggest(false);
+    }
+  };
+
+  useEffect(() => { if (!meta.best_for) suggest(); /* eslint-disable-next-line */ }, []);
+
+  const toggleMatchingType = (id: string) => {
+    setMeta((m) => ({
+      ...m,
+      matching_types: m.matching_types.includes(id)
+        ? m.matching_types.filter((x) => x !== id)
+        : [...m.matching_types, id],
+    }));
+  };
+
+  const handleExport = async () => {
+    setExporting(true);
+    try {
+      const r = await studioV2Api.exportTemplates({
+        composition: {
+          cell: {
+            index: cell.index,
+            family: cell.family as string,
+            cardinality: cell.cardinality as string,
+            regime: cell.regime as string,
+            incarnation,
+          },
+          viewbox: composition.viewbox,
+          decor: { vectorized_svg: vectorizedSvg, transform: composition.transform },
+          gabarit: composition.gabarit,
+          metadata: {
+            category: "Visual Metaphors",
+            domain,
+            best_for: meta.best_for,
+            textual_markers: meta.textual_markers,
+            matching_types: meta.matching_types,
+          },
+          zones_by_cardinality: composition.zones_by_cardinality,
+        },
+      });
+      setExportResult(r);
+      toast.success("Templates déployés");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Export impossible");
+    } finally {
+      setExporting(false);
+    }
+  };
+
+  return (
+    <Card className="p-4 space-y-4">
+      <div className="flex items-center justify-between">
+        <h3 className="text-sm font-semibold uppercase tracking-wider">Référencement</h3>
+        <Button size="sm" variant="outline" onClick={suggest} disabled={loadingSuggest}>
+          {loadingSuggest ? <Loader2 className="w-4 h-4 animate-spin" /> : "Re-suggérer"}
+        </Button>
+      </div>
+
+      <div className="space-y-1">
+        <label className="text-xs font-medium">best_for</label>
+        <textarea
+          value={meta.best_for}
+          onChange={(e) => setMeta((m) => ({ ...m, best_for: e.target.value }))}
+          className="w-full min-h-[60px] text-sm p-2 rounded border bg-background"
+        />
+      </div>
+
+      <div className="space-y-1">
+        <label className="text-xs font-medium">textual_markers</label>
+        <div className="flex flex-wrap gap-1">
+          {meta.textual_markers.map((t) => (
+            <Badge key={t} variant="secondary" className="cursor-pointer" onClick={() => setMeta((m) => ({ ...m, textual_markers: m.textual_markers.filter((x) => x !== t) }))}>
+              {t} ×
+            </Badge>
+          ))}
+        </div>
+        <div className="flex gap-1 mt-1">
+          <input
+            value={markerInput}
+            onChange={(e) => setMarkerInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && markerInput.trim()) {
+                e.preventDefault();
+                setMeta((m) => ({ ...m, textual_markers: [...m.textual_markers, markerInput.trim()] }));
+                setMarkerInput("");
+              }
+            }}
+            placeholder="Ajouter un marqueur (Entrée)"
+            className="text-xs h-7 px-2 border rounded bg-background flex-1"
+          />
+        </div>
+      </div>
+
+      <div className="space-y-1">
+        <label className="text-xs font-medium">matching_types</label>
+        <div className="space-y-2 max-h-[200px] overflow-auto border rounded p-2">
+          {groups.map((g) => (
+            <div key={g.id}>
+              <p className="text-[11px] font-semibold text-muted-foreground">{g.label}</p>
+              <div className="flex flex-wrap gap-1">
+                {g.matching_types.map((mt) => (
+                  <button
+                    key={mt.id}
+                    onClick={() => toggleMatchingType(mt.id)}
+                    className={[
+                      "text-[11px] px-2 py-0.5 rounded border",
+                      meta.matching_types.includes(mt.id)
+                        ? "bg-primary text-primary-foreground border-primary"
+                        : "bg-background hover:bg-muted",
+                    ].join(" ")}
+                  >
+                    {mt.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex gap-2">
+        <Button onClick={handleExport} disabled={exporting || !meta.best_for}>
+          {exporting ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : null}
+          Exporter dans la bibliothèque
+        </Button>
+      </div>
+
+      {exportResult && (
+        <div className="rounded-md border bg-emerald-500/10 border-emerald-500/30 p-3 text-xs space-y-1">
+          <p className="font-medium text-emerald-700 dark:text-emerald-300">
+            Déployé : {exportResult.deployed.join(", ") || "—"} ({exportResult.deployed.length} fichier{exportResult.deployed.length > 1 ? "s" : ""})
+          </p>
+          {exportResult.skipped.length > 0 && (
+            <p className="text-muted-foreground">Ignorés (déjà existants) : {exportResult.skipped.join(", ")}</p>
+          )}
+          {exportResult.restart_required && (
+            <p className="text-amber-700 dark:text-amber-300 font-medium">
+              ⚠ Redémarrage requis : l'administrateur doit relancer le service et passer le smoke test pour que les templates soient servis.
+            </p>
+          )}
+          <p className="text-muted-foreground">Manifest total : {exportResult.manifest_total} · backup : {exportResult.backup}</p>
+        </div>
+      )}
+    </Card>
+  );
+}
+
 
 function VerdictBadge({ verdict }: { verdict: VectorizeResponse["metrics"]["verdict"] }) {
   if (verdict === "clean")

@@ -3,6 +3,7 @@ import { Loader2, RefreshCw, Check, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   studioV2Api,
+  type ExportZone,
   type Occupancy,
   type PlaceZonesResponse,
   type Viewbox,
@@ -10,17 +11,28 @@ import {
   type ZoneRect,
 } from "@/lib/studioV2Api";
 
+export type CompositionReadyData = {
+  viewbox: [number, number, number, number];
+  transform: string;
+  gabarit: { font_size: number; box_w: number; box_h: number };
+  zones_by_cardinality: Record<string, ExportZone[]>;
+};
+
 type Props = {
   svg: string;
   viewbox: Viewbox;
   occupancy?: Occupancy;
-  cardinalityMax: number;
+  userMax: number;
+  onUserMaxChange: (n: number) => void;
+  produceByN: Record<number, boolean>;
+  onProduceChange: (next: Record<number, boolean>) => void;
+  validatedByN: Record<number, boolean>;
+  onValidateCard: (n: number) => void;
   placement: PlaceZonesResponse | null;
   editedZones: Record<string, ZonePair[]>;
   onPlacementLoaded: (p: PlaceZonesResponse) => void;
   onEditedChange: (next: Record<string, ZonePair[]>) => void;
-  onValidate: () => void;
-  validated: boolean;
+  onCompositionReady: (data: CompositionReadyData | null) => void;
 };
 
 type LoremLen = "short" | "medium" | "long";
@@ -74,13 +86,14 @@ function ensureRect(pair: ZonePair, vb: Viewbox): ZonePair {
 }
 
 export default function PlaceholdersEditor({
-  svg, viewbox, occupancy, cardinalityMax,
+  svg, viewbox, occupancy, userMax, onUserMaxChange,
+  produceByN, onProduceChange, validatedByN, onValidateCard,
   placement, editedZones, onPlacementLoaded, onEditedChange,
-  onValidate, validated,
+  onCompositionReady,
 }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [card, setCard] = useState<number>(cardinalityMax);
+  const [card, setCard] = useState<number>(userMax);
   const [backplates, setBackplates] = useState<Record<string, boolean>>({});
   // Lorem permanent (toujours affiché). Longueur + taille de police sont GLOBALES.
   const [loremLen, setLoremLen] = useState<LoremLen>("medium");
@@ -117,7 +130,15 @@ export default function PlaceholdersEditor({
   const overlayRef = useRef<SVGSVGElement>(null);
   const loremRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
-  const habillageMode = validated; // entered habillage sub-mode after placeholders validated
+  // Validation states derived from per-cardinality props
+  const currentValidated = !!validatedByN[card];
+  const producedNs = useMemo(
+    () => Object.keys(produceByN).map(Number).filter((n) => produceByN[n]).sort((a, b) => a - b),
+    [produceByN],
+  );
+  const pendingNs = producedNs.filter((n) => !validatedByN[n]);
+  const allValidated = producedNs.length > 0 && pendingNs.length === 0;
+  const habillageMode = allValidated; // habillage UI unlocks once every produced cardinality is validated
   const cropMode = habillageValidated && !cropValidated;
 
   // Initialise / réinitialise le cadre de recadrage en fonction du ratio choisi.
@@ -163,7 +184,7 @@ export default function PlaceholdersEditor({
     setError(null);
     try {
       const r = await studioV2Api.placeZones({
-        occupancy, viewbox, cardinality_max: cardinalityMax,
+        occupancy, viewbox, cardinality_max: userMax,
       });
       onPlacementLoaded(r);
     } catch (e) {
@@ -171,12 +192,52 @@ export default function PlaceholdersEditor({
     } finally {
       setLoading(false);
     }
-  }, [occupancy, viewbox, cardinalityMax, onPlacementLoaded]);
+  }, [occupancy, viewbox, userMax, onPlacementLoaded]);
 
   useEffect(() => {
     if (!placement && !loading) fetchPlacement();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Re-fetch placement when user changes max cardinality
+  const prevUserMaxRef = useRef(userMax);
+  useEffect(() => {
+    if (prevUserMaxRef.current !== userMax) {
+      prevUserMaxRef.current = userMax;
+      if (card > userMax) setCard(userMax);
+      fetchPlacement();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userMax]);
+
+  // Inheritance: when switching to a cardinality without edits, derive
+  // from the next-higher cardinality (drop highest .n, keep settings).
+  useEffect(() => {
+    if (editedZones[String(card)]) return;
+    if (!placement) return;
+    for (let n = card + 1; n <= userMax; n++) {
+      const higher = editedZones[String(n)];
+      if (!higher || higher.length === 0) continue;
+      const maxN = Math.max(...higher.map((z) => z.n));
+      const inherited = higher.filter((z) => z.n !== maxN);
+      if (inherited.length === 0) continue;
+      onEditedChange({ ...editedZones, [String(card)]: inherited });
+      const copyKeyed = <T,>(map: Record<string, T>): Record<string, T> => {
+        const copy = { ...map };
+        for (const z of inherited) {
+          const src = `${n}:${z.n}`;
+          if (map[src] !== undefined) copy[`${card}:${z.n}`] = map[src];
+        }
+        return copy;
+      };
+      setHabMode((m) => copyKeyed(m));
+      setTraitSide((m) => copyKeyed(m));
+      setBackplates((b) => copyKeyed(b));
+      return;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [card]);
+
 
   const rawZones: ZonePair[] = useMemo(() => {
     const key = String(card);
@@ -352,24 +413,118 @@ export default function PlaceholdersEditor({
     await fetchPlacement();
   };
 
+  // Build the composition payload (zones expressed in the cropped viewbox)
+  const buildComposition = useCallback((): CompositionReadyData | null => {
+    if (!cropRect || !commonSize) return null;
+    const tx = viewbox[0] - cropRect.x;
+    const ty = viewbox[1] - cropRect.y;
+    const zbc: Record<string, ExportZone[]> = {};
+    for (const n of producedNs) {
+      if (!validatedByN[n]) continue;
+      const key = String(n);
+      const list = (editedZones[key] ?? placement?.by_cardinality?.[key] ?? [])
+        .map((p) => ensureRect(p, viewbox));
+      const out: ExportZone[] = [];
+      for (const z of list) {
+        if (!z.rect || !z.icon) continue;
+        const rect = {
+          x: z.rect.x - cropRect.x,
+          y: z.rect.y - cropRect.y,
+          w: commonSize.w,
+          h: commonSize.h,
+        };
+        const habKey = `${n}:${z.n}`;
+        const mode = (habMode[habKey] ?? "integre") as "integre" | "cartouche";
+        const auto =
+          (z.rect.x + z.rect.w / 2) < (viewbox[0] + viewbox[2] / 2) ? "right" : "left";
+        const side = (traitSide[habKey] ?? auto) as "left" | "right";
+        const bp = !!backplates[habKey];
+        let icon: ZoneRect;
+        if (mode === "cartouche") {
+          const isz = Math.min(z.icon.w, z.icon.h);
+          const traitXAbs = side === "left" ? z.rect.x - 4 : z.rect.x + commonSize.w + 4;
+          const ixAbs = side === "left" ? traitXAbs - 4 - isz : traitXAbs + 4;
+          icon = { x: ixAbs - cropRect.x, y: z.rect.y - cropRect.y, w: isz, h: isz };
+        } else {
+          const iconOnRight = z.icon.x >= z.rect.x + z.rect.w / 2;
+          const gap = 4;
+          const ixAbs = iconOnRight
+            ? z.rect.x + commonSize.w + gap
+            : z.rect.x - z.icon.w - gap;
+          icon = { x: ixAbs - cropRect.x, y: z.rect.y - cropRect.y, w: z.icon.w, h: z.icon.h };
+        }
+        out.push({ n: z.n, rect, icon, mode, trait_side: side, backplate: bp });
+      }
+      zbc[key] = out;
+    }
+    return {
+      viewbox: [0, 0, cropRect.w, cropRect.h],
+      transform: `translate(${tx},${ty}) scale(1)`,
+      gabarit: { font_size: fontSizePx, box_w: commonSize.w, box_h: commonSize.h },
+      zones_by_cardinality: zbc,
+    };
+  }, [cropRect, commonSize, viewbox, producedNs, validatedByN, editedZones, placement, habMode, traitSide, backplates, fontSizePx]);
+
+  // Emit composition when crop validated (and refresh if anything underlying changes)
+  useEffect(() => {
+    if (cropValidated) {
+      onCompositionReady(buildComposition());
+    } else {
+      onCompositionReady(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cropValidated, buildComposition]);
+
+
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-2">
+        <span className="text-xs text-muted-foreground mr-1">Max</span>
+        <select
+          value={userMax}
+          onChange={(e) => onUserMaxChange(Number(e.target.value))}
+          className="h-7 text-xs rounded border bg-background px-1"
+          title="Cardinalité maximale (1 à 8)"
+        >
+          {Array.from({ length: 8 }, (_, i) => i + 1).map((n) => (
+            <option key={n} value={n}>{n}</option>
+          ))}
+        </select>
+        <span className="text-xs text-muted-foreground mx-1">·</span>
         <span className="text-xs text-muted-foreground mr-1">Cardinalité</span>
-        {Array.from({ length: cardinalityMax }, (_, i) => i + 1).map((n) => (
-          <button
-            key={n}
-            onClick={() => setCard(n)}
-            className={[
-              "h-7 w-7 text-xs rounded border font-mono",
-              n === card
-                ? "bg-primary text-primary-foreground border-primary"
-                : "bg-background hover:bg-muted",
-            ].join(" ")}
-          >
-            {n}
-          </button>
-        ))}
+        {Array.from({ length: userMax }, (_, i) => i + 1).map((n) => {
+          const isProduced = !!produceByN[n];
+          const isValidated = !!validatedByN[n];
+          return (
+            <div key={n} className="flex items-center gap-1">
+              <input
+                type="checkbox"
+                checked={isProduced}
+                onChange={(e) => onProduceChange({ ...produceByN, [n]: e.target.checked })}
+                title={isProduced ? "Décocher pour ne pas produire" : "Cocher pour produire"}
+                className="h-3 w-3 cursor-pointer"
+              />
+              <button
+                onClick={() => setCard(n)}
+                disabled={!isProduced}
+                className={[
+                  "h-7 w-7 text-xs rounded border font-mono relative",
+                  n === card
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "bg-background hover:bg-muted",
+                  !isProduced ? "opacity-40 cursor-not-allowed line-through" : "",
+                ].join(" ")}
+              >
+                {n}
+                {isProduced && isValidated && (
+                  <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-emerald-500 text-white flex items-center justify-center">
+                    <Check className="w-2 h-2" />
+                  </span>
+                )}
+              </button>
+            </div>
+          );
+        })}
         <div className="flex items-center gap-1 ml-3">
           <span className="text-xs text-muted-foreground mr-1">Police</span>
           {FONT_STEPS.map((s) => (
@@ -413,8 +568,12 @@ export default function PlaceholdersEditor({
           Recalculer
         </Button>
         {!habillageMode ? (
-          <Button size="sm" onClick={onValidate} disabled={!zones.length || validated}>
-            <Check className="w-4 h-4 mr-1" /> Valider les placeholders
+          <Button
+            size="sm"
+            onClick={() => onValidateCard(card)}
+            disabled={!zones.length || currentValidated || !produceByN[card]}
+          >
+            <Check className="w-4 h-4 mr-1" /> Valider la cardinalité {card}
           </Button>
         ) : !habillageValidated ? (
           <Button
@@ -491,6 +650,12 @@ export default function PlaceholdersEditor({
             );
           })()}
 
+        </div>
+      )}
+
+      {pendingNs.length > 0 && !habillageMode && (
+        <div className="text-xs px-2 py-1 rounded border bg-amber-500/10 border-amber-500/30 text-amber-700 dark:text-amber-300">
+          Cardinalité{pendingNs.length > 1 ? "s" : ""} à valider : {pendingNs.join(", ")}
         </div>
       )}
 
