@@ -376,21 +376,52 @@ export default function PlaceholdersEditor({
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-2">
+        <span className="text-xs text-muted-foreground mr-1">Max</span>
+        <select
+          value={userMax}
+          onChange={(e) => onUserMaxChange(Number(e.target.value))}
+          className="h-7 text-xs rounded border bg-background px-1"
+          title="Cardinalité maximale (1 à 8)"
+        >
+          {Array.from({ length: 8 }, (_, i) => i + 1).map((n) => (
+            <option key={n} value={n}>{n}</option>
+          ))}
+        </select>
+        <span className="text-xs text-muted-foreground mx-1">·</span>
         <span className="text-xs text-muted-foreground mr-1">Cardinalité</span>
-        {Array.from({ length: cardinalityMax }, (_, i) => i + 1).map((n) => (
-          <button
-            key={n}
-            onClick={() => setCard(n)}
-            className={[
-              "h-7 w-7 text-xs rounded border font-mono",
-              n === card
-                ? "bg-primary text-primary-foreground border-primary"
-                : "bg-background hover:bg-muted",
-            ].join(" ")}
-          >
-            {n}
-          </button>
-        ))}
+        {Array.from({ length: userMax }, (_, i) => i + 1).map((n) => {
+          const isProduced = !!produceByN[n];
+          const isValidated = !!validatedByN[n];
+          return (
+            <div key={n} className="flex items-center gap-1">
+              <input
+                type="checkbox"
+                checked={isProduced}
+                onChange={(e) => onProduceChange({ ...produceByN, [n]: e.target.checked })}
+                title={isProduced ? "Décocher pour ne pas produire" : "Cocher pour produire"}
+                className="h-3 w-3 cursor-pointer"
+              />
+              <button
+                onClick={() => setCard(n)}
+                disabled={!isProduced}
+                className={[
+                  "h-7 w-7 text-xs rounded border font-mono relative",
+                  n === card
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "bg-background hover:bg-muted",
+                  !isProduced ? "opacity-40 cursor-not-allowed line-through" : "",
+                ].join(" ")}
+              >
+                {n}
+                {isProduced && isValidated && (
+                  <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-emerald-500 text-white flex items-center justify-center">
+                    <Check className="w-2 h-2" />
+                  </span>
+                )}
+              </button>
+            </div>
+          );
+        })}
         <div className="flex items-center gap-1 ml-3">
           <span className="text-xs text-muted-foreground mr-1">Police</span>
           {FONT_STEPS.map((s) => (
