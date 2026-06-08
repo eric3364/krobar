@@ -473,7 +473,7 @@ function ProductionScreen({
 
   const handleFile = async (file: File) => {
     setVectLoading(true); setVectError(null); setValidated(false); setVectRes(null); setSizeInfo(null);
-    setPlacement(null); setEditedZones({}); setPlaceholdersValidated(false); setPlacementsMode(false);
+    setPlacement(null); setEditedZones({}); setValidatedByN({}); setComposition(null); setPlacementsMode(false);
     try {
       const compressed = await compressImage(file);
       setSizeInfo({ before: file.size, after: compressed.size });
@@ -501,10 +501,27 @@ function ProductionScreen({
   const setRegistre = (r: Registre, sel: string | null) =>
     onChange({ ...state, registre: r, selecteur: sel });
 
-  const cardinalityMax = useMemo(() => {
-    const m = cell.index.match(/-(\d)-/);
-    return m ? parseInt(m[1], 10) : 1;
-  }, [cell.index]);
+  const handleUserMaxChange = (n: number) => {
+    setUserMax(n);
+    setProduceByN((prev) => {
+      const next: Record<number, boolean> = {};
+      for (let i = 1; i <= n; i++) next[i] = prev[i] ?? true;
+      return next;
+    });
+    setValidatedByN((prev) => {
+      const next: Record<number, boolean> = {};
+      for (let i = 1; i <= n; i++) if (prev[i]) next[i] = true;
+      return next;
+    });
+    setEditedZones({});
+    setComposition(null);
+  };
+
+  const handleValidateCard = (n: number) => {
+    setValidatedByN((prev) => ({ ...prev, [n]: true }));
+    toast.success(`Cardinalité ${n} validée`);
+  };
+
 
   const [promptOpen, setPromptOpen] = useState(false);
 
