@@ -22,6 +22,8 @@ import {
 import StructuralSketch from "@/components/admin/studio/StructuralSketch";
 import ZoomableSvg from "@/components/admin/studio/ZoomableSvg";
 import PlaceholdersEditor from "@/components/admin/studio/PlaceholdersEditor";
+import TemplatesGallery from "@/components/admin/studio/TemplatesGallery";
+import { Tabs as StudioTabs, TabsContent, TabsList as StudioTabsList, TabsTrigger as StudioTabsTrigger } from "@/components/ui/tabs";
 import {
   studioV2Api,
   type CoverageCell,
