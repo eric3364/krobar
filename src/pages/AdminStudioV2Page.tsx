@@ -349,6 +349,10 @@ function ProductionScreen({
   const s = byRegistreSummary(cell);
 
   const persistKey = `krobar-studio-v2-prod:${cell.index}|${registre}|${selecteur ?? ""}`;
+  const baseUserMax = useMemo(() => {
+    const m = cell.index.match(/-(\d)-/);
+    return m ? parseInt(m[1], 10) : 1;
+  }, [cell.index]);
   type Persisted = {
     moteur: Moteur;
     gpt2Style: string | null;
@@ -357,8 +361,10 @@ function ProductionScreen({
     validated: boolean;
     placement?: PlaceZonesResponse | null;
     editedZones?: Record<string, ZonePair[]>;
-    placeholdersValidated?: boolean;
     placementsMode?: boolean;
+    userMax?: number;
+    produceByN?: Record<number, boolean>;
+    validatedByN?: Record<number, boolean>;
   };
   const loadPersisted = (): Persisted | null => {
     if (typeof window === "undefined") return null;
@@ -368,6 +374,12 @@ function ProductionScreen({
     } catch { return null; }
   };
   const initial = loadPersisted();
+
+  const initialProduce = (max: number): Record<number, boolean> => {
+    const r: Record<number, boolean> = {};
+    for (let i = 1; i <= max; i++) r[i] = true;
+    return r;
+  };
 
   const [moteur, setMoteur] = useState<Moteur>(initial?.moteur ?? "midjourney");
   const [gpt2Style, setGpt2Style] = useState<string | null>(initial?.gpt2Style ?? null);
@@ -383,8 +395,13 @@ function ProductionScreen({
   const [sizeInfo, setSizeInfo] = useState<{ before: number; after: number } | null>(null);
   const [placement, setPlacement] = useState<PlaceZonesResponse | null>(initial?.placement ?? null);
   const [editedZones, setEditedZones] = useState<Record<string, ZonePair[]>>(initial?.editedZones ?? {});
-  const [placeholdersValidated, setPlaceholdersValidated] = useState<boolean>(initial?.placeholdersValidated ?? false);
   const [placementsMode, setPlacementsMode] = useState<boolean>(initial?.placementsMode ?? false);
+  const [userMax, setUserMax] = useState<number>(initial?.userMax ?? baseUserMax);
+  const [produceByN, setProduceByN] = useState<Record<number, boolean>>(
+    initial?.produceByN ?? initialProduce(initial?.userMax ?? baseUserMax),
+  );
+  const [validatedByN, setValidatedByN] = useState<Record<number, boolean>>(initial?.validatedByN ?? {});
+  const [composition, setComposition] = useState<import("@/components/admin/studio/PlaceholdersEditor").CompositionReadyData | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Load charte once
@@ -396,7 +413,7 @@ function ProductionScreen({
     return () => { cancel = true; };
   }, []);
 
-  // Hydrate from storage when cell/registre/selecteur changes (e.g. user switches incarnation)
+  // Hydrate from storage when cell/registre/selecteur changes
   useEffect(() => {
     const p = loadPersisted();
     setPromptRes(p?.promptRes ?? null);
@@ -408,8 +425,11 @@ function ProductionScreen({
     setGpt2Style(p?.gpt2Style ?? null);
     setPlacement(p?.placement ?? null);
     setEditedZones(p?.editedZones ?? {});
-    setPlaceholdersValidated(p?.placeholdersValidated ?? false);
     setPlacementsMode(p?.placementsMode ?? false);
+    setUserMax(p?.userMax ?? baseUserMax);
+    setProduceByN(p?.produceByN ?? initialProduce(p?.userMax ?? baseUserMax));
+    setValidatedByN(p?.validatedByN ?? {});
+    setComposition(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cell.index, registre, selecteur]);
 
@@ -420,11 +440,13 @@ function ProductionScreen({
         persistKey,
         JSON.stringify({
           moteur, gpt2Style, promptRes, vectRes, validated,
-          placement, editedZones, placeholdersValidated, placementsMode,
+          placement, editedZones, placementsMode,
+          userMax, produceByN, validatedByN,
         } satisfies Persisted),
       );
     } catch { /* ignore quota */ }
-  }, [persistKey, moteur, gpt2Style, promptRes, vectRes, validated, placement, editedZones, placeholdersValidated, placementsMode]);
+  }, [persistKey, moteur, gpt2Style, promptRes, vectRes, validated, placement, editedZones, placementsMode, userMax, produceByN, validatedByN]);
+
 
 
 
