@@ -20,9 +20,6 @@ import {
   type InventoryResponse,
   type InventoryTemplate,
 } from "@/lib/templatesLifecycleApi";
-
-
-
 type StatusFilter = "all" | "active" | "disabled";
 
 function TemplateThumb({ tpl }: { tpl: InventoryTemplate }) {
