@@ -17,7 +17,7 @@ import AdminMatricePage from "./pages/AdminMatricePage.tsx";
 import AdminFeatureFlagsPage from "./pages/AdminFeatureFlagsPage.tsx";
 import AdminLibraryPage from "./pages/AdminLibraryPage.tsx";
 import AdminLibraryTemplatePage from "./pages/AdminLibraryTemplatePage.tsx";
-import AdminTemplatesLifecyclePage from "./pages/AdminTemplatesLifecyclePage.tsx";
+
 import AuthPage from "./pages/Auth.tsx";
 import ResetPassword from "./pages/ResetPassword.tsx";
 import SicaiHome from "./pages/sicai/SicaiHomePage.tsx";
