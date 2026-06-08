@@ -21,32 +21,40 @@ import {
   type InventoryTemplate,
 } from "@/lib/templatesLifecycleApi";
 
-type StatusFilter = "all" | "active" | "disabled";
+import { libraryApi } from "@/lib/libraryApi";
 
-const SVG_BASE = "https://krobar.online/templates/";
+type StatusFilter = "all" | "active" | "disabled";
 
 function TemplateThumb({ tpl }: { tpl: InventoryTemplate }) {
   const [svg, setSvg] = useState<string | null>(null);
-  const [state, setState] = useState<"loading" | "ok" | "error">("loading");
+  const [state, setState] = useState<"loading" | "ok" | "empty">("loading");
 
   useEffect(() => {
     let alive = true;
-    if (!tpl.svg_exists) {
-      setState("error");
-      return;
-    }
     setState("loading");
     setSvg(null);
-    fetch(`${SVG_BASE}${tpl.file}`)
-      .then((r) => r.ok ? r.text() : Promise.reject(new Error(String(r.status))))
-      .then((txt) => {
+    (async () => {
+      try {
+        const list = await libraryApi.listPreviews(tpl.id);
+        const first = list.previews?.[0];
+        if (!first) {
+          if (alive) setState("empty");
+          return;
+        }
+        const full = await libraryApi.getPreview(first.id);
         if (!alive) return;
-        setSvg(txt);
-        setState("ok");
-      })
-      .catch(() => alive && setState("error"));
+        if (full.rendered_svg) {
+          setSvg(full.rendered_svg);
+          setState("ok");
+        } else {
+          setState("empty");
+        }
+      } catch {
+        if (alive) setState("empty");
+      }
+    })();
     return () => { alive = false; };
-  }, [tpl.file, tpl.svg_exists]);
+  }, [tpl.id]);
 
   if (state === "loading") {
     return (
@@ -55,11 +63,11 @@ function TemplateThumb({ tpl }: { tpl: InventoryTemplate }) {
       </div>
     );
   }
-  if (state === "error" || !svg) {
+  if (state === "empty" || !svg) {
     return (
       <div className="w-full h-full flex flex-col items-center justify-center gap-1 text-muted-foreground">
         <ImageOff className="w-6 h-6" />
-        <span className="text-xs">SVG manquant</span>
+        <span className="text-xs">aucun aperçu</span>
       </div>
     );
   }
