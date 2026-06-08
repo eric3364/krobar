@@ -184,7 +184,7 @@ export default function PlaceholdersEditor({
     setError(null);
     try {
       const r = await studioV2Api.placeZones({
-        occupancy, viewbox, cardinality_max: cardinalityMax,
+        occupancy, viewbox, cardinality_max: userMax,
       });
       onPlacementLoaded(r);
     } catch (e) {
@@ -192,7 +192,7 @@ export default function PlaceholdersEditor({
     } finally {
       setLoading(false);
     }
-  }, [occupancy, viewbox, cardinalityMax, onPlacementLoaded]);
+  }, [occupancy, viewbox, userMax, onPlacementLoaded]);
 
   useEffect(() => {
     if (!placement && !loading) fetchPlacement();
