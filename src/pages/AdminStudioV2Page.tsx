@@ -1024,11 +1024,26 @@ function MetadataExportPanel(props: {
         </div>
       </div>
 
-      <div className="flex gap-2">
-        <Button onClick={handleExport} disabled={exporting || !meta.best_for}>
-          {exporting ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : null}
-          Exporter dans la bibliothèque
-        </Button>
+      <div className="flex flex-col gap-1">
+        <div className="flex gap-2">
+          <Button
+            onClick={handleExport}
+            disabled={exporting || !meta.best_for || pendingExportNs.length > 0}
+            title={
+              pendingExportNs.length > 0
+                ? `Validez d'abord les cardinalités : ${pendingExportNs.join(", ")}`
+                : undefined
+            }
+          >
+            {exporting ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : null}
+            Exporter dans la bibliothèque
+          </Button>
+        </div>
+        {pendingExportNs.length > 0 && (
+          <p className="text-xs text-amber-700 dark:text-amber-300">
+            Validez d'abord les cardinalités : {pendingExportNs.join(", ")}
+          </p>
+        )}
       </div>
 
       {exportResult && (
