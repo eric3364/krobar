@@ -810,6 +810,7 @@ function ProductionScreen({
             onPlacementLoaded={(p) => { setPlacement(p); setEditedZones({}); }}
             onEditedChange={setEditedZones}
             onCompositionReady={setComposition}
+            ratioLabel={vectRes.metrics?.ratio_label}
           />
 
         ) : (
