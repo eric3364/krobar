@@ -57,7 +57,7 @@ const App = () => (
             <Route path="/admin/studio-legacy" element={<AdminRoute><AdminStudioPage /></AdminRoute>} />
             <Route path="/admin/library" element={<AdminRoute><AdminLibraryPage /></AdminRoute>} />
             <Route path="/admin/library/:templateId" element={<AdminRoute><AdminLibraryTemplatePage /></AdminRoute>} />
-            <Route path="/admin/templates-lifecycle" element={<AdminRoute><AdminTemplatesLifecyclePage /></AdminRoute>} />
+            
             
             <Route path="/admin/feature-flags" element={<AdminRoute><AdminFeatureFlagsPage /></AdminRoute>} />
             <Route path="/admin/matrice" element={<AdminRoute><AdminMatricePage /></AdminRoute>} />
