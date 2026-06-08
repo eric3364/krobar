@@ -1,10 +1,22 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, Sparkles, Palette, Download, LogIn, LogOut, UserPlus, LayoutDashboard } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { BYPASS_AUTH } from "@/lib/devAuth";
 
 export default function Landing() {
   const navigate = useNavigate();
-  const { user, signOut } = useAuth();
+  const { user, signOut, isAdmin } = useAuth();
+
+  // Restore last admin path after a preview refresh that resets URL to "/"
+  useEffect(() => {
+    if (!BYPASS_AUTH && !(user && isAdmin)) return;
+    let last: string | null = null;
+    try { last = localStorage.getItem("krobar.lastAdminPath"); } catch { /* ignore */ }
+    if (last && last.startsWith("/admin")) {
+      navigate(last, { replace: true });
+    }
+  }, [user, isAdmin, navigate]);
 
   return (
     <div className="min-h-dvh antialiased flex flex-col items-center py-8 px-4 bg-secondary text-foreground selection:bg-primary selection:text-primary-foreground">
