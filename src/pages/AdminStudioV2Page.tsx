@@ -880,6 +880,15 @@ function MetadataExportPanel(props: {
   const [exportResult, setExportResult] = useState<import("@/lib/studioV2Api").ExportResponse | null>(null);
   const [markerInput, setMarkerInput] = useState("");
 
+  const pendingExportNs = useMemo(
+    () =>
+      Object.keys(produceByN)
+        .map(Number)
+        .filter((n) => produceByN[n] && !validatedByN[n])
+        .sort((a, b) => a - b),
+    [produceByN, validatedByN],
+  );
+
   useEffect(() => {
     studioV2Api.matchingTypes().then((r) => setGroups(r.groups)).catch(() => {});
   }, []);
