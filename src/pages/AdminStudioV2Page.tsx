@@ -845,9 +845,199 @@ function ProductionScreen({
           </div>
         )}
       </Card>
+
+      {composition && (
+        <MetadataExportPanel
+          cell={cell}
+          incarnation={promptRes?.incarnation_source ?? ""}
+          domain={registre === "domain" ? (selecteur ?? "") : ""}
+          vectorizedSvg={vectRes?.svg ?? ""}
+          composition={composition}
+        />
+      )}
     </div>
   );
 }
+
+function MetadataExportPanel(props: {
+  cell: CoverageCell;
+  incarnation: string;
+  domain: string;
+  vectorizedSvg: string;
+  composition: import("@/components/admin/studio/PlaceholdersEditor").CompositionReadyData;
+}) {
+  const { cell, incarnation, domain, vectorizedSvg, composition } = props;
+  const [meta, setMeta] = useState<{ best_for: string; textual_markers: string[]; matching_types: string[] }>({
+    best_for: "", textual_markers: [], matching_types: [],
+  });
+  const [groups, setGroups] = useState<import("@/lib/studioV2Api").MatchingGroup[]>([]);
+  const [loadingSuggest, setLoadingSuggest] = useState(false);
+  const [exporting, setExporting] = useState(false);
+  const [exportResult, setExportResult] = useState<import("@/lib/studioV2Api").ExportResponse | null>(null);
+  const [markerInput, setMarkerInput] = useState("");
+
+  useEffect(() => {
+    studioV2Api.matchingTypes().then((r) => setGroups(r.groups)).catch(() => {});
+  }, []);
+
+  const suggest = async () => {
+    setLoadingSuggest(true);
+    try {
+      const r = await studioV2Api.suggestMetadata({
+        cell: { family: cell.family as string, cardinality: cell.cardinality as string, regime: cell.regime as string },
+        incarnation,
+      });
+      setMeta({ best_for: r.best_for, textual_markers: r.textual_markers, matching_types: r.matching_types });
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Suggestion impossible");
+    } finally {
+      setLoadingSuggest(false);
+    }
+  };
+
+  useEffect(() => { if (!meta.best_for) suggest(); /* eslint-disable-next-line */ }, []);
+
+  const toggleMatchingType = (id: string) => {
+    setMeta((m) => ({
+      ...m,
+      matching_types: m.matching_types.includes(id)
+        ? m.matching_types.filter((x) => x !== id)
+        : [...m.matching_types, id],
+    }));
+  };
+
+  const handleExport = async () => {
+    setExporting(true);
+    try {
+      const r = await studioV2Api.exportTemplates({
+        composition: {
+          cell: {
+            index: cell.index,
+            family: cell.family as string,
+            cardinality: cell.cardinality as string,
+            regime: cell.regime as string,
+            incarnation,
+          },
+          viewbox: composition.viewbox,
+          decor: { vectorized_svg: vectorizedSvg, transform: composition.transform },
+          gabarit: composition.gabarit,
+          metadata: {
+            category: "Visual Metaphors",
+            domain,
+            best_for: meta.best_for,
+            textual_markers: meta.textual_markers,
+            matching_types: meta.matching_types,
+          },
+          zones_by_cardinality: composition.zones_by_cardinality,
+        },
+      });
+      setExportResult(r);
+      toast.success("Templates déployés");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Export impossible");
+    } finally {
+      setExporting(false);
+    }
+  };
+
+  return (
+    <Card className="p-4 space-y-4">
+      <div className="flex items-center justify-between">
+        <h3 className="text-sm font-semibold uppercase tracking-wider">Référencement</h3>
+        <Button size="sm" variant="outline" onClick={suggest} disabled={loadingSuggest}>
+          {loadingSuggest ? <Loader2 className="w-4 h-4 animate-spin" /> : "Re-suggérer"}
+        </Button>
+      </div>
+
+      <div className="space-y-1">
+        <label className="text-xs font-medium">best_for</label>
+        <textarea
+          value={meta.best_for}
+          onChange={(e) => setMeta((m) => ({ ...m, best_for: e.target.value }))}
+          className="w-full min-h-[60px] text-sm p-2 rounded border bg-background"
+        />
+      </div>
+
+      <div className="space-y-1">
+        <label className="text-xs font-medium">textual_markers</label>
+        <div className="flex flex-wrap gap-1">
+          {meta.textual_markers.map((t) => (
+            <Badge key={t} variant="secondary" className="cursor-pointer" onClick={() => setMeta((m) => ({ ...m, textual_markers: m.textual_markers.filter((x) => x !== t) }))}>
+              {t} ×
+            </Badge>
+          ))}
+        </div>
+        <div className="flex gap-1 mt-1">
+          <input
+            value={markerInput}
+            onChange={(e) => setMarkerInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && markerInput.trim()) {
+                e.preventDefault();
+                setMeta((m) => ({ ...m, textual_markers: [...m.textual_markers, markerInput.trim()] }));
+                setMarkerInput("");
+              }
+            }}
+            placeholder="Ajouter un marqueur (Entrée)"
+            className="text-xs h-7 px-2 border rounded bg-background flex-1"
+          />
+        </div>
+      </div>
+
+      <div className="space-y-1">
+        <label className="text-xs font-medium">matching_types</label>
+        <div className="space-y-2 max-h-[200px] overflow-auto border rounded p-2">
+          {groups.map((g) => (
+            <div key={g.id}>
+              <p className="text-[11px] font-semibold text-muted-foreground">{g.label}</p>
+              <div className="flex flex-wrap gap-1">
+                {g.matching_types.map((mt) => (
+                  <button
+                    key={mt.id}
+                    onClick={() => toggleMatchingType(mt.id)}
+                    className={[
+                      "text-[11px] px-2 py-0.5 rounded border",
+                      meta.matching_types.includes(mt.id)
+                        ? "bg-primary text-primary-foreground border-primary"
+                        : "bg-background hover:bg-muted",
+                    ].join(" ")}
+                  >
+                    {mt.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex gap-2">
+        <Button onClick={handleExport} disabled={exporting || !meta.best_for}>
+          {exporting ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : null}
+          Exporter dans la bibliothèque
+        </Button>
+      </div>
+
+      {exportResult && (
+        <div className="rounded-md border bg-emerald-500/10 border-emerald-500/30 p-3 text-xs space-y-1">
+          <p className="font-medium text-emerald-700 dark:text-emerald-300">
+            Déployé : {exportResult.deployed.join(", ") || "—"} ({exportResult.deployed.length} fichier{exportResult.deployed.length > 1 ? "s" : ""})
+          </p>
+          {exportResult.skipped.length > 0 && (
+            <p className="text-muted-foreground">Ignorés (déjà existants) : {exportResult.skipped.join(", ")}</p>
+          )}
+          {exportResult.restart_required && (
+            <p className="text-amber-700 dark:text-amber-300 font-medium">
+              ⚠ Redémarrage requis : l'administrateur doit relancer le service et passer le smoke test pour que les templates soient servis.
+            </p>
+          )}
+          <p className="text-muted-foreground">Manifest total : {exportResult.manifest_total} · backup : {exportResult.backup}</p>
+        </div>
+      )}
+    </Card>
+  );
+}
+
 
 function VerdictBadge({ verdict }: { verdict: VectorizeResponse["metrics"]["verdict"] }) {
   if (verdict === "clean")
