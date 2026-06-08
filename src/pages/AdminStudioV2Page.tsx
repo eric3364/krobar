@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Select,
   SelectContent,
@@ -23,7 +23,6 @@ import StructuralSketch from "@/components/admin/studio/StructuralSketch";
 import ZoomableSvg from "@/components/admin/studio/ZoomableSvg";
 import PlaceholdersEditor from "@/components/admin/studio/PlaceholdersEditor";
 import TemplatesGallery from "@/components/admin/studio/TemplatesGallery";
-import { Tabs as StudioTabs, TabsContent, TabsList as StudioTabsList, TabsTrigger as StudioTabsTrigger } from "@/components/ui/tabs";
 import {
   studioV2Api,
   type CoverageCell,
