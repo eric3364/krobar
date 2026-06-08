@@ -81,6 +81,7 @@ export type VectorizeMetrics = {
   verdict: "clean" | "acceptable" | "charcoal_suspect";
   shadow_blobs_removed: number;
   cropped_size: [number, number];
+  ratio_label?: string;
 };
 
 export type Occupancy = {
