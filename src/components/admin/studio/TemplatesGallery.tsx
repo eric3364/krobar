@@ -1,16 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, Loader2, AlertTriangle, Trash2, RefreshCw } from "lucide-react";
+import { AlertTriangle, ImageOff, Loader2, RefreshCw, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
-import {
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
-} from "@/components/ui/table";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
@@ -27,7 +23,55 @@ import {
 
 type StatusFilter = "all" | "active" | "disabled";
 
-export default function AdminTemplatesLifecyclePage() {
+const SVG_BASE = "https://krobar.online/templates/";
+
+function TemplateThumb({ tpl }: { tpl: InventoryTemplate }) {
+  const [svg, setSvg] = useState<string | null>(null);
+  const [state, setState] = useState<"loading" | "ok" | "error">("loading");
+
+  useEffect(() => {
+    let alive = true;
+    if (!tpl.svg_exists) {
+      setState("error");
+      return;
+    }
+    setState("loading");
+    setSvg(null);
+    fetch(`${SVG_BASE}${tpl.file}`)
+      .then((r) => r.ok ? r.text() : Promise.reject(new Error(String(r.status))))
+      .then((txt) => {
+        if (!alive) return;
+        setSvg(txt);
+        setState("ok");
+      })
+      .catch(() => alive && setState("error"));
+    return () => { alive = false; };
+  }, [tpl.file, tpl.svg_exists]);
+
+  if (state === "loading") {
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+  if (state === "error" || !svg) {
+    return (
+      <div className="w-full h-full flex flex-col items-center justify-center gap-1 text-muted-foreground">
+        <ImageOff className="w-6 h-6" />
+        <span className="text-xs">SVG manquant</span>
+      </div>
+    );
+  }
+  return (
+    <div
+      className="w-full h-full [&>svg]:w-full [&>svg]:h-full [&>svg]:block"
+      dangerouslySetInnerHTML={{ __html: svg }}
+    />
+  );
+}
+
+export default function TemplatesGallery() {
   const [data, setData] = useState<InventoryResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -80,14 +124,9 @@ export default function AdminTemplatesLifecyclePage() {
   const handleToggle = async (tpl: InventoryTemplate, next: boolean) => {
     setTogglingId(tpl.id);
     try {
-      const r = await templatesLifecycleApi.setDisabled(tpl.id, next);
-      setData((prev) => prev ? {
-        ...prev,
-        active: prev.active + (next ? -1 : 1),
-        disabled: prev.disabled + (next ? 1 : -1),
-        templates: prev.templates.map((x) => x.id === tpl.id ? { ...x, disabled: r.disabled } : x),
-      } : prev);
+      await templatesLifecycleApi.setDisabled(tpl.id, next);
       toast.success(next ? `« ${tpl.name} » désactivé` : `« ${tpl.name} » réactivé`);
+      await load();
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Échec de la bascule");
     } finally {
@@ -100,15 +139,9 @@ export default function AdminTemplatesLifecyclePage() {
     setDeleting(true);
     try {
       await templatesLifecycleApi.remove(deleteTarget.id);
-      setData((prev) => prev ? {
-        ...prev,
-        total: prev.total - 1,
-        active: prev.active - (deleteTarget.disabled ? 0 : 1),
-        disabled: prev.disabled - (deleteTarget.disabled ? 1 : 0),
-        templates: prev.templates.filter((x) => x.id !== deleteTarget.id),
-      } : prev);
       toast.success(`« ${deleteTarget.name} » supprimé définitivement`);
       setDeleteTarget(null);
+      await load();
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Échec de la suppression");
     } finally {
@@ -117,22 +150,7 @@ export default function AdminTemplatesLifecyclePage() {
   };
 
   return (
-    <div className="min-h-screen p-6 max-w-7xl mx-auto space-y-6">
-      <div className="flex items-center justify-between gap-4">
-        <div>
-          <Button asChild variant="ghost" size="sm">
-            <Link to="/admin"><ArrowLeft className="w-4 h-4" /> Retour</Link>
-          </Button>
-          <h1 className="text-3xl font-bold mt-2">Cycle de vie des templates</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Inventaire complet : activer / désactiver (réversible) ou supprimer définitivement.
-          </p>
-        </div>
-        <Button variant="outline" size="sm" onClick={load} disabled={loading}>
-          <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} /> Rafraîchir
-        </Button>
-      </div>
-
+    <div className="space-y-4">
       <div className="grid grid-cols-3 gap-4">
         <Card className="p-4">
           <div className="text-xs uppercase text-muted-foreground">Total</div>
@@ -189,86 +207,79 @@ export default function AdminTemplatesLifecyclePage() {
               </SelectContent>
             </Select>
           </div>
+          <Button variant="outline" size="sm" onClick={load} disabled={loading}>
+            <RefreshCw className={`w-4 h-4 mr-1 ${loading ? "animate-spin" : ""}`} /> Rafraîchir
+          </Button>
         </div>
 
         {loading ? (
           <div className="py-12 text-center"><Loader2 className="animate-spin mx-auto" /></div>
+        ) : filtered.length === 0 ? (
+          <div className="py-12 text-center text-muted-foreground">
+            Aucun template ne correspond aux filtres.
+          </div>
         ) : (
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Nom</TableHead>
-                  <TableHead>Catégorie</TableHead>
-                  <TableHead>Tier</TableHead>
-                  <TableHead>Figuratif</TableHead>
-                  <TableHead>Statut</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filtered.map((t) => (
-                  <TableRow key={t.id} className={t.disabled ? "opacity-60" : ""}>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <div>
-                          <div className="font-medium">{t.name}</div>
-                          <div className="font-mono text-[11px] text-muted-foreground">{t.id}</div>
-                        </div>
-                        {!t.svg_exists && (
-                          <Badge variant="destructive" className="gap-1">
-                            <AlertTriangle className="w-3 h-3" /> SVG manquant
-                          </Badge>
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-sm">{t.category}</TableCell>
-                    <TableCell><Badge variant="outline">{t.tier}</Badge></TableCell>
-                    <TableCell>
-                      {t.figurative
-                        ? <Badge variant="secondary">Oui</Badge>
-                        : <span className="text-muted-foreground text-xs">—</span>}
-                    </TableCell>
-                    <TableCell>
-                      {t.disabled
-                        ? <Badge variant="outline" className="text-muted-foreground">Désactivé</Badge>
-                        : <Badge className="bg-green-600 hover:bg-green-600">Actif</Badge>}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex items-center justify-end gap-3">
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs text-muted-foreground">
-                            {t.disabled ? "Off" : "On"}
-                          </span>
-                          <Switch
-                            checked={!t.disabled}
-                            disabled={togglingId === t.id}
-                            onCheckedChange={(v) => handleToggle(t, !v)}
-                            aria-label="Activer/désactiver"
-                          />
-                        </div>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="text-destructive hover:text-destructive hover:bg-destructive/10"
-                          onClick={() => setDeleteTarget(t)}
-                          title="Supprimer définitivement (irréversible)"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-                {filtered.length === 0 && (
-                  <TableRow>
-                    <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
-                      Aucun template ne correspond aux filtres.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
+          <div
+            className="grid gap-4"
+            style={{ gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))" }}
+          >
+            {filtered.map((t) => (
+              <Card
+                key={t.id}
+                className={`overflow-hidden flex flex-col ${t.disabled ? "opacity-50 grayscale" : ""}`}
+              >
+                <div className="aspect-[4/3] w-full bg-muted/30 border-b overflow-hidden">
+                  <TemplateThumb tpl={t} />
+                </div>
+                <div className="p-3 flex-1 flex flex-col gap-2">
+                  <div>
+                    <div className="font-medium leading-tight line-clamp-2">{t.name}</div>
+                    <div className="font-mono text-[11px] text-muted-foreground truncate" title={t.id}>
+                      {t.id}
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-1">
+                    <Badge variant="secondary" className="text-[10px]">{t.category}</Badge>
+                    <Badge variant="outline" className="text-[10px]">{t.tier}</Badge>
+                    {t.figurative && (
+                      <Badge className="text-[10px] bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/30">
+                        figuratif
+                      </Badge>
+                    )}
+                    {!t.svg_exists && (
+                      <Badge variant="destructive" className="text-[10px] gap-1">
+                        <AlertTriangle className="w-3 h-3" /> SVG manquant
+                      </Badge>
+                    )}
+                    {t.disabled
+                      ? <Badge variant="outline" className="text-[10px] text-muted-foreground">Désactivé</Badge>
+                      : <Badge className="text-[10px] bg-green-600 hover:bg-green-600">Actif</Badge>}
+                  </div>
+                  <div className="mt-auto pt-2 flex items-center justify-between border-t">
+                    <div className="flex items-center gap-2">
+                      <Switch
+                        checked={!t.disabled}
+                        disabled={togglingId === t.id}
+                        onCheckedChange={(v) => handleToggle(t, !v)}
+                        aria-label="Activer/désactiver"
+                      />
+                      <span className="text-xs text-muted-foreground">
+                        {t.disabled ? "Off" : "On"}
+                      </span>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                      onClick={() => setDeleteTarget(t)}
+                      title="Supprimer définitivement (irréversible)"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              </Card>
+            ))}
           </div>
         )}
         <p className="text-xs text-muted-foreground">
@@ -304,7 +315,7 @@ export default function AdminTemplatesLifecyclePage() {
               disabled={deleting}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              {deleting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+              {deleting ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <Trash2 className="w-4 h-4 mr-1" />}
               Supprimer définitivement
             </AlertDialogAction>
           </AlertDialogFooter>

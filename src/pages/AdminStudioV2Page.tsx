@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Select,
   SelectContent,
@@ -22,6 +22,7 @@ import {
 import StructuralSketch from "@/components/admin/studio/StructuralSketch";
 import ZoomableSvg from "@/components/admin/studio/ZoomableSvg";
 import PlaceholdersEditor from "@/components/admin/studio/PlaceholdersEditor";
+import TemplatesGallery from "@/components/admin/studio/TemplatesGallery";
 import {
   studioV2Api,
   type CoverageCell,
@@ -150,15 +151,26 @@ export default function AdminStudioV2Page() {
 
       <main className="w-full px-4 md:px-6 py-6">
         {!active && (
-          <CoverageScreen
-            loading={loadingCoverage}
-            error={coverageError}
-            coverage={coverage}
-            groupedCells={groupedCells}
-            onPick={(cell) =>
-              setActive({ cell, registre: pickDefaultRegistre(cell), selecteur: pickDefaultSelecteur(cell) })
-            }
-          />
+          <Tabs defaultValue="production" className="space-y-4">
+            <TabsList>
+              <TabsTrigger value="production">Production</TabsTrigger>
+              <TabsTrigger value="library">Bibliothèque</TabsTrigger>
+            </TabsList>
+            <TabsContent value="production" className="mt-0">
+              <CoverageScreen
+                loading={loadingCoverage}
+                error={coverageError}
+                coverage={coverage}
+                groupedCells={groupedCells}
+                onPick={(cell) =>
+                  setActive({ cell, registre: pickDefaultRegistre(cell), selecteur: pickDefaultSelecteur(cell) })
+                }
+              />
+            </TabsContent>
+            <TabsContent value="library" className="mt-0">
+              <TemplatesGallery />
+            </TabsContent>
+          </Tabs>
         )}
         {active && (
           <ProductionScreen
