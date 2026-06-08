@@ -703,16 +703,17 @@ export default function PlaceholdersEditor({
         </div>
       )}
 
-      {pendingNs.length > 0 && !habillageMode && (
+      {placementMode && pendingNs.length > 0 && (
         <div className="text-xs px-2 py-1 rounded border bg-amber-500/10 border-amber-500/30 text-amber-700 dark:text-amber-300">
           Validées {producedNs.filter((n) => validatedByN[n]).length}/{producedNs.length} — reste à valider : {pendingNs.join(", ")}
         </div>
       )}
-      {producedNs.length > 0 && pendingNs.length === 0 && !habillageMode && (
+      {cropValidated && producedNs.length > 0 && pendingNs.length === 0 && !habillageValidated && (
         <div className="text-xs px-2 py-1 rounded border bg-emerald-500/10 border-emerald-500/30 text-emerald-700 dark:text-emerald-300">
-          Toutes les cardinalités sont validées
+          Toutes les cardinalités sont validées — passe à l'habillage
         </div>
       )}
+
 
       {error && (
         <div className="text-xs text-destructive flex items-center gap-1">
