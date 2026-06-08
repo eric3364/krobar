@@ -81,7 +81,7 @@ export default function Admin() {
         </div>
         <div className="flex gap-2">
           <Button asChild variant="outline" size="sm"><Link to="/admin/library">Bibliothèque</Link></Button>
-          
+          <Button asChild variant="outline" size="sm"><Link to="/admin/templates-lifecycle">Cycle de vie</Link></Button>
           <Button asChild size="sm"><Link to="/admin/studio">Studio</Link></Button>
         </div>
       </div>
