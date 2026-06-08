@@ -723,13 +723,21 @@ export default function PlaceholdersEditor({
         className="relative w-full bg-background border rounded-md overflow-hidden"
         style={{ aspectRatio: `${workViewbox[2]} / ${workViewbox[3]}` }}
       >
-        {/* Illustration centrée verticalement dans la zone de travail élargie,
-            à sa taille réelle (pas de déformation). */}
+        {/* Illustration positionnée à sa place réelle dans le workViewbox.
+            Pendant le crop : workViewbox élargi → illustration centrée.
+            Après crop      : workViewbox = cropRect → l'illustration peut déborder
+            mais l'overflow:hidden du conteneur cache le hors-cadre. */}
         <div
-          className="absolute left-0 w-full [&>svg]:w-full [&>svg]:h-full"
-          style={{ top: `${imageTopPct}%`, height: `${imageHeightPct}%` }}
+          className="absolute [&>svg]:w-full [&>svg]:h-full"
+          style={{
+            left: `${imageLeftPct}%`,
+            top: `${imageTopPct}%`,
+            width: `${imageWidthPct}%`,
+            height: `${imageHeightPct}%`,
+          }}
           dangerouslySetInnerHTML={{ __html: svg }}
         />
+
         <svg
           ref={overlayRef}
           className="absolute inset-0 w-full h-full"
