@@ -653,6 +653,12 @@ export default function PlaceholdersEditor({
         </div>
       )}
 
+      {pendingNs.length > 0 && !habillageMode && (
+        <div className="text-xs px-2 py-1 rounded border bg-amber-500/10 border-amber-500/30 text-amber-700 dark:text-amber-300">
+          Cardinalité{pendingNs.length > 1 ? "s" : ""} à valider : {pendingNs.join(", ")}
+        </div>
+      )}
+
       {error && (
         <div className="text-xs text-destructive flex items-center gap-1">
           <AlertTriangle className="w-3 h-3" /> {error}
