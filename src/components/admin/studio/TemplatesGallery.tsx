@@ -21,60 +21,25 @@ import {
   type InventoryTemplate,
 } from "@/lib/templatesLifecycleApi";
 
-import { libraryApi } from "@/lib/libraryApi";
+
 
 type StatusFilter = "all" | "active" | "disabled";
 
 function TemplateThumb({ tpl }: { tpl: InventoryTemplate }) {
-  const [svg, setSvg] = useState<string | null>(null);
-  const [state, setState] = useState<"loading" | "ok" | "empty">("loading");
-
-  useEffect(() => {
-    let alive = true;
-    setState("loading");
-    setSvg(null);
-    (async () => {
-      try {
-        const list = await libraryApi.listPreviews(tpl.id);
-        const first = list.previews?.[0];
-        if (!first) {
-          if (alive) setState("empty");
-          return;
-        }
-        const full = await libraryApi.getPreview(first.id);
-        if (!alive) return;
-        if (full.rendered_svg) {
-          setSvg(full.rendered_svg);
-          setState("ok");
-        } else {
-          setState("empty");
-        }
-      } catch {
-        if (alive) setState("empty");
-      }
-    })();
-    return () => { alive = false; };
-  }, [tpl.id]);
-
-  if (state === "loading") {
-    return (
-      <div className="w-full h-full flex items-center justify-center">
-        <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
-      </div>
-    );
-  }
-  if (state === "empty" || !svg) {
+  if (!tpl.svg_exists) {
     return (
       <div className="w-full h-full flex flex-col items-center justify-center gap-1 text-muted-foreground">
         <ImageOff className="w-6 h-6" />
-        <span className="text-xs">aucun aperçu</span>
+        <span className="text-xs">SVG manquant</span>
       </div>
     );
   }
   return (
-    <div
-      className="w-full h-full [&>svg]:w-full [&>svg]:h-full [&>svg]:block"
-      dangerouslySetInnerHTML={{ __html: svg }}
+    <img
+      src={`/templates/${tpl.file}`}
+      alt={tpl.name}
+      className="w-full h-full object-contain"
+      loading="lazy"
     />
   );
 }
