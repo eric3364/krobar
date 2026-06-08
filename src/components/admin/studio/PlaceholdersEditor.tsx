@@ -86,13 +86,14 @@ function ensureRect(pair: ZonePair, vb: Viewbox): ZonePair {
 }
 
 export default function PlaceholdersEditor({
-  svg, viewbox, occupancy, cardinalityMax,
+  svg, viewbox, occupancy, userMax, onUserMaxChange,
+  produceByN, onProduceChange, validatedByN, onValidateCard,
   placement, editedZones, onPlacementLoaded, onEditedChange,
-  onValidate, validated,
+  onCompositionReady,
 }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [card, setCard] = useState<number>(cardinalityMax);
+  const [card, setCard] = useState<number>(userMax);
   const [backplates, setBackplates] = useState<Record<string, boolean>>({});
   // Lorem permanent (toujours affiché). Longueur + taille de police sont GLOBALES.
   const [loremLen, setLoremLen] = useState<LoremLen>("medium");
