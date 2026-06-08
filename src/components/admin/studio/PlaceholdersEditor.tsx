@@ -149,6 +149,24 @@ export default function PlaceholdersEditor({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cropRatio, cropValidated]);
 
+  const overlayRef = useRef<SVGSVGElement>(null);
+  const loremRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  // Validation states derived from per-cardinality props.
+  // Nouvel ordre du pipeline : recadrage → placement par cardinalité → habillage.
+  const currentValidated = !!validatedByN[card];
+  const producedNs = useMemo(
+    () => Object.keys(produceByN).map(Number).filter((n) => produceByN[n]).sort((a, b) => a - b),
+    [produceByN],
+  );
+  const pendingNs = producedNs.filter((n) => !validatedByN[n]);
+  const allValidated = producedNs.length > 0 && pendingNs.length === 0;
+  const cropMode = !cropValidated;
+  const placementMode = cropValidated && !allValidated;
+  const habillageMode = cropValidated && allValidated; // habillage UI après validation de toutes les cardinalités
+
+
+
 
   const zKey = (n: number) => `${card}:${n}`;
   const toggleBackplate = (n: number) =>
