@@ -853,6 +853,8 @@ function ProductionScreen({
           domain={registre === "domain" ? (selecteur ?? "") : ""}
           vectorizedSvg={vectRes?.svg ?? ""}
           composition={composition}
+          produceByN={produceByN}
+          validatedByN={validatedByN}
         />
       )}
     </div>
