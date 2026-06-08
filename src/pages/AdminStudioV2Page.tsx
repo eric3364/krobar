@@ -799,14 +799,19 @@ function ProductionScreen({
             svg={vectRes.svg}
             viewbox={vectRes.viewbox}
             occupancy={vectRes.occupancy}
-            cardinalityMax={cardinalityMax}
+            userMax={userMax}
+            onUserMaxChange={handleUserMaxChange}
+            produceByN={produceByN}
+            onProduceChange={setProduceByN}
+            validatedByN={validatedByN}
+            onValidateCard={handleValidateCard}
             placement={placement}
             editedZones={editedZones}
             onPlacementLoaded={(p) => { setPlacement(p); setEditedZones({}); }}
             onEditedChange={setEditedZones}
-            onValidate={() => { setPlaceholdersValidated(true); toast.success("Placeholders validés"); }}
-            validated={placeholdersValidated}
+            onCompositionReady={setComposition}
           />
+
         ) : (
           <div
             className="relative w-full bg-muted/30 border rounded-md overflow-hidden"
