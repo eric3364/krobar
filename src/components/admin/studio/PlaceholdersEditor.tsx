@@ -413,6 +413,69 @@ export default function PlaceholdersEditor({
     await fetchPlacement();
   };
 
+  // Build the composition payload (zones expressed in the cropped viewbox)
+  const buildComposition = useCallback((): CompositionReadyData | null => {
+    if (!cropRect || !commonSize) return null;
+    const tx = viewbox[0] - cropRect.x;
+    const ty = viewbox[1] - cropRect.y;
+    const zbc: Record<string, ExportZone[]> = {};
+    for (const n of producedNs) {
+      if (!validatedByN[n]) continue;
+      const key = String(n);
+      const list = (editedZones[key] ?? placement?.by_cardinality?.[key] ?? [])
+        .map((p) => ensureRect(p, viewbox));
+      const out: ExportZone[] = [];
+      for (const z of list) {
+        if (!z.rect || !z.icon) continue;
+        const rect = {
+          x: z.rect.x - cropRect.x,
+          y: z.rect.y - cropRect.y,
+          w: commonSize.w,
+          h: commonSize.h,
+        };
+        const habKey = `${n}:${z.n}`;
+        const mode = (habMode[habKey] ?? "integre") as "integre" | "cartouche";
+        const auto =
+          (z.rect.x + z.rect.w / 2) < (viewbox[0] + viewbox[2] / 2) ? "right" : "left";
+        const side = (traitSide[habKey] ?? auto) as "left" | "right";
+        const bp = !!backplates[habKey];
+        let icon: ZoneRect;
+        if (mode === "cartouche") {
+          const isz = Math.min(z.icon.w, z.icon.h);
+          const traitXAbs = side === "left" ? z.rect.x - 4 : z.rect.x + commonSize.w + 4;
+          const ixAbs = side === "left" ? traitXAbs - 4 - isz : traitXAbs + 4;
+          icon = { x: ixAbs - cropRect.x, y: z.rect.y - cropRect.y, w: isz, h: isz };
+        } else {
+          const iconOnRight = z.icon.x >= z.rect.x + z.rect.w / 2;
+          const gap = 4;
+          const ixAbs = iconOnRight
+            ? z.rect.x + commonSize.w + gap
+            : z.rect.x - z.icon.w - gap;
+          icon = { x: ixAbs - cropRect.x, y: z.rect.y - cropRect.y, w: z.icon.w, h: z.icon.h };
+        }
+        out.push({ n: z.n, rect, icon, mode, trait_side: side, backplate: bp });
+      }
+      zbc[key] = out;
+    }
+    return {
+      viewbox: [0, 0, cropRect.w, cropRect.h],
+      transform: `translate(${tx},${ty}) scale(1)`,
+      gabarit: { font_size: fontSizePx, box_w: commonSize.w, box_h: commonSize.h },
+      zones_by_cardinality: zbc,
+    };
+  }, [cropRect, commonSize, viewbox, producedNs, validatedByN, editedZones, placement, habMode, traitSide, backplates, fontSizePx]);
+
+  // Emit composition when crop validated (and refresh if anything underlying changes)
+  useEffect(() => {
+    if (cropValidated) {
+      onCompositionReady(buildComposition());
+    } else {
+      onCompositionReady(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cropValidated, buildComposition]);
+
+
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-2">
