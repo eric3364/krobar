@@ -3,6 +3,7 @@ import { Loader2, RefreshCw, Check, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   studioV2Api,
+  type ExportZone,
   type Occupancy,
   type PlaceZonesResponse,
   type Viewbox,
@@ -10,17 +11,28 @@ import {
   type ZoneRect,
 } from "@/lib/studioV2Api";
 
+export type CompositionReadyData = {
+  viewbox: [number, number, number, number];
+  transform: string;
+  gabarit: { font_size: number; box_w: number; box_h: number };
+  zones_by_cardinality: Record<string, ExportZone[]>;
+};
+
 type Props = {
   svg: string;
   viewbox: Viewbox;
   occupancy?: Occupancy;
-  cardinalityMax: number;
+  userMax: number;
+  onUserMaxChange: (n: number) => void;
+  produceByN: Record<number, boolean>;
+  onProduceChange: (next: Record<number, boolean>) => void;
+  validatedByN: Record<number, boolean>;
+  onValidateCard: (n: number) => void;
   placement: PlaceZonesResponse | null;
   editedZones: Record<string, ZonePair[]>;
   onPlacementLoaded: (p: PlaceZonesResponse) => void;
   onEditedChange: (next: Record<string, ZonePair[]>) => void;
-  onValidate: () => void;
-  validated: boolean;
+  onCompositionReady: (data: CompositionReadyData | null) => void;
 };
 
 type LoremLen = "short" | "medium" | "long";
