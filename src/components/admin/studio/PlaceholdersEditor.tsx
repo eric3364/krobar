@@ -130,7 +130,15 @@ export default function PlaceholdersEditor({
   const overlayRef = useRef<SVGSVGElement>(null);
   const loremRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
-  const habillageMode = validated; // entered habillage sub-mode after placeholders validated
+  // Validation states derived from per-cardinality props
+  const currentValidated = !!validatedByN[card];
+  const producedNs = useMemo(
+    () => Object.keys(produceByN).map(Number).filter((n) => produceByN[n]).sort((a, b) => a - b),
+    [produceByN],
+  );
+  const pendingNs = producedNs.filter((n) => !validatedByN[n]);
+  const allValidated = producedNs.length > 0 && pendingNs.length === 0;
+  const habillageMode = allValidated; // habillage UI unlocks once every produced cardinality is validated
   const cropMode = habillageValidated && !cropValidated;
 
   // Initialise / réinitialise le cadre de recadrage en fonction du ratio choisi.
