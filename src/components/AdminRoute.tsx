@@ -45,6 +45,13 @@ function AdminLayoutInner({ children }: { children: ReactNode }) {
     resetMainHorizontalScroll();
   }, [pathname]);
 
+  // Persist last admin path so refresh can restore it (Lovable preview reload resets to "/")
+  useEffect(() => {
+    if (pathname.startsWith("/admin")) {
+      try { localStorage.setItem("krobar.lastAdminPath", pathname); } catch { /* ignore */ }
+    }
+  }, [pathname]);
+
   useEffect(() => {
     const scheduleReset = () => requestAnimationFrame(resetMainHorizontalScroll);
     const handlePageShow = (event: PageTransitionEvent) => {
