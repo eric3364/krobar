@@ -17,6 +17,7 @@ import AdminMatricePage from "./pages/AdminMatricePage.tsx";
 import AdminFeatureFlagsPage from "./pages/AdminFeatureFlagsPage.tsx";
 import AdminLibraryPage from "./pages/AdminLibraryPage.tsx";
 import AdminLibraryTemplatePage from "./pages/AdminLibraryTemplatePage.tsx";
+import AdminTemplatesLifecyclePage from "./pages/AdminTemplatesLifecyclePage.tsx";
 import AuthPage from "./pages/Auth.tsx";
 import ResetPassword from "./pages/ResetPassword.tsx";
 import SicaiHome from "./pages/sicai/SicaiHomePage.tsx";
@@ -56,6 +57,7 @@ const App = () => (
             <Route path="/admin/studio-legacy" element={<AdminRoute><AdminStudioPage /></AdminRoute>} />
             <Route path="/admin/library" element={<AdminRoute><AdminLibraryPage /></AdminRoute>} />
             <Route path="/admin/library/:templateId" element={<AdminRoute><AdminLibraryTemplatePage /></AdminRoute>} />
+            <Route path="/admin/templates-lifecycle" element={<AdminRoute><AdminTemplatesLifecyclePage /></AdminRoute>} />
             
             <Route path="/admin/feature-flags" element={<AdminRoute><AdminFeatureFlagsPage /></AdminRoute>} />
             <Route path="/admin/matrice" element={<AdminRoute><AdminMatricePage /></AdminRoute>} />
