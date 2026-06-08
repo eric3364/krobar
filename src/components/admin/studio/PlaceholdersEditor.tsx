@@ -502,15 +502,16 @@ export default function PlaceholdersEditor({
     };
   }, [cropRect, commonSize, viewbox, producedNs, validatedByN, editedZones, placement, habMode, traitSide, backplates, fontSizePx]);
 
-  // Emit composition when crop validated (and refresh if anything underlying changes)
+  // Emit composition once habillage is validated (le crop a déjà eu lieu en amont).
   useEffect(() => {
-    if (cropValidated) {
+    if (habillageValidated) {
       onCompositionReady(buildComposition());
     } else {
       onCompositionReady(null);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cropValidated, buildComposition]);
+  }, [habillageValidated, buildComposition]);
+
 
 
   return (
