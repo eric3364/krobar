@@ -1137,15 +1137,26 @@ function MetadataExportPanel(props: {
 
       {exportResult && (
         <div className="rounded-md border bg-emerald-500/10 border-emerald-500/30 p-3 text-xs space-y-1">
-          <p className="font-medium text-emerald-700 dark:text-emerald-300">
-            Déployé : {exportResult.deployed.join(", ") || "—"} ({exportResult.deployed.length} fichier{exportResult.deployed.length > 1 ? "s" : ""})
-          </p>
-          {exportResult.skipped.length > 0 && (
+          {exportResult.deployed.length === 0 ? (
+            <p className="font-medium text-emerald-700 dark:text-emerald-300">
+              Déployé : 0 fichier{exportResult.skipped.length > 0 ? ` — déjà existants : ${exportResult.skipped.join(", ")}` : ""}
+            </p>
+          ) : (
+            <p className="font-medium text-emerald-700 dark:text-emerald-300">
+              Déployé : {exportResult.deployed.join(", ")} ({exportResult.deployed.length} fichier{exportResult.deployed.length > 1 ? "s" : ""})
+            </p>
+          )}
+          {exportResult.deployed.length > 0 && exportResult.skipped.length > 0 && (
             <p className="text-muted-foreground">Ignorés (déjà existants) : {exportResult.skipped.join(", ")}</p>
           )}
-          {exportResult.restart_required && (
+          {exportResult.deployed.length > 0 && exportResult.restart_triggered && (
+            <p className="font-medium">
+              ↻ Redémarrage automatique en cours — les templates seront servis dans ~10 secondes.
+            </p>
+          )}
+          {exportResult.deployed.length > 0 && exportResult.restart_required && !exportResult.restart_triggered && (
             <p className="text-amber-700 dark:text-amber-300 font-medium">
-              ⚠ Redémarrage requis : l'administrateur doit relancer le service et passer le smoke test pour que les templates soient servis.
+              ⚠ Redémarrage manuel requis.
             </p>
           )}
           <p className="text-muted-foreground">Manifest total : {exportResult.manifest_total} · backup : {exportResult.backup}</p>
