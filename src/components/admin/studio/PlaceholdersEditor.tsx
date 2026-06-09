@@ -113,6 +113,8 @@ export default function PlaceholdersEditor({
 
   // Init / reset headers when a new placement arrives.
   useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log("[studio] placement received, headers =", placement?.headers);
     if (placement?.headers) {
       setHeaderRects({
         title: { ...placement.headers.title.rect },

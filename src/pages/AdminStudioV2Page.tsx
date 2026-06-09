@@ -435,7 +435,12 @@ function ProductionScreen({
     setValidated(p?.validated ?? false);
     setMoteur(p?.moteur ?? "midjourney");
     setGpt2Style(p?.gpt2Style ?? null);
-    setPlacement(p?.placement ?? null);
+    // Drop cached placement that pre-dates the headers feature so it gets refetched
+    // (otherwise headers boxes never appear for sessions persisted before the upgrade).
+    const cachedPlacement = p?.placement && (p.placement as PlaceZonesResponse).headers
+      ? p.placement
+      : null;
+    setPlacement(cachedPlacement);
     setEditedZones(p?.editedZones ?? {});
     setPlacementsMode(p?.placementsMode ?? false);
     setUserMax(p?.userMax ?? baseUserMax);
@@ -937,7 +942,7 @@ function MetadataExportPanel(props: {
   const handleExport = async () => {
     setExporting(true);
     try {
-      const r = await studioV2Api.exportTemplates({
+      const exportPayload = {
         composition: {
           cell: {
             index: cell.index,
@@ -959,7 +964,11 @@ function MetadataExportPanel(props: {
           zones_by_cardinality: composition.zones_by_cardinality,
           ...(composition.headers ? { headers: composition.headers } : {}),
         },
-      });
+      };
+      // Debug: confirm headers actually leaves the front in the export payload.
+      // eslint-disable-next-line no-console
+      console.log("[studio] export payload.headers =", exportPayload.composition.headers);
+      const r = await studioV2Api.exportTemplates(exportPayload);
       setExportResult(r);
       toast.success("Templates déployés");
     } catch (e) {
