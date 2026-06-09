@@ -139,19 +139,22 @@ export default function PlaceholdersEditor({
   const [subtitleEnabled, setSubtitleEnabled] = useState(persisted?.subtitleEnabled ?? true);
   const [selectedHeader, setSelectedHeader] = useState<HeaderKey | null>(null);
 
+  // Mirror flip (display-only horizontal flip of the illustration preview).
+  const [mirrored, setMirrored] = useState<boolean>(persisted?.mirrored ?? false);
+
   // Persist UI state whenever it changes (debounced via micro-task is overkill — direct write is fine).
   useEffect(() => {
     if (!editorStateKey) return;
     try {
       const snap: PersistedEditorState = {
         backplates, loremLen, fontSizePx, habMode, traitSide,
-        habillageValidated, headerRects, subtitleEnabled, commonSize,
+        habillageValidated, headerRects, subtitleEnabled, commonSize, mirrored,
       };
       localStorage.setItem(editorStateKey, JSON.stringify(snap));
     } catch { /* ignore quota */ }
   }, [
     editorStateKey, backplates, loremLen, fontSizePx, habMode, traitSide,
-    habillageValidated, headerRects, subtitleEnabled, commonSize,
+    habillageValidated, headerRects, subtitleEnabled, commonSize, mirrored,
   ]);
 
   // Init / reset headers when a new placement arrives — but only if we don't
