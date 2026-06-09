@@ -612,6 +612,19 @@ export default function PlaceholdersEditor({
           />
           Sous-titre
         </label>
+        <button
+          type="button"
+          onClick={() => setMirrored((m) => !m)}
+          title="Inverser horizontalement l'illustration"
+          className={[
+            "ml-3 px-2 py-1 text-xs rounded border transition",
+            mirrored
+              ? "bg-primary text-primary-foreground border-primary"
+              : "bg-background hover:bg-muted",
+          ].join(" ")}
+        >
+          ⇄ Miroir
+        </button>
         {ratioLabel && (
           <span className="text-xs text-muted-foreground ml-2 font-mono">
             Ratio backend : {ratioLabel}
