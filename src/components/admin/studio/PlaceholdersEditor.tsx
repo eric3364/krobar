@@ -42,6 +42,9 @@ type Props = {
    * (header rects, habillage modes, lorem/font choices, etc.) so the
    * work-in-progress survives a window close / reopen. */
   persistKey?: string;
+  /** Externally-controlled flip/rotation (set before entering placements mode). */
+  mirrored?: boolean;
+  rotation?: 0 | 90 | 180 | 270;
 };
 
 type PersistedEditorState = {
