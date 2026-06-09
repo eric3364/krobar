@@ -863,6 +863,8 @@ function ProductionScreen({
             onCompositionReady={setComposition}
             ratioLabel={vectRes.metrics?.ratio_label}
             persistKey={persistKey}
+            mirrored={mirrored}
+            rotation={rotation}
           />
 
         ) : (
