@@ -16,6 +16,10 @@ export type CompositionReadyData = {
   transform: string;
   gabarit: { font_size: number; box_w: number; box_h: number };
   zones_by_cardinality: Record<string, ExportZone[]>;
+  headers?: {
+    title: { rect: ZoneRect };
+    subtitle: { rect: ZoneRect; disabled: boolean };
+  };
 };
 
 type Props = {
