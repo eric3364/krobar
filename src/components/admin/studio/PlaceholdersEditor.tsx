@@ -102,10 +102,10 @@ export default function PlaceholdersEditor({
   svg, viewbox, occupancy, userMax, onUserMaxChange,
   produceByN, onProduceChange, validatedByN, onValidateCard,
   placement, editedZones, onPlacementLoaded, onEditedChange,
-  onCompositionReady, ratioLabel,
+  onCompositionReady, ratioLabel, persistKey,
 }: Props) {
   // Restore previously persisted editor state for this cell+registre+sel.
-  const editorStateKey = props.persistKey ? `${props.persistKey}::editor` : null;
+  const editorStateKey = persistKey ? `${persistKey}::editor` : null;
   const loadEditorState = (): PersistedEditorState | null => {
     if (!editorStateKey || typeof window === "undefined") return null;
     try {
