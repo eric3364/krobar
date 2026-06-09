@@ -55,6 +55,7 @@ type PersistedEditorState = {
   subtitleEnabled: boolean;
   commonSize: { w: number; h: number } | null;
   mirrored?: boolean;
+  rotation?: 0 | 90 | 180 | 270;
 };
 
 type LoremLen = "short" | "medium" | "long";
