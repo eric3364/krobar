@@ -868,6 +868,7 @@ function ProductionScreen({
           composition={composition}
           produceByN={produceByN}
           validatedByN={validatedByN}
+          onCancel={onBack}
         />
       )}
     </div>
@@ -882,8 +883,9 @@ function MetadataExportPanel(props: {
   composition: import("@/components/admin/studio/PlaceholdersEditor").CompositionReadyData;
   produceByN: Record<number, boolean>;
   validatedByN: Record<number, boolean>;
+  onCancel: () => void;
 }) {
-  const { cell, incarnation, domain, vectorizedSvg, composition, produceByN, validatedByN } = props;
+  const { cell, incarnation, domain, vectorizedSvg, composition, produceByN, validatedByN, onCancel } = props;
   const [meta, setMeta] = useState<{ best_for: string; textual_markers: string[]; matching_types: string[] }>({
     best_for: "", textual_markers: [], matching_types: [],
   });
@@ -1050,6 +1052,14 @@ function MetadataExportPanel(props: {
           >
             {exporting ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : null}
             Exporter dans la bibliothèque
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onCancel}
+            disabled={exporting}
+          >
+            Annuler
           </Button>
         </div>
         {pendingExportNs.length > 0 && (
