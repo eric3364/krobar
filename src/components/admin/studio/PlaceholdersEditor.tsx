@@ -142,6 +142,7 @@ export default function PlaceholdersEditor({
 
   // Mirror flip (display-only horizontal flip of the illustration preview).
   const [mirrored, setMirrored] = useState<boolean>(persisted?.mirrored ?? false);
+  const [rotation, setRotation] = useState<0 | 90 | 180 | 270>(persisted?.rotation ?? 0);
 
   // Persist UI state whenever it changes (debounced via micro-task is overkill — direct write is fine).
   useEffect(() => {
