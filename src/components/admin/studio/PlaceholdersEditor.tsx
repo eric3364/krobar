@@ -614,32 +614,36 @@ export default function PlaceholdersEditor({
           />
           Sous-titre
         </label>
-        <button
-          type="button"
-          onClick={() => setMirrored((m) => !m)}
-          title="Inverser horizontalement l'illustration"
-          className={[
-            "ml-3 px-2 py-1 text-xs rounded border transition",
-            mirrored
-              ? "bg-primary text-primary-foreground border-primary"
-              : "bg-background hover:bg-muted",
-          ].join(" ")}
-        >
-          ⇄ Miroir
-        </button>
-        <button
-          type="button"
-          onClick={() => setRotation((r) => (((r + 90) % 360) as 0 | 90 | 180 | 270))}
-          title="Rotation 90° (clic répété)"
-          className={[
-            "ml-2 px-2 py-1 text-xs rounded border transition",
-            rotation !== 0
-              ? "bg-primary text-primary-foreground border-primary"
-              : "bg-background hover:bg-muted",
-          ].join(" ")}
-        >
-          ⟳ Rotation {rotation}°
-        </button>
+        {producedNs.length === 0 && (
+          <>
+            <button
+              type="button"
+              onClick={() => setMirrored((m) => !m)}
+              title="Inverser horizontalement l'illustration"
+              className={[
+                "ml-3 px-2 py-1 text-xs rounded border transition",
+                mirrored
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "bg-background hover:bg-muted",
+              ].join(" ")}
+            >
+              ⇄ Miroir
+            </button>
+            <button
+              type="button"
+              onClick={() => setRotation((r) => (((r + 90) % 360) as 0 | 90 | 180 | 270))}
+              title="Rotation 90° (clic répété)"
+              className={[
+                "ml-2 px-2 py-1 text-xs rounded border transition",
+                rotation !== 0
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "bg-background hover:bg-muted",
+              ].join(" ")}
+            >
+              ⟳ Rotation {rotation}°
+            </button>
+          </>
+        )}
         {ratioLabel && (
           <span className="text-xs text-muted-foreground ml-2 font-mono">
             Ratio backend : {ratioLabel}
@@ -732,37 +736,60 @@ export default function PlaceholdersEditor({
         </div>
       )}
 
-      <div
-        className="relative bg-background border rounded-md overflow-hidden mx-auto"
-        style={{
-          aspectRatio: `${workViewbox[2]} / ${workViewbox[3]}`,
-          width: `min(100%, calc(70vh * ${workViewbox[2]} / ${workViewbox[3]}))`,
-          maxHeight: "70vh",
-        }}
-      >
-        {/* Illustration vectorisée — utilise le viewbox backend tel quel. */}
-        <div
-          className="absolute inset-0 [&>svg]:w-full [&>svg]:h-full"
-          style={{
-            transform: [
-              mirrored ? "scaleX(-1)" : "",
-              rotation ? `rotate(${mirrored ? -rotation : rotation}deg)` : "",
-            ].filter(Boolean).join(" ") || undefined,
-            transformOrigin: "center",
-          }}
-          dangerouslySetInnerHTML={{ __html: svg }}
-        />
+      {(() => {
+        const vbW = workViewbox[2];
+        const vbH = workViewbox[3];
+        const rotated90 = rotation === 90 || rotation === 270;
+        const dispW = rotated90 ? vbH : vbW;
+        const dispH = rotated90 ? vbW : vbH;
+        const transform = [
+          "translate(-50%, -50%)",
+          rotation ? `rotate(${mirrored ? -rotation : rotation}deg)` : "",
+          mirrored ? "scaleX(-1)" : "",
+        ].filter(Boolean).join(" ");
+        const wrapperStyle: React.CSSProperties = rotated90
+          ? {
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: `${(vbW / vbH) * 100}%`,
+              height: `${(vbH / vbW) * 100}%`,
+              transform,
+            }
+          : {
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: "100%",
+              height: "100%",
+              transform,
+            };
+        return (
+          <div
+            className="relative bg-background border rounded-md overflow-hidden mx-auto"
+            style={{
+              aspectRatio: `${dispW} / ${dispH}`,
+              width: `min(100%, calc(70vh * ${dispW} / ${dispH}))`,
+              maxHeight: "70vh",
+            }}
+          >
+            <div style={wrapperStyle}>
+              {/* Illustration vectorisée — utilise le viewbox backend tel quel. */}
+              <div
+                className="absolute inset-0 [&>svg]:w-full [&>svg]:h-full"
+                dangerouslySetInnerHTML={{ __html: svg }}
+              />
 
-        <svg
-          ref={overlayRef}
-          className="absolute inset-0 w-full h-full"
-          viewBox={`${workViewbox[0]} ${workViewbox[1]} ${workViewbox[2]} ${workViewbox[3]}`}
-          preserveAspectRatio="xMidYMid meet"
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-          onPointerLeave={onPointerUp}
-          onClick={(e) => { if (e.target === e.currentTarget) { setSelectedN(null); setSelectedHeader(null); } }}
-        >
+              <svg
+                ref={overlayRef}
+                className="absolute inset-0 w-full h-full"
+                viewBox={`${workViewbox[0]} ${workViewbox[1]} ${workViewbox[2]} ${workViewbox[3]}`}
+                preserveAspectRatio="xMidYMid meet"
+                onPointerMove={onPointerMove}
+                onPointerUp={onPointerUp}
+                onPointerLeave={onPointerUp}
+                onClick={(e) => { if (e.target === e.currentTarget) { setSelectedN(null); setSelectedHeader(null); } }}
+              >
           {/* Header boxes — title (always) + subtitle (toggleable) */}
           {headerRects && (["title", "subtitle"] as HeaderKey[]).map((hk) => {
             if (hk === "subtitle" && !subtitleEnabled) return null;
@@ -1024,13 +1051,16 @@ export default function PlaceholdersEditor({
             );
           })}
         </svg>
+            </div>
 
-        {loading && (
-          <div className="absolute inset-0 bg-background/60 flex items-center justify-center">
-            <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
+            {loading && (
+              <div className="absolute inset-0 bg-background/60 flex items-center justify-center">
+                <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        );
+      })()}
 
       <p className="text-[11px] text-muted-foreground">
         Clique une zone pour la sélectionner, glisse pour la déplacer, coins pour
