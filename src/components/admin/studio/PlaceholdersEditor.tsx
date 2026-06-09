@@ -566,6 +566,15 @@ export default function PlaceholdersEditor({
             </button>
           ))}
         </div>
+        <label className="flex items-center gap-1 ml-3 text-xs cursor-pointer select-none">
+          <input
+            type="checkbox"
+            checked={subtitleEnabled}
+            onChange={(e) => setSubtitleEnabled(e.target.checked)}
+            className="h-3 w-3 cursor-pointer"
+          />
+          Sous-titre
+        </label>
         {ratioLabel && (
           <span className="text-xs text-muted-foreground ml-2 font-mono">
             Ratio backend : {ratioLabel}
