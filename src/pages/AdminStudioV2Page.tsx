@@ -733,9 +733,37 @@ function ProductionScreen({
               </>
             )}
             {validated && vectRes && vectRes.viewbox && !placementsMode && (
-              <Button size="sm" onClick={() => setPlacementsMode(true)}>
-                Poser les placeholders
-              </Button>
+              <>
+                <button
+                  type="button"
+                  onClick={() => setMirrored((m) => !m)}
+                  title="Inverser horizontalement l'illustration"
+                  className={[
+                    "px-2 py-1 text-xs rounded border transition",
+                    mirrored
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "bg-background hover:bg-muted",
+                  ].join(" ")}
+                >
+                  ⇄ Miroir
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setRotation((r) => (((r + 90) % 360) as 0 | 90 | 180 | 270))}
+                  title="Rotation 90° (clic répété)"
+                  className={[
+                    "px-2 py-1 text-xs rounded border transition",
+                    rotation !== 0
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "bg-background hover:bg-muted",
+                  ].join(" ")}
+                >
+                  ⟳ Rotation {rotation}°
+                </button>
+                <Button size="sm" onClick={() => setPlacementsMode(true)}>
+                  Poser les placeholders
+                </Button>
+              </>
             )}
             {validated && vectRes && !vectRes.viewbox && (
               <span className="text-xs text-destructive">Viewbox manquante</span>
