@@ -450,6 +450,8 @@ function ProductionScreen({
     setUserMax(p?.userMax ?? baseUserMax);
     setProduceByN(p?.produceByN ?? initialProduce(p?.userMax ?? baseUserMax));
     setValidatedByN(p?.validatedByN ?? {});
+    setMirrored(p?.mirrored ?? false);
+    setRotation(p?.rotation ?? 0);
     setComposition(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cell.index, registre, selecteur]);
@@ -462,11 +464,11 @@ function ProductionScreen({
         JSON.stringify({
           moteur, gpt2Style, promptRes, vectRes, validated,
           placement, editedZones, placementsMode,
-          userMax, produceByN, validatedByN,
+          userMax, produceByN, validatedByN, mirrored, rotation,
         } satisfies Persisted),
       );
     } catch { /* ignore quota */ }
-  }, [persistKey, moteur, gpt2Style, promptRes, vectRes, validated, placement, editedZones, placementsMode, userMax, produceByN, validatedByN]);
+  }, [persistKey, moteur, gpt2Style, promptRes, vectRes, validated, placement, editedZones, placementsMode, userMax, produceByN, validatedByN, mirrored, rotation]);
 
 
 
