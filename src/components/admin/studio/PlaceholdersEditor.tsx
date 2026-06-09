@@ -689,8 +689,69 @@ export default function PlaceholdersEditor({
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
           onPointerLeave={onPointerUp}
-          onClick={(e) => { if (e.target === e.currentTarget) setSelectedN(null); }}
+          onClick={(e) => { if (e.target === e.currentTarget) { setSelectedN(null); setSelectedHeader(null); } }}
         >
+          {/* Header boxes — title (always) + subtitle (toggleable) */}
+          {headerRects && (["title", "subtitle"] as HeaderKey[]).map((hk) => {
+            if (hk === "subtitle" && !subtitleEnabled) return null;
+            const r = headerRects[hk];
+            const isSel = selectedHeader === hk;
+            const label = hk === "title" ? "Titre" : "Sous-titre";
+            const handleSize = Math.max(6, Math.min(r.w, r.h) * 0.14);
+            const color = "#2563eb"; // blue distinct from placeholders
+            return (
+              <g key={`header-${hk}`}>
+                <rect
+                  x={r.x} y={r.y} width={r.w} height={r.h}
+                  rx={Math.min(4, r.h * 0.12)}
+                  fill="rgba(37, 99, 235, 0.08)"
+                  stroke={color}
+                  strokeWidth={isSel ? 2 : 1.4}
+                  strokeDasharray="6 3"
+                  vectorEffect="non-scaling-stroke"
+                  onPointerDown={(e) => onHeaderMoveDown(hk, e)}
+                  style={{ touchAction: "none", cursor: "grab" }}
+                />
+                <foreignObject x={r.x} y={r.y} width={r.w} height={r.h} pointerEvents="none">
+                  <div
+                    style={{
+                      width: "100%", height: "100%",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      padding: "0 6px",
+                      fontFamily: "system-ui, sans-serif",
+                      fontSize: hk === "title" ? Math.max(10, r.h * 0.45) : Math.max(9, r.h * 0.4),
+                      fontWeight: hk === "title" ? 700 : 500,
+                      color,
+                      opacity: 0.85,
+                      userSelect: "none",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
+                    {label}
+                  </div>
+                </foreignObject>
+                {isSel && (["nw","ne","sw","se"] as ResizeCorner[]).map((c) => {
+                  const hx = c === "nw" || c === "sw" ? r.x - handleSize/2 : r.x + r.w - handleSize/2;
+                  const hy = c === "nw" || c === "ne" ? r.y - handleSize/2 : r.y + r.h - handleSize/2;
+                  const cursor = c === "nw" || c === "se" ? "nwse-resize" : "nesw-resize";
+                  return (
+                    <rect
+                      key={c}
+                      x={hx} y={hy} width={handleSize} height={handleSize}
+                      fill="hsl(var(--background))"
+                      stroke={color}
+                      strokeWidth={1.5}
+                      vectorEffect="non-scaling-stroke"
+                      style={{ cursor, touchAction: "none" }}
+                      onPointerDown={(e) => onHeaderResizeDown(hk, c, e)}
+                    />
+                  );
+                })}
+              </g>
+            );
+          })}
           {zones.map((z) => {
             if (!z.rect) return null;
             const r = z.rect;
