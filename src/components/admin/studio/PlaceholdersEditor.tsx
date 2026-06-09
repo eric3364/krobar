@@ -108,6 +108,7 @@ export default function PlaceholdersEditor({
   produceByN, onProduceChange, validatedByN, onValidateCard,
   placement, editedZones, onPlacementLoaded, onEditedChange,
   onCompositionReady, ratioLabel, persistKey,
+  mirrored: mirroredProp, rotation: rotationProp,
 }: Props) {
   // Restore previously persisted editor state for this cell+registre+sel.
   const editorStateKey = persistKey ? `${persistKey}::editor` : null;
