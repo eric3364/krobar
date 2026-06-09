@@ -16,6 +16,10 @@ export type CompositionReadyData = {
   transform: string;
   gabarit: { font_size: number; box_w: number; box_h: number };
   zones_by_cardinality: Record<string, ExportZone[]>;
+  headers?: {
+    title: { rect: ZoneRect };
+    subtitle: { rect: ZoneRect; disabled: boolean };
+  };
 };
 
 type Props = {
@@ -100,6 +104,24 @@ export default function PlaceholdersEditor({
   const [habMode, setHabMode] = useState<Record<string, HabillageMode>>({});
   const [traitSide, setTraitSide] = useState<Record<string, TraitSide>>({});
   const [habillageValidated, setHabillageValidated] = useState(false);
+
+  // Headers (title + subtitle) — positions éditables, texte vient du rendu.
+  type HeaderKey = "title" | "subtitle";
+  const [headerRects, setHeaderRects] = useState<{ title: ZoneRect; subtitle: ZoneRect } | null>(null);
+  const [subtitleEnabled, setSubtitleEnabled] = useState(true);
+  const [selectedHeader, setSelectedHeader] = useState<HeaderKey | null>(null);
+
+  // Init / reset headers when a new placement arrives.
+  useEffect(() => {
+    if (placement?.headers) {
+      setHeaderRects({
+        title: { ...placement.headers.title.rect },
+        subtitle: { ...placement.headers.subtitle.rect },
+      });
+    } else {
+      setHeaderRects(null);
+    }
+  }, [placement]);
 
   // Le viewbox est imposé par le backend (déjà au ratio cible, letterboxé).
   // Le front n'effectue plus aucun recadrage : workViewbox === viewbox backend.
@@ -248,6 +270,7 @@ export default function PlaceholdersEditor({
     setSelectedN(n);
   };
   const onPointerMove = (e: React.PointerEvent) => {
+    if (headerResizeRef.current || headerDragRef.current) return onHeaderPointerMove(e);
     if (resizeRef.current) return onResizeMove(e);
     const d = dragRef.current;
     if (!d || !overlayRef.current) return;
@@ -271,6 +294,60 @@ export default function PlaceholdersEditor({
   };
   const onPointerUp = () => {
     dragRef.current = null; resizeRef.current = null;
+    headerDragRef.current = null; headerResizeRef.current = null;
+  };
+
+  // Header drag (move)
+  const headerDragRef = useRef<{ key: HeaderKey; startX: number; startY: number; orig: ZoneRect } | null>(null);
+  const onHeaderMoveDown = (key: HeaderKey, e: React.PointerEvent) => {
+    e.preventDefault(); e.stopPropagation();
+    if (!headerRects) return;
+    (e.target as Element).setPointerCapture?.(e.pointerId);
+    headerDragRef.current = { key, startX: e.clientX, startY: e.clientY, orig: { ...headerRects[key] } };
+    setSelectedHeader(key);
+    setSelectedN(null);
+  };
+  // Header resize
+  const headerResizeRef = useRef<{
+    key: HeaderKey; corner: ResizeCorner;
+    startX: number; startY: number; orig: ZoneRect;
+  } | null>(null);
+  const onHeaderResizeDown = (key: HeaderKey, corner: ResizeCorner, e: React.PointerEvent) => {
+    e.preventDefault(); e.stopPropagation();
+    if (!headerRects) return;
+    (e.target as Element).setPointerCapture?.(e.pointerId);
+    headerResizeRef.current = {
+      key, corner, startX: e.clientX, startY: e.clientY, orig: { ...headerRects[key] },
+    };
+    setSelectedHeader(key);
+  };
+  const onHeaderPointerMove = (e: React.PointerEvent) => {
+    if (!overlayRef.current) return;
+    const box = overlayRef.current.getBoundingClientRect();
+    const sx = workViewbox[2] / box.width;
+    const sy = workViewbox[3] / box.height;
+    const rz = headerResizeRef.current;
+    if (rz && headerRects) {
+      const dx = (e.clientX - rz.startX) * sx;
+      const dy = (e.clientY - rz.startY) * sy;
+      const o = rz.orig;
+      let nx = o.x, ny = o.y, nw = o.w, nh = o.h;
+      if (rz.corner.includes("e")) nw = Math.max(viewbox[2] * 0.04, o.w + dx);
+      if (rz.corner.includes("s")) nh = Math.max(viewbox[3] * 0.02, o.h + dy);
+      if (rz.corner.includes("w")) { nw = Math.max(viewbox[2] * 0.04, o.w - dx); nx = o.x + (o.w - nw); }
+      if (rz.corner.includes("n")) { nh = Math.max(viewbox[3] * 0.02, o.h - dy); ny = o.y + (o.h - nh); }
+      setHeaderRects({ ...headerRects, [rz.key]: { x: nx, y: ny, w: nw, h: nh } });
+      return;
+    }
+    const d = headerDragRef.current;
+    if (d && headerRects) {
+      const dx = (e.clientX - d.startX) * sx;
+      const dy = (e.clientY - d.startY) * sy;
+      setHeaderRects({
+        ...headerRects,
+        [d.key]: { ...d.orig, x: d.orig.x + dx, y: d.orig.y + dy },
+      });
+    }
   };
 
   // Resize (common size)
@@ -375,8 +452,14 @@ export default function PlaceholdersEditor({
       transform: "translate(0,0) scale(1)",
       gabarit: { font_size: fontSizePx, box_w: commonSize.w, box_h: commonSize.h },
       zones_by_cardinality: zbc,
+      headers: headerRects
+        ? {
+            title: { rect: { ...headerRects.title } },
+            subtitle: { rect: { ...headerRects.subtitle }, disabled: !subtitleEnabled },
+          }
+        : undefined,
     };
-  }, [commonSize, viewbox, producedNs, validatedByN, editedZones, placement, habMode, traitSide, backplates, fontSizePx]);
+  }, [commonSize, viewbox, producedNs, validatedByN, editedZones, placement, habMode, traitSide, backplates, fontSizePx, headerRects, subtitleEnabled]);
 
   // Emit composition once habillage is validated.
   useEffect(() => {
@@ -483,6 +566,15 @@ export default function PlaceholdersEditor({
             </button>
           ))}
         </div>
+        <label className="flex items-center gap-1 ml-3 text-xs cursor-pointer select-none">
+          <input
+            type="checkbox"
+            checked={subtitleEnabled}
+            onChange={(e) => setSubtitleEnabled(e.target.checked)}
+            className="h-3 w-3 cursor-pointer"
+          />
+          Sous-titre
+        </label>
         {ratioLabel && (
           <span className="text-xs text-muted-foreground ml-2 font-mono">
             Ratio backend : {ratioLabel}
@@ -597,8 +689,69 @@ export default function PlaceholdersEditor({
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
           onPointerLeave={onPointerUp}
-          onClick={(e) => { if (e.target === e.currentTarget) setSelectedN(null); }}
+          onClick={(e) => { if (e.target === e.currentTarget) { setSelectedN(null); setSelectedHeader(null); } }}
         >
+          {/* Header boxes — title (always) + subtitle (toggleable) */}
+          {headerRects && (["title", "subtitle"] as HeaderKey[]).map((hk) => {
+            if (hk === "subtitle" && !subtitleEnabled) return null;
+            const r = headerRects[hk];
+            const isSel = selectedHeader === hk;
+            const label = hk === "title" ? "Titre" : "Sous-titre";
+            const handleSize = Math.max(6, Math.min(r.w, r.h) * 0.14);
+            const color = "#2563eb"; // blue distinct from placeholders
+            return (
+              <g key={`header-${hk}`}>
+                <rect
+                  x={r.x} y={r.y} width={r.w} height={r.h}
+                  rx={Math.min(4, r.h * 0.12)}
+                  fill="rgba(37, 99, 235, 0.08)"
+                  stroke={color}
+                  strokeWidth={isSel ? 2 : 1.4}
+                  strokeDasharray="6 3"
+                  vectorEffect="non-scaling-stroke"
+                  onPointerDown={(e) => onHeaderMoveDown(hk, e)}
+                  style={{ touchAction: "none", cursor: "grab" }}
+                />
+                <foreignObject x={r.x} y={r.y} width={r.w} height={r.h} pointerEvents="none">
+                  <div
+                    style={{
+                      width: "100%", height: "100%",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      padding: "0 6px",
+                      fontFamily: "system-ui, sans-serif",
+                      fontSize: hk === "title" ? Math.max(10, r.h * 0.45) : Math.max(9, r.h * 0.4),
+                      fontWeight: hk === "title" ? 700 : 500,
+                      color,
+                      opacity: 0.85,
+                      userSelect: "none",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
+                    {label}
+                  </div>
+                </foreignObject>
+                {isSel && (["nw","ne","sw","se"] as ResizeCorner[]).map((c) => {
+                  const hx = c === "nw" || c === "sw" ? r.x - handleSize/2 : r.x + r.w - handleSize/2;
+                  const hy = c === "nw" || c === "ne" ? r.y - handleSize/2 : r.y + r.h - handleSize/2;
+                  const cursor = c === "nw" || c === "se" ? "nwse-resize" : "nesw-resize";
+                  return (
+                    <rect
+                      key={c}
+                      x={hx} y={hy} width={handleSize} height={handleSize}
+                      fill="hsl(var(--background))"
+                      stroke={color}
+                      strokeWidth={1.5}
+                      vectorEffect="non-scaling-stroke"
+                      style={{ cursor, touchAction: "none" }}
+                      onPointerDown={(e) => onHeaderResizeDown(hk, c, e)}
+                    />
+                  );
+                })}
+              </g>
+            );
+          })}
           {zones.map((z) => {
             if (!z.rect) return null;
             const r = z.rect;

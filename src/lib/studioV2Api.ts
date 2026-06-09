@@ -117,10 +117,14 @@ export type PlaceZonesPayload = {
   cardinality_max: number;
 };
 
+export type HeaderZone = { role: string; rect: ZoneRect; optional?: boolean };
+export type HeadersZones = { title: HeaderZone; subtitle: HeaderZone };
+
 export type PlaceZonesResponse = {
   cardinality_max: number;
   viewbox: Viewbox;
   by_cardinality: Record<string, ZonePair[]>;
+  headers?: HeadersZones;
 };
 
 export const MAX_VECTORIZE_BYTES = 5 * 1024 * 1024;
@@ -205,6 +209,10 @@ export type CompositionPayload = {
     matching_types: string[];
   };
   zones_by_cardinality: Record<string, ExportZone[]>;
+  headers?: {
+    title: { rect: ZoneRect };
+    subtitle: { rect: ZoneRect; disabled: boolean };
+  };
 };
 
 export type ExportPayload = { composition: CompositionPayload };
