@@ -720,46 +720,45 @@ export default function PlaceholdersEditor({
       {(() => {
         const vbW = workViewbox[2];
         const vbH = workViewbox[3];
+        // The container keeps the ORIGINAL image aspect ratio — placeholders
+        // live in this fixed coordinate space and must never rotate/mirror.
+        // Only the illustration layer below receives the transform.
         const rotated90 = rotation === 90 || rotation === 270;
-        const dispW = rotated90 ? vbH : vbW;
-        const dispH = rotated90 ? vbW : vbH;
-        const transform = [
+        // When the illustration is rotated 90°/270°, its natural box swaps W/H.
+        // We scale it to fit inside the (unrotated) container.
+        const fitScale = rotated90 ? Math.min(vbW / vbH, vbH / vbW) : 1;
+        const illustrationTransform = [
           "translate(-50%, -50%)",
           rotation ? `rotate(${mirrored ? -rotation : rotation}deg)` : "",
+          fitScale !== 1 ? `scale(${fitScale})` : "",
           mirrored ? "scaleX(-1)" : "",
         ].filter(Boolean).join(" ");
-        const wrapperStyle: React.CSSProperties = rotated90
-          ? {
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              width: `${(vbW / vbH) * 100}%`,
-              height: `${(vbH / vbW) * 100}%`,
-              transform,
-            }
-          : {
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              width: "100%",
-              height: "100%",
-              transform,
-            };
         return (
           <div
             className="relative bg-background border rounded-md overflow-hidden mx-auto"
             style={{
-              aspectRatio: `${dispW} / ${dispH}`,
-              width: `min(100%, calc(70vh * ${dispW} / ${dispH}))`,
+              aspectRatio: `${vbW} / ${vbH}`,
+              width: `min(100%, calc(70vh * ${vbW} / ${vbH}))`,
               maxHeight: "70vh",
             }}
           >
-            <div style={wrapperStyle}>
-              {/* Illustration vectorisée — utilise le viewbox backend tel quel. */}
-              <div
-                className="absolute inset-0 [&>svg]:w-full [&>svg]:h-full"
-                dangerouslySetInnerHTML={{ __html: svg }}
-              />
+            {/* Illustration vectorisée — calque du bas, recevant les transformations
+                (miroir / rotation). Le placeholder ci-dessous reste figé. */}
+            <div
+              className="absolute [&>svg]:w-full [&>svg]:h-full"
+              style={{
+                top: "50%",
+                left: "50%",
+                width: "100%",
+                height: "100%",
+                transform: illustrationTransform,
+                transformOrigin: "center center",
+              }}
+              dangerouslySetInnerHTML={{ __html: svg }}
+            />
+
+            <div style={{ position: "absolute", inset: 0 }}>
+
 
               <svg
                 ref={overlayRef}
