@@ -957,6 +957,7 @@ function MetadataExportPanel(props: {
             matching_types: meta.matching_types,
           },
           zones_by_cardinality: composition.zones_by_cardinality,
+          ...(composition.headers ? { headers: composition.headers } : {}),
         },
       });
       setExportResult(r);
