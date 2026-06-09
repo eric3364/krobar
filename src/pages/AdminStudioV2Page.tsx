@@ -47,8 +47,8 @@ const SPORTS_LABEL: Record<string, string> = {
   TENNIS: "Tennis", VELO: "Vélo", VOILE: "Voile", VOLLEY: "Volley",
 };
 const DOMAIN_LABEL: Record<string, string> = {
-  ARC: "Architecture", BOD: "Corps", BUS: "Business", COM: "Communication",
-  MEC: "Mécanique", NAT: "Nature", SPO: "Sport",
+  ARC: "Architecture", BUS: "Business", COM: "Communication",
+  MEC: "Mécanique", NAT: "Nature",
 };
 
 type Registre = "domain" | "etat" | "conflit" | "sport";
