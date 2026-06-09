@@ -488,6 +488,7 @@ function ProductionScreen({
         ...(moteur === "gpt-image-2" ? { style: gpt2Style ?? gpt2Default ?? undefined } : {}),
       });
       setPromptRes(r);
+      setPromptEdited(null);
     } catch (e) {
       setPromptError(e instanceof Error ? e.message : String(e));
     } finally {
