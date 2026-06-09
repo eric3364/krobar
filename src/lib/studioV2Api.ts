@@ -225,6 +225,7 @@ export type ExportResponse = {
   manifest_total: number;
   backup: string;
   cache_cleared: boolean;
+  restart_triggered: boolean;
   restart_required: boolean;
 };
 
