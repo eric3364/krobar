@@ -1051,6 +1051,14 @@ function MetadataExportPanel(props: {
             {exporting ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : null}
             Exporter dans la bibliothèque
           </Button>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => setActive(null)}
+            disabled={exporting}
+          >
+            Annuler
+          </Button>
         </div>
         {pendingExportNs.length > 0 && (
           <p className="text-xs text-amber-700 dark:text-amber-300">
