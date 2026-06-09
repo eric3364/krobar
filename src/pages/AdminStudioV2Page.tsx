@@ -377,6 +377,8 @@ function ProductionScreen({
     userMax?: number;
     produceByN?: Record<number, boolean>;
     validatedByN?: Record<number, boolean>;
+    mirrored?: boolean;
+    rotation?: 0 | 90 | 180 | 270;
   };
   const loadPersisted = (): Persisted | null => {
     if (typeof window === "undefined") return null;
