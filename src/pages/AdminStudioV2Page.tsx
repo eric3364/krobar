@@ -401,6 +401,7 @@ function ProductionScreen({
   const [promptRes, setPromptRes] = useState<GeneratePromptResponse | null>(initial?.promptRes ?? null);
   const [promptLoading, setPromptLoading] = useState(false);
   const [promptError, setPromptError] = useState<string | null>(null);
+  const [promptEdited, setPromptEdited] = useState<string | null>(null);
 
   const [vectRes, setVectRes] = useState<VectorizeResponse | null>(initial?.vectRes ?? null);
   const [vectLoading, setVectLoading] = useState(false);
