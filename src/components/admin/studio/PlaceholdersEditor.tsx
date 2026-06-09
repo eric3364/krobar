@@ -144,9 +144,14 @@ export default function PlaceholdersEditor({
   const [subtitleEnabled, setSubtitleEnabled] = useState(persisted?.subtitleEnabled ?? true);
   const [selectedHeader, setSelectedHeader] = useState<HeaderKey | null>(null);
 
-  // Mirror flip (display-only horizontal flip of the illustration preview).
-  const [mirrored, setMirrored] = useState<boolean>(persisted?.mirrored ?? false);
-  const [rotation, setRotation] = useState<0 | 90 | 180 | 270>(persisted?.rotation ?? 0);
+  // Mirror flip / rotation: controlled externally when props are supplied,
+  // otherwise fallback to local persisted state (legacy path).
+  const [mirroredLocal, setMirroredLocal] = useState<boolean>(persisted?.mirrored ?? false);
+  const [rotationLocal, setRotationLocal] = useState<0 | 90 | 180 | 270>(persisted?.rotation ?? 0);
+  const mirrored = mirroredProp ?? mirroredLocal;
+  const rotation = rotationProp ?? rotationLocal;
+  // Keep setters referenced (no-op assignment) for legacy toolbar fallback below.
+  void setMirroredLocal; void setRotationLocal;
 
   // Persist UI state whenever it changes (debounced via micro-task is overkill — direct write is fine).
   useEffect(() => {
