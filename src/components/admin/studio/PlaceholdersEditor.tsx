@@ -561,17 +561,6 @@ export default function PlaceholdersEditor({
                   </span>
                 )}
               </button>
-              {isProduced && (
-                <span className="inline-flex items-center justify-center w-3.5 h-3.5">
-                  {isValidated ? (
-                    <span className="w-3 h-3 rounded-full bg-emerald-500 text-white flex items-center justify-center">
-                      <Check className="w-2 h-2" />
-                    </span>
-                  ) : (
-                    <span className="w-3 h-3 rounded-full border-2 border-amber-500" />
-                  )}
-                </span>
-              )}
             </div>
           );
         })}
