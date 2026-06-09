@@ -38,6 +38,22 @@ type Props = {
   onEditedChange: (next: Record<string, ZonePair[]>) => void;
   onCompositionReady: (data: CompositionReadyData | null) => void;
   ratioLabel?: string;
+  /** Stable storage key used to persist the editor's local UI state
+   * (header rects, habillage modes, lorem/font choices, etc.) so the
+   * work-in-progress survives a window close / reopen. */
+  persistKey?: string;
+};
+
+type PersistedEditorState = {
+  backplates: Record<string, boolean>;
+  loremLen: LoremLen;
+  fontSizePx: number;
+  habMode: Record<string, HabillageMode>;
+  traitSide: Record<string, TraitSide>;
+  habillageValidated: boolean;
+  headerRects: { title: ZoneRect; subtitle: ZoneRect } | null;
+  subtitleEnabled: boolean;
+  commonSize: { w: number; h: number } | null;
 };
 
 type LoremLen = "short" | "medium" | "long";
