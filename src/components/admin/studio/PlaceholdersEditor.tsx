@@ -54,6 +54,7 @@ type PersistedEditorState = {
   headerRects: { title: ZoneRect; subtitle: ZoneRect } | null;
   subtitleEnabled: boolean;
   commonSize: { w: number; h: number } | null;
+  mirrored?: boolean;
 };
 
 type LoremLen = "short" | "medium" | "long";
@@ -138,19 +139,22 @@ export default function PlaceholdersEditor({
   const [subtitleEnabled, setSubtitleEnabled] = useState(persisted?.subtitleEnabled ?? true);
   const [selectedHeader, setSelectedHeader] = useState<HeaderKey | null>(null);
 
+  // Mirror flip (display-only horizontal flip of the illustration preview).
+  const [mirrored, setMirrored] = useState<boolean>(persisted?.mirrored ?? false);
+
   // Persist UI state whenever it changes (debounced via micro-task is overkill — direct write is fine).
   useEffect(() => {
     if (!editorStateKey) return;
     try {
       const snap: PersistedEditorState = {
         backplates, loremLen, fontSizePx, habMode, traitSide,
-        habillageValidated, headerRects, subtitleEnabled, commonSize,
+        habillageValidated, headerRects, subtitleEnabled, commonSize, mirrored,
       };
       localStorage.setItem(editorStateKey, JSON.stringify(snap));
     } catch { /* ignore quota */ }
   }, [
     editorStateKey, backplates, loremLen, fontSizePx, habMode, traitSide,
-    habillageValidated, headerRects, subtitleEnabled, commonSize,
+    habillageValidated, headerRects, subtitleEnabled, commonSize, mirrored,
   ]);
 
   // Init / reset headers when a new placement arrives — but only if we don't
@@ -608,6 +612,19 @@ export default function PlaceholdersEditor({
           />
           Sous-titre
         </label>
+        <button
+          type="button"
+          onClick={() => setMirrored((m) => !m)}
+          title="Inverser horizontalement l'illustration"
+          className={[
+            "ml-3 px-2 py-1 text-xs rounded border transition",
+            mirrored
+              ? "bg-primary text-primary-foreground border-primary"
+              : "bg-background hover:bg-muted",
+          ].join(" ")}
+        >
+          ⇄ Miroir
+        </button>
         {ratioLabel && (
           <span className="text-xs text-muted-foreground ml-2 font-mono">
             Ratio backend : {ratioLabel}
@@ -711,6 +728,7 @@ export default function PlaceholdersEditor({
         {/* Illustration vectorisée — utilise le viewbox backend tel quel. */}
         <div
           className="absolute inset-0 [&>svg]:w-full [&>svg]:h-full"
+          style={{ transform: mirrored ? "scaleX(-1)" : undefined, transformOrigin: "center" }}
           dangerouslySetInnerHTML={{ __html: svg }}
         />
 
