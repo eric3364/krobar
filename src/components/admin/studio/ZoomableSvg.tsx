@@ -2,7 +2,7 @@ import { useRef, useState, useCallback, useEffect, useMemo, useLayoutEffect } fr
 import { Button } from "@/components/ui/button";
 import { ZoomIn, ZoomOut, Maximize2 } from "lucide-react";
 
-type Props = { svg: string };
+type Props = { svg: string; mirrored?: boolean; rotation?: 0 | 90 | 180 | 270 };
 
 const MAX_SCALE = 8;
 const STEP = 1.25;
@@ -26,8 +26,13 @@ function getSvgNaturalSize(svg: string): { w: number; h: number } {
   return { w: 1000, h: 1000 };
 }
 
-export default function ZoomableSvg({ svg }: Props) {
-  const natural = useMemo(() => getSvgNaturalSize(svg), [svg]);
+export default function ZoomableSvg({ svg, mirrored = false, rotation = 0 }: Props) {
+  const naturalRaw = useMemo(() => getSvgNaturalSize(svg), [svg]);
+  // After rotation by 90°/270° the bounding box swaps W/H.
+  const rotated90 = rotation === 90 || rotation === 270;
+  const natural = rotated90
+    ? { w: naturalRaw.h, h: naturalRaw.w }
+    : naturalRaw;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [box, setBox] = useState<{ w: number; h: number }>({ w: 0, h: 0 });
@@ -140,8 +145,15 @@ export default function ZoomableSvg({ svg }: Props) {
       >
         <div
           style={{
-            width: natural.w * effectiveScale,
-            height: natural.h * effectiveScale,
+            // Use unrotated natural so the inner SVG keeps its aspect ratio;
+            // the rotation/mirror are applied via CSS transform around it.
+            width: naturalRaw.w * effectiveScale,
+            height: naturalRaw.h * effectiveScale,
+            transform: [
+              rotation ? `rotate(${mirrored ? -rotation : rotation}deg)` : "",
+              mirrored ? "scaleX(-1)" : "",
+            ].filter(Boolean).join(" ") || undefined,
+            transformOrigin: "center center",
             transition: dragRef.current ? "none" : "width 120ms ease-out, height 120ms ease-out",
           }}
           className="[&>svg]:!w-full [&>svg]:!h-full [&>svg]:block"

@@ -42,6 +42,9 @@ type Props = {
    * (header rects, habillage modes, lorem/font choices, etc.) so the
    * work-in-progress survives a window close / reopen. */
   persistKey?: string;
+  /** Externally-controlled flip/rotation (set before entering placements mode). */
+  mirrored?: boolean;
+  rotation?: 0 | 90 | 180 | 270;
 };
 
 type PersistedEditorState = {
@@ -105,6 +108,7 @@ export default function PlaceholdersEditor({
   produceByN, onProduceChange, validatedByN, onValidateCard,
   placement, editedZones, onPlacementLoaded, onEditedChange,
   onCompositionReady, ratioLabel, persistKey,
+  mirrored: mirroredProp, rotation: rotationProp,
 }: Props) {
   // Restore previously persisted editor state for this cell+registre+sel.
   const editorStateKey = persistKey ? `${persistKey}::editor` : null;
@@ -140,9 +144,14 @@ export default function PlaceholdersEditor({
   const [subtitleEnabled, setSubtitleEnabled] = useState(persisted?.subtitleEnabled ?? true);
   const [selectedHeader, setSelectedHeader] = useState<HeaderKey | null>(null);
 
-  // Mirror flip (display-only horizontal flip of the illustration preview).
-  const [mirrored, setMirrored] = useState<boolean>(persisted?.mirrored ?? false);
-  const [rotation, setRotation] = useState<0 | 90 | 180 | 270>(persisted?.rotation ?? 0);
+  // Mirror flip / rotation: controlled externally when props are supplied,
+  // otherwise fallback to local persisted state (legacy path).
+  const [mirroredLocal, setMirroredLocal] = useState<boolean>(persisted?.mirrored ?? false);
+  const [rotationLocal, setRotationLocal] = useState<0 | 90 | 180 | 270>(persisted?.rotation ?? 0);
+  const mirrored = mirroredProp ?? mirroredLocal;
+  const rotation = rotationProp ?? rotationLocal;
+  // Keep setters referenced (no-op assignment) for legacy toolbar fallback below.
+  void setMirroredLocal; void setRotationLocal;
 
   // Persist UI state whenever it changes (debounced via micro-task is overkill — direct write is fine).
   useEffect(() => {
@@ -614,36 +623,8 @@ export default function PlaceholdersEditor({
           />
           Sous-titre
         </label>
-        {producedNs.length === 0 && (
-          <>
-            <button
-              type="button"
-              onClick={() => setMirrored((m) => !m)}
-              title="Inverser horizontalement l'illustration"
-              className={[
-                "ml-3 px-2 py-1 text-xs rounded border transition",
-                mirrored
-                  ? "bg-primary text-primary-foreground border-primary"
-                  : "bg-background hover:bg-muted",
-              ].join(" ")}
-            >
-              ⇄ Miroir
-            </button>
-            <button
-              type="button"
-              onClick={() => setRotation((r) => (((r + 90) % 360) as 0 | 90 | 180 | 270))}
-              title="Rotation 90° (clic répété)"
-              className={[
-                "ml-2 px-2 py-1 text-xs rounded border transition",
-                rotation !== 0
-                  ? "bg-primary text-primary-foreground border-primary"
-                  : "bg-background hover:bg-muted",
-              ].join(" ")}
-            >
-              ⟳ Rotation {rotation}°
-            </button>
-          </>
-        )}
+        {/* Mirror / rotation buttons are now hoisted to the parent toolbar
+            (they live in the habillage bar, *before* placements mode). */}
         {ratioLabel && (
           <span className="text-xs text-muted-foreground ml-2 font-mono">
             Ratio backend : {ratioLabel}

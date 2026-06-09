@@ -377,6 +377,8 @@ function ProductionScreen({
     userMax?: number;
     produceByN?: Record<number, boolean>;
     validatedByN?: Record<number, boolean>;
+    mirrored?: boolean;
+    rotation?: 0 | 90 | 180 | 270;
   };
   const loadPersisted = (): Persisted | null => {
     if (typeof window === "undefined") return null;
@@ -413,6 +415,8 @@ function ProductionScreen({
     initial?.produceByN ?? initialProduce(initial?.userMax ?? baseUserMax),
   );
   const [validatedByN, setValidatedByN] = useState<Record<number, boolean>>(initial?.validatedByN ?? {});
+  const [mirrored, setMirrored] = useState<boolean>(initial?.mirrored ?? false);
+  const [rotation, setRotation] = useState<0 | 90 | 180 | 270>(initial?.rotation ?? 0);
   const [composition, setComposition] = useState<import("@/components/admin/studio/PlaceholdersEditor").CompositionReadyData | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -446,6 +450,8 @@ function ProductionScreen({
     setUserMax(p?.userMax ?? baseUserMax);
     setProduceByN(p?.produceByN ?? initialProduce(p?.userMax ?? baseUserMax));
     setValidatedByN(p?.validatedByN ?? {});
+    setMirrored(p?.mirrored ?? false);
+    setRotation(p?.rotation ?? 0);
     setComposition(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cell.index, registre, selecteur]);
@@ -458,11 +464,11 @@ function ProductionScreen({
         JSON.stringify({
           moteur, gpt2Style, promptRes, vectRes, validated,
           placement, editedZones, placementsMode,
-          userMax, produceByN, validatedByN,
+          userMax, produceByN, validatedByN, mirrored, rotation,
         } satisfies Persisted),
       );
     } catch { /* ignore quota */ }
-  }, [persistKey, moteur, gpt2Style, promptRes, vectRes, validated, placement, editedZones, placementsMode, userMax, produceByN, validatedByN]);
+  }, [persistKey, moteur, gpt2Style, promptRes, vectRes, validated, placement, editedZones, placementsMode, userMax, produceByN, validatedByN, mirrored, rotation]);
 
 
 
@@ -727,9 +733,37 @@ function ProductionScreen({
               </>
             )}
             {validated && vectRes && vectRes.viewbox && !placementsMode && (
-              <Button size="sm" onClick={() => setPlacementsMode(true)}>
-                Poser les placeholders
-              </Button>
+              <>
+                <button
+                  type="button"
+                  onClick={() => setMirrored((m) => !m)}
+                  title="Inverser horizontalement l'illustration"
+                  className={[
+                    "px-2 py-1 text-xs rounded border transition",
+                    mirrored
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "bg-background hover:bg-muted",
+                  ].join(" ")}
+                >
+                  ⇄ Miroir
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setRotation((r) => (((r + 90) % 360) as 0 | 90 | 180 | 270))}
+                  title="Rotation 90° (clic répété)"
+                  className={[
+                    "px-2 py-1 text-xs rounded border transition",
+                    rotation !== 0
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "bg-background hover:bg-muted",
+                  ].join(" ")}
+                >
+                  ⟳ Rotation {rotation}°
+                </button>
+                <Button size="sm" onClick={() => setPlacementsMode(true)}>
+                  Poser les placeholders
+                </Button>
+              </>
             )}
             {validated && vectRes && !vectRes.viewbox && (
               <span className="text-xs text-destructive">Viewbox manquante</span>
@@ -829,6 +863,8 @@ function ProductionScreen({
             onCompositionReady={setComposition}
             ratioLabel={vectRes.metrics?.ratio_label}
             persistKey={persistKey}
+            mirrored={mirrored}
+            rotation={rotation}
           />
 
         ) : (
@@ -842,7 +878,7 @@ function ProductionScreen({
               </div>
             )}
             {!vectLoading && vectRes && (
-              <ZoomableSvg svg={vectRes.svg} />
+              <ZoomableSvg svg={vectRes.svg} mirrored={mirrored} rotation={rotation} />
             )}
             {!vectLoading && !vectRes && (
               <div className="absolute inset-0 flex items-center justify-center">
