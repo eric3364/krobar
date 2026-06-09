@@ -145,8 +145,15 @@ export default function ZoomableSvg({ svg, mirrored = false, rotation = 0 }: Pro
       >
         <div
           style={{
-            width: natural.w * effectiveScale,
-            height: natural.h * effectiveScale,
+            // Use unrotated natural so the inner SVG keeps its aspect ratio;
+            // the rotation/mirror are applied via CSS transform around it.
+            width: naturalRaw.w * effectiveScale,
+            height: naturalRaw.h * effectiveScale,
+            transform: [
+              rotation ? `rotate(${mirrored ? -rotation : rotation}deg)` : "",
+              mirrored ? "scaleX(-1)" : "",
+            ].filter(Boolean).join(" ") || undefined,
+            transformOrigin: "center center",
             transition: dragRef.current ? "none" : "width 120ms ease-out, height 120ms ease-out",
           }}
           className="[&>svg]:!w-full [&>svg]:!h-full [&>svg]:block"
