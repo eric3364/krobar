@@ -1056,7 +1056,7 @@ function MetadataExportPanel(props: {
           <Button
             type="button"
             variant="outline"
-            onClick={() => setActive(null)}
+            onClick={onCancel}
             disabled={exporting}
           >
             Annuler
