@@ -878,7 +878,7 @@ function ProductionScreen({
               </div>
             )}
             {!vectLoading && vectRes && (
-              <ZoomableSvg svg={vectRes.svg} />
+              <ZoomableSvg svg={vectRes.svg} mirrored={mirrored} rotation={rotation} />
             )}
             {!vectLoading && !vectRes && (
               <div className="absolute inset-0 flex items-center justify-center">
