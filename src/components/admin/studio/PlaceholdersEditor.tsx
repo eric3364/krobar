@@ -104,42 +104,68 @@ export default function PlaceholdersEditor({
   placement, editedZones, onPlacementLoaded, onEditedChange,
   onCompositionReady, ratioLabel,
 }: Props) {
+  // Restore previously persisted editor state for this cell+registre+sel.
+  const editorStateKey = props.persistKey ? `${props.persistKey}::editor` : null;
+  const loadEditorState = (): PersistedEditorState | null => {
+    if (!editorStateKey || typeof window === "undefined") return null;
+    try {
+      const raw = localStorage.getItem(editorStateKey);
+      return raw ? (JSON.parse(raw) as PersistedEditorState) : null;
+    } catch { return null; }
+  };
+  const persisted = loadEditorState();
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [card, setCard] = useState<number>(userMax);
-  const [backplates, setBackplates] = useState<Record<string, boolean>>({});
+  const [backplates, setBackplates] = useState<Record<string, boolean>>(persisted?.backplates ?? {});
   // Lorem permanent (toujours affiché). Longueur + taille de police sont GLOBALES.
-  const [loremLen, setLoremLen] = useState<LoremLen>("medium");
+  const [loremLen, setLoremLen] = useState<LoremLen>(persisted?.loremLen ?? "medium");
   const FONT_STEPS = [24, 20, 16, 13, 11] as const;
-  const [fontSizePx, setFontSizePx] = useState<number>(16);
+  const [fontSizePx, setFontSizePx] = useState<number>(persisted?.fontSizePx ?? 16);
   const [selectedN, setSelectedN] = useState<number | null>(null);
-  const [commonSize, setCommonSize] = useState<{ w: number; h: number } | null>(null);
+  const [commonSize, setCommonSize] = useState<{ w: number; h: number } | null>(persisted?.commonSize ?? null);
   const [overflow, setOverflow] = useState<Record<string, boolean>>({});
   const [loremHeights, setLoremHeights] = useState<Record<string, number>>({});
   // B2 — habillage
-  const [habMode, setHabMode] = useState<Record<string, HabillageMode>>({});
-  const [traitSide, setTraitSide] = useState<Record<string, TraitSide>>({});
-  const [habillageValidated, setHabillageValidated] = useState(false);
+  const [habMode, setHabMode] = useState<Record<string, HabillageMode>>(persisted?.habMode ?? {});
+  const [traitSide, setTraitSide] = useState<Record<string, TraitSide>>(persisted?.traitSide ?? {});
+  const [habillageValidated, setHabillageValidated] = useState(persisted?.habillageValidated ?? false);
 
   // Headers (title + subtitle) — positions éditables, texte vient du rendu.
   type HeaderKey = "title" | "subtitle";
-  const [headerRects, setHeaderRects] = useState<{ title: ZoneRect; subtitle: ZoneRect } | null>(null);
-  const [subtitleEnabled, setSubtitleEnabled] = useState(true);
+  const [headerRects, setHeaderRects] = useState<{ title: ZoneRect; subtitle: ZoneRect } | null>(persisted?.headerRects ?? null);
+  const [subtitleEnabled, setSubtitleEnabled] = useState(persisted?.subtitleEnabled ?? true);
   const [selectedHeader, setSelectedHeader] = useState<HeaderKey | null>(null);
 
-  // Init / reset headers when a new placement arrives.
+  // Persist UI state whenever it changes (debounced via micro-task is overkill — direct write is fine).
+  useEffect(() => {
+    if (!editorStateKey) return;
+    try {
+      const snap: PersistedEditorState = {
+        backplates, loremLen, fontSizePx, habMode, traitSide,
+        habillageValidated, headerRects, subtitleEnabled, commonSize,
+      };
+      localStorage.setItem(editorStateKey, JSON.stringify(snap));
+    } catch { /* ignore quota */ }
+  }, [
+    editorStateKey, backplates, loremLen, fontSizePx, habMode, traitSide,
+    habillageValidated, headerRects, subtitleEnabled, commonSize,
+  ]);
+
+  // Init / reset headers when a new placement arrives — but only if we don't
+  // already have a persisted set (else we'd overwrite the user's edits).
   useEffect(() => {
     // eslint-disable-next-line no-console
     console.log("[studio] placement received, headers =", placement?.headers);
+    if (headerRects) return; // already have (persisted or set previously)
     if (placement?.headers) {
       setHeaderRects({
         title: { ...placement.headers.title.rect },
         subtitle: { ...placement.headers.subtitle.rect },
       });
-    } else {
-      setHeaderRects(null);
     }
-  }, [placement]);
+  }, [placement]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Le viewbox est imposé par le backend (déjà au ratio cible, letterboxé).
   // Le front n'effectue plus aucun recadrage : workViewbox === viewbox backend.
