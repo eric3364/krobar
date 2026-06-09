@@ -868,6 +868,7 @@ function ProductionScreen({
           composition={composition}
           produceByN={produceByN}
           validatedByN={validatedByN}
+          onCancel={onBack}
         />
       )}
     </div>
