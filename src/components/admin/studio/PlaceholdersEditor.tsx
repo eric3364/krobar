@@ -1051,13 +1051,16 @@ export default function PlaceholdersEditor({
             );
           })}
         </svg>
+            </div>
 
-        {loading && (
-          <div className="absolute inset-0 bg-background/60 flex items-center justify-center">
-            <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
+            {loading && (
+              <div className="absolute inset-0 bg-background/60 flex items-center justify-center">
+                <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        );
+      })()}
 
       <p className="text-[11px] text-muted-foreground">
         Clique une zone pour la sélectionner, glisse pour la déplacer, coins pour
