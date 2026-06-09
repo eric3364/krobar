@@ -736,37 +736,60 @@ export default function PlaceholdersEditor({
         </div>
       )}
 
-      <div
-        className="relative bg-background border rounded-md overflow-hidden mx-auto"
-        style={{
-          aspectRatio: `${workViewbox[2]} / ${workViewbox[3]}`,
-          width: `min(100%, calc(70vh * ${workViewbox[2]} / ${workViewbox[3]}))`,
-          maxHeight: "70vh",
-        }}
-      >
-        {/* Illustration vectorisée — utilise le viewbox backend tel quel. */}
-        <div
-          className="absolute inset-0 [&>svg]:w-full [&>svg]:h-full"
-          style={{
-            transform: [
-              mirrored ? "scaleX(-1)" : "",
-              rotation ? `rotate(${mirrored ? -rotation : rotation}deg)` : "",
-            ].filter(Boolean).join(" ") || undefined,
-            transformOrigin: "center",
-          }}
-          dangerouslySetInnerHTML={{ __html: svg }}
-        />
+      {(() => {
+        const vbW = workViewbox[2];
+        const vbH = workViewbox[3];
+        const rotated90 = rotation === 90 || rotation === 270;
+        const dispW = rotated90 ? vbH : vbW;
+        const dispH = rotated90 ? vbW : vbH;
+        const transform = [
+          "translate(-50%, -50%)",
+          rotation ? `rotate(${mirrored ? -rotation : rotation}deg)` : "",
+          mirrored ? "scaleX(-1)" : "",
+        ].filter(Boolean).join(" ");
+        const wrapperStyle: React.CSSProperties = rotated90
+          ? {
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: `${(vbW / vbH) * 100}%`,
+              height: `${(vbH / vbW) * 100}%`,
+              transform,
+            }
+          : {
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: "100%",
+              height: "100%",
+              transform,
+            };
+        return (
+          <div
+            className="relative bg-background border rounded-md overflow-hidden mx-auto"
+            style={{
+              aspectRatio: `${dispW} / ${dispH}`,
+              width: `min(100%, calc(70vh * ${dispW} / ${dispH}))`,
+              maxHeight: "70vh",
+            }}
+          >
+            <div style={wrapperStyle}>
+              {/* Illustration vectorisée — utilise le viewbox backend tel quel. */}
+              <div
+                className="absolute inset-0 [&>svg]:w-full [&>svg]:h-full"
+                dangerouslySetInnerHTML={{ __html: svg }}
+              />
 
-        <svg
-          ref={overlayRef}
-          className="absolute inset-0 w-full h-full"
-          viewBox={`${workViewbox[0]} ${workViewbox[1]} ${workViewbox[2]} ${workViewbox[3]}`}
-          preserveAspectRatio="xMidYMid meet"
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-          onPointerLeave={onPointerUp}
-          onClick={(e) => { if (e.target === e.currentTarget) { setSelectedN(null); setSelectedHeader(null); } }}
-        >
+              <svg
+                ref={overlayRef}
+                className="absolute inset-0 w-full h-full"
+                viewBox={`${workViewbox[0]} ${workViewbox[1]} ${workViewbox[2]} ${workViewbox[3]}`}
+                preserveAspectRatio="xMidYMid meet"
+                onPointerMove={onPointerMove}
+                onPointerUp={onPointerUp}
+                onPointerLeave={onPointerUp}
+                onClick={(e) => { if (e.target === e.currentTarget) { setSelectedN(null); setSelectedHeader(null); } }}
+              >
           {/* Header boxes — title (always) + subtitle (toggleable) */}
           {headerRects && (["title", "subtitle"] as HeaderKey[]).map((hk) => {
             if (hk === "subtitle" && !subtitleEnabled) return null;
