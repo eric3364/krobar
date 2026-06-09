@@ -435,7 +435,12 @@ function ProductionScreen({
     setValidated(p?.validated ?? false);
     setMoteur(p?.moteur ?? "midjourney");
     setGpt2Style(p?.gpt2Style ?? null);
-    setPlacement(p?.placement ?? null);
+    // Drop cached placement that pre-dates the headers feature so it gets refetched
+    // (otherwise headers boxes never appear for sessions persisted before the upgrade).
+    const cachedPlacement = p?.placement && (p.placement as PlaceZonesResponse).headers
+      ? p.placement
+      : null;
+    setPlacement(cachedPlacement);
     setEditedZones(p?.editedZones ?? {});
     setPlacementsMode(p?.placementsMode ?? false);
     setUserMax(p?.userMax ?? baseUserMax);
