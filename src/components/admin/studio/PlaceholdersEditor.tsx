@@ -728,6 +728,7 @@ export default function PlaceholdersEditor({
         {/* Illustration vectorisée — utilise le viewbox backend tel quel. */}
         <div
           className="absolute inset-0 [&>svg]:w-full [&>svg]:h-full"
+          style={{ transform: mirrored ? "scaleX(-1)" : undefined, transformOrigin: "center" }}
           dangerouslySetInnerHTML={{ __html: svg }}
         />
 
