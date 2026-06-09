@@ -150,13 +150,13 @@ export default function PlaceholdersEditor({
     try {
       const snap: PersistedEditorState = {
         backplates, loremLen, fontSizePx, habMode, traitSide,
-        habillageValidated, headerRects, subtitleEnabled, commonSize, mirrored,
+        habillageValidated, headerRects, subtitleEnabled, commonSize, mirrored, rotation,
       };
       localStorage.setItem(editorStateKey, JSON.stringify(snap));
     } catch { /* ignore quota */ }
   }, [
     editorStateKey, backplates, loremLen, fontSizePx, habMode, traitSide,
-    habillageValidated, headerRects, subtitleEnabled, commonSize, mirrored,
+    habillageValidated, headerRects, subtitleEnabled, commonSize, mirrored, rotation,
   ]);
 
   // Init / reset headers when a new placement arrives — but only if we don't
