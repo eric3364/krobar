@@ -2,7 +2,7 @@ import { useRef, useState, useCallback, useEffect, useMemo, useLayoutEffect } fr
 import { Button } from "@/components/ui/button";
 import { ZoomIn, ZoomOut, Maximize2 } from "lucide-react";
 
-type Props = { svg: string };
+type Props = { svg: string; mirrored?: boolean; rotation?: 0 | 90 | 180 | 270 };
 
 const MAX_SCALE = 8;
 const STEP = 1.25;
