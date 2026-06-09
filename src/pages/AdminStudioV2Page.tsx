@@ -869,17 +869,36 @@ function ProductionScreen({
 
         ) : (
           <div
-            className="relative w-full bg-muted/30 border rounded-md overflow-hidden"
+            className="relative w-full flex items-center justify-center"
             style={{ height: "calc(100vh - 280px)" }}
           >
-            {vectLoading && (
-              <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
-                <Loader2 className="w-5 h-5 mr-2 animate-spin" /> Vectorisation…
-              </div>
-            )}
-            {!vectLoading && vectRes && (
-              <ZoomableSvg svg={vectRes.svg} mirrored={mirrored} rotation={rotation} />
-            )}
+            {(() => {
+              // Compute aspect ratio of the (possibly rotated) image so the
+              // surrounding frame adapts to portrait/landscape orientations.
+              const svgStr = vectRes?.svg ?? "";
+              const vb = svgStr.match(/viewBox\s*=\s*["']\s*([-\d.]+)\s+([-\d.]+)\s+([\d.]+)\s+([\d.]+)\s*["']/i);
+              let nW = 1, nH = 1;
+              if (vb) { nW = parseFloat(vb[3]); nH = parseFloat(vb[4]); }
+              const rotated90 = rotation === 90 || rotation === 270;
+              const imgW = rotated90 ? nH : nW;
+              const imgH = rotated90 ? nW : nH;
+              const aspect = imgW / imgH;
+              return (
+                <div
+                  className="relative bg-muted/30 border rounded-md overflow-hidden h-full"
+                  style={{ aspectRatio: `${aspect}`, maxWidth: "100%" }}
+                >
+                  {vectLoading && (
+                    <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
+                      <Loader2 className="w-5 h-5 mr-2 animate-spin" /> Vectorisation…
+                    </div>
+                  )}
+                  {!vectLoading && vectRes && (
+                    <ZoomableSvg svg={vectRes.svg} mirrored={mirrored} rotation={rotation} />
+                  )}
+                </div>
+              );
+            })()}
             {!vectLoading && !vectRes && (
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center text-muted-foreground px-6">
