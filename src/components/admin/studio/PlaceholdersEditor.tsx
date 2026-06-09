@@ -105,6 +105,24 @@ export default function PlaceholdersEditor({
   const [traitSide, setTraitSide] = useState<Record<string, TraitSide>>({});
   const [habillageValidated, setHabillageValidated] = useState(false);
 
+  // Headers (title + subtitle) — positions éditables, texte vient du rendu.
+  type HeaderKey = "title" | "subtitle";
+  const [headerRects, setHeaderRects] = useState<{ title: ZoneRect; subtitle: ZoneRect } | null>(null);
+  const [subtitleEnabled, setSubtitleEnabled] = useState(true);
+  const [selectedHeader, setSelectedHeader] = useState<HeaderKey | null>(null);
+
+  // Init / reset headers when a new placement arrives.
+  useEffect(() => {
+    if (placement?.headers) {
+      setHeaderRects({
+        title: { ...placement.headers.title.rect },
+        subtitle: { ...placement.headers.subtitle.rect },
+      });
+    } else {
+      setHeaderRects(null);
+    }
+  }, [placement]);
+
   // Le viewbox est imposé par le backend (déjà au ratio cible, letterboxé).
   // Le front n'effectue plus aucun recadrage : workViewbox === viewbox backend.
   const workViewbox: Viewbox = viewbox;
