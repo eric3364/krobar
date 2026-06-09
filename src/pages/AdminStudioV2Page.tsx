@@ -814,21 +814,33 @@ function ProductionScreen({
           {promptRes && (
             <div className="space-y-2">
               <textarea
-                readOnly
-                value={promptRes.prompt}
-                className="w-full min-h-[120px] font-mono text-xs p-3 rounded-md border bg-muted/30 resize-y"
+                value={promptEdited ?? promptRes.prompt}
+                onChange={(e) => setPromptEdited(e.target.value)}
+                className="w-full min-h-[120px] font-mono text-xs p-3 rounded-md border bg-background resize-y"
               />
               <div className="flex items-center gap-2 flex-wrap">
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={async () => {
-                    await navigator.clipboard.writeText(promptRes.prompt);
+                    await navigator.clipboard.writeText(promptEdited ?? promptRes.prompt);
                     toast.success("Prompt copié");
                   }}
                 >
                   <Copy className="w-4 h-4 mr-1" /> Copier
                 </Button>
+                {promptEdited !== null && promptEdited !== promptRes.prompt && (
+                  <>
+                    <span className="text-xs text-amber-600">● modifié</span>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => setPromptEdited(null)}
+                    >
+                      Réinitialiser
+                    </Button>
+                  </>
+                )}
                 <p className="text-xs text-muted-foreground">
                   Charte v{promptRes.charte_version} · {promptRes.meta.cote}
                   {promptRes.style && (
