@@ -293,6 +293,60 @@ export default function PlaceholdersEditor({
   };
   const onPointerUp = () => {
     dragRef.current = null; resizeRef.current = null;
+    headerDragRef.current = null; headerResizeRef.current = null;
+  };
+
+  // Header drag (move)
+  const headerDragRef = useRef<{ key: HeaderKey; startX: number; startY: number; orig: ZoneRect } | null>(null);
+  const onHeaderMoveDown = (key: HeaderKey, e: React.PointerEvent) => {
+    e.preventDefault(); e.stopPropagation();
+    if (!headerRects) return;
+    (e.target as Element).setPointerCapture?.(e.pointerId);
+    headerDragRef.current = { key, startX: e.clientX, startY: e.clientY, orig: { ...headerRects[key] } };
+    setSelectedHeader(key);
+    setSelectedN(null);
+  };
+  // Header resize
+  const headerResizeRef = useRef<{
+    key: HeaderKey; corner: ResizeCorner;
+    startX: number; startY: number; orig: ZoneRect;
+  } | null>(null);
+  const onHeaderResizeDown = (key: HeaderKey, corner: ResizeCorner, e: React.PointerEvent) => {
+    e.preventDefault(); e.stopPropagation();
+    if (!headerRects) return;
+    (e.target as Element).setPointerCapture?.(e.pointerId);
+    headerResizeRef.current = {
+      key, corner, startX: e.clientX, startY: e.clientY, orig: { ...headerRects[key] },
+    };
+    setSelectedHeader(key);
+  };
+  const onHeaderPointerMove = (e: React.PointerEvent) => {
+    if (!overlayRef.current) return;
+    const box = overlayRef.current.getBoundingClientRect();
+    const sx = workViewbox[2] / box.width;
+    const sy = workViewbox[3] / box.height;
+    const rz = headerResizeRef.current;
+    if (rz && headerRects) {
+      const dx = (e.clientX - rz.startX) * sx;
+      const dy = (e.clientY - rz.startY) * sy;
+      const o = rz.orig;
+      let nx = o.x, ny = o.y, nw = o.w, nh = o.h;
+      if (rz.corner.includes("e")) nw = Math.max(viewbox[2] * 0.04, o.w + dx);
+      if (rz.corner.includes("s")) nh = Math.max(viewbox[3] * 0.02, o.h + dy);
+      if (rz.corner.includes("w")) { nw = Math.max(viewbox[2] * 0.04, o.w - dx); nx = o.x + (o.w - nw); }
+      if (rz.corner.includes("n")) { nh = Math.max(viewbox[3] * 0.02, o.h - dy); ny = o.y + (o.h - nh); }
+      setHeaderRects({ ...headerRects, [rz.key]: { x: nx, y: ny, w: nw, h: nh } });
+      return;
+    }
+    const d = headerDragRef.current;
+    if (d && headerRects) {
+      const dx = (e.clientX - d.startX) * sx;
+      const dy = (e.clientY - d.startY) * sy;
+      setHeaderRects({
+        ...headerRects,
+        [d.key]: { ...d.orig, x: d.orig.x + dx, y: d.orig.y + dy },
+      });
+    }
   };
 
   // Resize (common size)
