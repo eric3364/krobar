@@ -576,8 +576,12 @@ export default function PlaceholdersEditor({
       )}
 
       <div
-        className="relative w-full bg-background border rounded-md overflow-hidden"
-        style={{ aspectRatio: `${workViewbox[2]} / ${workViewbox[3]}` }}
+        className="relative bg-background border rounded-md overflow-hidden mx-auto"
+        style={{
+          aspectRatio: `${workViewbox[2]} / ${workViewbox[3]}`,
+          width: `min(100%, calc(70vh * ${workViewbox[2]} / ${workViewbox[3]}))`,
+          maxHeight: "70vh",
+        }}
       >
         {/* Illustration vectorisée — utilise le viewbox backend tel quel. */}
         <div
