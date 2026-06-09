@@ -55,6 +55,7 @@ type PersistedEditorState = {
   subtitleEnabled: boolean;
   commonSize: { w: number; h: number } | null;
   mirrored?: boolean;
+  rotation?: 0 | 90 | 180 | 270;
 };
 
 type LoremLen = "short" | "medium" | "long";
@@ -141,6 +142,7 @@ export default function PlaceholdersEditor({
 
   // Mirror flip (display-only horizontal flip of the illustration preview).
   const [mirrored, setMirrored] = useState<boolean>(persisted?.mirrored ?? false);
+  const [rotation, setRotation] = useState<0 | 90 | 180 | 270>(persisted?.rotation ?? 0);
 
   // Persist UI state whenever it changes (debounced via micro-task is overkill — direct write is fine).
   useEffect(() => {
@@ -148,13 +150,13 @@ export default function PlaceholdersEditor({
     try {
       const snap: PersistedEditorState = {
         backplates, loremLen, fontSizePx, habMode, traitSide,
-        habillageValidated, headerRects, subtitleEnabled, commonSize, mirrored,
+        habillageValidated, headerRects, subtitleEnabled, commonSize, mirrored, rotation,
       };
       localStorage.setItem(editorStateKey, JSON.stringify(snap));
     } catch { /* ignore quota */ }
   }, [
     editorStateKey, backplates, loremLen, fontSizePx, habMode, traitSide,
-    habillageValidated, headerRects, subtitleEnabled, commonSize, mirrored,
+    habillageValidated, headerRects, subtitleEnabled, commonSize, mirrored, rotation,
   ]);
 
   // Init / reset headers when a new placement arrives — but only if we don't
@@ -625,6 +627,19 @@ export default function PlaceholdersEditor({
         >
           ⇄ Miroir
         </button>
+        <button
+          type="button"
+          onClick={() => setRotation((r) => (((r + 90) % 360) as 0 | 90 | 180 | 270))}
+          title="Rotation 90° (clic répété)"
+          className={[
+            "ml-2 px-2 py-1 text-xs rounded border transition",
+            rotation !== 0
+              ? "bg-primary text-primary-foreground border-primary"
+              : "bg-background hover:bg-muted",
+          ].join(" ")}
+        >
+          ⟳ Rotation {rotation}°
+        </button>
         {ratioLabel && (
           <span className="text-xs text-muted-foreground ml-2 font-mono">
             Ratio backend : {ratioLabel}
@@ -728,7 +743,13 @@ export default function PlaceholdersEditor({
         {/* Illustration vectorisée — utilise le viewbox backend tel quel. */}
         <div
           className="absolute inset-0 [&>svg]:w-full [&>svg]:h-full"
-          style={{ transform: mirrored ? "scaleX(-1)" : undefined, transformOrigin: "center" }}
+          style={{
+            transform: [
+              mirrored ? "scaleX(-1)" : "",
+              rotation ? `rotate(${mirrored ? -rotation : rotation}deg)` : "",
+            ].filter(Boolean).join(" ") || undefined,
+            transformOrigin: "center",
+          }}
           dangerouslySetInnerHTML={{ __html: svg }}
         />
 
