@@ -415,6 +415,8 @@ function ProductionScreen({
     initial?.produceByN ?? initialProduce(initial?.userMax ?? baseUserMax),
   );
   const [validatedByN, setValidatedByN] = useState<Record<number, boolean>>(initial?.validatedByN ?? {});
+  const [mirrored, setMirrored] = useState<boolean>(initial?.mirrored ?? false);
+  const [rotation, setRotation] = useState<0 | 90 | 180 | 270>(initial?.rotation ?? 0);
   const [composition, setComposition] = useState<import("@/components/admin/studio/PlaceholdersEditor").CompositionReadyData | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
