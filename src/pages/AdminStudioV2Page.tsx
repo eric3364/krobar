@@ -828,6 +828,7 @@ function ProductionScreen({
             onEditedChange={setEditedZones}
             onCompositionReady={setComposition}
             ratioLabel={vectRes.metrics?.ratio_label}
+            persistKey={persistKey}
           />
 
         ) : (
