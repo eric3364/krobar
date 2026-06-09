@@ -452,8 +452,14 @@ export default function PlaceholdersEditor({
       transform: "translate(0,0) scale(1)",
       gabarit: { font_size: fontSizePx, box_w: commonSize.w, box_h: commonSize.h },
       zones_by_cardinality: zbc,
+      headers: headerRects
+        ? {
+            title: { rect: { ...headerRects.title } },
+            subtitle: { rect: { ...headerRects.subtitle }, disabled: !subtitleEnabled },
+          }
+        : undefined,
     };
-  }, [commonSize, viewbox, producedNs, validatedByN, editedZones, placement, habMode, traitSide, backplates, fontSizePx]);
+  }, [commonSize, viewbox, producedNs, validatedByN, editedZones, placement, habMode, traitSide, backplates, fontSizePx, headerRects, subtitleEnabled]);
 
   // Emit composition once habillage is validated.
   useEffect(() => {
