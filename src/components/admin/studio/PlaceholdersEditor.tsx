@@ -623,36 +623,8 @@ export default function PlaceholdersEditor({
           />
           Sous-titre
         </label>
-        {producedNs.length === 0 && (
-          <>
-            <button
-              type="button"
-              onClick={() => setMirrored((m) => !m)}
-              title="Inverser horizontalement l'illustration"
-              className={[
-                "ml-3 px-2 py-1 text-xs rounded border transition",
-                mirrored
-                  ? "bg-primary text-primary-foreground border-primary"
-                  : "bg-background hover:bg-muted",
-              ].join(" ")}
-            >
-              ⇄ Miroir
-            </button>
-            <button
-              type="button"
-              onClick={() => setRotation((r) => (((r + 90) % 360) as 0 | 90 | 180 | 270))}
-              title="Rotation 90° (clic répété)"
-              className={[
-                "ml-2 px-2 py-1 text-xs rounded border transition",
-                rotation !== 0
-                  ? "bg-primary text-primary-foreground border-primary"
-                  : "bg-background hover:bg-muted",
-              ].join(" ")}
-            >
-              ⟳ Rotation {rotation}°
-            </button>
-          </>
-        )}
+        {/* Mirror / rotation buttons are now hoisted to the parent toolbar
+            (they live in the habillage bar, *before* placements mode). */}
         {ratioLabel && (
           <span className="text-xs text-muted-foreground ml-2 font-mono">
             Ratio backend : {ratioLabel}
