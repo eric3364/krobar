@@ -54,6 +54,7 @@ type PersistedEditorState = {
   headerRects: { title: ZoneRect; subtitle: ZoneRect } | null;
   subtitleEnabled: boolean;
   commonSize: { w: number; h: number } | null;
+  mirrored?: boolean;
 };
 
 type LoremLen = "short" | "medium" | "long";
