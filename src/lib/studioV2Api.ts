@@ -209,6 +209,10 @@ export type CompositionPayload = {
     matching_types: string[];
   };
   zones_by_cardinality: Record<string, ExportZone[]>;
+  headers?: {
+    title: { rect: ZoneRect };
+    subtitle: { rect: ZoneRect; disabled: boolean };
+  };
 };
 
 export type ExportPayload = { composition: CompositionPayload };
