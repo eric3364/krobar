@@ -26,8 +26,13 @@ function getSvgNaturalSize(svg: string): { w: number; h: number } {
   return { w: 1000, h: 1000 };
 }
 
-export default function ZoomableSvg({ svg }: Props) {
-  const natural = useMemo(() => getSvgNaturalSize(svg), [svg]);
+export default function ZoomableSvg({ svg, mirrored = false, rotation = 0 }: Props) {
+  const naturalRaw = useMemo(() => getSvgNaturalSize(svg), [svg]);
+  // After rotation by 90°/270° the bounding box swaps W/H.
+  const rotated90 = rotation === 90 || rotation === 270;
+  const natural = rotated90
+    ? { w: naturalRaw.h, h: naturalRaw.w }
+    : naturalRaw;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [box, setBox] = useState<{ w: number; h: number }>({ w: 0, h: 0 });
