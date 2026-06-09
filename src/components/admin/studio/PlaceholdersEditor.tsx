@@ -270,6 +270,7 @@ export default function PlaceholdersEditor({
     setSelectedN(n);
   };
   const onPointerMove = (e: React.PointerEvent) => {
+    if (headerResizeRef.current || headerDragRef.current) return onHeaderPointerMove(e);
     if (resizeRef.current) return onResizeMove(e);
     const d = dragRef.current;
     if (!d || !overlayRef.current) return;
