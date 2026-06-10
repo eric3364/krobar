@@ -732,8 +732,12 @@ function ProductionScreen({
           <button
             type="button"
             onDragOver={(e) => e.preventDefault()}
-            onDrop={onDrop}
-            onClick={() => fileInputRef.current?.click()}
+            onDrop={(e) => {
+              e.preventDefault();
+              const f = e.dataTransfer.files?.[0];
+              if (f) requestAction(() => handleFile(f));
+            }}
+            onClick={() => requestAction(() => fileInputRef.current?.click())}
             className="inline-flex items-center gap-2 px-3 py-1.5 text-xs rounded border border-dashed hover:bg-muted/40 transition-colors"
             title="PNG / JPEG, max 5 Mo"
           >
