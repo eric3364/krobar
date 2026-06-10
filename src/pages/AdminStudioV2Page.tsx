@@ -33,6 +33,7 @@ import StructuralSketch from "@/components/admin/studio/StructuralSketch";
 import ZoomableSvg from "@/components/admin/studio/ZoomableSvg";
 import PlaceholdersEditor from "@/components/admin/studio/PlaceholdersEditor";
 import TemplatesGallery from "@/components/admin/studio/TemplatesGallery";
+import SvgEraserDialog from "@/components/admin/studio/SvgEraserDialog";
 import {
   studioV2Api,
   type CoverageCell,
