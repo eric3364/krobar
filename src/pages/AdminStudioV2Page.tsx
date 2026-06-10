@@ -554,7 +554,7 @@ function ProductionScreen({
         ...(moteur === "gpt-image-2" ? { style: gpt2Style ?? gpt2Default ?? undefined } : {}),
       });
       setPromptRes(r);
-      setPromptEdited(null);
+      // Preserve user edits across successive iterations: don't reset promptEdited here.
     } catch (e) {
       // Ne pas laisser un ancien prompt visible quand la tentative a échoué.
       setPromptRes(null);
