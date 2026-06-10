@@ -817,7 +817,13 @@ function ProductionScreen({
             </div>
           </div>
 
-          {promptError && <p className="text-sm text-destructive">{promptError}</p>}
+          {!hasAnyRegistre && (
+            <p className="text-sm text-muted-foreground">
+              Cette cellule n'a pas encore d'incarnation — rien à générer.
+            </p>
+          )}
+
+          {hasAnyRegistre && promptError && <p className="text-sm text-destructive">{promptError}</p>}
 
           {promptRes && (
             <div className="space-y-2">
