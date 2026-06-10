@@ -991,7 +991,44 @@ function ProductionScreen({
                 </div>
               );
             })()}
-            {!vectLoading && !vectRes && (
+            {!vectLoading && !vectRes && hasProduced && (() => {
+              const item =
+                producedItems.find((p) => p.cardinality === selectedProducedCard) ??
+                producedItems[producedItems.length - 1];
+              const url = `https://krobar.online/templates/${item.file}`;
+              return (
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 p-4">
+                  {producedItems.length > 1 && (
+                    <div className="flex gap-1.5">
+                      {producedItems.map((p) => (
+                        <button
+                          key={p.cardinality}
+                          onClick={() => setSelectedProducedCard(p.cardinality)}
+                          className={[
+                            "w-7 h-7 text-xs rounded-full border font-mono",
+                            (selectedProducedCard ?? item.cardinality) === p.cardinality
+                              ? "bg-primary text-primary-foreground border-primary"
+                              : "bg-background hover:bg-muted",
+                          ].join(" ")}
+                          title={`Cardinalité ${p.cardinality}`}
+                        >
+                          {p.cardinality}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  <div className="flex-1 min-h-0 w-full flex items-center justify-center">
+                    <img
+                      src={url}
+                      alt={`Illustration ${item.id}`}
+                      className="max-h-full max-w-full object-contain"
+                    />
+                  </div>
+                  <p className="text-[11px] text-muted-foreground font-mono">{item.id}</p>
+                </div>
+              );
+            })()}
+            {!vectLoading && !vectRes && !hasProduced && (
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center text-muted-foreground px-6">
                   <StructuralSketch
