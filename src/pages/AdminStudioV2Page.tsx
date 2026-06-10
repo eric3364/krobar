@@ -288,6 +288,11 @@ function CellCard({ cell, onPick }: { cell: CoverageCell; onPick: (c: CoverageCe
   const implausible = cell.plausibility === "X";
   const covered = cell.covered;
   const s = byRegistreSummary(cell);
+  const prod = cell.production;
+  const byDomain = prod?.by_domain ?? {};
+  const domainKeys = Object.keys(byDomain).filter((d) => d !== "_none");
+  const producedDomains = domainKeys.filter((d) => byDomain[d]?.canonical_done).length;
+  const cellProduced = prod?.cell_produced === true;
 
   return (
     <button
@@ -295,20 +300,20 @@ function CellCard({ cell, onPick }: { cell: CoverageCell; onPick: (c: CoverageCe
       disabled={implausible}
       onClick={() => onPick(cell)}
       className={[
-        "text-left rounded-md border bg-card p-3 transition-all",
+        "text-left rounded-md bg-card p-3 transition-all",
+        cellProduced ? "border-2 border-emerald-500" : "border",
         implausible
           ? "opacity-40 cursor-not-allowed line-through"
           : "hover:shadow-md hover:border-primary/50 cursor-pointer",
-        covered && !implausible ? "border-emerald-500/40" : "",
+        covered && !implausible && !cellProduced ? "border-emerald-500/40" : "",
       ].join(" ")}
     >
       <div className="flex items-start gap-3">
-        <StructuralSketch
-          family={cell.family as string}
-          cardinality={cell.cardinality as string}
-          regime={cell.regime as string}
-          size={64}
-        />
+        {cellProduced ? (
+          <div className="w-8 flex items-start justify-center pt-0.5">
+            <Check className="w-5 h-5 text-emerald-600" />
+          </div>
+        ) : null}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <span className="font-mono text-sm font-semibold">{cell.index}</span>
@@ -327,13 +332,36 @@ function CellCard({ cell, onPick }: { cell: CoverageCell; onPick: (c: CoverageCe
           <div className="text-xs mt-1">
             <span className="text-muted-foreground">{cell.incarnations} incarnation(s)</span>
           </div>
+          {prod && (
+            <div className="text-[11px] text-muted-foreground mt-0.5 flex flex-wrap gap-x-2">
+              <span>Canonique : {prod.canonical_cardinality}</span>
+              <span>Produite : {producedDomains}/{domainKeys.length} domaine(s)</span>
+            </div>
+          )}
         </div>
       </div>
 
       <div className="mt-2 flex flex-wrap gap-1">
-        {s.domains.slice(0, 6).map((d) => (
-          <Badge key={d} variant="secondary" className="text-[10px] py-0 px-1.5">{d}</Badge>
-        ))}
+        {s.domains.slice(0, 6).map((d) => {
+          const dp = byDomain[d];
+          const done = dp?.canonical_done === true;
+          const tooltip = dp && dp.cardinalities_produced.length > 0
+            ? `Cardinalités produites : ${dp.cardinalities_produced.join(", ")}`
+            : "Aucune production";
+          return done ? (
+            <Badge
+              key={d}
+              title={tooltip}
+              className="text-[10px] py-0 px-1.5 bg-emerald-600 text-white hover:bg-emerald-600/90 border-transparent"
+            >
+              ✓ {d}
+            </Badge>
+          ) : (
+            <Badge key={d} variant="secondary" title={tooltip} className="text-[10px] py-0 px-1.5">
+              {d}
+            </Badge>
+          );
+        })}
         {s.hasEtat && <Badge variant="outline" className="text-[10px] py-0 px-1.5">ÉTAT</Badge>}
         {s.hasConflit && <Badge variant="outline" className="text-[10px] py-0 px-1.5">CONFLIT</Badge>}
         {s.sport.slice(0, 4).map((sp) => (
