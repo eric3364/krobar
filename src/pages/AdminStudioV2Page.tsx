@@ -529,13 +529,13 @@ function ProductionScreen({
       localStorage.setItem(
         persistKey,
         JSON.stringify({
-          moteur, gpt2Style, promptRes, vectRes, validated,
+          moteur, gpt2Style, promptRes, promptEdited, vectRes, validated,
           placement, editedZones, placementsMode,
           userMax, produceByN, validatedByN, mirrored, rotation,
         } satisfies Persisted),
       );
     } catch { /* ignore quota */ }
-  }, [persistKey, moteur, gpt2Style, promptRes, vectRes, validated, placement, editedZones, placementsMode, userMax, produceByN, validatedByN, mirrored, rotation]);
+  }, [persistKey, moteur, gpt2Style, promptRes, promptEdited, vectRes, validated, placement, editedZones, placementsMode, userMax, produceByN, validatedByN, mirrored, rotation]);
 
 
 
