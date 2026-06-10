@@ -790,6 +790,14 @@ function ProductionScreen({
               <>
                 <Button
                   size="sm"
+                  variant="outline"
+                  onClick={() => setEraserOpen(true)}
+                  title="Effacer les imperfections avant validation"
+                >
+                  <Eraser className="w-4 h-4 mr-1" /> Gomme
+                </Button>
+                <Button
+                  size="sm"
                   onClick={() => { setValidated(true); toast.success("Vectorisation validée"); }}
                 >
                   <Check className="w-4 h-4 mr-1" /> Valider
