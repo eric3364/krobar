@@ -490,11 +490,17 @@ function ProductionScreen({
       setPromptRes(r);
       setPromptEdited(null);
     } catch (e) {
+      // Ne pas laisser un ancien prompt visible quand la tentative a échoué.
+      setPromptRes(null);
+      setPromptEdited(null);
       setPromptError(e instanceof Error ? e.message : String(e));
     } finally {
       setPromptLoading(false);
     }
   };
+
+  const hasAnyRegistre =
+    s.domains.length > 0 || s.sport.length > 0 || s.hasEtat || s.hasConflit;
 
   const handleFile = async (file: File) => {
     setVectLoading(true); setVectError(null); setValidated(false); setVectRes(null); setSizeInfo(null);
@@ -803,7 +809,7 @@ function ProductionScreen({
                   </SelectContent>
                 </Select>
               )}
-              <Button onClick={generatePrompt} disabled={promptLoading} size="sm">
+              <Button onClick={generatePrompt} disabled={promptLoading || !hasAnyRegistre} size="sm">
                 {promptLoading
                   ? (<><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Génération…</>)
                   : "Générer le prompt"}
@@ -811,7 +817,13 @@ function ProductionScreen({
             </div>
           </div>
 
-          {promptError && <p className="text-sm text-destructive">{promptError}</p>}
+          {!hasAnyRegistre && (
+            <p className="text-sm text-muted-foreground">
+              Cette cellule n'a pas encore d'incarnation — rien à générer.
+            </p>
+          )}
+
+          {hasAnyRegistre && promptError && <p className="text-sm text-destructive">{promptError}</p>}
 
           {promptRes && (
             <div className="space-y-2">
