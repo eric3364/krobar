@@ -785,7 +785,7 @@ function ProductionScreen({
             <Button
               size="sm"
               variant="outline"
-              onClick={() => setPromptOpen((v) => !v)}
+              onClick={() => requestAction(() => setPromptOpen((v) => !v))}
             >
               {promptOpen ? "Masquer le prompt" : "Prompt"}
             </Button>
