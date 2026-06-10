@@ -408,6 +408,7 @@ function ProductionScreen({
     moteur: Moteur;
     gpt2Style: string | null;
     promptRes: GeneratePromptResponse | null;
+    promptEdited?: string | null;
     vectRes: VectorizeResponse | null;
     validated: boolean;
     placement?: PlaceZonesResponse | null;
