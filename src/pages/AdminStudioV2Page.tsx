@@ -497,6 +497,7 @@ function ProductionScreen({
   useEffect(() => {
     const p = loadPersisted();
     setPromptRes(p?.promptRes ?? null);
+    setPromptEdited(p?.promptEdited ?? null);
     setPromptError(null);
     setVectRes(p?.vectRes ?? null);
     setVectError(null);
