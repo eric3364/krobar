@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { toast } from "sonner";
 import {
-  ArrowLeft, Loader2, Copy, Check, X, Upload as UploadIcon, AlertTriangle,
+  ArrowLeft, Loader2, Copy, Check, X, Upload as UploadIcon, AlertTriangle, Eraser,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
