@@ -858,11 +858,13 @@ export default function PlaceholdersEditor({
             const btnY = r.y + 2;
             const handleSize = Math.max(6, Math.min(r.w, r.h) * 0.14);
 
-            // Trait (cartouche) geometry — suit la hauteur réelle du lorem.
+            // Trait (cartouche) geometry — suit la hauteur réelle du lorem,
+            // mais ne dépasse jamais la hauteur du bloc texte (r.h).
             const indicativeH = fontSize * 1.2 * 3 + 6;
-            const traitH = loremHeights[key]
+            const rawTraitH = loremHeights[key]
               ? Math.max(loremHeights[key], 6)
               : indicativeH;
+            const traitH = Math.min(rawTraitH, r.h);
             const traitX = side === "left" ? r.x - 4 : r.x + r.w + 4;
             const traitY = r.y;
 
