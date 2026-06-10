@@ -19,10 +19,8 @@ type Props = {
   onApply: (newSvg: string) => void;
 };
 
-/**
- * Parse the viewBox out of an SVG string. Falls back to a 1000×1000 box
- * if the SVG lacks one. Returns [minX, minY, w, h].
- */
+const MASK_ID = "kr-eraser-mask";
+
 function parseViewBox(svg: string): [number, number, number, number] {
   const m = svg.match(
     /viewBox\s*=\s*["']\s*([-\d.]+)\s+([-\d.]+)\s+([\d.]+)\s+([\d.]+)\s*["']/i,
@@ -36,53 +34,73 @@ function parseViewBox(svg: string): [number, number, number, number] {
 }
 
 /**
- * Append the erase dots as white-filled <circle> elements inside the SVG.
- * Wrapped in a <g data-eraser="1"> group so future tooling can identify them.
+ * Apply erase dots as a true SVG mask: black circles cut transparent holes
+ * out of the rendered content (no white fill is ever painted on the canvas).
+ * Idempotent: if a mask from a previous pass exists, new circles are appended.
  */
 function applyDotsToSvg(svg: string, dots: EraseDot[]): string {
   if (dots.length === 0) return svg;
-  const group =
-    `<g data-eraser="1">` +
-    dots
-      .map(
-        (d) =>
-          `<circle cx="${d.x.toFixed(2)}" cy="${d.y.toFixed(2)}" r="${d.r.toFixed(2)}" fill="white" stroke="none"/>`,
-      )
-      .join("") +
-    `</g>`;
-  // Insert just before the closing </svg> tag
-  return svg.replace(/<\/svg>\s*$/i, `${group}</svg>`);
+
+  const [minX, minY, w, h] = parseViewBox(svg);
+  const circles = dots
+    .map(
+      (d) =>
+        `<circle cx="${d.x.toFixed(2)}" cy="${d.y.toFixed(2)}" r="${d.r.toFixed(
+          2,
+        )}" fill="black"/>`,
+    )
+    .join("");
+
+  // Case 1 — a previous eraser mask already exists: append circles inside it.
+  const existingMaskRe = new RegExp(
+    `(<mask\\b[^>]*id="${MASK_ID}"[^>]*>)([\\s\\S]*?)(</mask>)`,
+    "i",
+  );
+  if (existingMaskRe.test(svg)) {
+    return svg.replace(existingMaskRe, (_m, open, inner, close) => {
+      return `${open}${inner}${circles}${close}`;
+    });
+  }
+
+  // Case 2 — first pass: wrap inner SVG content in a masked group + add <defs>.
+  const openTagMatch = svg.match(/<svg\b[^>]*>/i);
+  const closeIdx = svg.lastIndexOf("</svg>");
+  if (!openTagMatch || closeIdx < 0) return svg;
+  const openTag = openTagMatch[0];
+  const inner = svg.slice(openTagMatch.index! + openTag.length, closeIdx);
+
+  const defs =
+    `<defs><mask id="${MASK_ID}" maskUnits="userSpaceOnUse" ` +
+    `x="${minX}" y="${minY}" width="${w}" height="${h}">` +
+    `<rect x="${minX}" y="${minY}" width="${w}" height="${h}" fill="white"/>` +
+    `${circles}` +
+    `</mask></defs>`;
+
+  return `${openTag}${defs}<g mask="url(#${MASK_ID})">${inner}</g></svg>`;
 }
 
 export default function SvgEraserDialog({ open, onOpenChange, svg, onApply }: Props) {
-  const [brush, setBrush] = useState(20);
+  const [brush, setBrush] = useState(2);
   const [dots, setDots] = useState<EraseDot[]>([]);
   const drawing = useRef(false);
-  const svgHostRef = useRef<HTMLDivElement | null>(null);
 
   const vb = useMemo(() => parseViewBox(svg), [svg]);
   const [, , vbW, vbH] = vb;
 
-  // Reset strokes when reopened
+  // Live-preview SVG = original + current dots applied via mask (transparent holes)
+  const previewSvg = useMemo(() => applyDotsToSvg(svg, dots), [svg, dots]);
+
   useEffect(() => {
-    if (open) {
-      setDots([]);
-    }
+    if (open) setDots([]);
   }, [open, svg]);
 
   function clientToVb(e: React.PointerEvent<SVGSVGElement>) {
-    const target = e.currentTarget;
-    const rect = target.getBoundingClientRect();
+    const rect = e.currentTarget.getBoundingClientRect();
     const px = (e.clientX - rect.left) / rect.width;
     const py = (e.clientY - rect.top) / rect.height;
-    return {
-      x: vb[0] + px * vbW,
-      y: vb[1] + py * vbH,
-    };
+    return { x: vb[0] + px * vbW, y: vb[1] + py * vbH };
   }
-
   function brushRadiusInVb() {
-    // Brush is given in % of the smaller viewbox dimension (0.5–10%)
     return (brush / 100) * Math.min(vbW, vbH);
   }
 
@@ -129,7 +147,7 @@ export default function SvgEraserDialog({ open, onOpenChange, svg, onApply }: Pr
           <span className="text-muted-foreground shrink-0">Taille pinceau</span>
           <Slider
             value={[brush]}
-            min={1}
+            min={0.5}
             max={10}
             step={0.5}
             onValueChange={(v) => setBrush(v[0])}
@@ -142,36 +160,35 @@ export default function SvgEraserDialog({ open, onOpenChange, svg, onApply }: Pr
           <Button
             size="sm"
             variant="ghost"
-            onClick={() => setDots([])}
-            disabled={dots.length === 0}
-          >
-            <RotateCcw className="w-3.5 h-3.5 mr-1" /> Tout annuler
-          </Button>
-          <Button
-            size="sm"
-            variant="ghost"
             onClick={() => setDots((d) => d.slice(0, -1))}
             disabled={dots.length === 0}
           >
             ↶ Annuler
           </Button>
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={() => setDots([])}
+            disabled={dots.length === 0}
+          >
+            <RotateCcw className="w-3.5 h-3.5 mr-1" /> Tout
+          </Button>
         </div>
 
         <div
-          ref={svgHostRef}
-          className="relative bg-muted/30 border rounded-md overflow-hidden mx-auto"
+          className="relative bg-white border rounded-md overflow-hidden mx-auto"
           style={{
             aspectRatio: `${vbW} / ${vbH}`,
             maxHeight: "70vh",
             width: "100%",
           }}
         >
-          {/* Background: the SVG to clean */}
+          {/* Background: SVG with current erase mask applied (real transparency) */}
           <div
             className="absolute inset-0 [&_svg]:w-full [&_svg]:h-full [&_svg]:block"
-            dangerouslySetInnerHTML={{ __html: svg }}
+            dangerouslySetInnerHTML={{ __html: previewSvg }}
           />
-          {/* Overlay: capture strokes and render preview dots */}
+          {/* Overlay: capture strokes — circles drawn only as red outlines for guidance */}
           <svg
             viewBox={`${vb[0]} ${vb[1]} ${vbW} ${vbH}`}
             preserveAspectRatio="xMidYMid meet"
@@ -187,8 +204,8 @@ export default function SvgEraserDialog({ open, onOpenChange, svg, onApply }: Pr
                 cx={d.x}
                 cy={d.y}
                 r={d.r}
-                fill="white"
-                stroke="rgba(220,38,38,0.6)"
+                fill="none"
+                stroke="rgba(220,38,38,0.35)"
                 strokeWidth={Math.max(0.5, Math.min(vbW, vbH) * 0.0015)}
               />
             ))}
