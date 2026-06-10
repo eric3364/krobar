@@ -809,7 +809,7 @@ function ProductionScreen({
                   </SelectContent>
                 </Select>
               )}
-              <Button onClick={generatePrompt} disabled={promptLoading} size="sm">
+              <Button onClick={generatePrompt} disabled={promptLoading || !hasAnyRegistre} size="sm">
                 {promptLoading
                   ? (<><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Génération…</>)
                   : "Générer le prompt"}
