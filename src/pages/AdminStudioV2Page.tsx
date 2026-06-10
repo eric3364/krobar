@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { toast } from "sonner";
 import {
-  ArrowLeft, Loader2, Copy, Check, X, Upload as UploadIcon, AlertTriangle,
+  ArrowLeft, Loader2, Copy, Check, X, Upload as UploadIcon, AlertTriangle, Eraser,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -33,6 +33,7 @@ import StructuralSketch from "@/components/admin/studio/StructuralSketch";
 import ZoomableSvg from "@/components/admin/studio/ZoomableSvg";
 import PlaceholdersEditor from "@/components/admin/studio/PlaceholdersEditor";
 import TemplatesGallery from "@/components/admin/studio/TemplatesGallery";
+import SvgEraserDialog from "@/components/admin/studio/SvgEraserDialog";
 import {
   studioV2Api,
   type CoverageCell,
@@ -456,6 +457,7 @@ function ProductionScreen({
   const [validatedByN, setValidatedByN] = useState<Record<number, boolean>>(initial?.validatedByN ?? {});
   const [mirrored, setMirrored] = useState<boolean>(initial?.mirrored ?? false);
   const [rotation, setRotation] = useState<0 | 90 | 180 | 270>(initial?.rotation ?? 0);
+  const [eraserOpen, setEraserOpen] = useState(false);
   const [composition, setComposition] = useState<import("@/components/admin/studio/PlaceholdersEditor").CompositionReadyData | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -788,6 +790,14 @@ function ProductionScreen({
               <>
                 <Button
                   size="sm"
+                  variant="outline"
+                  onClick={() => setEraserOpen(true)}
+                  title="Effacer les imperfections avant validation"
+                >
+                  <Eraser className="w-4 h-4 mr-1" /> Gomme
+                </Button>
+                <Button
+                  size="sm"
                   onClick={() => { setValidated(true); toast.success("Vectorisation validée"); }}
                 >
                   <Check className="w-4 h-4 mr-1" /> Valider
@@ -1087,6 +1097,18 @@ function ProductionScreen({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {vectRes && (
+        <SvgEraserDialog
+          open={eraserOpen}
+          onOpenChange={setEraserOpen}
+          svg={vectRes.svg}
+          onApply={(newSvg) => {
+            setVectRes({ ...vectRes, svg: newSvg });
+            toast.success("Imperfections effacées");
+          }}
+        />
+      )}
     </div>
   );
 }
