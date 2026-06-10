@@ -7,6 +7,18 @@ export type SicaiCardinality =
 export type SicaiRegime = "CONCRET" | "SEMI_METAPHORIQUE" | "ABSTRAIT";
 export type SicaiFamily = "CONCEPT" | "DESCR" | "EXPLI" | "NARRA" | "OPPO" | "PROCED";
 
+export type ProductionByDomain = {
+  canonical_done: boolean;
+  cardinalities_produced: number[];
+  in_grid: boolean;
+};
+
+export type CellProduction = {
+  canonical_cardinality: number;
+  cell_produced: boolean;
+  by_domain: Record<string, ProductionByDomain>;
+};
+
 export type CoverageCell = {
   index: string;                 // ex "CO-1-C"
   sicai_code: string;
@@ -22,6 +34,7 @@ export type CoverageCell = {
     conflit: number | string[];
     sport: string[];
   };
+  production?: CellProduction;
 };
 
 export type CoverageSummary = {
