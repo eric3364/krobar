@@ -1097,6 +1097,18 @@ function ProductionScreen({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {vectRes && (
+        <SvgEraserDialog
+          open={eraserOpen}
+          onOpenChange={setEraserOpen}
+          svg={vectRes.svg}
+          onApply={(newSvg) => {
+            setVectRes({ ...vectRes, svg: newSvg });
+            toast.success("Imperfections effacées");
+          }}
+        />
+      )}
     </div>
   );
 }
