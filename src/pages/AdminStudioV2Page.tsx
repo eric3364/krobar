@@ -408,6 +408,7 @@ function ProductionScreen({
     moteur: Moteur;
     gpt2Style: string | null;
     promptRes: GeneratePromptResponse | null;
+    promptEdited?: string | null;
     vectRes: VectorizeResponse | null;
     validated: boolean;
     placement?: PlaceZonesResponse | null;
@@ -440,7 +441,7 @@ function ProductionScreen({
   const [promptRes, setPromptRes] = useState<GeneratePromptResponse | null>(initial?.promptRes ?? null);
   const [promptLoading, setPromptLoading] = useState(false);
   const [promptError, setPromptError] = useState<string | null>(null);
-  const [promptEdited, setPromptEdited] = useState<string | null>(null);
+  const [promptEdited, setPromptEdited] = useState<string | null>(initial?.promptEdited ?? null);
 
   const [vectRes, setVectRes] = useState<VectorizeResponse | null>(initial?.vectRes ?? null);
   const [vectLoading, setVectLoading] = useState(false);
@@ -496,6 +497,7 @@ function ProductionScreen({
   useEffect(() => {
     const p = loadPersisted();
     setPromptRes(p?.promptRes ?? null);
+    setPromptEdited(p?.promptEdited ?? null);
     setPromptError(null);
     setVectRes(p?.vectRes ?? null);
     setVectError(null);
@@ -527,13 +529,13 @@ function ProductionScreen({
       localStorage.setItem(
         persistKey,
         JSON.stringify({
-          moteur, gpt2Style, promptRes, vectRes, validated,
+          moteur, gpt2Style, promptRes, promptEdited, vectRes, validated,
           placement, editedZones, placementsMode,
           userMax, produceByN, validatedByN, mirrored, rotation,
         } satisfies Persisted),
       );
     } catch { /* ignore quota */ }
-  }, [persistKey, moteur, gpt2Style, promptRes, vectRes, validated, placement, editedZones, placementsMode, userMax, produceByN, validatedByN, mirrored, rotation]);
+  }, [persistKey, moteur, gpt2Style, promptRes, promptEdited, vectRes, validated, placement, editedZones, placementsMode, userMax, produceByN, validatedByN, mirrored, rotation]);
 
 
 
@@ -552,7 +554,7 @@ function ProductionScreen({
         ...(moteur === "gpt-image-2" ? { style: gpt2Style ?? gpt2Default ?? undefined } : {}),
       });
       setPromptRes(r);
-      setPromptEdited(null);
+      // Preserve user edits across successive iterations: don't reset promptEdited here.
     } catch (e) {
       // Ne pas laisser un ancien prompt visible quand la tentative a échoué.
       setPromptRes(null);
