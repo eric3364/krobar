@@ -1061,6 +1061,37 @@ function ProductionScreen({
           onCancel={onBack}
         />
       )}
+
+      <AlertDialog open={guardAction !== null} onOpenChange={(o) => { if (!o) setGuardAction(null); }}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Illustration déjà existante</AlertDialogTitle>
+            <AlertDialogDescription>
+              Une illustration existe déjà pour {cell.index} / {selecteur ?? ""}
+              {producedItems.length > 0 && (
+                <> (cardinalité {producedItems[producedItems.length - 1].cardinality})</>
+              )}.
+              Voulez-vous vraiment en créer une nouvelle ? Cela n'écrase pas l'existante
+              mais ajoute une variante.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setGuardAction(null)}>
+              Voir l'existante
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                const act = guardAction;
+                setBypassGuard(true);
+                setGuardAction(null);
+                if (act) act();
+              }}
+            >
+              Créer quand même
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
