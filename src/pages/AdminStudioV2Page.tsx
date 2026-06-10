@@ -459,6 +459,28 @@ function ProductionScreen({
   const [composition, setComposition] = useState<import("@/components/admin/studio/PlaceholdersEditor").CompositionReadyData | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Existing produced illustrations for the active domain
+  const producedItems = useMemo(() => {
+    if (registre !== "domain" || !selecteur) return [] as { cardinality: number; id: string; file: string }[];
+    const arr = cell.production?.by_domain?.[selecteur]?.produced;
+    return Array.isArray(arr) ? [...arr].sort((a, b) => a.cardinality - b.cardinality) : [];
+  }, [cell, registre, selecteur]);
+  const hasProduced = producedItems.length > 0;
+
+  const [selectedProducedCard, setSelectedProducedCard] = useState<number | null>(
+    hasProduced ? producedItems[producedItems.length - 1].cardinality : null,
+  );
+  const [bypassGuard, setBypassGuard] = useState(false);
+  const [guardAction, setGuardAction] = useState<(() => void) | null>(null);
+
+  const requestAction = (act: () => void) => {
+    if (hasProduced && !bypassGuard && !vectRes) {
+      setGuardAction(() => act);
+    } else {
+      act();
+    }
+  };
+
   // Load charte once
   useEffect(() => {
     let cancel = false;
