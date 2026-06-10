@@ -490,11 +490,17 @@ function ProductionScreen({
       setPromptRes(r);
       setPromptEdited(null);
     } catch (e) {
+      // Ne pas laisser un ancien prompt visible quand la tentative a échoué.
+      setPromptRes(null);
+      setPromptEdited(null);
       setPromptError(e instanceof Error ? e.message : String(e));
     } finally {
       setPromptLoading(false);
     }
   };
+
+  const hasAnyRegistre =
+    s.domains.length > 0 || s.sport.length > 0 || s.hasEtat || s.hasConflit;
 
   const handleFile = async (file: File) => {
     setVectLoading(true); setVectError(null); setValidated(false); setVectRes(null); setSizeInfo(null);
