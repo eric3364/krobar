@@ -12,6 +12,16 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -449,6 +459,28 @@ function ProductionScreen({
   const [composition, setComposition] = useState<import("@/components/admin/studio/PlaceholdersEditor").CompositionReadyData | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Existing produced illustrations for the active domain
+  const producedItems = useMemo(() => {
+    if (registre !== "domain" || !selecteur) return [] as { cardinality: number; id: string; file: string }[];
+    const arr = cell.production?.by_domain?.[selecteur]?.produced;
+    return Array.isArray(arr) ? [...arr].sort((a, b) => a.cardinality - b.cardinality) : [];
+  }, [cell, registre, selecteur]);
+  const hasProduced = producedItems.length > 0;
+
+  const [selectedProducedCard, setSelectedProducedCard] = useState<number | null>(
+    hasProduced ? producedItems[producedItems.length - 1].cardinality : null,
+  );
+  const [bypassGuard, setBypassGuard] = useState(false);
+  const [guardAction, setGuardAction] = useState<(() => void) | null>(null);
+
+  const requestAction = (act: () => void) => {
+    if (hasProduced && !bypassGuard && !vectRes) {
+      setGuardAction(() => act);
+    } else {
+      act();
+    }
+  };
+
   // Load charte once
   useEffect(() => {
     let cancel = false;
@@ -482,6 +514,8 @@ function ProductionScreen({
     setMirrored(p?.mirrored ?? false);
     setRotation(p?.rotation ?? 0);
     setComposition(null);
+    setBypassGuard(false);
+    setSelectedProducedCard(hasProduced ? producedItems[producedItems.length - 1].cardinality : null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cell.index, registre, selecteur]);
 
@@ -551,11 +585,6 @@ function ProductionScreen({
     }
   };
 
-  const onDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    const f = e.dataTransfer.files?.[0];
-    if (f) handleFile(f);
-  };
 
   const setRegistre = (r: Registre, sel: string | null) =>
     onChange({ ...state, registre: r, selecteur: sel });
@@ -698,8 +727,12 @@ function ProductionScreen({
           <button
             type="button"
             onDragOver={(e) => e.preventDefault()}
-            onDrop={onDrop}
-            onClick={() => fileInputRef.current?.click()}
+            onDrop={(e) => {
+              e.preventDefault();
+              const f = e.dataTransfer.files?.[0];
+              if (f) requestAction(() => handleFile(f));
+            }}
+            onClick={() => requestAction(() => fileInputRef.current?.click())}
             className="inline-flex items-center gap-2 px-3 py-1.5 text-xs rounded border border-dashed hover:bg-muted/40 transition-colors"
             title="PNG / JPEG, max 5 Mo"
           >
@@ -747,7 +780,7 @@ function ProductionScreen({
             <Button
               size="sm"
               variant="outline"
-              onClick={() => setPromptOpen((v) => !v)}
+              onClick={() => requestAction(() => setPromptOpen((v) => !v))}
             >
               {promptOpen ? "Masquer le prompt" : "Prompt"}
             </Button>
@@ -953,7 +986,44 @@ function ProductionScreen({
                 </div>
               );
             })()}
-            {!vectLoading && !vectRes && (
+            {!vectLoading && !vectRes && hasProduced && (() => {
+              const item =
+                producedItems.find((p) => p.cardinality === selectedProducedCard) ??
+                producedItems[producedItems.length - 1];
+              const url = `https://krobar.online/templates/${item.file}`;
+              return (
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 p-4">
+                  {producedItems.length > 1 && (
+                    <div className="flex gap-1.5">
+                      {producedItems.map((p) => (
+                        <button
+                          key={p.cardinality}
+                          onClick={() => setSelectedProducedCard(p.cardinality)}
+                          className={[
+                            "w-7 h-7 text-xs rounded-full border font-mono",
+                            (selectedProducedCard ?? item.cardinality) === p.cardinality
+                              ? "bg-primary text-primary-foreground border-primary"
+                              : "bg-background hover:bg-muted",
+                          ].join(" ")}
+                          title={`Cardinalité ${p.cardinality}`}
+                        >
+                          {p.cardinality}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  <div className="flex-1 min-h-0 w-full flex items-center justify-center">
+                    <img
+                      src={url}
+                      alt={`Illustration ${item.id}`}
+                      className="max-h-full max-w-full object-contain"
+                    />
+                  </div>
+                  <p className="text-[11px] text-muted-foreground font-mono">{item.id}</p>
+                </div>
+              );
+            })()}
+            {!vectLoading && !vectRes && !hasProduced && (
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center text-muted-foreground px-6">
                   <StructuralSketch
@@ -986,6 +1056,37 @@ function ProductionScreen({
           onCancel={onBack}
         />
       )}
+
+      <AlertDialog open={guardAction !== null} onOpenChange={(o) => { if (!o) setGuardAction(null); }}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Illustration déjà existante</AlertDialogTitle>
+            <AlertDialogDescription>
+              Une illustration existe déjà pour {cell.index} / {selecteur ?? ""}
+              {producedItems.length > 0 && (
+                <> (cardinalité {producedItems[producedItems.length - 1].cardinality})</>
+              )}.
+              Voulez-vous vraiment en créer une nouvelle ? Cela n'écrase pas l'existante
+              mais ajoute une variante.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setGuardAction(null)}>
+              Voir l'existante
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                const act = guardAction;
+                setBypassGuard(true);
+                setGuardAction(null);
+                if (act) act();
+              }}
+            >
+              Créer quand même
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

@@ -7,9 +7,16 @@ export type SicaiCardinality =
 export type SicaiRegime = "CONCRET" | "SEMI_METAPHORIQUE" | "ABSTRAIT";
 export type SicaiFamily = "CONCEPT" | "DESCR" | "EXPLI" | "NARRA" | "OPPO" | "PROCED";
 
+export type ProducedItem = {
+  cardinality: number;
+  id: string;
+  file: string;
+};
+
 export type ProductionByDomain = {
   canonical_done: boolean;
   cardinalities_produced: number[];
+  produced?: ProducedItem[];
   in_grid: boolean;
 };
 
