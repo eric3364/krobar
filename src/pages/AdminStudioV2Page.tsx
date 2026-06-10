@@ -514,6 +514,8 @@ function ProductionScreen({
     setMirrored(p?.mirrored ?? false);
     setRotation(p?.rotation ?? 0);
     setComposition(null);
+    setBypassGuard(false);
+    setSelectedProducedCard(hasProduced ? producedItems[producedItems.length - 1].cardinality : null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cell.index, registre, selecteur]);
 
