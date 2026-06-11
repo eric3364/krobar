@@ -248,6 +248,15 @@ function CoverageScreen(props: {
     ? (summary.figurative_cells_touched / summary.figurative_cells_total) * 100
     : 0;
 
+  const incarnationsToComplete = coverage.cells.reduce((acc, c) => {
+    if (c.plausibility === "X") return acc;
+    const byDomain = c.production?.by_domain ?? {};
+    const producedCount = Object.entries(byDomain)
+      .filter(([d]) => d !== "_none")
+      .reduce((n, [, dp]) => n + (dp.produced?.length ?? dp.cardinalities_produced?.length ?? 0), 0);
+    return acc + Math.max(0, (c.incarnations ?? 0) - producedCount);
+  }, 0);
+
   return (
     <div className="space-y-6">
       {/* Summary bar */}
@@ -260,8 +269,9 @@ function CoverageScreen(props: {
             </div>
           </div>
           <div className="text-sm text-muted-foreground">
-            {summary.total_incarnations} incarnations · {summary.figurative_cells_untouched} cellule(s) à couvrir
+            {summary.total_incarnations} incarnations · {summary.figurative_cells_untouched} cellule(s) à couvrir · {incarnationsToComplete} incarnation(s) à compléter
           </div>
+
         </div>
         <Progress value={pct} className="h-2" />
       </Card>
