@@ -9,8 +9,18 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { libraryApi, type LibraryTemplate } from "@/lib/libraryApi";
+import { studioV2Api, FAMILY_LABEL, type CoverageCell } from "@/lib/studioV2Api";
+
+type StudioIllustration = {
+  id: string;
+  file: string;
+  cardinality_n: number;
+  domain: string;
+  cell: CoverageCell;
+};
 
 function relativeDate(iso: string | null): string {
   if (!iso) return "aucun";
@@ -27,6 +37,10 @@ export default function AdminLibraryPage() {
   const [templates, setTemplates] = useState<LibraryTemplate[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [thumbs, setThumbs] = useState<Record<string, ThumbState>>({});
+  const [illustrations, setIllustrations] = useState<StudioIllustration[] | null>(null);
+  const [illustrationsLoading, setIllustrationsLoading] = useState(true);
+  const [illustrationsError, setIllustrationsError] = useState<string | null>(null);
+  const [illustrationSearch, setIllustrationSearch] = useState("");
 
   useEffect(() => {
     let alive = true;
@@ -46,6 +60,46 @@ export default function AdminLibraryPage() {
     })();
     return () => { alive = false; };
   }, []);
+
+  // Récupère toutes les illustrations produites via le Studio (coverage SICAI).
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      setIllustrationsLoading(true);
+      try {
+        const res = await studioV2Api.coverage();
+        if (!alive) return;
+        const out: StudioIllustration[] = [];
+        for (const cell of res.cells ?? []) {
+          const byDomain = cell.production?.by_domain ?? {};
+          for (const [domain, dp] of Object.entries(byDomain)) {
+            const produced = dp.produced ?? [];
+            for (const p of produced) {
+              out.push({
+                id: p.id,
+                file: p.file,
+                cardinality_n: p.cardinality,
+                domain,
+                cell,
+              });
+            }
+          }
+        }
+        out.sort((a, b) => a.id.localeCompare(b.id));
+        setIllustrations(out);
+        setIllustrationsError(null);
+      } catch (e) {
+        if (alive) {
+          setIllustrationsError(e instanceof Error ? e.message : "Erreur de chargement");
+          setIllustrations([]);
+        }
+      } finally {
+        if (alive) setIllustrationsLoading(false);
+      }
+    })();
+    return () => { alive = false; };
+  }, []);
+
 
   // Lazy-load une miniature (dernier aperçu) pour chaque template ayant au moins 1 aperçu.
   useEffect(() => {
@@ -89,6 +143,20 @@ export default function AdminLibraryPage() {
   }, [templates]);
 
   const validatedTotal = templates?.filter((t) => t.validated_count > 0).length ?? 0;
+
+  const filteredIllustrations = useMemo(() => {
+    if (!illustrations) return [];
+    const q = illustrationSearch.trim().toLowerCase();
+    if (!q) return illustrations;
+    return illustrations.filter((it) =>
+      it.id.toLowerCase().includes(q) ||
+      it.file.toLowerCase().includes(q) ||
+      it.domain.toLowerCase().includes(q) ||
+      it.cell.index.toLowerCase().includes(q) ||
+      it.cell.family.toLowerCase().includes(q),
+    );
+  }, [illustrations, illustrationSearch]);
+
 
   return (
     <div className="min-h-screen p-6 max-w-7xl mx-auto space-y-6">
@@ -172,6 +240,85 @@ export default function AdminLibraryPage() {
           })}
         </div>
       )}
+
+      {/* ------- Illustrations produites via le Studio ------- */}
+      <div className="pt-6 border-t">
+        <div className="flex items-baseline justify-between gap-4 flex-wrap">
+          <div>
+            <h2 className="text-2xl font-bold">Illustrations Studio</h2>
+            <p className="text-sm text-muted-foreground mt-1">
+              {illustrationsLoading
+                ? "Chargement…"
+                : illustrationsError
+                ? `Erreur : ${illustrationsError}`
+                : `${illustrations?.length ?? 0} illustration${(illustrations?.length ?? 0) > 1 ? "s" : ""} générée${(illustrations?.length ?? 0) > 1 ? "s" : ""} via le Studio`}
+            </p>
+          </div>
+          <Input
+            placeholder="Rechercher (id, fichier, domaine, cellule…)"
+            value={illustrationSearch}
+            onChange={(e) => setIllustrationSearch(e.target.value)}
+            className="max-w-xs"
+          />
+        </div>
+
+        {illustrationsLoading ? (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <Skeleton key={i} className="h-56 w-full" />
+            ))}
+          </div>
+        ) : filteredIllustrations.length === 0 ? (
+          <Card className="p-10 text-center text-muted-foreground mt-4">
+            {illustrationSearch
+              ? "Aucune illustration ne correspond à la recherche."
+              : "Aucune illustration n'a encore été produite via le Studio."}
+          </Card>
+        ) : (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
+            {filteredIllustrations.map((it) => {
+              const familyLabel = FAMILY_LABEL[it.cell.family] ?? it.cell.family;
+              return (
+                <Card key={`${it.id}-${it.file}`} className="overflow-hidden flex flex-col">
+                  <div className="aspect-[4/3] w-full bg-muted/30 border-b flex items-center justify-center overflow-hidden">
+                    <img
+                      src={`/templates/${it.file}`}
+                      alt={it.id}
+                      className="w-full h-full object-contain"
+                      loading="lazy"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).style.display = "none";
+                      }}
+                    />
+                  </div>
+                  <div className="p-4 space-y-2 flex-1">
+                    <div>
+                      <h3 className="font-semibold text-sm leading-tight break-words" title={it.id}>
+                        {it.id}
+                      </h3>
+                      <div className="font-mono text-[11px] text-muted-foreground truncate" title={it.file}>
+                        {it.file}
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap gap-1">
+                      <Badge variant="secondary" className="text-[10px]">{it.cell.index}</Badge>
+                      <Badge variant="outline" className="text-[10px]">{familyLabel}</Badge>
+                      <Badge variant="outline" className="text-[10px]">{it.cell.cardinality}</Badge>
+                      <Badge variant="outline" className="text-[10px]">{it.cell.regime}</Badge>
+                      <Badge className="text-[10px] bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/30">
+                        n={it.cardinality_n}
+                      </Badge>
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      Domaine : <span className="font-medium text-foreground">{it.domain}</span>
+                    </div>
+                  </div>
+                </Card>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
