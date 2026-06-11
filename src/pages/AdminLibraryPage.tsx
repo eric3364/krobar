@@ -144,6 +144,20 @@ export default function AdminLibraryPage() {
 
   const validatedTotal = templates?.filter((t) => t.validated_count > 0).length ?? 0;
 
+  const filteredIllustrations = useMemo(() => {
+    if (!illustrations) return [];
+    const q = illustrationSearch.trim().toLowerCase();
+    if (!q) return illustrations;
+    return illustrations.filter((it) =>
+      it.id.toLowerCase().includes(q) ||
+      it.file.toLowerCase().includes(q) ||
+      it.domain.toLowerCase().includes(q) ||
+      it.cell.index.toLowerCase().includes(q) ||
+      it.cell.family.toLowerCase().includes(q),
+    );
+  }, [illustrations, illustrationSearch]);
+
+
   return (
     <div className="min-h-screen p-6 max-w-7xl mx-auto space-y-6">
       <div>
