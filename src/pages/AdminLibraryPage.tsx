@@ -37,6 +37,10 @@ export default function AdminLibraryPage() {
   const [templates, setTemplates] = useState<LibraryTemplate[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [thumbs, setThumbs] = useState<Record<string, ThumbState>>({});
+  const [illustrations, setIllustrations] = useState<StudioIllustration[] | null>(null);
+  const [illustrationsLoading, setIllustrationsLoading] = useState(true);
+  const [illustrationsError, setIllustrationsError] = useState<string | null>(null);
+  const [illustrationSearch, setIllustrationSearch] = useState("");
 
   useEffect(() => {
     let alive = true;
@@ -56,6 +60,46 @@ export default function AdminLibraryPage() {
     })();
     return () => { alive = false; };
   }, []);
+
+  // Récupère toutes les illustrations produites via le Studio (coverage SICAI).
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      setIllustrationsLoading(true);
+      try {
+        const res = await studioV2Api.coverage();
+        if (!alive) return;
+        const out: StudioIllustration[] = [];
+        for (const cell of res.cells ?? []) {
+          const byDomain = cell.production?.by_domain ?? {};
+          for (const [domain, dp] of Object.entries(byDomain)) {
+            const produced = dp.produced ?? [];
+            for (const p of produced) {
+              out.push({
+                id: p.id,
+                file: p.file,
+                cardinality_n: p.cardinality,
+                domain,
+                cell,
+              });
+            }
+          }
+        }
+        out.sort((a, b) => a.id.localeCompare(b.id));
+        setIllustrations(out);
+        setIllustrationsError(null);
+      } catch (e) {
+        if (alive) {
+          setIllustrationsError(e instanceof Error ? e.message : "Erreur de chargement");
+          setIllustrations([]);
+        }
+      } finally {
+        if (alive) setIllustrationsLoading(false);
+      }
+    })();
+    return () => { alive = false; };
+  }, []);
+
 
   // Lazy-load une miniature (dernier aperçu) pour chaque template ayant au moins 1 aperçu.
   useEffect(() => {
