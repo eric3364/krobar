@@ -9,8 +9,18 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { libraryApi, type LibraryTemplate } from "@/lib/libraryApi";
+import { studioV2Api, FAMILY_LABEL, type CoverageCell } from "@/lib/studioV2Api";
+
+type StudioIllustration = {
+  id: string;
+  file: string;
+  cardinality_n: number;
+  domain: string;
+  cell: CoverageCell;
+};
 
 function relativeDate(iso: string | null): string {
   if (!iso) return "aucun";
