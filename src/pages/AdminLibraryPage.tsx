@@ -282,7 +282,7 @@ export default function AdminLibraryPage() {
                 <Card key={`${it.id}-${it.file}`} className="overflow-hidden flex flex-col">
                   <div className="aspect-[4/3] w-full bg-muted/30 border-b flex items-center justify-center overflow-hidden">
                     <img
-                      src={`/templates/${it.file}`}
+                      src={`https://krobar.online/templates/${it.file}`}
                       alt={it.id}
                       className="w-full h-full object-contain"
                       loading="lazy"
