@@ -69,22 +69,30 @@ export default function AdminLibraryPage() {
       try {
         const res = await studioV2Api.coverage();
         if (!alive) return;
-        const out: StudioIllustration[] = [];
+        // On regroupe les variantes d'une même illustration (id sans suffixe _N)
+        // et on ne garde que celle de cardinalité la plus grande.
+        const bestByKey = new Map<string, StudioIllustration>();
         for (const cell of res.cells ?? []) {
           const byDomain = cell.production?.by_domain ?? {};
           for (const [domain, dp] of Object.entries(byDomain)) {
-            const produced = dp.produced ?? [];
-            for (const p of produced) {
-              out.push({
+            for (const p of dp.produced ?? []) {
+              const baseId = p.id.replace(/_\d+$/, "");
+              const key = `${cell.index}::${domain}::${baseId}`;
+              const candidate: StudioIllustration = {
                 id: p.id,
                 file: p.file,
                 cardinality_n: p.cardinality,
                 domain,
                 cell,
-              });
+              };
+              const prev = bestByKey.get(key);
+              if (!prev || candidate.cardinality_n > prev.cardinality_n) {
+                bestByKey.set(key, candidate);
+              }
             }
           }
         }
+        const out = Array.from(bestByKey.values());
         out.sort((a, b) => a.id.localeCompare(b.id));
         setIllustrations(out);
         setIllustrationsError(null);
