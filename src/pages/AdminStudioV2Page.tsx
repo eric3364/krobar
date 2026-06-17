@@ -782,11 +782,34 @@ function ProductionScreen({
   };
   const initial = loadPersisted();
 
-  const initialProduce = (max: number): Record<number, boolean> => {
-    const r: Record<number, boolean> = {};
-    for (let i = 1; i <= max; i++) r[i] = true;
-    return r;
+  const inferPersistedMax = (p: Persisted | null): number => {
+    const candidates = [p?.userMax, p?.placement?.cardinality_max, baseUserMax]
+      .filter((n): n is number => typeof n === "number" && Number.isFinite(n) && n > 0);
+    const collect = (byCard?: Record<string, ZonePair[]>) => {
+      if (!byCard) return;
+      for (const [key, list] of Object.entries(byCard)) {
+        const keyN = Number(key);
+        if (Number.isFinite(keyN) && keyN > 0) candidates.push(keyN);
+        if (Array.isArray(list) && list.length > 0) {
+          candidates.push(list.length, Math.max(...list.map((z) => z.n).filter(Number.isFinite)));
+        }
+      }
+    };
+    collect(p?.editedZones);
+    collect(p?.placement?.by_cardinality);
+    return Math.max(1, ...candidates);
   };
+  const normalizeProduce = (src: Record<number, boolean> | undefined, max: number): Record<number, boolean> => {
+    const next: Record<number, boolean> = {};
+    for (let i = 1; i <= max; i++) next[i] = src?.[i] ?? true;
+    return next;
+  };
+  const normalizeValidated = (src: Record<number, boolean> | undefined, max: number): Record<number, boolean> => {
+    const next: Record<number, boolean> = {};
+    for (let i = 1; i <= max; i++) if (src?.[i]) next[i] = true;
+    return next;
+  };
+  const initialUserMax = inferPersistedMax(initial);
 
   const [moteur, setMoteur] = useState<Moteur>(initial?.moteur ?? "midjourney");
   const [gpt2Style, setGpt2Style] = useState<string | null>(initial?.gpt2Style ?? null);
@@ -804,11 +827,11 @@ function ProductionScreen({
   const [placement, setPlacement] = useState<PlaceZonesResponse | null>(initial?.placement ?? null);
   const [editedZones, setEditedZones] = useState<Record<string, ZonePair[]>>(initial?.editedZones ?? {});
   const [placementsMode, setPlacementsMode] = useState<boolean>(initial?.placementsMode ?? false);
-  const [userMax, setUserMax] = useState<number>(initial?.userMax ?? baseUserMax);
+  const [userMax, setUserMax] = useState<number>(initialUserMax);
   const [produceByN, setProduceByN] = useState<Record<number, boolean>>(
-    initial?.produceByN ?? initialProduce(initial?.userMax ?? baseUserMax),
+    normalizeProduce(initial?.produceByN, initialUserMax),
   );
-  const [validatedByN, setValidatedByN] = useState<Record<number, boolean>>(initial?.validatedByN ?? {});
+  const [validatedByN, setValidatedByN] = useState<Record<number, boolean>>(normalizeValidated(initial?.validatedByN, initialUserMax));
   const [mirrored, setMirrored] = useState<boolean>(initial?.mirrored ?? false);
   const [rotation, setRotation] = useState<0 | 90 | 180 | 270>(initial?.rotation ?? 0);
   const [eraserOpen, setEraserOpen] = useState(false);
@@ -859,7 +882,7 @@ function ProductionScreen({
     setGpt2Style(p?.gpt2Style ?? null);
     // Drop cached placement that pre-dates the headers feature so it gets refetched
     // (otherwise headers boxes never appear for sessions persisted before the upgrade).
-    const pUserMax = p?.userMax ?? baseUserMax;
+    const pUserMax = inferPersistedMax(p);
     const cachedPlacement = p?.placement && (
       (p.placement as PlaceZonesResponse).headers ||
       Array.isArray((p.placement as PlaceZonesResponse).by_cardinality?.[String(pUserMax)])
@@ -870,8 +893,8 @@ function ProductionScreen({
     setEditedZones(p?.editedZones ?? {});
     setPlacementsMode(p?.placementsMode ?? false);
     setUserMax(pUserMax);
-    setProduceByN(p?.produceByN ?? initialProduce(pUserMax));
-    setValidatedByN(p?.validatedByN ?? {});
+    setProduceByN(normalizeProduce(p?.produceByN, pUserMax));
+    setValidatedByN(normalizeValidated(p?.validatedByN, pUserMax));
     setMirrored(p?.mirrored ?? false);
     setRotation(p?.rotation ?? 0);
     setComposition(null);
