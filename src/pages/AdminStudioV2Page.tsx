@@ -89,6 +89,14 @@ export default function AdminStudioV2Page() {
   const [coverageError, setCoverageError] = useState<string | null>(null);
   const [active, setActiveState] = useState<ProductionState | null>(() => loadActive());
 
+  const [searchParams] = useSearchParams();
+  const templateIdParam = searchParams.get("templateId");
+  const returnToParam = searchParams.get("returnTo");
+
+  // Mode "édition d'un template existant" (présent seulement si ?templateId=...).
+  const [templateLoading, setTemplateLoading] = useState<boolean>(!!templateIdParam);
+  const [templateError, setTemplateError] = useState<string | null>(null);
+
   const setActive = (s: ProductionState | null) => {
     setActiveState(s);
     try {
@@ -107,6 +115,49 @@ export default function AdminStudioV2Page() {
       .finally(() => { if (!cancel) setLoadingCoverage(false); });
     return () => { cancel = true; };
   }, []);
+
+  // (1) Préchargement depuis le query param ?templateId=...
+  // Charge les studio_params du template existant et pré-remplit l'éditeur.
+  useEffect(() => {
+    if (!templateIdParam) return;
+    let cancel = false;
+    setTemplateLoading(true);
+    setTemplateError(null);
+    studioV2Api
+      .getTemplateStudioParams(templateIdParam)
+      .then((res) => {
+        if (cancel) return;
+        const a = res.studio_params?.active;
+        const persisted = res.studio_params?.persisted;
+        if (!a?.cell?.index) {
+          setTemplateError("Réponse invalide : studio_params.active manquant");
+          return;
+        }
+        // Hydrate le store local utilisé par ProductionScreen comme valeurs initiales,
+        // puis active la cellule — la page bascule alors vers l'éditeur.
+        try {
+          const persistKey = `krobar-studio-v2-prod:${a.cell.index}|${a.registre}|${a.selecteur ?? ""}`;
+          localStorage.setItem(persistKey, JSON.stringify(persisted ?? {}));
+        } catch { /* quota ignored */ }
+        setActive({ cell: a.cell, registre: a.registre, selecteur: a.selecteur ?? null });
+        if (res.source === "reconstructed") {
+          toast.info("Paramètres reconstruits depuis le SVG déployé", { duration: 4000 });
+        }
+      })
+      .catch((e) => {
+        if (cancel) return;
+        const msg = e instanceof Error ? e.message : String(e);
+        if (/404|not.?found|introuvable/i.test(msg)) {
+          setTemplateError(`Template introuvable : ${templateIdParam}`);
+        } else {
+          setTemplateError(msg);
+        }
+      })
+      .finally(() => { if (!cancel) setTemplateLoading(false); });
+    return () => { cancel = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [templateIdParam]);
+
 
 
   // Sort cells by family > cardinality > regime
