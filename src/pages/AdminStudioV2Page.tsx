@@ -266,6 +266,57 @@ function stripSlotsFromSvg(svg: string): string {
   }
 }
 
+function buildLegacyTemplateUpdatePayload(params: {
+  templateId: string;
+  cell: CoverageCell;
+  incarnation: string;
+  vectorizedSvg: string;
+  composition: CompositionReadyData;
+  meta: MetadataState;
+}) {
+  const { templateId, cell, incarnation, vectorizedSvg, composition, meta } = params;
+  const zoneLists = Object.values(composition.zones_by_cardinality ?? {});
+  const maxZones = zoneLists.reduce((best, list) => (list.length > best.length ? list : best), [] as (typeof zoneLists)[number]);
+  const anchors = maxZones.map((z) => ({
+    slot_name: `zone_${z.n}`,
+    x: Math.round(z.rect.x),
+    y: Math.round(z.rect.y),
+    w: Math.round(z.rect.w),
+    h: Math.round(z.rect.h),
+  }));
+  if (composition.headers?.title) {
+    const r = composition.headers.title.rect;
+    anchors.push({ slot_name: "title", x: Math.round(r.x), y: Math.round(r.y), w: Math.round(r.w), h: Math.round(r.h) });
+  }
+  if (composition.headers?.subtitle && !composition.headers.subtitle.disabled) {
+    const r = composition.headers.subtitle.rect;
+    anchors.push({ slot_name: "subtitle", x: Math.round(r.x), y: Math.round(r.y), w: Math.round(r.w), h: Math.round(r.h) });
+  }
+
+  return {
+    session_id: `studio-v2-${templateId}`,
+    template_id: templateId,
+    name: toTemplateDisplayName(templateId, incarnation),
+    category: inferLegacyCategory(meta.matching_types),
+    description: meta.best_for || toTemplateDisplayName(templateId, incarnation),
+    best_for: meta.best_for || toTemplateDisplayName(templateId, incarnation),
+    cleaned_svg: vectorizedSvg,
+    image_width: Math.round(composition.viewbox[2]),
+    image_height: Math.round(composition.viewbox[3]),
+    source_format: "svg",
+    anchors,
+    cardinality_configs: [],
+    textual_markers: meta.textual_markers,
+    matching_types: meta.matching_types,
+    test_text: meta.best_for,
+    add_to_test_suite: false,
+    approved_by: "admin",
+    overwrite: true,
+    update_existing: true,
+    allow_overwrite: true,
+  };
+}
+
 function buildFallbackStudioParams(
   raw: RawSnapshot,
   cell: CoverageCell,
