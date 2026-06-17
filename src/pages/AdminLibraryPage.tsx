@@ -116,28 +116,40 @@ export default function AdminLibraryPage() {
     if (opts?.initial) setIllustrationsLoading(true);
     if (opts?.manual) setRefreshing(true);
     try {
-      const res = await studioV2Api.coverage();
+      const [res, inventory] = await Promise.all([
+        studioV2Api.coverage(),
+        templatesLifecycleApi.inventory().catch(() => null),
+      ]);
       // Regroupe les variantes (id sans suffixe _N) et garde la plus grande cardinalité.
       const bestByKey = new Map<string, StudioIllustration>();
+      const byId = new Map<string, StudioIllustration>();
+      const pushIllustration = (candidate: StudioIllustration) => {
+        const baseId = candidate.id.replace(/_\d+$/, "");
+        const key = `${candidate.cell.index}::${candidate.domain}::${baseId}`;
+        const prev = bestByKey.get(key);
+        if (!prev || candidate.cardinality_n > prev.cardinality_n) {
+          bestByKey.set(key, candidate);
+        }
+        byId.set(candidate.id, candidate);
+      };
       for (const cell of res.cells ?? []) {
         const byDomain = cell.production?.by_domain ?? {};
         for (const [domain, dp] of Object.entries(byDomain)) {
           for (const p of dp.produced ?? []) {
-            const baseId = p.id.replace(/_\d+$/, "");
-            const key = `${cell.index}::${domain}::${baseId}`;
-            const candidate: StudioIllustration = {
+            pushIllustration({
               id: p.id,
               file: p.file,
               cardinality_n: p.cardinality,
               domain,
               cell,
-            };
-            const prev = bestByKey.get(key);
-            if (!prev || candidate.cardinality_n > prev.cardinality_n) {
-              bestByKey.set(key, candidate);
-            }
+            });
           }
         }
+      }
+      for (const template of inventory?.templates ?? []) {
+        if (byId.has(template.id)) continue;
+        const fallback = buildInventoryIllustration(template, res.cells ?? []);
+        if (fallback) pushIllustration(fallback);
       }
       const out = Array.from(bestByKey.values());
       out.sort((a, b) => a.id.localeCompare(b.id));
