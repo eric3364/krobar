@@ -1488,7 +1488,7 @@ function ProductionScreen({
       {composition && (
         <MetadataExportPanel
           cell={cell}
-          incarnation={promptRes?.incarnation_source ?? ""}
+          incarnation={promptRes?.incarnation_source ?? inferIncarnationFromTemplateId(editTemplateId)}
           domain={registre === "domain" ? (selecteur ?? "") : ""}
           vectorizedSvg={vectRes?.svg ?? ""}
           composition={composition}
