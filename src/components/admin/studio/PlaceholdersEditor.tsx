@@ -144,6 +144,12 @@ export default function PlaceholdersEditor({
   const [subtitleEnabled, setSubtitleEnabled] = useState(persisted?.subtitleEnabled ?? true);
   const [selectedHeader, setSelectedHeader] = useState<HeaderKey | null>(null);
 
+  // Outil actif : "select" = clic/glisse sur les cartouches activé ;
+  // "view" = aucune capture, le décor reste visible sans interaction.
+  type ToolMode = "select" | "view";
+  const [toolMode, setToolMode] = useState<ToolMode>("select");
+  const selectModeOn = toolMode === "select";
+
   // Mirror flip / rotation: controlled externally when props are supplied,
   // otherwise fallback to local persisted state (legacy path).
   const [mirroredLocal, setMirroredLocal] = useState<boolean>(persisted?.mirrored ?? false);
