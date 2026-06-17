@@ -197,6 +197,48 @@ function extractAnchorsFromSvg(svg: string): RawAnchor[] {
   }
 }
 
+// Retire toute couche "slot" résiduelle du SVG déployé (foreignObject/text
+// portant {{zone_N}}, {{title}}, {{subtitle}}, ou les groupes krobar-slot)
+// pour ne garder QUE l'illustration en fond. L'éditeur dessine ensuite sa
+// propre couche de cartouches éditables — pas de doublon visuel.
+function stripSlotsFromSvg(svg: string): string {
+  if (typeof window === "undefined" || !svg) return svg;
+  try {
+    const doc = new DOMParser().parseFromString(svg, "image/svg+xml");
+    if (doc.querySelector("parsererror")) return svg;
+
+    // 1) Groupes/éléments explicitement marqués comme slots.
+    doc
+      .querySelectorAll(
+        'g.krobar-slot, g[data-slot], rect[data-slot], foreignObject[data-slot], text[data-slot], tspan[data-slot]',
+      )
+      .forEach((el) => el.remove());
+
+    // 2) Textes restants dont le contenu est un placeholder {{...}} reconnu,
+    //    ou les labels "Titre" / "Sous-titre" peints par le serveur.
+    const isSlotLabel = (raw: string): boolean => {
+      const t = raw.trim();
+      if (!t) return false;
+      if (/^\{\{\s*[\w-]+\s*\}\}$/.test(t)) return true;
+      if (normalizeSlotName(t)) return true;
+      if (/^(titre|sous[- ]?titre|title|subtitle)$/i.test(t)) return true;
+      return false;
+    };
+    doc.querySelectorAll("text, tspan").forEach((node) => {
+      if (isSlotLabel(node.textContent ?? "")) node.remove();
+    });
+    // 3) foreignObject dont le HTML interne ne contient qu'un placeholder/label.
+    doc.querySelectorAll("foreignObject").forEach((node) => {
+      const txt = (node.textContent ?? "").trim();
+      if (isSlotLabel(txt)) node.remove();
+    });
+
+    return new XMLSerializer().serializeToString(doc);
+  } catch {
+    return svg;
+  }
+}
+
 function buildFallbackStudioParams(
   raw: RawSnapshot,
   cell: CoverageCell,
@@ -269,7 +311,7 @@ function buildFallbackStudioParams(
 
   const vectRes = {
     ok: true,
-    svg: raw.cleaned_svg,
+    svg: stripSlotsFromSvg(raw.cleaned_svg),
     viewbox,
     metrics: {
       ink_density_pct: 0,
