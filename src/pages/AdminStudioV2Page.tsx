@@ -110,6 +110,9 @@ type RawSnapshot = {
   saved_at?: string;
 };
 
+type CompositionReadyData = import("@/components/admin/studio/PlaceholdersEditor").CompositionReadyData;
+type MetadataState = { best_for: string; textual_markers: string[]; matching_types: string[] };
+
 function findCellForTemplateId(
   cov: CoverageResponse | null,
   templateId: string,
@@ -147,6 +150,23 @@ function inferIncarnationFromTemplateId(templateId: string | null | undefined): 
   const withoutCell = templateId.replace(/^[a-z]{2}\d+[a-z]_?/i, "");
   const withoutCardinality = withoutCell.replace(/_\d+$/i, "");
   return withoutCardinality.replace(/_/g, " ").trim();
+}
+
+function toTemplateDisplayName(templateId: string, incarnation: string): string {
+  const source = incarnation.trim() || inferIncarnationFromTemplateId(templateId) || templateId;
+  return source.charAt(0).toUpperCase() + source.slice(1);
+}
+
+function inferLegacyCategory(matchingTypes: string[]): string {
+  const first = matchingTypes[0] ?? "";
+  if (first.startsWith("process_")) return "process";
+  if (first.startsWith("comparison_")) return "comparison";
+  if (first.startsWith("hierarchy_")) return "hierarchy";
+  if (first.startsWith("matrix_")) return "matrix";
+  if (first.startsWith("network_")) return "network";
+  if (first.startsWith("timeline_")) return "timeline";
+  if (first.startsWith("concept_")) return "concept";
+  return "concept";
 }
 
 const anchorSlotName = (a: RawAnchor): string | null =>
@@ -244,6 +264,57 @@ function stripSlotsFromSvg(svg: string): string {
   } catch {
     return svg;
   }
+}
+
+function buildLegacyTemplateUpdatePayload(params: {
+  templateId: string;
+  cell: CoverageCell;
+  incarnation: string;
+  vectorizedSvg: string;
+  composition: CompositionReadyData;
+  meta: MetadataState;
+}) {
+  const { templateId, cell, incarnation, vectorizedSvg, composition, meta } = params;
+  const zoneLists = Object.values(composition.zones_by_cardinality ?? {});
+  const maxZones = zoneLists.reduce((best, list) => (list.length > best.length ? list : best), [] as (typeof zoneLists)[number]);
+  const anchors = maxZones.map((z) => ({
+    slot_name: `zone_${z.n}`,
+    x: Math.round(z.rect.x),
+    y: Math.round(z.rect.y),
+    w: Math.round(z.rect.w),
+    h: Math.round(z.rect.h),
+  }));
+  if (composition.headers?.title) {
+    const r = composition.headers.title.rect;
+    anchors.push({ slot_name: "title", x: Math.round(r.x), y: Math.round(r.y), w: Math.round(r.w), h: Math.round(r.h) });
+  }
+  if (composition.headers?.subtitle && !composition.headers.subtitle.disabled) {
+    const r = composition.headers.subtitle.rect;
+    anchors.push({ slot_name: "subtitle", x: Math.round(r.x), y: Math.round(r.y), w: Math.round(r.w), h: Math.round(r.h) });
+  }
+
+  return {
+    session_id: `studio-v2-${templateId}`,
+    template_id: templateId,
+    name: toTemplateDisplayName(templateId, incarnation),
+    category: inferLegacyCategory(meta.matching_types),
+    description: meta.best_for || toTemplateDisplayName(templateId, incarnation),
+    best_for: meta.best_for || toTemplateDisplayName(templateId, incarnation),
+    cleaned_svg: vectorizedSvg,
+    image_width: Math.round(composition.viewbox[2]),
+    image_height: Math.round(composition.viewbox[3]),
+    source_format: "svg",
+    anchors,
+    cardinality_configs: [],
+    textual_markers: meta.textual_markers,
+    matching_types: meta.matching_types,
+    test_text: meta.best_for,
+    add_to_test_suite: false,
+    approved_by: "admin",
+    overwrite: true,
+    update_existing: true,
+    allow_overwrite: true,
+  };
 }
 
 function buildFallbackStudioParams(
@@ -884,7 +955,7 @@ function ProductionScreen({
   const [mirrored, setMirrored] = useState<boolean>(initial?.mirrored ?? false);
   const [rotation, setRotation] = useState<0 | 90 | 180 | 270>(initial?.rotation ?? 0);
   const [eraserOpen, setEraserOpen] = useState(false);
-  const [composition, setComposition] = useState<import("@/components/admin/studio/PlaceholdersEditor").CompositionReadyData | null>(null);
+  const [composition, setComposition] = useState<CompositionReadyData | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Existing produced illustrations for the active domain
@@ -1551,7 +1622,7 @@ function MetadataExportPanel(props: {
   incarnation: string;
   domain: string;
   vectorizedSvg: string;
-  composition: import("@/components/admin/studio/PlaceholdersEditor").CompositionReadyData;
+  composition: CompositionReadyData;
   produceByN: Record<number, boolean>;
   validatedByN: Record<number, boolean>;
   onCancel: () => void;
@@ -1597,7 +1668,9 @@ function MetadataExportPanel(props: {
     }
   };
 
-  useEffect(() => { if (!meta.best_for) suggest(); /* eslint-disable-next-line */ }, []);
+  useEffect(() => { if (!meta.best_for) suggest();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const toggleMatchingType = (id: string) => {
     setMeta((m) => ({
@@ -1634,13 +1707,20 @@ function MetadataExportPanel(props: {
           ...(composition.headers ? { headers: composition.headers } : {}),
         },
       };
-      // Debug: confirm headers actually leaves the front in the export payload.
-      // eslint-disable-next-line no-console
-      console.log("[studio] export payload.headers =", exportPayload.composition.headers);
       // Mode édition : PUT vers /admin/studio/templates/{templateId} (préserve l'id).
       // Mode création (pas de templateId) : POST classique sur /export-templates.
       const r = editTemplateId
-        ? await studioV2Api.updateTemplate(editTemplateId, exportPayload)
+        ? await studioV2Api.updateTemplate(
+            editTemplateId,
+            buildLegacyTemplateUpdatePayload({
+              templateId: editTemplateId,
+              cell,
+              incarnation,
+              vectorizedSvg,
+              composition,
+              meta,
+            }),
+          )
         : await studioV2Api.exportTemplates(exportPayload);
       setExportResult(r);
       toast.success(editTemplateId ? "Template mis à jour" : "Templates déployés");

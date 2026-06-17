@@ -198,11 +198,29 @@ export const studioV2Api = {
       { method: "GET" },
     ),
 
-  updateTemplate: (templateId: string, payload: ExportPayload) =>
-    adminFetch<ExportResponse>(
+  async updateTemplate(templateId: string, payload: unknown): Promise<ExportResponse> {
+    const raw = await adminFetch<ExportResponse | { deployed?: boolean; template_id?: string }>(
       `/admin/studio/templates/${encodeURIComponent(templateId)}`,
       { method: "PUT", body: payload },
-    ),
+    );
+
+    if (typeof (raw as { deployed?: unknown }).deployed === "boolean") {
+      const deployed = (raw as { deployed: boolean }).deployed;
+      return {
+        ok: deployed,
+        base_id: (raw as { template_id?: string }).template_id ?? templateId,
+        deployed: deployed ? [(raw as { template_id?: string }).template_id ?? templateId] : [],
+        skipped: [],
+        manifest_total: 0,
+        backup: "",
+        cache_cleared: false,
+        restart_triggered: false,
+        restart_required: false,
+      };
+    }
+
+    return raw as ExportResponse;
+  },
 };
 
 // Réponse de GET /admin/templates/{id}/studio-params : paramètres Studio reconstruits
