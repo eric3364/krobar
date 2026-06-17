@@ -187,10 +187,26 @@ Deno.serve(async (req) => {
           );
         }
 
+        let detailMessage: string | undefined;
+        if (Array.isArray(data?.detail)) {
+          detailMessage = (data.detail as unknown[])
+            .map((d) => {
+              if (d && typeof d === "object") {
+                const obj = d as Record<string, unknown>;
+                const loc = Array.isArray(obj.loc) ? obj.loc.join(".") : "";
+                const msg = typeof obj.msg === "string" ? obj.msg : JSON.stringify(obj);
+                return loc ? `${loc}: ${msg}` : msg;
+              }
+              return String(d);
+            })
+            .join(" | ");
+        }
         const message =
+          detailMessage ||
           (typeof data?.detail === "string" && data.detail) ||
           (typeof data?.error === "string" && data.error) ||
           `Erreur Krobar (${upstream.status})`;
+        console.error("Krobar admin error", { path, status: upstream.status, body: text.slice(0, 1500) });
         return adminErrorResponse(message, upstream.status);
       }
 
