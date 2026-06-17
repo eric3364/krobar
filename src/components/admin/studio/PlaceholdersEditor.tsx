@@ -675,49 +675,51 @@ export default function PlaceholdersEditor({
         ) : null}
       </div>
 
-      {/* Per-zone controls bar */}
-      {selectedN !== null && (
-        <div className="flex flex-wrap items-center gap-2 text-xs">
-          <span className="text-muted-foreground">Zone {selectedN} —</span>
+      {/* Per-zone controls bar — fixed height so selecting a zone does not shift the canvas mid-drag. */}
+      <div className="min-h-6 flex flex-wrap items-center gap-2 text-xs">
+        {selectedN !== null && (
+          <>
+            <span className="text-muted-foreground">Zone {selectedN} —</span>
 
-          {habillageMode && (() => {
-            const z = zones.find((x) => x.n === selectedN);
-            const r = z?.rect;
-            if (!r) return null;
-            const mode = getHabMode(selectedN);
-            const side = getTraitSide(selectedN, r);
-            return (
-              <>
-                <span className="text-muted-foreground">habillage :</span>
-                {(["integre", "cartouche"] as HabillageMode[]).map((m) => (
-                  <button
-                    key={m}
-                    onClick={() => setHabModeFor(selectedN, m)}
-                    className={[
-                      "px-2 h-6 rounded border",
-                      mode === m
-                        ? "bg-primary text-primary-foreground border-primary"
-                        : "bg-background hover:bg-muted",
-                    ].join(" ")}
-                  >
-                    {m === "integre" ? "Intégré" : "Cartouche"}
-                  </button>
-                ))}
-                {mode === "cartouche" && (
-                  <button
-                    onClick={() => flipTraitSide(selectedN, r)}
-                    className="px-2 h-6 rounded border bg-background hover:bg-muted"
-                    title="Inverser le côté du trait"
-                  >
-                    Trait : {side === "left" ? "gauche" : "droite"} ⇆
-                  </button>
-                )}
-              </>
-            );
-          })()}
+            {habillageMode && (() => {
+              const z = zones.find((x) => x.n === selectedN);
+              const r = z?.rect;
+              if (!r) return null;
+              const mode = getHabMode(selectedN);
+              const side = getTraitSide(selectedN, r);
+              return (
+                <>
+                  <span className="text-muted-foreground">habillage :</span>
+                  {(["integre", "cartouche"] as HabillageMode[]).map((m) => (
+                    <button
+                      key={m}
+                      onClick={() => setHabModeFor(selectedN, m)}
+                      className={[
+                        "px-2 h-6 rounded border",
+                        mode === m
+                          ? "bg-primary text-primary-foreground border-primary"
+                          : "bg-background hover:bg-muted",
+                      ].join(" ")}
+                    >
+                      {m === "integre" ? "Intégré" : "Cartouche"}
+                    </button>
+                  ))}
+                  {mode === "cartouche" && (
+                    <button
+                      onClick={() => flipTraitSide(selectedN, r)}
+                      className="px-2 h-6 rounded border bg-background hover:bg-muted"
+                      title="Inverser le côté du trait"
+                    >
+                      Trait : {side === "left" ? "gauche" : "droite"} ⇆
+                    </button>
+                  )}
+                </>
+              );
+            })()}
 
-        </div>
-      )}
+          </>
+        )}
+      </div>
 
       {placementMode && pendingNs.length > 0 && (
         <div className="text-xs px-2 py-1 rounded border bg-amber-500/10 border-amber-500/30 text-amber-700 dark:text-amber-300">
@@ -831,6 +833,9 @@ export default function PlaceholdersEditor({
                 inset: 0,
                 pointerEvents: selectModeOn ? "auto" : "none",
               }}
+              onPointerMove={onPointerMove}
+              onPointerUp={onPointerUp}
+              onPointerCancel={onPointerUp}
             >
 
               {/* Calque HTML prioritaire : capte les clics/glissements au-dessus du SVG et des foreignObject. */}
@@ -842,6 +847,9 @@ export default function PlaceholdersEditor({
                     <div
                       key={`hit-header-${hk}`}
                       onPointerDown={(e) => onHeaderMoveDown(hk, e)}
+                        onPointerMove={onPointerMove}
+                        onPointerUp={onPointerUp}
+                        onPointerCancel={onPointerUp}
                       style={{
                         position: "absolute",
                         ...toCssRect(r),
@@ -861,6 +869,9 @@ export default function PlaceholdersEditor({
                     <div key={`hit-zone-${z.n}`}>
                       <div
                         onPointerDown={(e) => onMoveDown(z.n, e)}
+                        onPointerMove={onPointerMove}
+                        onPointerUp={onPointerUp}
+                        onPointerCancel={onPointerUp}
                         style={{
                           position: "absolute",
                           ...toCssRect(r),
@@ -878,6 +889,9 @@ export default function PlaceholdersEditor({
                           <div
                             key={`hit-resize-${z.n}-${c}`}
                             onPointerDown={(e) => onResizeDown(z.n, c, e)}
+                            onPointerMove={onPointerMove}
+                            onPointerUp={onPointerUp}
+                            onPointerCancel={onPointerUp}
                             style={{
                               position: "absolute",
                               ...toCssPoint(hx, hy, handleSize),
