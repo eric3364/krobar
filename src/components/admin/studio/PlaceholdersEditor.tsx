@@ -845,6 +845,9 @@ export default function PlaceholdersEditor({
                     <div
                       key={`hit-header-${hk}`}
                       onPointerDown={(e) => onHeaderMoveDown(hk, e)}
+                        onPointerMove={onPointerMove}
+                        onPointerUp={onPointerUp}
+                        onPointerCancel={onPointerUp}
                       style={{
                         position: "absolute",
                         ...toCssRect(r),
@@ -864,6 +867,9 @@ export default function PlaceholdersEditor({
                     <div key={`hit-zone-${z.n}`}>
                       <div
                         onPointerDown={(e) => onMoveDown(z.n, e)}
+                        onPointerMove={onPointerMove}
+                        onPointerUp={onPointerUp}
+                        onPointerCancel={onPointerUp}
                         style={{
                           position: "absolute",
                           ...toCssRect(r),
@@ -881,6 +887,9 @@ export default function PlaceholdersEditor({
                           <div
                             key={`hit-resize-${z.n}-${c}`}
                             onPointerDown={(e) => onResizeDown(z.n, c, e)}
+                            onPointerMove={onPointerMove}
+                            onPointerUp={onPointerUp}
+                            onPointerCancel={onPointerUp}
                             style={{
                               position: "absolute",
                               ...toCssPoint(hx, hy, handleSize),
