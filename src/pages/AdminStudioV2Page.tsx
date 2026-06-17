@@ -1215,8 +1215,11 @@ function MetadataExportPanel(props: {
   produceByN: Record<number, boolean>;
   validatedByN: Record<number, boolean>;
   onCancel: () => void;
+  editTemplateId?: string | null;
+  returnTo?: string | null;
 }) {
-  const { cell, incarnation, domain, vectorizedSvg, composition, produceByN, validatedByN, onCancel } = props;
+  const { cell, incarnation, domain, vectorizedSvg, composition, produceByN, validatedByN, onCancel, editTemplateId, returnTo } = props;
+  const navigate = useNavigate();
   const [meta, setMeta] = useState<{ best_for: string; textual_markers: string[]; matching_types: string[] }>({
     best_for: "", textual_markers: [], matching_types: [],
   });
