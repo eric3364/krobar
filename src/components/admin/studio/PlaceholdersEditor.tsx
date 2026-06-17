@@ -735,13 +735,17 @@ export default function PlaceholdersEditor({
         ].filter(Boolean).join(" ");
         return (
           <div
-            className="relative bg-background border rounded-md overflow-hidden mx-auto"
+            className="relative bg-background border rounded-md overflow-hidden mx-auto select-none"
             style={{
               aspectRatio: `${vbW} / ${vbH}`,
               width: `min(100%, calc(70vh * ${vbW} / ${vbH}))`,
               maxHeight: "70vh",
+              userSelect: "none",
+              WebkitUserSelect: "none",
             }}
+            onSelectStart={(e) => e.preventDefault()}
           >
+
             {/* Illustration vectorisée — calque du bas, recevant les transformations
                 (miroir / rotation). Le placeholder ci-dessous reste figé. */}
             <div
