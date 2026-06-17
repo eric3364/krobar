@@ -1,8 +1,8 @@
 // Vue A — /admin/library : liste des templates Premium et résumé de la bibliothèque.
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, CheckCircle2, ImageOff, Loader2 } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ImageOff, Loader2, RefreshCw } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,8 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { libraryApi, type LibraryTemplate } from "@/lib/libraryApi";
 import { studioV2Api, FAMILY_LABEL, type CoverageCell } from "@/lib/studioV2Api";
@@ -41,6 +43,12 @@ export default function AdminLibraryPage() {
   const [illustrationsLoading, setIllustrationsLoading] = useState(true);
   const [illustrationsError, setIllustrationsError] = useState<string | null>(null);
   const [illustrationSearch, setIllustrationSearch] = useState("");
+  const [autoRefresh, setAutoRefresh] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [newIds, setNewIds] = useState<Set<string>>(new Set());
+  const [newCount, setNewCount] = useState(0);
+  const prevIdsRef = useRef<Set<string> | null>(null);
+  const highlightTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     let alive = true;
@@ -62,51 +70,80 @@ export default function AdminLibraryPage() {
   }, []);
 
   // Récupère toutes les illustrations produites via le Studio (coverage SICAI).
-  useEffect(() => {
-    let alive = true;
-    (async () => {
-      setIllustrationsLoading(true);
-      try {
-        const res = await studioV2Api.coverage();
-        if (!alive) return;
-        // On regroupe les variantes d'une même illustration (id sans suffixe _N)
-        // et on ne garde que celle de cardinalité la plus grande.
-        const bestByKey = new Map<string, StudioIllustration>();
-        for (const cell of res.cells ?? []) {
-          const byDomain = cell.production?.by_domain ?? {};
-          for (const [domain, dp] of Object.entries(byDomain)) {
-            for (const p of dp.produced ?? []) {
-              const baseId = p.id.replace(/_\d+$/, "");
-              const key = `${cell.index}::${domain}::${baseId}`;
-              const candidate: StudioIllustration = {
-                id: p.id,
-                file: p.file,
-                cardinality_n: p.cardinality,
-                domain,
-                cell,
-              };
-              const prev = bestByKey.get(key);
-              if (!prev || candidate.cardinality_n > prev.cardinality_n) {
-                bestByKey.set(key, candidate);
-              }
+  const fetchIllustrations = useCallback(async (opts?: { initial?: boolean; manual?: boolean }) => {
+    if (opts?.initial) setIllustrationsLoading(true);
+    if (opts?.manual) setRefreshing(true);
+    try {
+      const res = await studioV2Api.coverage();
+      // Regroupe les variantes (id sans suffixe _N) et garde la plus grande cardinalité.
+      const bestByKey = new Map<string, StudioIllustration>();
+      for (const cell of res.cells ?? []) {
+        const byDomain = cell.production?.by_domain ?? {};
+        for (const [domain, dp] of Object.entries(byDomain)) {
+          for (const p of dp.produced ?? []) {
+            const baseId = p.id.replace(/_\d+$/, "");
+            const key = `${cell.index}::${domain}::${baseId}`;
+            const candidate: StudioIllustration = {
+              id: p.id,
+              file: p.file,
+              cardinality_n: p.cardinality,
+              domain,
+              cell,
+            };
+            const prev = bestByKey.get(key);
+            if (!prev || candidate.cardinality_n > prev.cardinality_n) {
+              bestByKey.set(key, candidate);
             }
           }
         }
-        const out = Array.from(bestByKey.values());
-        out.sort((a, b) => a.id.localeCompare(b.id));
-        setIllustrations(out);
-        setIllustrationsError(null);
-      } catch (e) {
-        if (alive) {
-          setIllustrationsError(e instanceof Error ? e.message : "Erreur de chargement");
-          setIllustrations([]);
-        }
-      } finally {
-        if (alive) setIllustrationsLoading(false);
       }
-    })();
-    return () => { alive = false; };
+      const out = Array.from(bestByKey.values());
+      out.sort((a, b) => a.id.localeCompare(b.id));
+
+      // Détection des nouvelles vignettes (clé = id+file).
+      const keyOf = (it: StudioIllustration) => `${it.id}::${it.file}`;
+      const currentKeys = new Set(out.map(keyOf));
+      const prevKeys = prevIdsRef.current;
+      if (prevKeys && !opts?.initial) {
+        const fresh = new Set<string>();
+        for (const k of currentKeys) if (!prevKeys.has(k)) fresh.add(k);
+        if (fresh.size > 0) {
+          setNewIds(fresh);
+          setNewCount((c) => c + fresh.size);
+          if (highlightTimerRef.current) clearTimeout(highlightTimerRef.current);
+          highlightTimerRef.current = setTimeout(() => setNewIds(new Set()), 6000);
+        }
+      }
+      prevIdsRef.current = currentKeys;
+
+      setIllustrations(out);
+      setIllustrationsError(null);
+    } catch (e) {
+      setIllustrationsError(e instanceof Error ? e.message : "Erreur de chargement");
+      if (opts?.initial) setIllustrations([]);
+    } finally {
+      if (opts?.initial) setIllustrationsLoading(false);
+      if (opts?.manual) setRefreshing(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchIllustrations({ initial: true });
+  }, [fetchIllustrations]);
+
+  useEffect(() => {
+    if (!autoRefresh) return;
+    const id = setInterval(() => {
+      fetchIllustrations();
+    }, 5000);
+    return () => clearInterval(id);
+  }, [autoRefresh, fetchIllustrations]);
+
+  useEffect(() => () => {
+    if (highlightTimerRef.current) clearTimeout(highlightTimerRef.current);
+  }, []);
+
+
 
 
   // Lazy-load une miniature (dernier aperçu) pour chaque template ayant au moins 1 aperçu.
@@ -260,15 +297,45 @@ export default function AdminLibraryPage() {
                 : illustrationsError
                 ? `Erreur : ${illustrationsError}`
                 : `${illustrations?.length ?? 0} illustration${(illustrations?.length ?? 0) > 1 ? "s" : ""} générée${(illustrations?.length ?? 0) > 1 ? "s" : ""} via le Studio`}
+              {newCount > 0 && (
+                <span className="ml-2 inline-flex items-center rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 px-2 py-0.5 text-xs font-medium">
+                  +{newCount} nouvelle{newCount > 1 ? "s" : ""}
+                </span>
+              )}
             </p>
           </div>
-          <Input
-            placeholder="Rechercher (id, fichier, domaine, cellule…)"
-            value={illustrationSearch}
-            onChange={(e) => setIllustrationSearch(e.target.value)}
-            className="max-w-xs"
-          />
+          <div className="flex items-center gap-3 flex-wrap">
+            <div className="flex items-center gap-2">
+              <Switch
+                id="auto-refresh"
+                checked={autoRefresh}
+                onCheckedChange={setAutoRefresh}
+              />
+              <Label htmlFor="auto-refresh" className="text-xs cursor-pointer">
+                Rafraîchissement auto
+              </Label>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setNewCount(0);
+                fetchIllustrations({ manual: true });
+              }}
+              disabled={refreshing}
+            >
+              <RefreshCw className={`w-3.5 h-3.5 mr-1 ${refreshing ? "animate-spin" : ""}`} />
+              Rafraîchir maintenant
+            </Button>
+            <Input
+              placeholder="Rechercher (id, fichier, domaine, cellule…)"
+              value={illustrationSearch}
+              onChange={(e) => setIllustrationSearch(e.target.value)}
+              className="max-w-xs"
+            />
+          </div>
         </div>
+
 
         {illustrationsLoading ? (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
@@ -286,8 +353,15 @@ export default function AdminLibraryPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
             {filteredIllustrations.map((it) => {
               const familyLabel = FAMILY_LABEL[it.cell.family] ?? it.cell.family;
+              const isNew = newIds.has(`${it.id}::${it.file}`);
               return (
-                <Card key={`${it.id}-${it.file}`} className="overflow-hidden flex flex-col">
+                <Card
+                  key={`${it.id}-${it.file}`}
+                  className={`overflow-hidden flex flex-col transition-all ${
+                    isNew ? "ring-2 ring-emerald-500/60 shadow-lg" : ""
+                  }`}
+                >
+
                   <div className="aspect-[4/3] w-full bg-muted/30 border-b flex items-center justify-center overflow-hidden">
                     <img
                       src={`https://krobar.online/templates/${it.file}`}
