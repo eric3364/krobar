@@ -809,7 +809,7 @@ export default function PlaceholdersEditor({
                   vectorEffect="non-scaling-stroke"
                   onPointerDown={(e) => { if (selectModeOn) onHeaderMoveDown(hk, e); }}
                   style={{ touchAction: "none", cursor: selectModeOn ? "grab" : "default", pointerEvents: selectModeOn ? "all" : "none" }}
-                />)
+                />
                 <foreignObject x={r.x} y={r.y} width={r.w} height={r.h} pointerEvents="none">
                   <div
                     style={{
