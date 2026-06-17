@@ -1,8 +1,8 @@
 // Vue A — /admin/library : liste des templates Premium et résumé de la bibliothèque.
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import { ArrowLeft, CheckCircle2, ImageOff, Loader2, RefreshCw } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { ArrowLeft, CheckCircle2, ImageOff, Loader2, RefreshCw, Pencil } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
@@ -49,6 +49,8 @@ export default function AdminLibraryPage() {
   const [newCount, setNewCount] = useState(0);
   const prevIdsRef = useRef<Set<string> | null>(null);
   const highlightTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     let alive = true;
@@ -142,6 +144,24 @@ export default function AdminLibraryPage() {
   useEffect(() => () => {
     if (highlightTimerRef.current) clearTimeout(highlightTimerRef.current);
   }, []);
+
+  // Au retour depuis l'éditeur Studio (state.refreshTemplateId), rafraîchit l'inventaire
+  // pour refléter le nouveau placement de la vignette éditée.
+  useEffect(() => {
+    const state = location.state as { refreshTemplateId?: string } | null;
+    if (state?.refreshTemplateId) {
+      fetchIllustrations({ manual: true });
+      // nettoie le state pour ne pas reboucler si l'utilisateur navigue
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location, navigate, fetchIllustrations]);
+
+  // Ouvre la vignette dans l'éditeur de placement du Studio.
+  const openInEditor = useCallback((it: StudioIllustration) => {
+    navigate(`/admin/studio?templateId=${encodeURIComponent(it.id)}&returnTo=library`, {
+      state: { fromLibrary: true, templateId: it.id },
+    });
+  }, [navigate]);
 
 
 
@@ -357,12 +377,13 @@ export default function AdminLibraryPage() {
               return (
                 <Card
                   key={`${it.id}-${it.file}`}
-                  className={`overflow-hidden flex flex-col transition-all ${
+                  onDoubleClick={() => openInEditor(it)}
+                  title="Double-cliquez pour éditer le placement"
+                  className={`group relative overflow-hidden flex flex-col transition-all cursor-pointer select-none ${
                     isNew ? "ring-2 ring-emerald-500/60 shadow-lg" : ""
                   }`}
                 >
-
-                  <div className="aspect-[4/3] w-full bg-muted/30 border-b flex items-center justify-center overflow-hidden">
+                  <div className="aspect-[4/3] w-full bg-muted/30 border-b flex items-center justify-center overflow-hidden relative">
                     <img
                       src={`https://krobar.online/templates/${it.file}`}
                       alt={it.id}
@@ -372,6 +393,18 @@ export default function AdminLibraryPage() {
                         (e.currentTarget as HTMLImageElement).style.display = "none";
                       }}
                     />
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity shadow-md h-7 px-2 text-xs"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openInEditor(it);
+                      }}
+                    >
+                      <Pencil className="w-3 h-3 mr-1" />
+                      Éditer le placement
+                    </Button>
                   </div>
                   <div className="p-4 space-y-2 flex-1">
                     <div>
