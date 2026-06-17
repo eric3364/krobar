@@ -743,8 +743,15 @@ export default function PlaceholdersEditor({
               userSelect: "none",
               WebkitUserSelect: "none",
             }}
-            onSelectStart={(e) => e.preventDefault()}
+            onMouseDown={(e) => {
+              // Prevent text selection from starting on background drags.
+              // Inputs/buttons inside are unaffected.
+              const t = e.target as HTMLElement;
+              if (t.closest("input, textarea, button, [contenteditable]")) return;
+              e.preventDefault();
+            }}
           >
+
 
             {/* Illustration vectorisée — calque du bas, recevant les transformations
                 (miroir / rotation). Le placeholder ci-dessous reste figé. */}
