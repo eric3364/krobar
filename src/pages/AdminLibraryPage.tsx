@@ -43,6 +43,12 @@ export default function AdminLibraryPage() {
   const [illustrationsLoading, setIllustrationsLoading] = useState(true);
   const [illustrationsError, setIllustrationsError] = useState<string | null>(null);
   const [illustrationSearch, setIllustrationSearch] = useState("");
+  const [autoRefresh, setAutoRefresh] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [newIds, setNewIds] = useState<Set<string>>(new Set());
+  const [newCount, setNewCount] = useState(0);
+  const prevIdsRef = useRef<Set<string> | null>(null);
+  const highlightTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     let alive = true;
