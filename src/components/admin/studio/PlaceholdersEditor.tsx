@@ -758,6 +758,42 @@ export default function PlaceholdersEditor({
             }}
           >
 
+            {/* Mini barre d'outils flottante (bas-gauche du décor) */}
+            <div
+              className="absolute bottom-2 left-2 z-20 flex items-center gap-1 rounded-md border bg-background/95 backdrop-blur shadow-sm p-1"
+              onMouseDown={(e) => e.stopPropagation()}
+            >
+              <button
+                type="button"
+                onClick={() => setToolMode("select")}
+                className={[
+                  "h-7 w-7 inline-flex items-center justify-center rounded border",
+                  selectModeOn
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "bg-background hover:bg-muted",
+                ].join(" ")}
+                title="Outil sélection — clique/glisse les cartouches pour les déplacer"
+                aria-pressed={selectModeOn}
+              >
+                <MousePointer2 className="w-3.5 h-3.5" />
+              </button>
+              <button
+                type="button"
+                onClick={() => { setToolMode("view"); setSelectedN(null); setSelectedHeader(null); }}
+                className={[
+                  "h-7 w-7 inline-flex items-center justify-center rounded border",
+                  !selectModeOn
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "bg-background hover:bg-muted",
+                ].join(" ")}
+                title="Mode aperçu — désactive l'interaction sur les cartouches"
+                aria-pressed={!selectModeOn}
+              >
+                <Hand className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+
 
             {/* Illustration vectorisée — calque du bas, recevant les transformations
                 (miroir / rotation). Le placeholder ci-dessous reste figé. */}
