@@ -929,6 +929,17 @@ export default function PlaceholdersEditor({
                   </div>
                 </foreignObject>
 
+                {/* Hit target above SVG/foreignObject content: keeps reconstructed
+                    cartouches draggable even when browser text/SVG layers sit on top. */}
+                <rect
+                  x={r.x} y={r.y} width={r.w} height={r.h}
+                  rx={Math.min(4, r.h * 0.08)}
+                  fill="transparent"
+                  pointerEvents="all"
+                  onPointerDown={(e) => onMoveDown(z.n, e)}
+                  style={{ touchAction: "none", cursor: "grab" }}
+                />
+
                 {/* Habillage badge (integré) */}
                 {habillageMode && !isCartouche && (
                   <text

@@ -85,7 +85,18 @@ function loadActive(): ProductionState | null {
 
 /* ─── Fallback : snapshot brut → {active, persisted} ─── */
 
-type RawAnchor = { slot_name: string; x: number; y: number; w: number; h: number };
+type RawAnchor = {
+  slot_name?: string;
+  slot?: string;
+  id?: string;
+  name?: string;
+  x: number;
+  y: number;
+  w?: number;
+  h?: number;
+  width?: number;
+  height?: number;
+};
 type RawSnapshot = {
   session_id?: string;
   image_width: number;
@@ -115,6 +126,25 @@ function findCellForTemplateId(
   return null;
 }
 
+const readAnchorRect = (a: RawAnchor): { x: number; y: number; w: number; h: number } | null => {
+  const w = a.w ?? a.width;
+  const h = a.h ?? a.height;
+  if (![a.x, a.y, w, h].every(Number.isFinite)) return null;
+  return { x: a.x, y: a.y, w: w as number, h: h as number };
+};
+
+const normalizeSlotName = (name: string | undefined): string | null => {
+  if (!name) return null;
+  const clean = name.trim().replace(/^\{\{\s*/, "").replace(/\s*\}\}$/, "");
+  if (/^title$/i.test(clean)) return "title";
+  if (/^subtitle$/i.test(clean)) return "subtitle";
+  const zone = /^(?:zone[_-]?|verbatim[_-]?|v)(\d+)$/i.exec(clean);
+  return zone ? `zone_${Number(zone[1])}` : null;
+};
+
+const anchorSlotName = (a: RawAnchor): string | null =>
+  normalizeSlotName(a.slot_name ?? a.slot ?? a.id ?? a.name);
+
 // Extrait les rects des slots {zone_N, title, subtitle} depuis le SVG déployé
 // (convention SVG-KR v2.x : <g class="krobar-slot" data-slot="..."><foreignObject .../></g>).
 // Sert de filet quand le backend renvoie un snapshot reconstruit avec anchors=[].
@@ -124,6 +154,12 @@ function extractAnchorsFromSvg(svg: string): RawAnchor[] {
     const doc = new DOMParser().parseFromString(svg, "image/svg+xml");
     if (doc.querySelector("parsererror")) return [];
     const out: RawAnchor[] = [];
+    const push = (slotRaw: string | null | undefined, x: number, y: number, w: number, h: number) => {
+      const slot = normalizeSlotName(slotRaw ?? undefined);
+      if (!slot || ![x, y, w, h].every(Number.isFinite)) return;
+      if (out.some((a) => anchorSlotName(a) === slot)) return;
+      out.push({ slot_name: slot, x, y, w, h });
+    };
     const nodes = doc.querySelectorAll('g.krobar-slot[data-slot], g[data-slot], rect[data-slot], foreignObject[data-slot]');
     nodes.forEach((node) => {
       const slot = node.getAttribute("data-slot");
@@ -137,9 +173,23 @@ function extractAnchorsFromSvg(svg: string): RawAnchor[] {
       const y = parseFloat(target.getAttribute("y") ?? "");
       const w = parseFloat(target.getAttribute("width") ?? "");
       const h = parseFloat(target.getAttribute("height") ?? "");
-      if (![x, y, w, h].every(Number.isFinite)) return;
-      if (out.some((a) => a.slot_name === slot)) return;
-      out.push({ slot_name: slot, x, y, w, h });
+      push(slot, x, y, w, h);
+    });
+    doc.querySelectorAll("text, tspan").forEach((node) => {
+      const slot = normalizeSlotName(node.textContent ?? undefined);
+      if (!slot || out.some((a) => anchorSlotName(a) === slot)) return;
+      const x = parseFloat(node.getAttribute("x") ?? "");
+      const y = parseFloat(node.getAttribute("y") ?? "");
+      const candidates = Array.from(doc.querySelectorAll("rect, foreignObject"))
+        .map((el) => ({
+          x: parseFloat(el.getAttribute("x") ?? ""),
+          y: parseFloat(el.getAttribute("y") ?? ""),
+          w: parseFloat(el.getAttribute("width") ?? ""),
+          h: parseFloat(el.getAttribute("height") ?? ""),
+        }))
+        .filter((r) => [r.x, r.y, r.w, r.h].every(Number.isFinite));
+      const containing = candidates.find((r) => x >= r.x && x <= r.x + r.w && y >= r.y - r.h * 0.2 && y <= r.y + r.h * 1.2);
+      if (containing) push(slot, containing.x, containing.y, containing.w, containing.h);
     });
     return out;
   } catch {
@@ -163,42 +213,58 @@ function buildFallbackStudioParams(
   }
 
   // Zones zone_N → ZonePair
-  type ZP = {
-    n: number;
-    rect: { x: number; y: number; w: number; h: number };
-    icon: null;
-    side: "left" | "right";
-    unplaced?: boolean;
-  };
+  type ZP = ZonePair & { rect: { x: number; y: number; w: number; h: number } };
   const zonePairs: ZP[] = [];
   for (const a of anchors) {
-    const m = /^zone_(\d+)$/.exec(a.slot_name);
+    const slot = anchorSlotName(a);
+    const m = slot ? /^zone_(\d+)$/.exec(slot) : null;
     if (!m) continue;
     const n = parseInt(m[1], 10);
+    const rect = readAnchorRect(a);
+    if (!rect) continue;
+    const iconSize = Math.max(18, Math.min(rect.w, rect.h) * 0.28);
+    const iconOnRight = rect.x + rect.w / 2 < W / 2;
     zonePairs.push({
       n,
-      rect: { x: a.x, y: a.y, w: a.w, h: a.h },
-      icon: null,
-      side: a.x + a.w / 2 < W / 2 ? "left" : "right",
+      rect,
+      icon: {
+        x: iconOnRight ? rect.x + rect.w + 4 : rect.x - iconSize - 4,
+        y: rect.y,
+        w: iconSize,
+        h: iconSize,
+        transparent: true,
+      },
+      side: iconOnRight ? "right" : "left",
+      unplaced: false,
     });
   }
   zonePairs.sort((a, b) => a.n - b.n);
   const userMax = zonePairs.length > 0 ? Math.max(...zonePairs.map((z) => z.n)) : 1;
 
   // Headers
-  const headerAnchor = (name: string) => anchors.find((a) => a.slot_name === name);
+  const headerAnchor = (name: string) => {
+    const anchor = anchors.find((a) => anchorSlotName(a) === name);
+    return anchor ? readAnchorRect(anchor) : null;
+  };
   const titleA = headerAnchor("title");
   const subtitleA = headerAnchor("subtitle");
   const headers: Record<string, { role: string; rect: { x: number; y: number; w: number; h: number }; optional?: boolean }> = {};
-  if (titleA) headers.title = { role: "title", rect: { x: titleA.x, y: titleA.y, w: titleA.w, h: titleA.h } };
-  if (subtitleA) headers.subtitle = { role: "subtitle", rect: { x: subtitleA.x, y: subtitleA.y, w: subtitleA.w, h: subtitleA.h }, optional: true };
+  headers.title = {
+    role: "title",
+    rect: titleA ?? { x: W * 0.36, y: H * 0.06, w: W * 0.28, h: H * 0.055 },
+  };
+  headers.subtitle = {
+    role: "subtitle",
+    rect: subtitleA ?? { x: W * 0.38, y: H * 0.14, w: W * 0.24, h: H * 0.045 },
+    optional: true,
+  };
 
   const editedZones: Record<string, ZP[]> = { [String(userMax)]: zonePairs };
   const placement = {
     cardinality_max: userMax,
     viewbox,
     by_cardinality: { [String(userMax)]: zonePairs },
-    headers: Object.keys(headers).length > 0 ? headers : undefined,
+    headers,
   };
 
   const vectRes = {
@@ -793,14 +859,18 @@ function ProductionScreen({
     setGpt2Style(p?.gpt2Style ?? null);
     // Drop cached placement that pre-dates the headers feature so it gets refetched
     // (otherwise headers boxes never appear for sessions persisted before the upgrade).
-    const cachedPlacement = p?.placement && (p.placement as PlaceZonesResponse).headers
+    const pUserMax = p?.userMax ?? baseUserMax;
+    const cachedPlacement = p?.placement && (
+      (p.placement as PlaceZonesResponse).headers ||
+      Array.isArray((p.placement as PlaceZonesResponse).by_cardinality?.[String(pUserMax)])
+    )
       ? p.placement
       : null;
     setPlacement(cachedPlacement);
     setEditedZones(p?.editedZones ?? {});
     setPlacementsMode(p?.placementsMode ?? false);
-    setUserMax(p?.userMax ?? baseUserMax);
-    setProduceByN(p?.produceByN ?? initialProduce(p?.userMax ?? baseUserMax));
+    setUserMax(pUserMax);
+    setProduceByN(p?.produceByN ?? initialProduce(pUserMax));
     setValidatedByN(p?.validatedByN ?? {});
     setMirrored(p?.mirrored ?? false);
     setRotation(p?.rotation ?? 0);
