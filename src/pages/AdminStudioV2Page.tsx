@@ -110,6 +110,9 @@ type RawSnapshot = {
   saved_at?: string;
 };
 
+type CompositionReadyData = import("@/components/admin/studio/PlaceholdersEditor").CompositionReadyData;
+type MetadataState = { best_for: string; textual_markers: string[]; matching_types: string[] };
+
 function findCellForTemplateId(
   cov: CoverageResponse | null,
   templateId: string,
@@ -147,6 +150,23 @@ function inferIncarnationFromTemplateId(templateId: string | null | undefined): 
   const withoutCell = templateId.replace(/^[a-z]{2}\d+[a-z]_?/i, "");
   const withoutCardinality = withoutCell.replace(/_\d+$/i, "");
   return withoutCardinality.replace(/_/g, " ").trim();
+}
+
+function toTemplateDisplayName(templateId: string, incarnation: string): string {
+  const source = incarnation.trim() || inferIncarnationFromTemplateId(templateId) || templateId;
+  return source.charAt(0).toUpperCase() + source.slice(1);
+}
+
+function inferLegacyCategory(matchingTypes: string[]): string {
+  const first = matchingTypes[0] ?? "";
+  if (first.startsWith("process_")) return "process";
+  if (first.startsWith("comparison_")) return "comparison";
+  if (first.startsWith("hierarchy_")) return "hierarchy";
+  if (first.startsWith("matrix_")) return "matrix";
+  if (first.startsWith("network_")) return "network";
+  if (first.startsWith("timeline_")) return "timeline";
+  if (first.startsWith("concept_")) return "concept";
+  return "concept";
 }
 
 const anchorSlotName = (a: RawAnchor): string | null =>
