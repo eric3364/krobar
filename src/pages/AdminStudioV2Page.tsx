@@ -213,42 +213,58 @@ function buildFallbackStudioParams(
   }
 
   // Zones zone_N → ZonePair
-  type ZP = {
-    n: number;
-    rect: { x: number; y: number; w: number; h: number };
-    icon: null;
-    side: "left" | "right";
-    unplaced?: boolean;
-  };
+  type ZP = ZonePair & { rect: { x: number; y: number; w: number; h: number } };
   const zonePairs: ZP[] = [];
   for (const a of anchors) {
-    const m = /^zone_(\d+)$/.exec(a.slot_name);
+    const slot = anchorSlotName(a);
+    const m = slot ? /^zone_(\d+)$/.exec(slot) : null;
     if (!m) continue;
     const n = parseInt(m[1], 10);
+    const rect = readAnchorRect(a);
+    if (!rect) continue;
+    const iconSize = Math.max(18, Math.min(rect.w, rect.h) * 0.28);
+    const iconOnRight = rect.x + rect.w / 2 < W / 2;
     zonePairs.push({
       n,
-      rect: { x: a.x, y: a.y, w: a.w, h: a.h },
-      icon: null,
-      side: a.x + a.w / 2 < W / 2 ? "left" : "right",
+      rect,
+      icon: {
+        x: iconOnRight ? rect.x + rect.w + 4 : rect.x - iconSize - 4,
+        y: rect.y,
+        w: iconSize,
+        h: iconSize,
+        transparent: true,
+      },
+      side: iconOnRight ? "right" : "left",
+      unplaced: false,
     });
   }
   zonePairs.sort((a, b) => a.n - b.n);
   const userMax = zonePairs.length > 0 ? Math.max(...zonePairs.map((z) => z.n)) : 1;
 
   // Headers
-  const headerAnchor = (name: string) => anchors.find((a) => a.slot_name === name);
+  const headerAnchor = (name: string) => {
+    const anchor = anchors.find((a) => anchorSlotName(a) === name);
+    return anchor ? readAnchorRect(anchor) : null;
+  };
   const titleA = headerAnchor("title");
   const subtitleA = headerAnchor("subtitle");
   const headers: Record<string, { role: string; rect: { x: number; y: number; w: number; h: number }; optional?: boolean }> = {};
-  if (titleA) headers.title = { role: "title", rect: { x: titleA.x, y: titleA.y, w: titleA.w, h: titleA.h } };
-  if (subtitleA) headers.subtitle = { role: "subtitle", rect: { x: subtitleA.x, y: subtitleA.y, w: subtitleA.w, h: subtitleA.h }, optional: true };
+  headers.title = {
+    role: "title",
+    rect: titleA ?? { x: W * 0.36, y: H * 0.06, w: W * 0.28, h: H * 0.055 },
+  };
+  headers.subtitle = {
+    role: "subtitle",
+    rect: subtitleA ?? { x: W * 0.38, y: H * 0.14, w: W * 0.24, h: H * 0.045 },
+    optional: true,
+  };
 
   const editedZones: Record<string, ZP[]> = { [String(userMax)]: zonePairs };
   const placement = {
     cardinality_max: userMax,
     viewbox,
     by_cardinality: { [String(userMax)]: zonePairs },
-    headers: Object.keys(headers).length > 0 ? headers : undefined,
+    headers,
   };
 
   const vectRes = {
