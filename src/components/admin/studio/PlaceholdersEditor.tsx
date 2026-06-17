@@ -831,6 +831,9 @@ export default function PlaceholdersEditor({
                 inset: 0,
                 pointerEvents: selectModeOn ? "auto" : "none",
               }}
+              onPointerMove={onPointerMove}
+              onPointerUp={onPointerUp}
+              onPointerCancel={onPointerUp}
             >
 
               {/* Calque HTML prioritaire : capte les clics/glissements au-dessus du SVG et des foreignObject. */}
