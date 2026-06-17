@@ -212,7 +212,29 @@ export default function AdminStudioV2Page() {
       </header>
 
       <main className="w-full px-4 md:px-6 py-6">
-        {!active && (
+        {templateIdParam && templateLoading && (
+          <div className="flex items-center justify-center py-32 text-muted-foreground">
+            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+            Chargement du template <span className="font-mono ml-1">{templateIdParam}</span>…
+          </div>
+        )}
+        {templateIdParam && !templateLoading && templateError && (
+          <Card className="p-6 border-destructive/50 max-w-2xl">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="w-5 h-5 text-destructive mt-0.5" />
+              <div className="flex-1">
+                <p className="font-medium">Impossible d'ouvrir ce template dans l'éditeur</p>
+                <p className="text-sm text-muted-foreground mt-1">{templateError}</p>
+                <Button asChild variant="outline" size="sm" className="mt-3">
+                  <Link to="/admin/library">
+                    <ArrowLeft className="w-4 h-4 mr-1" /> Retour bibliothèque
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </Card>
+        )}
+        {!templateIdParam && !active && (
           <Tabs defaultValue="production" className="space-y-4">
             <TabsList>
               <TabsTrigger value="production">Production</TabsTrigger>
@@ -234,11 +256,13 @@ export default function AdminStudioV2Page() {
             </TabsContent>
           </Tabs>
         )}
-        {active && (
+        {active && !(templateIdParam && (templateLoading || templateError)) && (
           <ProductionScreen
             state={active}
             onChange={setActive}
             onBack={() => setActive(null)}
+            editTemplateId={templateIdParam ?? null}
+            returnTo={returnToParam ?? null}
           />
         )}
       </main>
