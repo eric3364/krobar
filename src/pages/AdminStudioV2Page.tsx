@@ -83,6 +83,132 @@ function loadActive(): ProductionState | null {
   return null;
 }
 
+/* ─── Fallback : snapshot brut → {active, persisted} ─── */
+
+type RawAnchor = { slot_name: string; x: number; y: number; w: number; h: number };
+type RawSnapshot = {
+  session_id?: string;
+  image_width: number;
+  image_height: number;
+  source_format?: string;
+  cleaned_svg: string;
+  anchors: RawAnchor[];
+  cardinality_configs?: Array<{ slot_name: string; mode: string; min: number; max: number }>;
+  textual_markers?: string[];
+  matching_types?: string[];
+  saved_at?: string;
+};
+
+function findCellForTemplateId(
+  cov: CoverageResponse | null,
+  templateId: string,
+): { cell: CoverageCell; domain: string } | null {
+  if (!cov) return null;
+  for (const cell of cov.cells ?? []) {
+    const byDomain = cell.production?.by_domain ?? {};
+    for (const [domain, dp] of Object.entries(byDomain)) {
+      for (const p of dp.produced ?? []) {
+        if (p.id === templateId) return { cell, domain };
+      }
+    }
+  }
+  return null;
+}
+
+function buildFallbackStudioParams(
+  raw: RawSnapshot,
+  cell: CoverageCell,
+  domain: string,
+): { active: ProductionState; persisted: Record<string, unknown> } {
+  const W = raw.image_width;
+  const H = raw.image_height;
+  const viewbox: [number, number, number, number] = [0, 0, W, H];
+
+  // Zones zone_N → ZonePair
+  type ZP = {
+    n: number;
+    rect: { x: number; y: number; w: number; h: number };
+    icon: null;
+    side: "left" | "right";
+    unplaced?: boolean;
+  };
+  const zonePairs: ZP[] = [];
+  for (const a of raw.anchors ?? []) {
+    const m = /^zone_(\d+)$/.exec(a.slot_name);
+    if (!m) continue;
+    const n = parseInt(m[1], 10);
+    zonePairs.push({
+      n,
+      rect: { x: a.x, y: a.y, w: a.w, h: a.h },
+      icon: null,
+      side: a.x + a.w / 2 < W / 2 ? "left" : "right",
+    });
+  }
+  zonePairs.sort((a, b) => a.n - b.n);
+  const userMax = zonePairs.length > 0 ? Math.max(...zonePairs.map((z) => z.n)) : 1;
+
+  // Headers
+  const headerAnchor = (name: string) => (raw.anchors ?? []).find((a) => a.slot_name === name);
+  const titleA = headerAnchor("title");
+  const subtitleA = headerAnchor("subtitle");
+  const headers: Record<string, { role: string; rect: { x: number; y: number; w: number; h: number }; optional?: boolean }> = {};
+  if (titleA) headers.title = { role: "title", rect: { x: titleA.x, y: titleA.y, w: titleA.w, h: titleA.h } };
+  if (subtitleA) headers.subtitle = { role: "subtitle", rect: { x: subtitleA.x, y: subtitleA.y, w: subtitleA.w, h: subtitleA.h }, optional: true };
+
+  const editedZones: Record<string, ZP[]> = { [String(userMax)]: zonePairs };
+  const placement = {
+    cardinality_max: userMax,
+    viewbox,
+    by_cardinality: { [String(userMax)]: zonePairs },
+    headers: Object.keys(headers).length > 0 ? headers : undefined,
+  };
+
+  const vectRes = {
+    ok: true,
+    svg: raw.cleaned_svg,
+    viewbox,
+    metrics: {
+      ink_density_pct: 0,
+      verdict: "clean",
+      shadow_blobs_removed: 0,
+      cropped_size: [W, H],
+    },
+  };
+
+  const produceByN: Record<number, boolean> = {};
+  const validatedByN: Record<number, boolean> = {};
+  for (let i = 1; i <= userMax; i++) {
+    produceByN[i] = true;
+    validatedByN[i] = i === userMax;
+  }
+
+  const persisted = {
+    moteur: "midjourney",
+    gpt2Style: null,
+    promptRes: null,
+    promptEdited: null,
+    vectRes,
+    validated: true,
+    placement,
+    editedZones,
+    placementsMode: true,
+    userMax,
+    produceByN,
+    validatedByN,
+    mirrored: false,
+    rotation: 0,
+  };
+
+  const active: ProductionState = {
+    cell,
+    registre: "domain",
+    selecteur: domain,
+  };
+
+  return { active, persisted: persisted as unknown as Record<string, unknown> };
+}
+
+
 export default function AdminStudioV2Page() {
   const [coverage, setCoverage] = useState<CoverageResponse | null>(null);
   const [loadingCoverage, setLoadingCoverage] = useState(true);
@@ -118,33 +244,65 @@ export default function AdminStudioV2Page() {
 
   // (1) Préchargement depuis le query param ?templateId=...
   // Charge les studio_params du template existant et pré-remplit l'éditeur.
+  // Tolère deux formats : snapshot complet {active, persisted} OU snapshot brut
+  // (source "reconstructed_from_svg" : session_id, anchors, cardinality_configs,
+  // cleaned_svg, image_width, image_height…). Dans ce dernier cas, on reconstruit
+  // {active, persisted} côté front à partir de la coverage SICAI + des anchors.
   useEffect(() => {
     if (!templateIdParam) return;
     let cancel = false;
     setTemplateLoading(true);
     setTemplateError(null);
-    studioV2Api
-      .getTemplateStudioParams(templateIdParam)
-      .then((res) => {
+
+    (async () => {
+      try {
+        const res = await studioV2Api.getTemplateStudioParams(templateIdParam);
         if (cancel) return;
-        const a = res.studio_params?.active;
-        const persisted = res.studio_params?.persisted;
-        if (!a?.cell?.index) {
+        const sp = res.studio_params as Record<string, unknown> | undefined;
+        let activeBlock = (sp as { active?: ProductionState } | undefined)?.active;
+        let persistedBlock = (sp as { persisted?: Record<string, unknown> } | undefined)?.persisted;
+
+        const isRawSnapshot =
+          !!sp &&
+          !activeBlock &&
+          typeof (sp as Record<string, unknown>).cleaned_svg === "string" &&
+          Array.isArray((sp as Record<string, unknown>).anchors);
+
+        if (isRawSnapshot) {
+          const cov = coverage ?? (await studioV2Api.coverage());
+          const found = findCellForTemplateId(cov, templateIdParam);
+          if (!found) {
+            setTemplateError(
+              `Impossible de relier ${templateIdParam} à une cellule SICAI (introuvable dans coverage).`,
+            );
+            return;
+          }
+          const built = buildFallbackStudioParams(
+            sp as unknown as RawSnapshot,
+            found.cell,
+            found.domain,
+          );
+          activeBlock = built.active;
+          persistedBlock = built.persisted as unknown as Record<string, unknown>;
+        }
+
+        if (!activeBlock?.cell?.index) {
           setTemplateError("Réponse invalide : studio_params.active manquant");
           return;
         }
-        // Hydrate le store local utilisé par ProductionScreen comme valeurs initiales,
-        // puis active la cellule — la page bascule alors vers l'éditeur.
         try {
-          const persistKey = `krobar-studio-v2-prod:${a.cell.index}|${a.registre}|${a.selecteur ?? ""}`;
-          localStorage.setItem(persistKey, JSON.stringify(persisted ?? {}));
+          const persistKey = `krobar-studio-v2-prod:${activeBlock.cell.index}|${activeBlock.registre}|${activeBlock.selecteur ?? ""}`;
+          localStorage.setItem(persistKey, JSON.stringify(persistedBlock ?? {}));
         } catch { /* quota ignored */ }
-        setActive({ cell: a.cell, registre: a.registre, selecteur: a.selecteur ?? null });
-        if (res.source === "reconstructed") {
+        setActive({
+          cell: activeBlock.cell,
+          registre: activeBlock.registre,
+          selecteur: activeBlock.selecteur ?? null,
+        });
+        if (res.source === "reconstructed" || isRawSnapshot) {
           toast.info("Paramètres reconstruits depuis le SVG déployé", { duration: 4000 });
         }
-      })
-      .catch((e) => {
+      } catch (e) {
         if (cancel) return;
         const msg = e instanceof Error ? e.message : String(e);
         if (/404|not.?found|introuvable/i.test(msg)) {
@@ -152,8 +310,10 @@ export default function AdminStudioV2Page() {
         } else {
           setTemplateError(msg);
         }
-      })
-      .finally(() => { if (!cancel) setTemplateLoading(false); });
+      } finally {
+        if (!cancel) setTemplateLoading(false);
+      }
+    })();
     return () => { cancel = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [templateIdParam]);
