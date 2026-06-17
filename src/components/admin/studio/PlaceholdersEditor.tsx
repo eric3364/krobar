@@ -941,9 +941,9 @@ export default function PlaceholdersEditor({
                   x={r.x} y={r.y} width={r.w} height={r.h}
                   rx={Math.min(4, r.h * 0.08)}
                   fill="transparent"
-                  pointerEvents="all"
-                  onPointerDown={(e) => onMoveDown(z.n, e)}
-                  style={{ touchAction: "none", cursor: "grab" }}
+                  pointerEvents={selectModeOn ? "all" : "none"}
+                  onPointerDown={(e) => { if (selectModeOn) onMoveDown(z.n, e); }}
+                  style={{ touchAction: "none", cursor: selectModeOn ? "grab" : "default" }}
                 />
 
                 {/* Habillage badge (integré) */}
