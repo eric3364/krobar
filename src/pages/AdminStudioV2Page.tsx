@@ -1668,7 +1668,9 @@ function MetadataExportPanel(props: {
     }
   };
 
-  useEffect(() => { if (!meta.best_for) suggest(); /* eslint-disable-next-line */ }, []);
+  useEffect(() => { if (!meta.best_for) suggest();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const toggleMatchingType = (id: string) => {
     setMeta((m) => ({
