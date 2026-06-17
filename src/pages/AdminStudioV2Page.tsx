@@ -955,7 +955,7 @@ function ProductionScreen({
   const [mirrored, setMirrored] = useState<boolean>(initial?.mirrored ?? false);
   const [rotation, setRotation] = useState<0 | 90 | 180 | 270>(initial?.rotation ?? 0);
   const [eraserOpen, setEraserOpen] = useState(false);
-  const [composition, setComposition] = useState<import("@/components/admin/studio/PlaceholdersEditor").CompositionReadyData | null>(null);
+  const [composition, setComposition] = useState<CompositionReadyData | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Existing produced illustrations for the active domain
@@ -1622,7 +1622,7 @@ function MetadataExportPanel(props: {
   incarnation: string;
   domain: string;
   vectorizedSvg: string;
-  composition: import("@/components/admin/studio/PlaceholdersEditor").CompositionReadyData;
+  composition: CompositionReadyData;
   produceByN: Record<number, boolean>;
   validatedByN: Record<number, boolean>;
   onCancel: () => void;
