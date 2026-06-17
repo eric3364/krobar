@@ -753,6 +753,8 @@ export default function PlaceholdersEditor({
                 height: "100%",
                 transform: illustrationTransform,
                 transformOrigin: "center center",
+                pointerEvents: "none",
+                userSelect: "none",
               }}
               dangerouslySetInnerHTML={{ __html: svg }}
             />
