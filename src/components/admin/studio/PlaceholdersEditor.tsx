@@ -904,8 +904,8 @@ export default function PlaceholdersEditor({
                   stroke={strokeBase}
                   strokeWidth={isSelected ? 2 : 1.2}
                   vectorEffect="non-scaling-stroke"
-                  onPointerDown={(e) => onMoveDown(z.n, e)}
-                  style={{ touchAction: "none", cursor: "grab" }}
+                  onPointerDown={(e) => { if (selectModeOn) onMoveDown(z.n, e); }}
+                  style={{ touchAction: "none", cursor: selectModeOn ? "grab" : "default", pointerEvents: selectModeOn ? "all" : "none" }}
                 />
 
                 {/* Lorem text (permanent) */}
