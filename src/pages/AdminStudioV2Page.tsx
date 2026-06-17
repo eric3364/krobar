@@ -859,14 +859,18 @@ function ProductionScreen({
     setGpt2Style(p?.gpt2Style ?? null);
     // Drop cached placement that pre-dates the headers feature so it gets refetched
     // (otherwise headers boxes never appear for sessions persisted before the upgrade).
-    const cachedPlacement = p?.placement && (p.placement as PlaceZonesResponse).headers
+    const pUserMax = p?.userMax ?? baseUserMax;
+    const cachedPlacement = p?.placement && (
+      (p.placement as PlaceZonesResponse).headers ||
+      Array.isArray((p.placement as PlaceZonesResponse).by_cardinality?.[String(pUserMax)])
+    )
       ? p.placement
       : null;
     setPlacement(cachedPlacement);
     setEditedZones(p?.editedZones ?? {});
     setPlacementsMode(p?.placementsMode ?? false);
-    setUserMax(p?.userMax ?? baseUserMax);
-    setProduceByN(p?.produceByN ?? initialProduce(p?.userMax ?? baseUserMax));
+    setUserMax(pUserMax);
+    setProduceByN(p?.produceByN ?? initialProduce(pUserMax));
     setValidatedByN(p?.validatedByN ?? {});
     setMirrored(p?.mirrored ?? false);
     setRotation(p?.rotation ?? 0);
