@@ -1,8 +1,8 @@
 // Vue A — /admin/library : liste des templates Premium et résumé de la bibliothèque.
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, CheckCircle2, ImageOff, Loader2 } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ImageOff, Loader2, RefreshCw } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,8 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { libraryApi, type LibraryTemplate } from "@/lib/libraryApi";
 import { studioV2Api, FAMILY_LABEL, type CoverageCell } from "@/lib/studioV2Api";
