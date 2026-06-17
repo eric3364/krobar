@@ -207,6 +207,18 @@ export default function PlaceholdersEditor({
   const habillageMode = allValidated; // habillage UI après validation de toutes les cardinalités
 
   const zKey = (n: number) => `${card}:${n}`;
+  const toCssRect = (r: ZoneRect) => ({
+    left: `${((r.x - workViewbox[0]) / workViewbox[2]) * 100}%`,
+    top: `${((r.y - workViewbox[1]) / workViewbox[3]) * 100}%`,
+    width: `${(r.w / workViewbox[2]) * 100}%`,
+    height: `${(r.h / workViewbox[3]) * 100}%`,
+  });
+  const toCssPoint = (x: number, y: number, size: number) => ({
+    left: `${((x - workViewbox[0] - size / 2) / workViewbox[2]) * 100}%`,
+    top: `${((y - workViewbox[1] - size / 2) / workViewbox[3]) * 100}%`,
+    width: `${(size / workViewbox[2]) * 100}%`,
+    height: `${(size / workViewbox[3]) * 100}%`,
+  });
   const toggleBackplate = (n: number) =>
     setBackplates((b) => ({ ...b, [zKey(n)]: !b[zKey(n)] }));
   const getHabMode = (n: number): HabillageMode => habMode[zKey(n)] ?? "integre";
@@ -333,6 +345,7 @@ export default function PlaceholdersEditor({
     (e.target as Element).setPointerCapture?.(e.pointerId);
     dragRef.current = { n, startX: e.clientX, startY: e.clientY, orig: pair };
     setSelectedN(n);
+    setSelectedHeader(null);
   };
   const onPointerMove = (e: React.PointerEvent) => {
     if (headerResizeRef.current || headerDragRef.current) return onHeaderPointerMove(e);
