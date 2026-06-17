@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { libraryApi, type LibraryTemplate } from "@/lib/libraryApi";
 import { studioV2Api, FAMILY_LABEL, type CoverageCell } from "@/lib/studioV2Api";
+import { templatesLifecycleApi, type InventoryTemplate } from "@/lib/templatesLifecycleApi";
 
 type StudioIllustration = {
   id: string;
@@ -34,6 +35,45 @@ function relativeDate(iso: string | null): string {
 }
 
 type ThumbState = { svg?: string; loading: boolean; empty?: boolean };
+
+const sicaiIndexFromTemplateId = (templateId: string): string | null => {
+  const match = /^([a-z]{2})(\d+)([csa])(?:_|$)/i.exec(templateId);
+  return match ? `${match[1].toUpperCase()}-${match[2]}-${match[3].toUpperCase()}` : null;
+};
+
+const cardinalityFromTemplateId = (templateId: string, fallback: number): number => {
+  const match = /_(\d+)$/i.exec(templateId);
+  return match ? Number(match[1]) : fallback;
+};
+
+const inferDomainForTemplateId = (cell: CoverageCell, templateId: string): string => {
+  const targetBase = templateId.replace(/_\d+$/i, "");
+  const byDomain = cell.production?.by_domain ?? {};
+  for (const [domain, dp] of Object.entries(byDomain)) {
+    if ((dp.produced ?? []).some((p) => p.id === templateId)) return domain;
+  }
+  for (const [domain, dp] of Object.entries(byDomain)) {
+    if ((dp.produced ?? []).some((p) => p.id.replace(/_\d+$/i, "") === targetBase)) return domain;
+  }
+  return Object.entries(byDomain).find(([, dp]) => dp.in_grid)?.[0] ?? Object.keys(byDomain)[0] ?? "_none";
+};
+
+const buildInventoryIllustration = (
+  template: InventoryTemplate,
+  cells: CoverageCell[],
+): StudioIllustration | null => {
+  if (template.disabled || !template.svg_exists || !/^([a-z]{2})\d+[csa]_/i.test(template.id)) return null;
+  const index = sicaiIndexFromTemplateId(template.id);
+  const cell = index ? cells.find((c) => c.index === index) : null;
+  if (!cell) return null;
+  return {
+    id: template.id,
+    file: template.file,
+    cardinality_n: cardinalityFromTemplateId(template.id, cell.production?.canonical_cardinality ?? 1),
+    domain: inferDomainForTemplateId(cell, template.id),
+    cell,
+  };
+};
 
 export default function AdminLibraryPage() {
   const [templates, setTemplates] = useState<LibraryTemplate[] | null>(null);
