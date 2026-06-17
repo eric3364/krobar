@@ -735,13 +735,24 @@ export default function PlaceholdersEditor({
         ].filter(Boolean).join(" ");
         return (
           <div
-            className="relative bg-background border rounded-md overflow-hidden mx-auto"
+            className="relative bg-background border rounded-md overflow-hidden mx-auto select-none"
             style={{
               aspectRatio: `${vbW} / ${vbH}`,
               width: `min(100%, calc(70vh * ${vbW} / ${vbH}))`,
               maxHeight: "70vh",
+              userSelect: "none",
+              WebkitUserSelect: "none",
+            }}
+            onMouseDown={(e) => {
+              // Prevent text selection from starting on background drags.
+              // Inputs/buttons inside are unaffected.
+              const t = e.target as HTMLElement;
+              if (t.closest("input, textarea, button, [contenteditable]")) return;
+              e.preventDefault();
             }}
           >
+
+
             {/* Illustration vectorisée — calque du bas, recevant les transformations
                 (miroir / rotation). Le placeholder ci-dessous reste figé. */}
             <div
@@ -906,7 +917,12 @@ export default function PlaceholdersEditor({
                       fontFamily: "system-ui, sans-serif",
                       boxSizing: "border-box",
                       textAlign: isCartouche ? (side === "left" ? "left" : "right") : "left",
+                      userSelect: "none",
+                      WebkitUserSelect: "none",
+                      cursor: "grab",
+                      pointerEvents: "none",
                     }}
+
                   >
                     <span style={{ opacity: 0.45, fontWeight: 700, marginRight: 4 }}>{z.n}.</span>
                     {LOREM[loremLen]}
