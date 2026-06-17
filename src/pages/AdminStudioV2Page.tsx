@@ -1711,7 +1711,17 @@ function MetadataExportPanel(props: {
       // Mode édition : PUT vers /admin/studio/templates/{templateId} (préserve l'id).
       // Mode création (pas de templateId) : POST classique sur /export-templates.
       const r = editTemplateId
-        ? await studioV2Api.updateTemplate(editTemplateId, exportPayload)
+        ? await studioV2Api.updateTemplate(
+            editTemplateId,
+            buildLegacyTemplateUpdatePayload({
+              templateId: editTemplateId,
+              cell,
+              incarnation,
+              vectorizedSvg,
+              composition,
+              meta,
+            }),
+          )
         : await studioV2Api.exportTemplates(exportPayload);
       setExportResult(r);
       toast.success(editTemplateId ? "Template mis à jour" : "Templates déployés");
