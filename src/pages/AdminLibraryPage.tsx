@@ -49,6 +49,8 @@ export default function AdminLibraryPage() {
   const [newCount, setNewCount] = useState(0);
   const prevIdsRef = useRef<Set<string> | null>(null);
   const highlightTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     let alive = true;
