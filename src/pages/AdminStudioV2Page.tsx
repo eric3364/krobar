@@ -1155,6 +1155,8 @@ function ProductionScreen({
           produceByN={produceByN}
           validatedByN={validatedByN}
           onCancel={onBack}
+          editTemplateId={editTemplateId ?? null}
+          returnTo={returnTo ?? null}
         />
       )}
 
