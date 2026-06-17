@@ -118,33 +118,65 @@ export default function AdminStudioV2Page() {
 
   // (1) Préchargement depuis le query param ?templateId=...
   // Charge les studio_params du template existant et pré-remplit l'éditeur.
+  // Tolère deux formats : snapshot complet {active, persisted} OU snapshot brut
+  // (source "reconstructed_from_svg" : session_id, anchors, cardinality_configs,
+  // cleaned_svg, image_width, image_height…). Dans ce dernier cas, on reconstruit
+  // {active, persisted} côté front à partir de la coverage SICAI + des anchors.
   useEffect(() => {
     if (!templateIdParam) return;
     let cancel = false;
     setTemplateLoading(true);
     setTemplateError(null);
-    studioV2Api
-      .getTemplateStudioParams(templateIdParam)
-      .then((res) => {
+
+    (async () => {
+      try {
+        const res = await studioV2Api.getTemplateStudioParams(templateIdParam);
         if (cancel) return;
-        const a = res.studio_params?.active;
-        const persisted = res.studio_params?.persisted;
-        if (!a?.cell?.index) {
+        const sp = res.studio_params as Record<string, unknown> | undefined;
+        let activeBlock = (sp as { active?: ProductionState } | undefined)?.active;
+        let persistedBlock = (sp as { persisted?: Record<string, unknown> } | undefined)?.persisted;
+
+        const isRawSnapshot =
+          !!sp &&
+          !activeBlock &&
+          typeof (sp as Record<string, unknown>).cleaned_svg === "string" &&
+          Array.isArray((sp as Record<string, unknown>).anchors);
+
+        if (isRawSnapshot) {
+          const cov = coverage ?? (await studioV2Api.coverage());
+          const found = findCellForTemplateId(cov, templateIdParam);
+          if (!found) {
+            setTemplateError(
+              `Impossible de relier ${templateIdParam} à une cellule SICAI (introuvable dans coverage).`,
+            );
+            return;
+          }
+          const built = buildFallbackStudioParams(
+            sp as unknown as RawSnapshot,
+            found.cell,
+            found.domain,
+          );
+          activeBlock = built.active;
+          persistedBlock = built.persisted as unknown as Record<string, unknown>;
+        }
+
+        if (!activeBlock?.cell?.index) {
           setTemplateError("Réponse invalide : studio_params.active manquant");
           return;
         }
-        // Hydrate le store local utilisé par ProductionScreen comme valeurs initiales,
-        // puis active la cellule — la page bascule alors vers l'éditeur.
         try {
-          const persistKey = `krobar-studio-v2-prod:${a.cell.index}|${a.registre}|${a.selecteur ?? ""}`;
-          localStorage.setItem(persistKey, JSON.stringify(persisted ?? {}));
+          const persistKey = `krobar-studio-v2-prod:${activeBlock.cell.index}|${activeBlock.registre}|${activeBlock.selecteur ?? ""}`;
+          localStorage.setItem(persistKey, JSON.stringify(persistedBlock ?? {}));
         } catch { /* quota ignored */ }
-        setActive({ cell: a.cell, registre: a.registre, selecteur: a.selecteur ?? null });
-        if (res.source === "reconstructed") {
+        setActive({
+          cell: activeBlock.cell,
+          registre: activeBlock.registre,
+          selecteur: activeBlock.selecteur ?? null,
+        });
+        if (res.source === "reconstructed" || isRawSnapshot) {
           toast.info("Paramètres reconstruits depuis le SVG déployé", { duration: 4000 });
         }
-      })
-      .catch((e) => {
+      } catch (e) {
         if (cancel) return;
         const msg = e instanceof Error ? e.message : String(e);
         if (/404|not.?found|introuvable/i.test(msg)) {
@@ -152,8 +184,10 @@ export default function AdminStudioV2Page() {
         } else {
           setTemplateError(msg);
         }
-      })
-      .finally(() => { if (!cancel) setTemplateLoading(false); });
+      } finally {
+        if (!cancel) setTemplateLoading(false);
+      }
+    })();
     return () => { cancel = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [templateIdParam]);
