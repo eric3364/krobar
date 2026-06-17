@@ -476,10 +476,14 @@ function ProductionScreen({
   state,
   onChange,
   onBack,
+  editTemplateId,
+  returnTo,
 }: {
   state: ProductionState;
   onChange: (s: ProductionState) => void;
   onBack: () => void;
+  editTemplateId?: string | null;
+  returnTo?: string | null;
 }) {
   const { cell, registre, selecteur } = state;
   const s = byRegistreSummary(cell);
