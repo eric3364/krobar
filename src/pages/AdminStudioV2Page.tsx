@@ -83,6 +83,132 @@ function loadActive(): ProductionState | null {
   return null;
 }
 
+/* ─── Fallback : snapshot brut → {active, persisted} ─── */
+
+type RawAnchor = { slot_name: string; x: number; y: number; w: number; h: number };
+type RawSnapshot = {
+  session_id?: string;
+  image_width: number;
+  image_height: number;
+  source_format?: string;
+  cleaned_svg: string;
+  anchors: RawAnchor[];
+  cardinality_configs?: Array<{ slot_name: string; mode: string; min: number; max: number }>;
+  textual_markers?: string[];
+  matching_types?: string[];
+  saved_at?: string;
+};
+
+function findCellForTemplateId(
+  cov: CoverageResponse | null,
+  templateId: string,
+): { cell: CoverageCell; domain: string } | null {
+  if (!cov) return null;
+  for (const cell of cov.cells ?? []) {
+    const byDomain = cell.production?.by_domain ?? {};
+    for (const [domain, dp] of Object.entries(byDomain)) {
+      for (const p of dp.produced ?? []) {
+        if (p.id === templateId) return { cell, domain };
+      }
+    }
+  }
+  return null;
+}
+
+function buildFallbackStudioParams(
+  raw: RawSnapshot,
+  cell: CoverageCell,
+  domain: string,
+): { active: ProductionState; persisted: Record<string, unknown> } {
+  const W = raw.image_width;
+  const H = raw.image_height;
+  const viewbox: [number, number, number, number] = [0, 0, W, H];
+
+  // Zones zone_N → ZonePair
+  type ZP = {
+    n: number;
+    rect: { x: number; y: number; w: number; h: number };
+    icon: null;
+    side: "left" | "right";
+    unplaced?: boolean;
+  };
+  const zonePairs: ZP[] = [];
+  for (const a of raw.anchors ?? []) {
+    const m = /^zone_(\d+)$/.exec(a.slot_name);
+    if (!m) continue;
+    const n = parseInt(m[1], 10);
+    zonePairs.push({
+      n,
+      rect: { x: a.x, y: a.y, w: a.w, h: a.h },
+      icon: null,
+      side: a.x + a.w / 2 < W / 2 ? "left" : "right",
+    });
+  }
+  zonePairs.sort((a, b) => a.n - b.n);
+  const userMax = zonePairs.length > 0 ? Math.max(...zonePairs.map((z) => z.n)) : 1;
+
+  // Headers
+  const headerAnchor = (name: string) => (raw.anchors ?? []).find((a) => a.slot_name === name);
+  const titleA = headerAnchor("title");
+  const subtitleA = headerAnchor("subtitle");
+  const headers: Record<string, { role: string; rect: { x: number; y: number; w: number; h: number }; optional?: boolean }> = {};
+  if (titleA) headers.title = { role: "title", rect: { x: titleA.x, y: titleA.y, w: titleA.w, h: titleA.h } };
+  if (subtitleA) headers.subtitle = { role: "subtitle", rect: { x: subtitleA.x, y: subtitleA.y, w: subtitleA.w, h: subtitleA.h }, optional: true };
+
+  const editedZones: Record<string, ZP[]> = { [String(userMax)]: zonePairs };
+  const placement = {
+    cardinality_max: userMax,
+    viewbox,
+    by_cardinality: { [String(userMax)]: zonePairs },
+    headers: Object.keys(headers).length > 0 ? headers : undefined,
+  };
+
+  const vectRes = {
+    ok: true,
+    svg: raw.cleaned_svg,
+    viewbox,
+    metrics: {
+      ink_density_pct: 0,
+      verdict: "clean",
+      shadow_blobs_removed: 0,
+      cropped_size: [W, H],
+    },
+  };
+
+  const produceByN: Record<number, boolean> = {};
+  const validatedByN: Record<number, boolean> = {};
+  for (let i = 1; i <= userMax; i++) {
+    produceByN[i] = true;
+    validatedByN[i] = i === userMax;
+  }
+
+  const persisted = {
+    moteur: "midjourney",
+    gpt2Style: null,
+    promptRes: null,
+    promptEdited: null,
+    vectRes,
+    validated: true,
+    placement,
+    editedZones,
+    placementsMode: true,
+    userMax,
+    produceByN,
+    validatedByN,
+    mirrored: false,
+    rotation: 0,
+  };
+
+  const active: ProductionState = {
+    cell,
+    registre: "domain",
+    selecteur: domain,
+  };
+
+  return { active, persisted: persisted as unknown as Record<string, unknown> };
+}
+
+
 export default function AdminStudioV2Page() {
   const [coverage, setCoverage] = useState<CoverageResponse | null>(null);
   const [loadingCoverage, setLoadingCoverage] = useState(true);
