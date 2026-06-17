@@ -782,11 +782,6 @@ function ProductionScreen({
   };
   const initial = loadPersisted();
 
-  const initialProduce = (max: number): Record<number, boolean> => {
-    const r: Record<number, boolean> = {};
-    for (let i = 1; i <= max; i++) r[i] = true;
-    return r;
-  };
   const inferPersistedMax = (p: Persisted | null): number => {
     const candidates = [p?.userMax, p?.placement?.cardinality_max, baseUserMax]
       .filter((n): n is number => typeof n === "number" && Number.isFinite(n) && n > 0);
