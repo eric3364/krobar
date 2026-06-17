@@ -898,6 +898,7 @@ export default function PlaceholdersEditor({
               <svg
                 ref={overlayRef}
                 className="absolute inset-0 w-full h-full"
+                style={{ pointerEvents: selectModeOn ? "auto" : "none", zIndex: 1 }}
                 viewBox={`${workViewbox[0]} ${workViewbox[1]} ${workViewbox[2]} ${workViewbox[3]}`}
                 preserveAspectRatio="xMidYMid meet"
                 onPointerMove={onPointerMove}
@@ -959,7 +960,7 @@ export default function PlaceholdersEditor({
                       strokeWidth={1.5}
                       vectorEffect="non-scaling-stroke"
                       style={{ cursor, touchAction: "none" }}
-                      onPointerDown={(e) => onHeaderResizeDown(hk, c, e)}
+                      onPointerDown={(e) => { if (selectModeOn) onHeaderResizeDown(hk, c, e); }}
                     />
                   );
                 })}
@@ -1138,7 +1139,7 @@ export default function PlaceholdersEditor({
                       strokeWidth={1.5}
                       vectorEffect="non-scaling-stroke"
                       style={{ cursor, touchAction: "none" }}
-                      onPointerDown={(e) => onResizeDown(z.n, c, e)}
+                      onPointerDown={(e) => { if (selectModeOn) onResizeDown(z.n, c, e); }}
                     />
                   );
                 })}
@@ -1156,8 +1157,8 @@ export default function PlaceholdersEditor({
                   const ih = isCartouche ? (iconSize as number) : z.icon.h;
                   return (
                     <g
-                      onPointerDown={(e) => onMoveDown(z.n, e)}
-                      style={{ touchAction: "none", cursor: "grab" }}
+                      onPointerDown={(e) => { if (selectModeOn) onMoveDown(z.n, e); }}
+                      style={{ touchAction: "none", cursor: selectModeOn ? "grab" : "default", pointerEvents: selectModeOn ? "all" : "none" }}
                     >
                       <rect
                         x={ix} y={iy}
