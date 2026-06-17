@@ -825,7 +825,74 @@ export default function PlaceholdersEditor({
               dangerouslySetInnerHTML={{ __html: svg }}
             />
 
-            <div style={{ position: "absolute", inset: 0 }}>
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                pointerEvents: selectModeOn ? "auto" : "none",
+              }}
+            >
+
+              {/* Calque HTML prioritaire : capte les clics/glissements au-dessus du SVG et des foreignObject. */}
+              <div style={{ position: "absolute", inset: 0, zIndex: 2, pointerEvents: "none" }}>
+                {headerRects && (["title", "subtitle"] as HeaderKey[]).map((hk) => {
+                  if (hk === "subtitle" && !subtitleEnabled) return null;
+                  const r = headerRects[hk];
+                  return (
+                    <div
+                      key={`hit-header-${hk}`}
+                      onPointerDown={(e) => onHeaderMoveDown(hk, e)}
+                      style={{
+                        position: "absolute",
+                        ...toCssRect(r),
+                        pointerEvents: selectModeOn ? "auto" : "none",
+                        touchAction: "none",
+                        cursor: selectModeOn ? "grab" : "default",
+                        userSelect: "none",
+                      }}
+                    />
+                  );
+                })}
+                {zones.map((z) => {
+                  if (!z.rect) return null;
+                  const r = z.rect;
+                  const handleSize = Math.max(8, Math.min(r.w, r.h) * 0.14);
+                  return (
+                    <div key={`hit-zone-${z.n}`}>
+                      <div
+                        onPointerDown={(e) => onMoveDown(z.n, e)}
+                        style={{
+                          position: "absolute",
+                          ...toCssRect(r),
+                          pointerEvents: selectModeOn ? "auto" : "none",
+                          touchAction: "none",
+                          cursor: selectModeOn ? "grab" : "default",
+                          userSelect: "none",
+                        }}
+                      />
+                      {selectedN === z.n && (["nw","ne","sw","se"] as ResizeCorner[]).map((c) => {
+                        const hx = c === "nw" || c === "sw" ? r.x : r.x + r.w;
+                        const hy = c === "nw" || c === "ne" ? r.y : r.y + r.h;
+                        const cursor = c === "nw" || c === "se" ? "nwse-resize" : "nesw-resize";
+                        return (
+                          <div
+                            key={`hit-resize-${z.n}-${c}`}
+                            onPointerDown={(e) => onResizeDown(z.n, c, e)}
+                            style={{
+                              position: "absolute",
+                              ...toCssPoint(hx, hy, handleSize),
+                              pointerEvents: selectModeOn ? "auto" : "none",
+                              touchAction: "none",
+                              cursor,
+                              userSelect: "none",
+                            }}
+                          />
+                        );
+                      })}
+                    </div>
+                  );
+                })}
+              </div>
 
 
               <svg
