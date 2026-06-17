@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { Loader2, RefreshCw, Check, AlertTriangle } from "lucide-react";
+import { Loader2, RefreshCw, Check, AlertTriangle, MousePointer2, Hand } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   studioV2Api,
@@ -143,6 +143,12 @@ export default function PlaceholdersEditor({
   const [headerRects, setHeaderRects] = useState<{ title: ZoneRect; subtitle: ZoneRect } | null>(persisted?.headerRects ?? null);
   const [subtitleEnabled, setSubtitleEnabled] = useState(persisted?.subtitleEnabled ?? true);
   const [selectedHeader, setSelectedHeader] = useState<HeaderKey | null>(null);
+
+  // Outil actif : "select" = clic/glisse sur les cartouches activé ;
+  // "view" = aucune capture, le décor reste visible sans interaction.
+  type ToolMode = "select" | "view";
+  const [toolMode, setToolMode] = useState<ToolMode>("select");
+  const selectModeOn = toolMode === "select";
 
   // Mirror flip / rotation: controlled externally when props are supplied,
   // otherwise fallback to local persisted state (legacy path).
@@ -752,6 +758,42 @@ export default function PlaceholdersEditor({
             }}
           >
 
+            {/* Mini barre d'outils flottante (bas-gauche du décor) */}
+            <div
+              className="absolute bottom-2 left-2 z-20 flex items-center gap-1 rounded-md border bg-background/95 backdrop-blur shadow-sm p-1"
+              onMouseDown={(e) => e.stopPropagation()}
+            >
+              <button
+                type="button"
+                onClick={() => setToolMode("select")}
+                className={[
+                  "h-7 w-7 inline-flex items-center justify-center rounded border",
+                  selectModeOn
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "bg-background hover:bg-muted",
+                ].join(" ")}
+                title="Outil sélection — clique/glisse les cartouches pour les déplacer"
+                aria-pressed={selectModeOn}
+              >
+                <MousePointer2 className="w-3.5 h-3.5" />
+              </button>
+              <button
+                type="button"
+                onClick={() => { setToolMode("view"); setSelectedN(null); setSelectedHeader(null); }}
+                className={[
+                  "h-7 w-7 inline-flex items-center justify-center rounded border",
+                  !selectModeOn
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "bg-background hover:bg-muted",
+                ].join(" ")}
+                title="Mode aperçu — désactive l'interaction sur les cartouches"
+                aria-pressed={!selectModeOn}
+              >
+                <Hand className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+
 
             {/* Illustration vectorisée — calque du bas, recevant les transformations
                 (miroir / rotation). Le placeholder ci-dessous reste figé. */}
@@ -801,8 +843,8 @@ export default function PlaceholdersEditor({
                   strokeWidth={isSel ? 2 : 1.4}
                   strokeDasharray="6 3"
                   vectorEffect="non-scaling-stroke"
-                  onPointerDown={(e) => onHeaderMoveDown(hk, e)}
-                  style={{ touchAction: "none", cursor: "grab" }}
+                  onPointerDown={(e) => { if (selectModeOn) onHeaderMoveDown(hk, e); }}
+                  style={{ touchAction: "none", cursor: selectModeOn ? "grab" : "default", pointerEvents: selectModeOn ? "all" : "none" }}
                 />
                 <foreignObject x={r.x} y={r.y} width={r.w} height={r.h} pointerEvents="none">
                   <div
@@ -898,8 +940,8 @@ export default function PlaceholdersEditor({
                   stroke={strokeBase}
                   strokeWidth={isSelected ? 2 : 1.2}
                   vectorEffect="non-scaling-stroke"
-                  onPointerDown={(e) => onMoveDown(z.n, e)}
-                  style={{ touchAction: "none", cursor: "grab" }}
+                  onPointerDown={(e) => { if (selectModeOn) onMoveDown(z.n, e); }}
+                  style={{ touchAction: "none", cursor: selectModeOn ? "grab" : "default", pointerEvents: selectModeOn ? "all" : "none" }}
                 />
 
                 {/* Lorem text (permanent) */}
@@ -935,9 +977,9 @@ export default function PlaceholdersEditor({
                   x={r.x} y={r.y} width={r.w} height={r.h}
                   rx={Math.min(4, r.h * 0.08)}
                   fill="transparent"
-                  pointerEvents="all"
-                  onPointerDown={(e) => onMoveDown(z.n, e)}
-                  style={{ touchAction: "none", cursor: "grab" }}
+                  pointerEvents={selectModeOn ? "all" : "none"}
+                  onPointerDown={(e) => { if (selectModeOn) onMoveDown(z.n, e); }}
+                  style={{ touchAction: "none", cursor: selectModeOn ? "grab" : "default" }}
                 />
 
                 {/* Habillage badge (integré) */}
