@@ -70,51 +70,80 @@ export default function AdminLibraryPage() {
   }, []);
 
   // Récupère toutes les illustrations produites via le Studio (coverage SICAI).
-  useEffect(() => {
-    let alive = true;
-    (async () => {
-      setIllustrationsLoading(true);
-      try {
-        const res = await studioV2Api.coverage();
-        if (!alive) return;
-        // On regroupe les variantes d'une même illustration (id sans suffixe _N)
-        // et on ne garde que celle de cardinalité la plus grande.
-        const bestByKey = new Map<string, StudioIllustration>();
-        for (const cell of res.cells ?? []) {
-          const byDomain = cell.production?.by_domain ?? {};
-          for (const [domain, dp] of Object.entries(byDomain)) {
-            for (const p of dp.produced ?? []) {
-              const baseId = p.id.replace(/_\d+$/, "");
-              const key = `${cell.index}::${domain}::${baseId}`;
-              const candidate: StudioIllustration = {
-                id: p.id,
-                file: p.file,
-                cardinality_n: p.cardinality,
-                domain,
-                cell,
-              };
-              const prev = bestByKey.get(key);
-              if (!prev || candidate.cardinality_n > prev.cardinality_n) {
-                bestByKey.set(key, candidate);
-              }
+  const fetchIllustrations = useCallback(async (opts?: { initial?: boolean; manual?: boolean }) => {
+    if (opts?.initial) setIllustrationsLoading(true);
+    if (opts?.manual) setRefreshing(true);
+    try {
+      const res = await studioV2Api.coverage();
+      // Regroupe les variantes (id sans suffixe _N) et garde la plus grande cardinalité.
+      const bestByKey = new Map<string, StudioIllustration>();
+      for (const cell of res.cells ?? []) {
+        const byDomain = cell.production?.by_domain ?? {};
+        for (const [domain, dp] of Object.entries(byDomain)) {
+          for (const p of dp.produced ?? []) {
+            const baseId = p.id.replace(/_\d+$/, "");
+            const key = `${cell.index}::${domain}::${baseId}`;
+            const candidate: StudioIllustration = {
+              id: p.id,
+              file: p.file,
+              cardinality_n: p.cardinality,
+              domain,
+              cell,
+            };
+            const prev = bestByKey.get(key);
+            if (!prev || candidate.cardinality_n > prev.cardinality_n) {
+              bestByKey.set(key, candidate);
             }
           }
         }
-        const out = Array.from(bestByKey.values());
-        out.sort((a, b) => a.id.localeCompare(b.id));
-        setIllustrations(out);
-        setIllustrationsError(null);
-      } catch (e) {
-        if (alive) {
-          setIllustrationsError(e instanceof Error ? e.message : "Erreur de chargement");
-          setIllustrations([]);
-        }
-      } finally {
-        if (alive) setIllustrationsLoading(false);
       }
-    })();
-    return () => { alive = false; };
+      const out = Array.from(bestByKey.values());
+      out.sort((a, b) => a.id.localeCompare(b.id));
+
+      // Détection des nouvelles vignettes (clé = id+file).
+      const keyOf = (it: StudioIllustration) => `${it.id}::${it.file}`;
+      const currentKeys = new Set(out.map(keyOf));
+      const prevKeys = prevIdsRef.current;
+      if (prevKeys && !opts?.initial) {
+        const fresh = new Set<string>();
+        for (const k of currentKeys) if (!prevKeys.has(k)) fresh.add(k);
+        if (fresh.size > 0) {
+          setNewIds(fresh);
+          setNewCount((c) => c + fresh.size);
+          if (highlightTimerRef.current) clearTimeout(highlightTimerRef.current);
+          highlightTimerRef.current = setTimeout(() => setNewIds(new Set()), 6000);
+        }
+      }
+      prevIdsRef.current = currentKeys;
+
+      setIllustrations(out);
+      setIllustrationsError(null);
+    } catch (e) {
+      setIllustrationsError(e instanceof Error ? e.message : "Erreur de chargement");
+      if (opts?.initial) setIllustrations([]);
+    } finally {
+      if (opts?.initial) setIllustrationsLoading(false);
+      if (opts?.manual) setRefreshing(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchIllustrations({ initial: true });
+  }, [fetchIllustrations]);
+
+  useEffect(() => {
+    if (!autoRefresh) return;
+    const id = setInterval(() => {
+      fetchIllustrations();
+    }, 5000);
+    return () => clearInterval(id);
+  }, [autoRefresh, fetchIllustrations]);
+
+  useEffect(() => () => {
+    if (highlightTimerRef.current) clearTimeout(highlightTimerRef.current);
+  }, []);
+
+
 
 
   // Lazy-load une miniature (dernier aperçu) pour chaque template ayant au moins 1 aperçu.
