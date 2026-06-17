@@ -1705,9 +1705,6 @@ function MetadataExportPanel(props: {
           ...(composition.headers ? { headers: composition.headers } : {}),
         },
       };
-      // Debug: confirm headers actually leaves the front in the export payload.
-      // eslint-disable-next-line no-console
-      console.log("[studio] export payload.headers =", exportPayload.composition.headers);
       // Mode édition : PUT vers /admin/studio/templates/{templateId} (préserve l'id).
       // Mode création (pas de templateId) : POST classique sur /export-templates.
       const r = editTemplateId
