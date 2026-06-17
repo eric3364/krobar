@@ -917,7 +917,12 @@ export default function PlaceholdersEditor({
                       fontFamily: "system-ui, sans-serif",
                       boxSizing: "border-box",
                       textAlign: isCartouche ? (side === "left" ? "left" : "right") : "left",
+                      userSelect: "none",
+                      WebkitUserSelect: "none",
+                      cursor: "grab",
+                      pointerEvents: "none",
                     }}
+
                   >
                     <span style={{ opacity: 0.45, fontWeight: 700, marginRight: 4 }}>{z.n}.</span>
                     {LOREM[loremLen]}
