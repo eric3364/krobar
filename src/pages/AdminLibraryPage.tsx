@@ -145,6 +145,24 @@ export default function AdminLibraryPage() {
     if (highlightTimerRef.current) clearTimeout(highlightTimerRef.current);
   }, []);
 
+  // Au retour depuis l'éditeur Studio (state.refreshTemplateId), rafraîchit l'inventaire
+  // pour refléter le nouveau placement de la vignette éditée.
+  useEffect(() => {
+    const state = location.state as { refreshTemplateId?: string } | null;
+    if (state?.refreshTemplateId) {
+      fetchIllustrations({ manual: true });
+      // nettoie le state pour ne pas reboucler si l'utilisateur navigue
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location, navigate, fetchIllustrations]);
+
+  // Ouvre la vignette dans l'éditeur de placement du Studio.
+  const openInEditor = useCallback((it: StudioIllustration) => {
+    navigate(`/admin/studio?templateId=${encodeURIComponent(it.id)}&returnTo=library`, {
+      state: { fromLibrary: true, templateId: it.id },
+    });
+  }, [navigate]);
+
 
 
 
