@@ -1,8 +1,8 @@
 // Vue A — /admin/library : liste des templates Premium et résumé de la bibliothèque.
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import { ArrowLeft, CheckCircle2, ImageOff, Loader2, RefreshCw } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { ArrowLeft, CheckCircle2, ImageOff, Loader2, RefreshCw, Pencil } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
