@@ -353,8 +353,15 @@ export default function AdminLibraryPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
             {filteredIllustrations.map((it) => {
               const familyLabel = FAMILY_LABEL[it.cell.family] ?? it.cell.family;
+              const isNew = newIds.has(`${it.id}::${it.file}`);
               return (
-                <Card key={`${it.id}-${it.file}`} className="overflow-hidden flex flex-col">
+                <Card
+                  key={`${it.id}-${it.file}`}
+                  className={`overflow-hidden flex flex-col transition-all ${
+                    isNew ? "ring-2 ring-emerald-500/60 shadow-lg" : ""
+                  }`}
+                >
+
                   <div className="aspect-[4/3] w-full bg-muted/30 border-b flex items-center justify-center overflow-hidden">
                     <img
                       src={`https://krobar.online/templates/${it.file}`}
