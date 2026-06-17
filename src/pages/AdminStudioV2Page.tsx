@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { toast } from "sonner";
 import {
@@ -89,6 +89,14 @@ export default function AdminStudioV2Page() {
   const [coverageError, setCoverageError] = useState<string | null>(null);
   const [active, setActiveState] = useState<ProductionState | null>(() => loadActive());
 
+  const [searchParams] = useSearchParams();
+  const templateIdParam = searchParams.get("templateId");
+  const returnToParam = searchParams.get("returnTo");
+
+  // Mode "édition d'un template existant" (présent seulement si ?templateId=...).
+  const [templateLoading, setTemplateLoading] = useState<boolean>(!!templateIdParam);
+  const [templateError, setTemplateError] = useState<string | null>(null);
+
   const setActive = (s: ProductionState | null) => {
     setActiveState(s);
     try {
@@ -107,6 +115,49 @@ export default function AdminStudioV2Page() {
       .finally(() => { if (!cancel) setLoadingCoverage(false); });
     return () => { cancel = true; };
   }, []);
+
+  // (1) Préchargement depuis le query param ?templateId=...
+  // Charge les studio_params du template existant et pré-remplit l'éditeur.
+  useEffect(() => {
+    if (!templateIdParam) return;
+    let cancel = false;
+    setTemplateLoading(true);
+    setTemplateError(null);
+    studioV2Api
+      .getTemplateStudioParams(templateIdParam)
+      .then((res) => {
+        if (cancel) return;
+        const a = res.studio_params?.active;
+        const persisted = res.studio_params?.persisted;
+        if (!a?.cell?.index) {
+          setTemplateError("Réponse invalide : studio_params.active manquant");
+          return;
+        }
+        // Hydrate le store local utilisé par ProductionScreen comme valeurs initiales,
+        // puis active la cellule — la page bascule alors vers l'éditeur.
+        try {
+          const persistKey = `krobar-studio-v2-prod:${a.cell.index}|${a.registre}|${a.selecteur ?? ""}`;
+          localStorage.setItem(persistKey, JSON.stringify(persisted ?? {}));
+        } catch { /* quota ignored */ }
+        setActive({ cell: a.cell, registre: a.registre, selecteur: a.selecteur ?? null });
+        if (res.source === "reconstructed") {
+          toast.info("Paramètres reconstruits depuis le SVG déployé", { duration: 4000 });
+        }
+      })
+      .catch((e) => {
+        if (cancel) return;
+        const msg = e instanceof Error ? e.message : String(e);
+        if (/404|not.?found|introuvable/i.test(msg)) {
+          setTemplateError(`Template introuvable : ${templateIdParam}`);
+        } else {
+          setTemplateError(msg);
+        }
+      })
+      .finally(() => { if (!cancel) setTemplateLoading(false); });
+    return () => { cancel = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [templateIdParam]);
+
 
 
   // Sort cells by family > cardinality > regime
@@ -161,7 +212,29 @@ export default function AdminStudioV2Page() {
       </header>
 
       <main className="w-full px-4 md:px-6 py-6">
-        {!active && (
+        {templateIdParam && templateLoading && (
+          <div className="flex items-center justify-center py-32 text-muted-foreground">
+            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+            Chargement du template <span className="font-mono ml-1">{templateIdParam}</span>…
+          </div>
+        )}
+        {templateIdParam && !templateLoading && templateError && (
+          <Card className="p-6 border-destructive/50 max-w-2xl">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="w-5 h-5 text-destructive mt-0.5" />
+              <div className="flex-1">
+                <p className="font-medium">Impossible d'ouvrir ce template dans l'éditeur</p>
+                <p className="text-sm text-muted-foreground mt-1">{templateError}</p>
+                <Button asChild variant="outline" size="sm" className="mt-3">
+                  <Link to="/admin/library">
+                    <ArrowLeft className="w-4 h-4 mr-1" /> Retour bibliothèque
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </Card>
+        )}
+        {!templateIdParam && !active && (
           <Tabs defaultValue="production" className="space-y-4">
             <TabsList>
               <TabsTrigger value="production">Production</TabsTrigger>
@@ -183,11 +256,13 @@ export default function AdminStudioV2Page() {
             </TabsContent>
           </Tabs>
         )}
-        {active && (
+        {active && !(templateIdParam && (templateLoading || templateError)) && (
           <ProductionScreen
             state={active}
             onChange={setActive}
             onBack={() => setActive(null)}
+            editTemplateId={templateIdParam ?? null}
+            returnTo={returnToParam ?? null}
           />
         )}
       </main>
@@ -401,10 +476,14 @@ function ProductionScreen({
   state,
   onChange,
   onBack,
+  editTemplateId,
+  returnTo,
 }: {
   state: ProductionState;
   onChange: (s: ProductionState) => void;
   onBack: () => void;
+  editTemplateId?: string | null;
+  returnTo?: string | null;
 }) {
   const { cell, registre, selecteur } = state;
   const s = byRegistreSummary(cell);
@@ -1076,6 +1155,8 @@ function ProductionScreen({
           produceByN={produceByN}
           validatedByN={validatedByN}
           onCancel={onBack}
+          editTemplateId={editTemplateId ?? null}
+          returnTo={returnTo ?? null}
         />
       )}
 
@@ -1134,8 +1215,11 @@ function MetadataExportPanel(props: {
   produceByN: Record<number, boolean>;
   validatedByN: Record<number, boolean>;
   onCancel: () => void;
+  editTemplateId?: string | null;
+  returnTo?: string | null;
 }) {
-  const { cell, incarnation, domain, vectorizedSvg, composition, produceByN, validatedByN, onCancel } = props;
+  const { cell, incarnation, domain, vectorizedSvg, composition, produceByN, validatedByN, onCancel, editTemplateId, returnTo } = props;
+  const navigate = useNavigate();
   const [meta, setMeta] = useState<{ best_for: string; textual_markers: string[]; matching_types: string[] }>({
     best_for: "", textual_markers: [], matching_types: [],
   });
@@ -1213,9 +1297,16 @@ function MetadataExportPanel(props: {
       // Debug: confirm headers actually leaves the front in the export payload.
       // eslint-disable-next-line no-console
       console.log("[studio] export payload.headers =", exportPayload.composition.headers);
-      const r = await studioV2Api.exportTemplates(exportPayload);
+      // Mode édition : PUT vers /admin/studio/templates/{templateId} (préserve l'id).
+      // Mode création (pas de templateId) : POST classique sur /export-templates.
+      const r = editTemplateId
+        ? await studioV2Api.updateTemplate(editTemplateId, exportPayload)
+        : await studioV2Api.exportTemplates(exportPayload);
       setExportResult(r);
-      toast.success("Templates déployés");
+      toast.success(editTemplateId ? "Template mis à jour" : "Templates déployés");
+      if (editTemplateId && returnTo === "library") {
+        navigate("/admin/library", { state: { refreshTemplateId: editTemplateId } });
+      }
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Export impossible");
     } finally {

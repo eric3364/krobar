@@ -191,6 +191,35 @@ export const studioV2Api = {
 
   exportTemplates: (payload: ExportPayload) =>
     adminFetch<ExportResponse>("/admin/studio/export-templates", { body: payload }),
+
+  getTemplateStudioParams: (templateId: string) =>
+    adminFetch<TemplateStudioParamsResponse>(
+      `/admin/templates/${encodeURIComponent(templateId)}/studio-params`,
+      { method: "GET" },
+    ),
+
+  updateTemplate: (templateId: string, payload: ExportPayload) =>
+    adminFetch<ExportResponse>(
+      `/admin/studio/templates/${encodeURIComponent(templateId)}`,
+      { method: "PUT", body: payload },
+    ),
+};
+
+// Réponse de GET /admin/templates/{id}/studio-params : paramètres Studio reconstruits
+// depuis un snapshot (source="snapshot") ou depuis le SVG déployé (source="reconstructed").
+// Le contenu de studio_params miroite ce que le Studio persiste localement
+// (état "active" + état "persisted" de la cellule).
+export type TemplateStudioParamsResponse = {
+  source: "snapshot" | "reconstructed";
+  template_id: string;
+  studio_params: {
+    active: {
+      cell: CoverageCell;
+      registre: "domain" | "etat" | "conflit" | "sport";
+      selecteur: string | null;
+    };
+    persisted: Record<string, unknown>;
+  };
 };
 
 export type MatchingType = { id: string; label: string };
