@@ -113,6 +113,24 @@ type RawSnapshot = {
 type CompositionReadyData = import("@/components/admin/studio/PlaceholdersEditor").CompositionReadyData;
 type MetadataState = { best_for: string; textual_markers: string[]; matching_types: string[] };
 
+function sicaiIndexFromTemplateId(templateId: string): string | null {
+  const match = /^([a-z]{2})(\d+)([csa])(?:_|$)/i.exec(templateId);
+  if (!match) return null;
+  return `${match[1].toUpperCase()}-${match[2]}-${match[3].toUpperCase()}`;
+}
+
+function inferDomainForTemplateId(cell: CoverageCell, templateId: string): string {
+  const targetBase = templateId.replace(/_\d+$/i, "");
+  const byDomain = cell.production?.by_domain ?? {};
+  for (const [domain, dp] of Object.entries(byDomain)) {
+    if ((dp.produced ?? []).some((p) => p.id === templateId)) return domain;
+  }
+  for (const [domain, dp] of Object.entries(byDomain)) {
+    if ((dp.produced ?? []).some((p) => p.id.replace(/_\d+$/i, "") === targetBase)) return domain;
+  }
+  return Object.entries(byDomain).find(([, dp]) => dp.in_grid)?.[0] ?? Object.keys(byDomain)[0] ?? "_none";
+}
+
 function findCellForTemplateId(
   cov: CoverageResponse | null,
   templateId: string,
@@ -125,6 +143,11 @@ function findCellForTemplateId(
         if (p.id === templateId) return { cell, domain };
       }
     }
+  }
+  const inferredIndex = sicaiIndexFromTemplateId(templateId);
+  const inferredCell = inferredIndex ? cov.cells?.find((cell) => cell.index === inferredIndex) : null;
+  if (inferredCell) {
+    return { cell: inferredCell, domain: inferDomainForTemplateId(inferredCell, templateId) };
   }
   return null;
 }
