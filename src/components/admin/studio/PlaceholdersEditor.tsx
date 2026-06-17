@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { Loader2, RefreshCw, Check, AlertTriangle } from "lucide-react";
+import { Loader2, RefreshCw, Check, AlertTriangle, MousePointer2, Hand } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   studioV2Api,
