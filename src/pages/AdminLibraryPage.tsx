@@ -297,15 +297,45 @@ export default function AdminLibraryPage() {
                 : illustrationsError
                 ? `Erreur : ${illustrationsError}`
                 : `${illustrations?.length ?? 0} illustration${(illustrations?.length ?? 0) > 1 ? "s" : ""} générée${(illustrations?.length ?? 0) > 1 ? "s" : ""} via le Studio`}
+              {newCount > 0 && (
+                <span className="ml-2 inline-flex items-center rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 px-2 py-0.5 text-xs font-medium">
+                  +{newCount} nouvelle{newCount > 1 ? "s" : ""}
+                </span>
+              )}
             </p>
           </div>
-          <Input
-            placeholder="Rechercher (id, fichier, domaine, cellule…)"
-            value={illustrationSearch}
-            onChange={(e) => setIllustrationSearch(e.target.value)}
-            className="max-w-xs"
-          />
+          <div className="flex items-center gap-3 flex-wrap">
+            <div className="flex items-center gap-2">
+              <Switch
+                id="auto-refresh"
+                checked={autoRefresh}
+                onCheckedChange={setAutoRefresh}
+              />
+              <Label htmlFor="auto-refresh" className="text-xs cursor-pointer">
+                Rafraîchissement auto
+              </Label>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setNewCount(0);
+                fetchIllustrations({ manual: true });
+              }}
+              disabled={refreshing}
+            >
+              <RefreshCw className={`w-3.5 h-3.5 mr-1 ${refreshing ? "animate-spin" : ""}`} />
+              Rafraîchir maintenant
+            </Button>
+            <Input
+              placeholder="Rechercher (id, fichier, domaine, cellule…)"
+              value={illustrationSearch}
+              onChange={(e) => setIllustrationSearch(e.target.value)}
+              className="max-w-xs"
+            />
+          </div>
         </div>
+
 
         {illustrationsLoading ? (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
