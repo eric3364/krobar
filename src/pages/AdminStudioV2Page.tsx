@@ -311,7 +311,7 @@ function buildFallbackStudioParams(
 
   const vectRes = {
     ok: true,
-    svg: raw.cleaned_svg,
+    svg: stripSlotsFromSvg(raw.cleaned_svg),
     viewbox,
     metrics: {
       ink_density_pct: 0,
