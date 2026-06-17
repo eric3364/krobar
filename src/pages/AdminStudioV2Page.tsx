@@ -115,6 +115,38 @@ function findCellForTemplateId(
   return null;
 }
 
+// Extrait les rects des slots {zone_N, title, subtitle} depuis le SVG déployé
+// (convention SVG-KR v2.x : <g class="krobar-slot" data-slot="..."><foreignObject .../></g>).
+// Sert de filet quand le backend renvoie un snapshot reconstruit avec anchors=[].
+function extractAnchorsFromSvg(svg: string): RawAnchor[] {
+  if (typeof window === "undefined" || !svg) return [];
+  try {
+    const doc = new DOMParser().parseFromString(svg, "image/svg+xml");
+    if (doc.querySelector("parsererror")) return [];
+    const out: RawAnchor[] = [];
+    const nodes = doc.querySelectorAll('g.krobar-slot[data-slot], g[data-slot], rect[data-slot], foreignObject[data-slot]');
+    nodes.forEach((node) => {
+      const slot = node.getAttribute("data-slot");
+      if (!slot) return;
+      // Trouve le foreignObject/rect porteur des coordonnées.
+      const target = (node.tagName.toLowerCase() === "g"
+        ? (node.querySelector("foreignObject") ?? node.querySelector("rect"))
+        : node) as Element | null;
+      if (!target) return;
+      const x = parseFloat(target.getAttribute("x") ?? "");
+      const y = parseFloat(target.getAttribute("y") ?? "");
+      const w = parseFloat(target.getAttribute("width") ?? "");
+      const h = parseFloat(target.getAttribute("height") ?? "");
+      if (![x, y, w, h].every(Number.isFinite)) return;
+      if (out.some((a) => a.slot_name === slot)) return;
+      out.push({ slot_name: slot, x, y, w, h });
+    });
+    return out;
+  } catch {
+    return [];
+  }
+}
+
 function buildFallbackStudioParams(
   raw: RawSnapshot,
   cell: CoverageCell,
@@ -123,6 +155,12 @@ function buildFallbackStudioParams(
   const W = raw.image_width;
   const H = raw.image_height;
   const viewbox: [number, number, number, number] = [0, 0, W, H];
+
+  // 1) anchors prioritaires : ceux fournis par le backend, sinon parse du SVG.
+  let anchors: RawAnchor[] = Array.isArray(raw.anchors) ? raw.anchors : [];
+  if (anchors.length === 0) {
+    anchors = extractAnchorsFromSvg(raw.cleaned_svg);
+  }
 
   // Zones zone_N → ZonePair
   type ZP = {
@@ -133,7 +171,7 @@ function buildFallbackStudioParams(
     unplaced?: boolean;
   };
   const zonePairs: ZP[] = [];
-  for (const a of raw.anchors ?? []) {
+  for (const a of anchors) {
     const m = /^zone_(\d+)$/.exec(a.slot_name);
     if (!m) continue;
     const n = parseInt(m[1], 10);
@@ -148,7 +186,7 @@ function buildFallbackStudioParams(
   const userMax = zonePairs.length > 0 ? Math.max(...zonePairs.map((z) => z.n)) : 1;
 
   // Headers
-  const headerAnchor = (name: string) => (raw.anchors ?? []).find((a) => a.slot_name === name);
+  const headerAnchor = (name: string) => anchors.find((a) => a.slot_name === name);
   const titleA = headerAnchor("title");
   const subtitleA = headerAnchor("subtitle");
   const headers: Record<string, { role: string; rect: { x: number; y: number; w: number; h: number }; optional?: boolean }> = {};
@@ -179,7 +217,7 @@ function buildFallbackStudioParams(
   const validatedByN: Record<number, boolean> = {};
   for (let i = 1; i <= userMax; i++) {
     produceByN[i] = true;
-    validatedByN[i] = i === userMax;
+    validatedByN[i] = true;
   }
 
   const persisted = {
