@@ -1297,9 +1297,16 @@ function MetadataExportPanel(props: {
       // Debug: confirm headers actually leaves the front in the export payload.
       // eslint-disable-next-line no-console
       console.log("[studio] export payload.headers =", exportPayload.composition.headers);
-      const r = await studioV2Api.exportTemplates(exportPayload);
+      // Mode édition : PUT vers /admin/studio/templates/{templateId} (préserve l'id).
+      // Mode création (pas de templateId) : POST classique sur /export-templates.
+      const r = editTemplateId
+        ? await studioV2Api.updateTemplate(editTemplateId, exportPayload)
+        : await studioV2Api.exportTemplates(exportPayload);
       setExportResult(r);
-      toast.success("Templates déployés");
+      toast.success(editTemplateId ? "Template mis à jour" : "Templates déployés");
+      if (editTemplateId && returnTo === "library") {
+        navigate("/admin/library", { state: { refreshTemplateId: editTemplateId } });
+      }
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Export impossible");
     } finally {
