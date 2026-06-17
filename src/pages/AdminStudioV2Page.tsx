@@ -142,6 +142,13 @@ const normalizeSlotName = (name: string | undefined): string | null => {
   return zone ? `zone_${Number(zone[1])}` : null;
 };
 
+function inferIncarnationFromTemplateId(templateId: string | null | undefined): string {
+  if (!templateId) return "";
+  const withoutCell = templateId.replace(/^[a-z]{2}\d+[a-z]_?/i, "");
+  const withoutCardinality = withoutCell.replace(/_\d+$/i, "");
+  return withoutCardinality.replace(/_/g, " ").trim();
+}
+
 const anchorSlotName = (a: RawAnchor): string | null =>
   normalizeSlotName(a.slot_name ?? a.slot ?? a.id ?? a.name);
 
@@ -1481,7 +1488,7 @@ function ProductionScreen({
       {composition && (
         <MetadataExportPanel
           cell={cell}
-          incarnation={promptRes?.incarnation_source ?? ""}
+          incarnation={promptRes?.incarnation_source ?? inferIncarnationFromTemplateId(editTemplateId)}
           domain={registre === "domain" ? (selecteur ?? "") : ""}
           vectorizedSvg={vectRes?.svg ?? ""}
           composition={composition}
