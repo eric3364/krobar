@@ -377,12 +377,13 @@ export default function AdminLibraryPage() {
               return (
                 <Card
                   key={`${it.id}-${it.file}`}
-                  className={`overflow-hidden flex flex-col transition-all ${
+                  onDoubleClick={() => openInEditor(it)}
+                  title="Double-cliquez pour éditer le placement"
+                  className={`group relative overflow-hidden flex flex-col transition-all cursor-pointer select-none ${
                     isNew ? "ring-2 ring-emerald-500/60 shadow-lg" : ""
                   }`}
                 >
-
-                  <div className="aspect-[4/3] w-full bg-muted/30 border-b flex items-center justify-center overflow-hidden">
+                  <div className="aspect-[4/3] w-full bg-muted/30 border-b flex items-center justify-center overflow-hidden relative">
                     <img
                       src={`https://krobar.online/templates/${it.file}`}
                       alt={it.id}
@@ -392,6 +393,18 @@ export default function AdminLibraryPage() {
                         (e.currentTarget as HTMLImageElement).style.display = "none";
                       }}
                     />
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity shadow-md h-7 px-2 text-xs"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openInEditor(it);
+                      }}
+                    >
+                      <Pencil className="w-3 h-3 mr-1" />
+                      Éditer le placement
+                    </Button>
                   </div>
                   <div className="p-4 space-y-2 flex-1">
                     <div>
