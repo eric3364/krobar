@@ -1280,6 +1280,21 @@ function ProductionScreen({
             }}
           />
 
+          {(vectRes || vectError) && lastFileRef.current && !vectLoading && (
+            <button
+              type="button"
+              onClick={() => {
+                const f = lastFileRef.current;
+                if (f) requestAction(() => handleFile(f));
+              }}
+              className="inline-flex items-center gap-2 px-3 py-1.5 text-xs rounded border hover:bg-muted/40 transition-colors"
+              title="Relancer la vectorisation sur la dernière image"
+            >
+              <Loader2 className="w-4 h-4" />
+              <span>Revectoriser</span>
+            </button>
+          )}
+
           {vectLoading && (
             <span className="text-xs text-muted-foreground inline-flex items-center">
               <Loader2 className="w-4 h-4 mr-1 animate-spin" /> Vectorisation…
