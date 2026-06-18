@@ -967,6 +967,7 @@ function ProductionScreen({
   const [vectError, setVectError] = useState<string | null>(null);
   const [validated, setValidated] = useState<boolean>(initial?.validated ?? false);
   const [sizeInfo, setSizeInfo] = useState<{ before: number; after: number } | null>(null);
+  const lastFileRef = useRef<File | null>(null);
   const [placement, setPlacement] = useState<PlaceZonesResponse | null>(initial?.placement ?? null);
   const [editedZones, setEditedZones] = useState<Record<string, ZonePair[]>>(initial?.editedZones ?? {});
   const [placementsMode, setPlacementsMode] = useState<boolean>(initial?.placementsMode ?? false);
@@ -1092,6 +1093,7 @@ function ProductionScreen({
     s.domains.length > 0 || s.sport.length > 0 || s.hasEtat || s.hasConflit;
 
   const handleFile = async (file: File) => {
+    lastFileRef.current = file;
     setVectLoading(true); setVectError(null); setValidated(false); setVectRes(null); setSizeInfo(null);
     setPlacement(null); setEditedZones({}); setValidatedByN({}); setComposition(null); setPlacementsMode(false);
     try {
@@ -1277,6 +1279,21 @@ function ProductionScreen({
               e.target.value = "";
             }}
           />
+
+          {(vectRes || vectError) && lastFileRef.current && !vectLoading && (
+            <button
+              type="button"
+              onClick={() => {
+                const f = lastFileRef.current;
+                if (f) requestAction(() => handleFile(f));
+              }}
+              className="inline-flex items-center gap-2 px-3 py-1.5 text-xs rounded border hover:bg-muted/40 transition-colors"
+              title="Relancer la vectorisation sur la dernière image"
+            >
+              <Loader2 className="w-4 h-4" />
+              <span>Revectoriser</span>
+            </button>
+          )}
 
           {vectLoading && (
             <span className="text-xs text-muted-foreground inline-flex items-center">
