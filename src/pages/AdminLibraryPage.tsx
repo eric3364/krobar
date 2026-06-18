@@ -116,10 +116,15 @@ export default function AdminLibraryPage() {
     if (opts?.initial) setIllustrationsLoading(true);
     if (opts?.manual) setRefreshing(true);
     try {
-      const [res, inventory] = await Promise.all([
+      const [coverageResult, inventoryResult] = await Promise.allSettled([
         studioV2Api.coverage(),
-        templatesLifecycleApi.inventory().catch(() => null),
+        templatesLifecycleApi.inventory(),
       ]);
+      const res = coverageResult.status === "fulfilled" ? coverageResult.value : null;
+      const inventory = inventoryResult.status === "fulfilled" ? inventoryResult.value : null;
+      if (!res && !inventory) {
+        throw coverageResult.status === "rejected" ? coverageResult.reason : inventoryResult.status === "rejected" ? inventoryResult.reason : new Error("Erreur de chargement");
+      }
       // Regroupe les variantes (id sans suffixe _N) et garde la plus grande cardinalité.
       const bestByKey = new Map<string, StudioIllustration>();
       const byId = new Map<string, StudioIllustration>();
@@ -132,7 +137,7 @@ export default function AdminLibraryPage() {
         }
         byId.set(candidate.id, candidate);
       };
-      for (const cell of res.cells ?? []) {
+      for (const cell of res?.cells ?? []) {
         const byDomain = cell.production?.by_domain ?? {};
         for (const [domain, dp] of Object.entries(byDomain)) {
           for (const p of dp.produced ?? []) {
@@ -148,7 +153,7 @@ export default function AdminLibraryPage() {
       }
       for (const template of inventory?.templates ?? []) {
         if (byId.has(template.id)) continue;
-        const fallback = buildInventoryIllustration(template, res.cells ?? []);
+        const fallback = res ? buildInventoryIllustration(template, res.cells ?? []) : null;
         if (fallback) pushIllustration(fallback);
       }
       const out = Array.from(bestByKey.values());
@@ -170,11 +175,15 @@ export default function AdminLibraryPage() {
       }
       prevIdsRef.current = currentKeys;
 
-      setIllustrations(out);
-      setIllustrationsError(null);
+      if (out.length > 0) setIllustrations(out);
+      setIllustrationsError(
+        !res && inventory
+          ? "Couverture Studio temporairement indisponible ; conservation des dernières données visibles."
+          : null,
+      );
     } catch (e) {
       setIllustrationsError(e instanceof Error ? e.message : "Erreur de chargement");
-      if (opts?.initial) setIllustrations([]);
+      if (opts?.initial) setIllustrations((prev) => prev ?? []);
     } finally {
       if (opts?.initial) setIllustrationsLoading(false);
       if (opts?.manual) setRefreshing(false);
