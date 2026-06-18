@@ -55,6 +55,7 @@ function isLikelyHtmlResponse(text: string, contentType: string | null) {
   const lowered = (contentType ?? "").toLowerCase();
   return (
     lowered.includes("text/html") ||
+    lowered.includes("text/plain") ||
     /^\s*<!doctype html/i.test(text) ||
     /^\s*<html[\s>]/i.test(text)
   );
@@ -187,10 +188,11 @@ Deno.serve(async (req) => {
           {
             error: message,
             status: upstream.status,
+            code: "upstream_non_json",
             fallback: fallbackable,
             retryable: upstream.status >= 500,
           },
-          fallbackable ? 200 : 502,
+          200,
         );
       }
 
