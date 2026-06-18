@@ -171,9 +171,26 @@ Deno.serve(async (req) => {
           );
         }
 
+        const contentType = upstream.headers.get("content-type");
+        const fallbackable = upstream.status >= 500 || isLikelyHtmlResponse(text, contentType);
+        const message = upstream.status >= 502 && upstream.status <= 504
+          ? `Le backend Krobar est temporairement indisponible (${upstream.status}). Réessayez dans quelques secondes.`
+          : `Réponse non-JSON du backend (${upstream.status}). Début: ${previewText(text)}`;
+        console.error("Krobar admin non-JSON response", {
+          path,
+          status: upstream.status,
+          contentType,
+          fallbackable,
+          preview: previewText(text),
+        });
         return jsonResponse(
-          { error: `Réponse non-JSON du backend (${upstream.status}). Début: ${text.slice(0, 120)}` },
-          502,
+          {
+            error: message,
+            status: upstream.status,
+            fallback: fallbackable,
+            retryable: upstream.status >= 500,
+          },
+          fallbackable ? 200 : 502,
         );
       }
 
