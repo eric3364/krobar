@@ -967,6 +967,7 @@ function ProductionScreen({
   const [vectError, setVectError] = useState<string | null>(null);
   const [validated, setValidated] = useState<boolean>(initial?.validated ?? false);
   const [sizeInfo, setSizeInfo] = useState<{ before: number; after: number } | null>(null);
+  const lastFileRef = useRef<File | null>(null);
   const [placement, setPlacement] = useState<PlaceZonesResponse | null>(initial?.placement ?? null);
   const [editedZones, setEditedZones] = useState<Record<string, ZonePair[]>>(initial?.editedZones ?? {});
   const [placementsMode, setPlacementsMode] = useState<boolean>(initial?.placementsMode ?? false);
