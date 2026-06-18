@@ -1093,6 +1093,7 @@ function ProductionScreen({
     s.domains.length > 0 || s.sport.length > 0 || s.hasEtat || s.hasConflit;
 
   const handleFile = async (file: File) => {
+    lastFileRef.current = file;
     setVectLoading(true); setVectError(null); setValidated(false); setVectRes(null); setSizeInfo(null);
     setPlacement(null); setEditedZones({}); setValidatedByN({}); setComposition(null); setPlacementsMode(false);
     try {
